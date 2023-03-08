@@ -61,39 +61,39 @@ export const authOptions = {
     }),
   ],
 
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     // Oauth // Persist the OAuth access_token to the token right after signin
-  //     // if (params.account) {
-  //     //   params.token.accessToken = params.account.access_token;
-  //     // }
+  callbacks: {
+    async jwt({ token, user }) {
+      // Oauth // Persist the OAuth access_token to the token right after signin
+      // if (params.account) {
+      //   params.token.accessToken = params.account.access_token;
+      // }
 
-  //     // console.log("");
-  //     // console.log("\x1b[32m/api/auth/callbacks/jwt\x1b[0m");
-  //     // console.log("token : ", token);
-  //     // console.log("user : ", user);
-  //     if (user) {
-  //       token.role = user.role;
-  //     }
-  //     // console.log("token : ", token);
-  //     // console.log("");
+      // console.log("");
+      // console.log("\x1b[32m/api/auth/callbacks/jwt\x1b[0m");
+      // console.log("token : ", token);
+      // console.log("user : ", user);
+      if (user) {
+        token.role = user.role;
+      }
+      console.log("token : ", token);
+      console.log("");
 
-  //     return token;
-  //   },
-  //   async session({ session, token }) {
-  //     console.log("");
-  //     console.log("\x1b[32m/api/auth/callbacks/session\x1b[0m");
-  //     // console.log("token : ", token);
-  //     // assign the roles
-  //     if (session.user) {
-  //       session.user.role = token.role;
-  //     }
-  //     console.log("session : ", session);
-  //     console.log("");
+      return token;
+    },
+    async session({ session, token }) {
+      console.log("");
+      console.log("\x1b[32m/api/auth/callbacks/session\x1b[0m");
+      // console.log("token : ", token);
+      // assign the roles
+      if (session.user) {
+        session.user.role = token.role;
+      }
+      console.log("session : ", session);
+      console.log("");
 
-  //     return session;
-  //   },
-  // },
+      return session;
+    },
+  },
 
   // custom pages
   pages: {

@@ -30,7 +30,13 @@ export const authOptions = {
         await connectDB();
 
         // find the user in database
-        const foundUser = await User.findOne({ email });
+        let foundUser;
+        try {
+          foundUser = await User.findOne({ email });
+        } catch (error) {
+          console.log("error : ", error);
+        }
+        // const foundUser = await User.findOne({ email });
         console.log("\x1b[33mfoundUser : ", foundUser);
 
         // let foundUser;

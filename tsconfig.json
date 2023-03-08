@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    // "allowSyntheticDefaultImports": true, // custom
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -24,7 +25,9 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/api/auth/[...nextauth].js",
-    "lib/mongodb.ts" // "src/middleware.ts"
+    "lib/config/*.ts",
+    "lib/config/connectDB.ts",
+    "lib/config/mongodb.ts" // "src/middleware.ts"
   ],
   "exclude": ["node_modules"]
 }

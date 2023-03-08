@@ -1,10 +1,9 @@
-import axios from "axios";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useEffect, useState } from "react";
 
 // server side
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]";
+// import { getServerSession } from "next-auth";
 
 // client side
 import { getSession, useSession } from "next-auth/react";

@@ -26,7 +26,8 @@
 // }
 
 export const config = {
-  matcher: ["/auth/admin"],
+  matcher: ["/asdahldhi/ahsdialdhi"],
+  // matcher: ["/auth/admin"],
   // matcher: ["/about", "/auth/admin"],
 };
 
@@ -49,26 +50,26 @@ export async function middleware(request: NextRequest) {
   console.log("request.url : ", request.url);
   console.log("");
 
-  if (matchesProtectedPath) {
-    const token = await getToken({ req: request });
-    if (!token) {
-      // 401 unauthorized : need to redirect
-      const url = new URL(`/auth/signin`, request.url);
-      url.searchParams.set("callbackUrl", encodeURI(request.url));
-      console.log("\x1b[31m401 unauthorized\x1b[0m");
-      // console.log("url : ", url);
-      // console.log("url.searchParams : ", url.searchParams);
-      return NextResponse.redirect(url);
-    }
-    if (token.role !== "admin") {
-      // 403 forbidden : need to rewrite
-      const url = new URL(`/`, request.url);
-      // const url = new URL(`/403`, request.url);
-      // console.log("url : ", url);
-      console.log("\x1b[31m403 forbidden\x1b[0m");
-      return NextResponse.rewrite(url);
-    }
-  }
+  // if (matchesProtectedPath) {
+  //   const token = await getToken({ req: request });
+  //   if (!token) {
+  //     // 401 unauthorized : need to redirect
+  //     const url = new URL(`/auth/signin`, request.url);
+  //     url.searchParams.set("callbackUrl", encodeURI(request.url));
+  //     console.log("\x1b[31m401 unauthorized\x1b[0m");
+  //     // console.log("url : ", url);
+  //     // console.log("url.searchParams : ", url.searchParams);
+  //     return NextResponse.redirect(url);
+  //   }
+  //   // if (token.role !== "admin") {
+  //   //   // 403 forbidden : need to rewrite
+  //   //   const url = new URL(`/`, request.url);
+  //   //   // const url = new URL(`/403`, request.url);
+  //   //   // console.log("url : ", url);
+  //   //   console.log("\x1b[31m403 forbidden\x1b[0m");
+  //   //   return NextResponse.rewrite(url);
+  //   // }
+  // }
 
   return NextResponse.next();
 }

@@ -17,6 +17,7 @@ const Signin = () => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
       callbackUrl: "/auth/admin",
+      // redirect: false,
     });
   };
 

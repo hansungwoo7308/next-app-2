@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import Head from "next/head";
 // import connectDB from "../../../lib/config/connectDB";
-// import mongoDB from "../../../lib/mongodb";
-
 // import * as S from "../../styles/pages/register.styled";
 
 let renderCount = 0;

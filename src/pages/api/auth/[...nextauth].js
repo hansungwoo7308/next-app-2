@@ -2,19 +2,19 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import connectDB from "../../../../lib/config/connectDB";
-import clientPromise from "../../../../lib/config/mongodb";
+import connectDB from "../../../../lib/connectDB";
+import clientPromise from "../../../../lib/mongodb";
 import User from "../../../../lib/core/model/User";
 
 export const authOptions = {
   providers: [
     Credentials({
-      // id: "credentials",
+      id: "credentials",
       name: "Credentials",
-      // credentials: {
-      //   username: { label: "Username", type: "text", placeholder: "jsmith" },
-      //   password: { label: "Password", type: "password" },
-      // },
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials, req) {
         // log
         console.log("");
@@ -74,8 +74,8 @@ export const authOptions = {
       //   params.token.accessToken = params.account.access_token;
       // }
 
-      // console.log("");
-      // console.log("\x1b[32m/api/auth/callbacks/jwt\x1b[0m");
+      console.log("");
+      console.log("\x1b[32m/api/auth/callbacks/jwt\x1b[0m");
       // console.log("token : ", token);
       // console.log("user : ", user);
       if (user) {

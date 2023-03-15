@@ -1,17 +1,17 @@
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
-import Header from "../components/layout/Header";
+import Layout from "../components/layout/Layout";
 
 import * as StyleComponent from "../styles/_app.styled";
-// import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <SessionProvider session={pageProps.session}>
-        <StyleComponent.GlobalStyle />
-        <Header />
-        <Component {...pageProps} />
+        <Layout>
+          <StyleComponent.GlobalStyle />
+          <Component {...pageProps} />
+        </Layout>
       </SessionProvider>
     </>
   );

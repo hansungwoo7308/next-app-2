@@ -4,13 +4,13 @@ import AuthButton from "../AuthButton";
 
 const Header = () => {
   return (
-    <section className="header">
-      <div className="layout">
+    <header>
+      <section>
         <Link href={"/"}>LOGO</Link>
         <Nav />
         <AuthButton />
-      </div>
-    </section>
+      </section>
+    </header>
   );
 };
 

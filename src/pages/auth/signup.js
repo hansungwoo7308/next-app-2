@@ -4,8 +4,6 @@ import { getSession, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Head from "next/head";
-// import connectDB from "../../../lib/config/connectDB";
-// import * as S from "../../styles/pages/register.styled";
 
 let renderCount = 0;
 

@@ -6,10 +6,19 @@ const Nav = () => {
     <nav>
       <ul>
         <li>
-          <Link href={"/"}>home</Link>
+          <Link href={"/"}>HOME</Link>
+        </li>
+        {/* <li>
+          <Link href={"/about"}>ABOUT</Link>
+        </li> */}
+        {/* <li>
+          <Link href={"/posts"}>POSTS</Link>
+        </li> */}
+        <li>
+          <Link href={"/blogs"}>BLOGS</Link>
         </li>
         <li>
-          <Link href={"/about"}>about</Link>
+          <Link href={"/blogs/create"}>create</Link>
         </li>
       </ul>
     </nav>

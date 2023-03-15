@@ -20,16 +20,16 @@ const AuthButton = (props) => {
             </button>
           </li>
           <li>
-            <Link href={"/auth/admin"}>admin</Link>
+            <Link href={"/auth/admin"}>Admin</Link>
           </li>
         </>
       ) : (
         <>
           <li>
-            <Link href={"/auth/signin"}>signin</Link>
+            <Link href={"/auth/signin"}>Sign in</Link>
           </li>
           <li>
-            <Link href={"/auth/signup"}>signup</Link>
+            <Link href={"/auth/signup"}>Sign up</Link>
           </li>
         </>
       )}

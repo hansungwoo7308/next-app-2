@@ -4,6 +4,7 @@ https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/uti
 **/
 import mongoose from "mongoose";
 
+// check the env
 if (!process.env.MONGODB_URI) {
   throw new Error("Please add your MONGODB_URI to .env.local");
 }
@@ -15,10 +16,15 @@ const MONGODB_URI: string = process.env.MONGODB_URI;
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
+// typescript as 문법 : compile 시에만 실행
+// & bitwise(비트연산) : 피연산자 & 피연산자 = 바이너리 연산결과 => true or false
+// typeof globalThis = object
+// {mongoose} = object
 let globalWithMongoose = global as typeof globalThis & {
   mongoose: any;
 };
 let cached = globalWithMongoose.mongoose;
+// console.log("\x1b[33mcached : ", cached);
 
 if (!cached) {
   cached = globalWithMongoose.mongoose = { conn: null, promise: null };
@@ -31,7 +37,7 @@ async function connectDB() {
 
   if (!cached.promise) {
     const opts = {
-      dbName: "bananaDB",
+      // dbName: "bananaDB",
       useUnifiedTopology: true,
       useNewUrlParser: true,
       bufferCommands: false,

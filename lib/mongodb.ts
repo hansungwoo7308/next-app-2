@@ -10,11 +10,11 @@ if (!process.env.MONGODB_URI) {
 
 // set the variables
 const MONGODB_URI: string = process.env.MONGODB_URI;
-const MONGODB_OPTIONS = {
-  dbName: "bananaDB",
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-};
+// const MONGODB_OPTIONS = {
+//   dbName: "bananaDB",
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true,
+// };
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
@@ -32,14 +32,8 @@ if (process.env.NODE_ENV === "development") {
     globalWithMongoClientPromise._mongoClientPromise = client.connect();
   }
   clientPromise = globalWithMongoClientPromise._mongoClientPromise;
-  // if (!global._mongoClientPromise) {
-  //   client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
-  //   global._mongoClientPromise = client.connect();
-  // }
-  // clientPromise = global._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  // client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
   client = new MongoClient(MONGODB_URI);
   clientPromise = client.connect();
 }

@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { increment } from "../../lib/store/counterSlice";
 
 const Home = () => {
-  const focusRef = useRef();
+  const focusRef: any = useRef();
   const dispatch = useDispatch();
-  const counter = useSelector<any>((state: any): any => state.counter);
+  const counter = useSelector((state: any): any => state.counter);
 
   useEffect(() => {
     focusRef.current.focus();
@@ -29,7 +29,10 @@ const Home = () => {
           <div>
             <h1>counter : {counter}</h1>
             <span>
-              <button ref={focusRef} onClick={() => dispatch(increment())}>
+              <button
+                ref={focusRef}
+                onClick={() => dispatch(increment("counter/increment"))}
+              >
                 add
               </button>
             </span>

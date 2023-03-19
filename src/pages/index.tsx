@@ -1,20 +1,20 @@
-import { getBlogFileNames } from "lib/utility/blogs";
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
-export const getServerSideProps = () => {
-  const filenames = getBlogFileNames();
-  console.log("filenames : ", filenames);
-  return {
-    props: {
-      // slugs,
-      filenames,
-    },
-  };
-};
+import { useDispatch, useSelector } from "react-redux";
+import { increment } from "../../lib/store/counterSlice";
 
-const Home = ({ filenames }: any) => {
-  // console.log("slugs : ", slugs);
+const Home = () => {
+  const focusRef = useRef();
+  const dispatch = useDispatch();
+  const counter = useSelector<any>((state: any): any => state.counter);
+
+  useEffect(() => {
+    focusRef.current.focus();
+  }, []);
+
+  console.log("counter : ", counter);
 
   return (
     <>
@@ -26,7 +26,14 @@ const Home = ({ filenames }: any) => {
       </Head>
       <main className="home">
         <section>
-          <h1>{JSON.stringify(filenames, null, 4)}</h1>
+          <div>
+            <h1>counter : {counter}</h1>
+            <span>
+              <button ref={focusRef} onClick={() => dispatch(increment())}>
+                add
+              </button>
+            </span>
+          </div>
         </section>
       </main>
       {/* <main className={styles.main}>

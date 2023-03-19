@@ -10,6 +10,12 @@ if (!process.env.MONGODB_URI) {
 }
 
 const MONGODB_URI: string = process.env.MONGODB_URI;
+const OPTION = {
+  dbName: "bananaDB",
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  bufferCommands: false,
+};
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -31,23 +37,19 @@ if (!cached) {
 }
 
 async function connectDB() {
+  // cached connection
   if (cached.conn) {
     return cached.conn;
   }
 
+  // new connection
   if (!cached.promise) {
-    const opts = {
-      // dbName: "bananaDB",
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
       return mongoose;
     });
   }
   cached.conn = await cached.promise;
+  // console.log("cached.conn : ", cached.conn);
   return cached.conn;
 }
 

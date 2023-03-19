@@ -84,10 +84,28 @@ export const GlobalStyle = createGlobalStyle`
   .home {
     section {
       flex-direction: column;
+      gap: 20px;
       /* border: 4px solid; */
       div {
+        display: flex;
+        gap: 20px;
+        align-items: center;
         outline: 2px solid;
-        /* width:  */
+        padding: 20px;
+      }
+      button {
+        width: 100px;
+        height: 50px;
+        outline: none;
+        border: 2px solid;
+        background-color: lightgray;
+        color: black;
+        cursor: pointer;
+        :focus {
+          background-color: black;
+          color: white;
+          border: 2px solid coral;
+        }
       }
     }
   }

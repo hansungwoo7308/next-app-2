@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import connectDB from "../../../../lib/connectDB";
-import clientPromise from "../../../../lib/mongodb";
+import connectDB from "../../../../lib/config/connectDB";
+import clientPromise from "../../../../lib/config/mongodb";
 import User from "../../../../lib/core/model/User";
 
 export const authOptions = {

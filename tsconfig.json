@@ -26,8 +26,8 @@
     "**/*.tsx",
     "src/pages/api/auth/[...nextauth].js",
     "lib/config/*.ts",
-    "lib/connectDB.ts",
-    "lib/mongodb.ts", // "src/middleware.ts"
+    "lib/config/connectDB.ts",
+    "lib/config/mongodb.ts", // "src/middleware.ts"
     "types/*"
   ],
   "exclude": ["node_modules"]

@@ -82,8 +82,8 @@ const Posts = ({ itemsWithContents }: any) => {
       <main className="posts">
         <section>
           <div>
-            {itemsWithContents.map((item: any) => (
-              <Link href={`/posts/${item.slug}`}>
+            {itemsWithContents.map((item: any, index: any) => (
+              <Link key={index} href={`/posts/${item.slug}`}>
                 <h3>{item.date}</h3>
                 <h1>{item.title}</h1>
               </Link>

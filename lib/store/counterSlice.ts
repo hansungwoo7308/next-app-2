@@ -8,7 +8,7 @@ export const counterSlice = createSlice({
     increment: (state, action) => state + 1,
   },
 });
-console.log("counterSlice : ", counterSlice);
+// console.log("counterSlice : ", counterSlice);
 
 // actions
 export const { increment } = counterSlice.actions;

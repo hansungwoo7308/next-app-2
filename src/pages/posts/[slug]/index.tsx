@@ -12,16 +12,16 @@ export const getStaticPaths = (context: any) => {
       slug: some,
     },
   }));
-  console.log("");
+  // console.log("");
   //   console.log("\x1b[32mfiles : %s\x1b[0m", files);
   //   console.log("\x1b[32mmarkDownPosts : %s\x1b[0m", markDownPosts);
   //   console.log("\x1b[32mslugs : %s\x1b[0m", slugs);
   // console.log("\x1b[32mslugsWithDir : %s\x1b[0m", slugsWithFullPath);
-  slugsWithParams.map((item) =>
-    console.log("\x1b[32mitem.params : %s\x1b[0m", item.params)
-  );
+  // slugsWithParams.map((item) =>
+  //   console.log("\x1b[32mitem.params : %s\x1b[0m", item.params)
+  // );
   // console.log("\x1b[32mslugsWithParams : %s\x1b[0m", slugsWithParams);
-  console.log("");
+  // console.log("");
 
   return {
     // paths: [{ params: { slug: "data1" } }],

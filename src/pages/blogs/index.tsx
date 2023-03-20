@@ -22,11 +22,10 @@ export const getStaticProps = (context: any) => {
     };
   });
 
-  console.log("");
+  // console.log("");
   // console.log("\x1b[32mitems : %s\x1b[0m", items);
-  console.log("\x1b[32mgetStaticProps running well...\x1b[0m");
-
-  console.log("");
+  // console.log("\x1b[32mgetStaticProps running well...\x1b[0m");
+  // console.log("");
   return {
     props: {
       items,

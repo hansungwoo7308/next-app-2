@@ -1,7 +1,7 @@
 // get the modules
-import { MongoClient } from "mongodb";
 // This approach is taken from
 // https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
+import { MongoClient } from "mongodb";
 
 // check the env
 if (!process.env.MONGODB_URI) {
@@ -10,11 +10,11 @@ if (!process.env.MONGODB_URI) {
 
 // set the variables
 const MONGODB_URI: string = process.env.MONGODB_URI;
-// const MONGODB_OPTIONS = {
-//   dbName: "bananaDB",
-//   useUnifiedTopology: true,
-//   useNewUrlParser: true,
-// };
+const MONGODB_OPTIONS: any = {
+  dbName: "bananaDB",
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+};
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
@@ -28,14 +28,24 @@ if (process.env.NODE_ENV === "development") {
   };
 
   if (!globalWithMongoClientPromise._mongoClientPromise) {
-    client = new MongoClient(MONGODB_URI);
+    client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
     globalWithMongoClientPromise._mongoClientPromise = client.connect();
   }
   clientPromise = globalWithMongoClientPromise._mongoClientPromise;
+  // // In development mode, use a global variable so that the value
+  // // is preserved across module reloads caused by HMR (Hot Module Replacement).
+  // if (!global._mongoClientPromise) {
+  //   client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
+  //   global._mongoClientPromise = client.connect();
+  // }
+  // clientPromise = global._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(MONGODB_URI);
+  client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
   clientPromise = client.connect();
+  // // In production mode, it's best to not use a global variable.
+  // client = new MongoClient(MONGODB_URI, MONGODB_OPTIONS);
+  // clientPromise = client.connect();
 }
 
 // console.log("clientPromise : ", clientPromise);

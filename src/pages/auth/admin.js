@@ -1,43 +1,40 @@
 import Head from "next/head";
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-
-// server side
-// import { getServerSession } from "next-auth";
-
-// client side
 import { getSession, useSession } from "next-auth/react";
+// import { getServerSession } from "next-auth";
+// import { getServerSession } from "next-auth/next";
+// import { authOptions } from "../api/auth/[...nextauth]";
 
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  // const session = await getServerSession(context.req, context.res, authOptions);
+// export async function getServerSideProps(context) {
+//   // const session = await getSession(context);
+//   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // console.log("");
-  // console.log("\x1b[31mAdmin\x1b[0m");
-  // // console.log("test : ", test);
-  // // // console.log("test2 : ", test2);
-  // console.log("");
+//   console.log("");
+//   console.log("\x1b[32m/api/auth/admin [getServerSideProps]");
+//   console.log("\x1b[32msession : ", session);
+//   console.log("");
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin",
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/auth/signin",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {
-      session,
-    },
-  };
-}
+//   return {
+//     props: {
+//       session,
+//     },
+//   };
+// }
 
-const Admin = ({ session }) => {
+const Admin = () => {
+  const { data: session, status } = useSession();
+
   console.log("");
   console.log("\x1b[34mAdmin\x1b[0m");
-  console.log("session : ", session);
+  console.log("\x1b[34msession : ", session);
   console.log("");
 
   return (
@@ -47,12 +44,14 @@ const Admin = ({ session }) => {
       </Head>
       <main className="admin">
         <section>
-          <div>
-            <h1>Admin</h1>
-            <p>name : {session.user.name}</p>
-            <p>email : {session.user.email}</p>
-            <p>role : {session.user.role}</p>
-          </div>
+          {status === "authenticated" && (
+            <div>
+              <h1>Admin</h1>
+              <p>name : {session.user.name}</p>
+              <p>email : {session.user.email}</p>
+              <p>role : {session.user.role}</p>
+            </div>
+          )}
         </section>
       </main>
     </>

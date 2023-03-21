@@ -64,11 +64,11 @@ export const GlobalStyle = createGlobalStyle`
         outline: none;
         transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
       }
-      /* li {
-        outline: 1px solid red;
-      } */
       .selectedMenu {
         color: coral;
+        a:hover {
+          color: coral;
+        }
       }
       .unselectedMenu {
         color: #ccc;

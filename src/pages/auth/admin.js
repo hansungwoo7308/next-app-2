@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { getSession, useSession } from "next-auth/react";
+// import { useEffect, useRef, useState } from "react";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -32,6 +33,7 @@ import { getSession, useSession } from "next-auth/react";
 const Admin = () => {
   const { data: session, status } = useSession();
 
+  // logs
   console.log("");
   console.log("\x1b[34mAdmin\x1b[0m");
   console.log("\x1b[34msession : ", session);

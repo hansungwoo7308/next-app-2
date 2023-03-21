@@ -1,63 +1,15 @@
 import { useRef, useEffect } from "react";
-import { useRouter } from "next/router";
-import { getSession, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
+import axios from "axios";
 
 let renderCount = 0;
 
-export async function getServerSideProps(context) {
-  try {
-    // mongoDB();
-    // console.log(`\x1b[33mConnected to bananaDB\x1b[0m`);
-    return {
-      props: {
-        isConnected: true,
-      },
-    };
-  } catch (error) {
-    // console.error(`\x1b[31merror : \x1b[0m`, error);
-    return {
-      props: {
-        isConnected: false,
-      },
-    };
-  }
-  //   await connectDB();
-  //   const session = await getSession(context);
-  // const session = await getServerSession(context.req, context.res, authOptions);
-
-  // console.log("");
-  // console.log("\x1b[31mAdmin\x1b[0m");
-  // // console.log("test : ", test);
-  // // // console.log("test2 : ", test2);
-  // console.log("");
-
-  //   if (!session) {
-  //     return {
-  //       redirect: {
-  //         destination: "/auth/signin",
-  //         permanent: false,
-  //       },
-  //     };
-  //   }
-
-  //   return {
-  //     props: {
-  //       //   session,
-  //     },
-  //   };
-}
-
-const Signup = ({ isConnected }) => {
+const Signup = () => {
   const router = useRouter();
   const { status } = useSession();
-  //   const nameRef = useRef();
-  //   const emailRef = useRef();
-  //   const passwordRef = useRef();
-  //   const passwordConfirmRef = useRef();
-
   const {
     register,
     handleSubmit,
@@ -65,15 +17,17 @@ const Signup = ({ isConnected }) => {
     setFocus,
     formState: { errors },
   } = useForm();
-
   const password = useRef();
   password.current = watch("password");
   // passwordRef.current = watch("name");
 
   const handleSignup = async (data) => {
     try {
-      const result = await axios.post("/api/auth/signup", data);
-      console.log("result : ", result.data);
+      const result = await axios
+        .post("/api/auth/signup", data)
+        .then((res) => res.data);
+      console.log("result : ", result);
+      if (result.success === true) router.push("/auth/signin");
     } catch (error) {
       console.log("error : ", error);
     }
@@ -83,19 +37,16 @@ const Signup = ({ isConnected }) => {
     setFocus("name");
   }, []);
 
-  useEffect(() => {
-    setFocus("name", { shouldSelect: true });
-  }, [setFocus]);
+  // useEffect(() => {
+  //   setFocus("name", { shouldSelect: true });
+  // }, [setFocus]);
 
   renderCount++;
 
   // logs
-  console.log("");
-  console.log("\x1b[32m/auth/signup\x1b[0m");
-  //   console.log("error : ", errors);
-  //   console.log("watch : ", watch());
-  //   console.log("isConnected : ", isConnected);
-  console.log("");
+  // console.log("");
+  // console.log("\x1b[32m/auth/signup\x1b[0m");
+  // console.log("");
 
   if (status === "authenticated") router.push("/");
   if (status === "loading")

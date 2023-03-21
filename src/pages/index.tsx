@@ -14,7 +14,7 @@ const Home = () => {
     focusRef.current.focus();
   }, []);
 
-  console.log("counter : ", counter);
+  // console.log("counter : ", counter);
 
   return (
     <>

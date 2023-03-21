@@ -42,18 +42,39 @@ export const GlobalStyle = createGlobalStyle`
       display: flex;
       justify-content: space-between;
     }
-    nav, ul, li, a {
+    ul, li, a {
       height: 100%;
       display: flex;
       align-items: center;
     }
-    ul {
-      /* display: flex; */
-      /* align-items: center; */
-      /* justify-content: center; */
-      list-style: none;
-      gap: 40px;
+    nav {
+      /* outline: 2px dashed green; */
+      ul {
+        position: relative;
+        list-style: none;
+        display: flex;
+        gap: 40px;
+      }
+      .focus {
+        height: 3px;
+        position: absolute;
+        left:0;
+        bottom: 0;
+        background-color: coral;
+        outline: none;
+        transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+      /* li {
+        outline: 1px solid red;
+      } */
+      .selectedMenu {
+        color: coral;
+      }
+      .unselectedMenu {
+        color: #ccc;
+      }
     }
+    
     button {
       all: unset;
       cursor: pointer;

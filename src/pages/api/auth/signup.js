@@ -50,7 +50,9 @@ export default async function handler(req, res) {
     console.log("\x1b[33mnewUser : ", newUser);
     console.log("");
     // set the response
-    res.status(201).json({ message: "New user created.", newUser: newUser });
+    res
+      .status(201)
+      .json({ message: "New user created.", newUser: newUser, success: true });
   } catch (error) {
     console.error(`\x1b[31mCreation Error : \x1b[0m`, error);
     console.log("");

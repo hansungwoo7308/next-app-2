@@ -1,9 +1,11 @@
-import Head from "next/head";
 import { useEffect, useRef } from "react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
+import Head from "next/head";
 import Link from "next/link";
 
 const Signin = () => {
+  const router = useRouter();
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -43,8 +45,13 @@ const Signin = () => {
               ref={passwordRef}
             />
             <button onClick={handleSignin}>signin</button>
-            <button>
-              <Link href={"/auth/signup"}>Create new account</Link>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/auth/signup");
+              }}
+            >
+              Create new account
             </button>
           </form>
         </section>

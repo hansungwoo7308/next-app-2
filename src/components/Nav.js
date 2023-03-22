@@ -4,58 +4,69 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const Nav = () => {
-  /* get */
-
   // get the router
   const router = useRouter();
-
-  // 라우터 패스를 가져와 CSS 자동변경를 위한...
-  // 클래스 네임으로 분기...
+  const focusRef = useRef();
+  const homeRef = useRef();
+  const blogsRef = useRef();
+  const postsRef = useRef();
   // const [currentPage, setCurrentPage] = useState("home");
   // const home = currentPage === "home" ? "selectedMenu" : "unselectedMenu";
   // const blogs = currentPage === "blogs" ? "selectedMenu" : "unselectedMenu";
   // const posts = currentPage === "posts" ? "selectedMenu" : "unselectedMenu";
 
-  // 메뉴 밑줄을 위한...
-  const focusRef = useRef();
-  const homeRef = useRef();
-  const blogsRef = useRef();
-  const postsRef = useRef();
-
-  /* process */
-
   // handle the effect
   const handleChange = () => {
-    focusRef.current.style.width =
-      focusRef.current.nextElementSibling.getBoundingClientRect().width + "px";
-
+    // console.log(
+    //   "homeRef.current.parentNode.childNodes.className : ",
+    //   homeRef.current.parentNode.childNodes.className
+    // );
     if (router.pathname === "/") {
       // setCurrentPage("home");
-      homeRef.current.className = "selectedMenu";
-      blogsRef.current.className = "unselectedMenu";
-      postsRef.current.className = "unselectedMenu";
 
+      homeRef.current.parentNode.childNodes.forEach((child) => {
+        if (child.className === "focus") return;
+        return (child.className = "unselectedMenu");
+      });
+      homeRef.current.className = "selectedMenu";
+
+      focusRef.current.style.width =
+        homeRef.current.getBoundingClientRect().width + "px";
       focusRef.current.style.left = homeRef.current.offsetLeft + "px";
     } else if (router.pathname === "/blogs") {
       // setCurrentPage("blogs");
-      homeRef.current.className = "unselectedMenu";
-      blogsRef.current.className = "selectedMenu";
-      postsRef.current.className = "unselectedMenu";
 
+      blogsRef.current.parentNode.childNodes.forEach((child) => {
+        if (child.className === "focus") return;
+        return (child.className = "unselectedMenu");
+      });
+      blogsRef.current.className = "selectedMenu";
+
+      focusRef.current.style.width =
+        blogsRef.current.getBoundingClientRect().width + "px";
       focusRef.current.style.left = blogsRef.current.offsetLeft + "px";
     } else if (router.pathname === "/posts") {
       // setCurrentPage("posts");
-      homeRef.current.className = "unselectedMenu";
-      blogsRef.current.className = "unselectedMenu";
+
+      postsRef.current.parentNode.childNodes.forEach((child) => {
+        if (child.className === "focus") return;
+        return (child.className = "unselectedMenu");
+      });
       postsRef.current.className = "selectedMenu";
 
+      focusRef.current.style.width =
+        postsRef.current.getBoundingClientRect().width + "px";
       focusRef.current.style.left = postsRef.current.offsetLeft + "px";
     } else {
       // setCurrentPage("");
-      // focusRef.current.style = null;
-      homeRef.current.className = "unselectedMenu";
-      blogsRef.current.className = "unselectedMenu";
-      postsRef.current.className = "unselectedMenu";
+      homeRef.current.parentNode.childNodes.forEach((child) => {
+        if (child.className === "focus") return;
+        return (child.className = "unselectedMenu");
+      });
+
+      focusRef.current.style = null;
+      // focusRef.current.style.width = null;
+      // focusRef.current.style.left = null;
     }
   };
 

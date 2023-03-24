@@ -396,19 +396,12 @@ export const GlobalStyle = createGlobalStyle`
       height: 200px;
       position: relative;
       outline: 2px solid coral;
-      /* .slide-container {
-        width: 100%;
-        height: 100%;
-      } */
       .slides {
         width: 100%;
         height: 100%;
         list-style: none;
         position: relative;
         transition: transform 1s;
-        /* transition-duration: 10s;
-        transition-property: transform, background-color; */
-        /* border: 2px solid coral; */
         .slide {
           width: 100%;
           height: 100%;
@@ -417,7 +410,6 @@ export const GlobalStyle = createGlobalStyle`
           border: 2px solid;
         }
         .current-slide {
-          /* background: lightgray; */
           transition: all 1s;
         }
       }
@@ -427,7 +419,6 @@ export const GlobalStyle = createGlobalStyle`
         position: absolute;
         top: 0;
         display: flex;
-        justify-content: space-between;
         align-items: center;
         .arrow {
           width: 80px;
@@ -436,6 +427,20 @@ export const GlobalStyle = createGlobalStyle`
           /* border: 2px solid red; */
           /* background-color: rgba(0,20,0,0.5); */
           z-index: 10;
+        }
+        .prev {
+          position: absolute;
+          left: 0;
+          /* top: 50%; */
+          
+        }
+        .next {
+          position: absolute;
+          right: 0;
+          /* top: 0; */
+        }
+        .hidden {
+          display: none;
         }
       }
       .dots {

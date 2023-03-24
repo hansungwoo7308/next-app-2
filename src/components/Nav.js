@@ -10,6 +10,7 @@ const Nav = () => {
   const homeRef = useRef();
   const blogsRef = useRef();
   const postsRef = useRef();
+  const testRef = useRef();
   // const [currentPage, setCurrentPage] = useState("home");
   // const home = currentPage === "home" ? "selectedMenu" : "unselectedMenu";
   // const blogs = currentPage === "blogs" ? "selectedMenu" : "unselectedMenu";
@@ -57,6 +58,18 @@ const Nav = () => {
       focusRef.current.style.width =
         postsRef.current.getBoundingClientRect().width + "px";
       focusRef.current.style.left = postsRef.current.offsetLeft + "px";
+    } else if (router.pathname === "/test") {
+      // setCurrentPage("test");
+
+      testRef.current.parentNode.childNodes.forEach((child) => {
+        if (child.className === "focus") return;
+        return (child.className = "unselectedMenu");
+      });
+      testRef.current.className = "selectedMenu";
+
+      focusRef.current.style.width =
+        testRef.current.getBoundingClientRect().width + "px";
+      focusRef.current.style.left = testRef.current.offsetLeft + "px";
     } else {
       // setCurrentPage("");
       homeRef.current.parentNode.childNodes.forEach((child) => {
@@ -87,27 +100,18 @@ const Nav = () => {
   return (
     <nav>
       <ul>
-        <li className="focus" ref={focusRef}></li>
-        <li
-          // className={home}
-          ref={homeRef}
-          onClick={(e) => handleFocus(e)}
-        >
+        <li ref={focusRef} className="focus"></li>
+        <li ref={homeRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/"}>HOME</Link>
         </li>
-        <li
-          // className={blogs}
-          ref={blogsRef}
-          onClick={(e) => handleFocus(e)}
-        >
+        <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/blogs"}>BLOGS</Link>
         </li>
-        <li
-          // className={posts}
-          ref={postsRef}
-          onClick={(e) => handleFocus(e)}
-        >
+        <li ref={postsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/posts"}>POSTS</Link>
+        </li>
+        <li ref={testRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/test"}>TEST</Link>
         </li>
         {/* <li>
           <Link href={"/about"}>ABOUT</Link>

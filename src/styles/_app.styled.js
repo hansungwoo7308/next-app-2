@@ -107,12 +107,64 @@ export const GlobalStyle = createGlobalStyle`
       flex-direction: column;
       gap: 20px;
       /* border: 4px solid; */
-      div {
+      /* div {
+        width: 500px;
+        height: 500px;
         display: flex;
         gap: 20px;
         align-items: center;
         outline: 2px solid;
         padding: 20px;
+      } */
+      .carousel {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        outline: 10px solid;
+        /* overflow: hidden; */
+        z-index: 20;
+        .slides {
+          height: 100%;
+          display: flex;
+          position: relative;
+          transition: all 1s;
+          div {
+            width: 300px;
+            height: 300px;
+            border: 2px solid coral;
+            position: absolute;
+          }
+        }
+        .arrows {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          /* outline: 2px solid pink; */
+          z-index: 10;
+        }
+        .dots {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+          gap: 20px;
+          /* bottom: 0; */
+          /* outline: 2px solid red; */
+          button {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            z-index: 10;
+          }
+        }
       }
       button {
         width: 100px;
@@ -122,11 +174,11 @@ export const GlobalStyle = createGlobalStyle`
         background-color: lightgray;
         color: black;
         cursor: pointer;
-        :focus {
+        /* :focus {
           background-color: black;
           color: white;
           border: 2px solid coral;
-        }
+        } */
       }
     }
   }
@@ -335,6 +387,83 @@ export const GlobalStyle = createGlobalStyle`
       
     }
 
+
+  }
+
+  .test {
+    .carousel {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      outline: 2px solid coral;
+      /* .slide-container {
+        width: 100%;
+        height: 100%;
+      } */
+      .slides {
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        position: relative;
+        transition: transform 1s;
+        /* transition-duration: 10s;
+        transition-property: transform, background-color; */
+        /* border: 2px solid coral; */
+        .slide {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          border: 2px solid;
+        }
+        .current-slide {
+          /* background: lightgray; */
+          transition: all 1s;
+        }
+      }
+      .arrows {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .arrow {
+          width: 80px;
+          height: 40px;
+          cursor: pointer;
+          /* border: 2px solid red; */
+          /* background-color: rgba(0,20,0,0.5); */
+          z-index: 10;
+        }
+      }
+      .dots {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 20px;
+        /* background-color: rgba(0,20,0,0.5); */
+        .dot {
+          width: 15px;
+          height: 15px;
+          /* background-color: lightgray; */
+          border: 2px solid black;
+          border-radius: 50%;
+          cursor: pointer;
+          margin-bottom: 20px;
+          z-index: 10;
+          
+        }
+        .current-dot {
+          background-color: black;
+        }
+      }
+    }
 
   }
 

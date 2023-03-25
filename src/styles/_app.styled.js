@@ -390,93 +390,112 @@ export const GlobalStyle = createGlobalStyle`
 
   }
 
-  .test {
-    .carousel {
-      width: 200px;
-      height: 200px;
-      position: relative;
-      outline: 2px solid coral;
-      .slides {
-        width: 100%;
-        height: 100%;
-        list-style: none;
-        position: relative;
-        transition: transform 1s;
-        .slide {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          border: 2px solid;
-        }
-        .current-slide {
-          transition: all 1s;
-        }
-      }
-      .arrows {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        display: flex;
-        align-items: center;
-        .arrow {
-          width: 80px;
-          height: 40px;
-          cursor: pointer;
-          /* border: 2px solid red; */
-          /* background-color: rgba(0,20,0,0.5); */
-          z-index: 10;
-        }
-        .prev {
-          position: absolute;
-          left: 0;
-          /* top: 50%; */
-          
-        }
-        .next {
-          position: absolute;
-          right: 0;
-          /* top: 0; */
-        }
-        .hidden {
-          display: none;
-        }
-      }
-      .dots {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 20px;
-        /* background-color: rgba(0,20,0,0.5); */
-        .dot {
-          width: 15px;
-          height: 15px;
-          /* background-color: lightgray; */
-          border: 2px solid black;
-          border-radius: 50%;
-          cursor: pointer;
-          margin-bottom: 20px;
-          z-index: 10;
-          
-        }
-        .current-dot {
-          background-color: black;
-        }
-      }
-    }
-
-  }
-
   // components
   .auth-button {
     display: flex;
     gap: 40px;
   }
 
+  /* .carousel,  */
+  .slider {
+    width: 300px;
+    height: 300px;
+    position: relative;
+    outline: 5px solid coral;
+    overflow: hidden;
+    .slides {
+      width: 100%;
+      height: 100%;
+      list-style: none;
+      position: relative;
+      transition: transform 1s;
+      .slide {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        /* border: 3px solid green; */
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .current-slide {
+      }
+    }
+    .arrows {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      display: flex;
+      align-items: center;
+      pointer-events: none;
+      .arrow {
+        width: 20%;
+        height: 100%;
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        pointer-events: all;
+        /* z-index: 10; */
+        svg {
+          width: 100%;
+          display: none;
+        }
+        :hover {
+          color: #000;
+          background-color: rgba(255,255,255,0.3);
+          svg {
+            display: block;
+          }
+        }
+      }
+      .prev {
+        position: absolute;
+        left: 0;
+      }
+      .next {
+        position: absolute;
+        right: 0;
+      }
+      .hidden {
+        display: none;
+      }
+    }
+    .dots {
+      width: 100%;
+      height: 20%;
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      .dot {
+        width: 15px;
+        height: 15px;
+        /* border: none; */
+        border: 2px solid;
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-bottom: 20px;
+        pointer-events: all;
+        display: none;
+      }
+      :hover .dot {
+        display: block;
+      }
+
+      .current-dot {
+        background-color: coral;
+      }
+    }
+  }
 
 `;

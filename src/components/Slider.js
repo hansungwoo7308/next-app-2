@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
-const Test = () => {
+const Slider = () => {
   useEffect(() => {
     const slides = document.querySelector(".slides");
     const slidesArray = Array.from(slides.children);
@@ -78,55 +78,55 @@ const Test = () => {
 
   return (
     <>
-      <main className="test">
-        <section>
-          <div className="carousel">
-            <ul className="slides">
-              <li className="slide current-slide">
-                <h1>first</h1>
-                {/* <Image
-                  src={"/images/planet_earth.jpeg"}
-                  width={1000}
-                  height={1000}
-                /> */}
-              </li>
-              <li className="slide">
-                <h1>second</h1>
-
-                {/* <Image
-                  src={"/images/planet_moon.jpeg"}
-                  width={1000}
-                  height={1000}
-                /> */}
-              </li>
-              <li className="slide">
-                <h1>third</h1>
-
-                {/* <Image
-                  src={"/images/planet_jupiter.jpeg"}
-                  width={1000}
-                  height={1000}
-                /> */}
-              </li>
-            </ul>
-            <div className="arrows">
-              <button className="arrow prev hidden">
-                <IoMdArrowDropleft size={70} />
-              </button>
-              <button className="arrow next">
-                <IoMdArrowDropright size={70} />
-              </button>
-            </div>
-            <div className="dots">
-              <button className="dot current-dot"></button>
-              <button className="dot"></button>
-              <button className="dot"></button>
-            </div>
-          </div>
-        </section>
-      </main>
+      <div className="slider">
+        <ul className="slides">
+          <li className="slide current-slide">
+            <Image
+              src={"/images/planet_earth.jpeg"}
+              width={1000}
+              height={1000}
+            />
+          </li>
+          <li className="slide">
+            <h1>test</h1>
+            {/* <Image
+              src={"/images/planet_moon.jpeg"}
+              width={1000}
+              height={1000}
+            /> */}
+          </li>
+          <li className="slide">
+            <Image
+              src={"/images/planet_jupiter.jpeg"}
+              width={1000}
+              height={1000}
+            />
+          </li>
+          <li className="slide">
+            <Image
+              src={"/images/planet_jupiter.jpeg"}
+              width={1000}
+              height={1000}
+            />
+          </li>
+        </ul>
+        <div className="arrows">
+          <button className="arrow prev hidden">
+            <IoMdArrowDropleft size={70} />
+          </button>
+          <button className="arrow next">
+            <IoMdArrowDropright size={70} />
+          </button>
+        </div>
+        <div className="dots">
+          <button className="dot current-dot"></button>
+          <button className="dot"></button>
+          <button className="dot"></button>
+          <button className="dot"></button>
+        </div>
+      </div>
     </>
   );
 };
 
-export default Test;
+export default Slider;

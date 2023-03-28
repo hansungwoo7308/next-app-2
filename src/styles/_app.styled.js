@@ -25,6 +25,16 @@ export const GlobalStyle = createGlobalStyle`
   text-decoration: none;
   }
 
+  button {
+    border: none;
+    background-color: lightgray;
+    cursor: pointer;
+    :hover {
+      background-color: black;
+      color: white;
+    }
+  }
+
   // header, navigation
   header {
     width: 100%;
@@ -103,83 +113,38 @@ export const GlobalStyle = createGlobalStyle`
 
   // pages
   .home {
-    section {
+    > section {
       flex-direction: column;
       gap: 20px;
-      /* border: 4px solid; */
-      /* div {
-        width: 500px;
-        height: 500px;
-        display: flex;
-        gap: 20px;
-        align-items: center;
-        outline: 2px solid;
+      position: relative;
+      > h1 {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+      }
+      > div {
+        width: 50%;
+        height: 50%;
+        outline: 3px solid coral;
         padding: 20px;
-      } */
-      .carousel {
-        width: 300px;
-        height: 300px;
-        position: relative;
-        outline: 10px solid;
-        /* overflow: hidden; */
-        z-index: 20;
-        .slides {
-          height: 100%;
-          display: flex;
-          position: relative;
-          transition: all 1s;
-          div {
-            width: 300px;
-            height: 300px;
-            border: 2px solid coral;
-            position: absolute;
-          }
-        }
-        .arrows {
-          position: absolute;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          /* outline: 2px solid pink; */
-          z-index: 10;
-        }
-        .dots {
-          width: 100%;
-          height: 100%;
-          position: absolute;
-          top: 0;
-          display: flex;
-          justify-content: center;
-          align-items: flex-end;
-          gap: 20px;
-          /* bottom: 0; */
-          /* outline: 2px solid red; */
-          button {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            margin-bottom: 20px;
-            z-index: 10;
-          }
+        button {
+          width: 300px;
+          height: 30px;
         }
       }
-      button {
-        width: 100px;
-        height: 50px;
-        outline: none;
-        border: 2px solid;
-        background-color: lightgray;
-        color: black;
-        cursor: pointer;
-        /* :focus {
-          background-color: black;
-          color: white;
-          border: 2px solid coral;
-        } */
+      .users {
+        width: 80%;
+        height: 70%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        outline: 2px solid coral;
       }
+      .user {
+        outline: 2px solid;
+      }
+      
     }
   }
 
@@ -285,10 +250,11 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .posts, .blogs {
+  .blogs {
     section {
       div {
         width: 80%;
+        /* height: 50%; */
         min-width: 500px;
         max-width: 800px;
         /* height: 500px; */
@@ -296,6 +262,7 @@ export const GlobalStyle = createGlobalStyle`
         flex-direction: column;
         justify-content: center;
         /* align-items: center; */
+        border: 2px solid coral;
         gap: 20px;
       }
       a {
@@ -308,6 +275,70 @@ export const GlobalStyle = createGlobalStyle`
         }
         
       }
+    }
+
+  }
+  
+  .posts {
+    > section {
+      position: relative;
+      > div:nth-child(1) {
+        width: 80%;
+        height: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px;
+        border: 2px solid coral;
+        gap: 20px;
+        > ul {
+          height: 70%;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          list-style: none;
+          /* border: 2px solid red; */
+          > li {
+            border: 2px solid;
+          }
+        }
+        > div {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          padding: 20px;
+          button {
+            width: 200px;
+            height: 30px;
+            border: none;
+            background-color: lightgray;
+            cursor: pointer;
+            :hover {
+              background-color: black;
+              color: white;
+            }
+          }
+        }
+      }
+      > div:nth-child(2) {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        display: none;
+        outline: 2px solid red;
+      }
+      /* a {
+        outline: 3px solid;
+        border-radius: 5px;
+        padding: 10px;
+        :hover, :focus {
+          outline: 3px solid coral;
+        }
+        
+      } */
     }
 
   }
@@ -396,7 +427,6 @@ export const GlobalStyle = createGlobalStyle`
     gap: 40px;
   }
 
-  /* .carousel,  */
   .slider {
     width: 300px;
     height: 300px;
@@ -408,7 +438,7 @@ export const GlobalStyle = createGlobalStyle`
       height: 100%;
       list-style: none;
       position: relative;
-      transition: transform 1s;
+      transition: transform 0.5s;
       .slide {
         width: 100%;
         height: 100%;
@@ -496,6 +526,53 @@ export const GlobalStyle = createGlobalStyle`
         background-color: coral;
       }
     }
+  }
+
+  .modal {
+    width: 70%;
+    height: 70%;
+    position: absolute;
+    background-color: white;
+    outline: 2px solid coral;
+    padding: 20px;
+    display: none;
+    > form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* outline: 2px solid blue; */
+      > div {
+        width: 100%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        /* border: 20px solid pink; */
+        > input {
+          width: 100%;
+          height: 30px;
+          padding: 10px;
+        }
+        > textarea {
+          width: 100%;
+          height: 80%;
+          padding: 10px;
+          resize: none;
+        }
+      }
+      > button {
+        width: 200px;
+        height: 40px;
+        /* border: 20px solid pink; */
+
+      }
+
+    
+
+
+    }
+
   }
 
 `;

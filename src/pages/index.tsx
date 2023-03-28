@@ -1,22 +1,46 @@
 import Head from "next/head";
-import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
+// get the redux hooks for dispatching actions and selecting store
 import { useDispatch, useSelector } from "react-redux";
+// get the actions
 import { increment } from "../../lib/store/counterSlice";
 
-import Slider from "../components/Slider";
+// import axios from "axios";
+// import Link from "next/link";
+// import Slider from "../components/Slider";
+
+let renderCount = 0;
 
 const Home = () => {
-  // const focusRef: any = useRef();
-  // const dispatch = useDispatch();
-  // const counter = useSelector((state: any): any => state.counter);
+  // const [users, setUsers]: any = useState([]);
+  const focusRef: any = useRef();
+  const dispatch = useDispatch();
+  const counter = useSelector((state: any): any => state.counter);
+
+  useEffect(() => {
+    focusRef.current.focus();
+  }, []);
+
+  // const getUsers = async () => {
+  //   try {
+  //     const response: any = await axios.get("/api/test");
+  //     const data: any = await response.data;
+  //     // console.log("data : ", data);
+  //     setUsers(data.payload);
+  //   } catch (error) {
+  //     console.log("ajax error : ", error);
+  //   }
+  // };
 
   // useEffect(() => {
-  //   focusRef.current.focus();
+  //   getUsers();
   // }, []);
 
-  // console.log("counter : ", counter);
+  console.log("counter : ", counter);
+  // console.log("users : ", users);
+
+  renderCount++;
 
   return (
     <>
@@ -28,7 +52,8 @@ const Home = () => {
       </Head>
       <main className="home">
         <section>
-          {/* <div>
+          <h1>renderCount : {renderCount}</h1>
+          <div>
             <h1>counter : {counter}</h1>
             <span>
               <button
@@ -38,8 +63,16 @@ const Home = () => {
                 add
               </button>
             </span>
+          </div>
+          {/* <div className="users">
+            {users.map((item: any, index: any) => (
+              <div className="user" key={index}>
+                <h1>{item.name}</h1>
+                <p>email : {item.email}</p>
+                <p>password : {item.password}</p>
+              </div>
+            ))}
           </div> */}
-          <Slider />
         </section>
       </main>
       {/* <main className={styles.main}>

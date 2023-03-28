@@ -9,6 +9,7 @@ if (!process.env.MONGODB_URI) {
   throw new Error("Please add your MONGODB_URI to .env.local");
 }
 
+// get the database uri and option
 const MONGODB_URI: string = process.env.MONGODB_URI;
 const OPTION = {
   dbName: "bananaDB",
@@ -26,6 +27,20 @@ const OPTION = {
 // & bitwise(비트연산) : 피연산자 & 피연산자 = 바이너리 연산결과 => true or false
 // typeof globalThis = object
 // {mongoose} = object
+
+// global mongoose
+// console.log("global.mongoose properties : ", Object.keys(global.mongoose));
+
+// global mongoose.conn
+// console.log("global.mongoose.conn : ", global.mongoose.conn);
+// console.log(
+//   "global.mongoose.conn properties : ",
+//   Object.keys(global.mongoose.conn)
+// );
+
+// global mongoose.promise
+// console.log("global.mongoose.promise : ", global.mongoose.promise);
+
 let globalWithMongoose = global as typeof globalThis & {
   mongoose: any;
 };
@@ -37,19 +52,35 @@ if (!cached) {
 }
 
 async function connectDB() {
+  console.log("");
   // cached connection
   if (cached.conn) {
-    return cached.conn;
+    // console.log("cached connections : ", cached.conn.connections);
+    const connections = cached.conn.connections;
+    console.log("cached connections : ", Object.keys(connections[0]));
+    // console.log("connections[0] : ", connections[0]);
+    console.log("connections[0].$dbName : ", connections[0].$dbName);
+    console.log("connections[0].models : ", connections[0].models);
+    // console.log("connections[0].db : ", connections[0].db);
+    // console.log("connections[0].collections : ", connections[0].collections);
+    // console.log("cached connections : ");
+    // console.log("name : ", connections.name);
+    // console.log("$dbName : ", connections["bananaDB"]);
+    // console.log("collections : ", connections.collections);
+    // console.log("models : ", connections.models);
+    // return cached.conn;
   }
 
   // new connection
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
+      console.log("new connections : ", mongoose);
       return mongoose;
     });
   }
   cached.conn = await cached.promise;
   // console.log("cached.conn : ", cached.conn);
+  console.log("");
   return cached.conn;
 }
 

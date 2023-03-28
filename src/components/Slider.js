@@ -77,55 +77,45 @@ const Slider = () => {
   }, []);
 
   return (
-    <>
-      <div className="slider">
-        <ul className="slides">
-          <li className="slide current-slide">
-            <Image
-              src={"/images/planet_earth.jpeg"}
-              width={1000}
-              height={1000}
-            />
-          </li>
-          <li className="slide">
-            <h1>test</h1>
-            {/* <Image
-              src={"/images/planet_moon.jpeg"}
-              width={1000}
-              height={1000}
-            /> */}
-          </li>
-          <li className="slide">
-            <Image
-              src={"/images/planet_jupiter.jpeg"}
-              width={1000}
-              height={1000}
-            />
-          </li>
-          <li className="slide">
-            <Image
-              src={"/images/planet_jupiter.jpeg"}
-              width={1000}
-              height={1000}
-            />
-          </li>
-        </ul>
-        <div className="arrows">
-          <button className="arrow prev hidden">
-            <IoMdArrowDropleft size={70} />
-          </button>
-          <button className="arrow next">
-            <IoMdArrowDropright size={70} />
-          </button>
-        </div>
-        <div className="dots">
-          <button className="dot current-dot"></button>
-          <button className="dot"></button>
-          <button className="dot"></button>
-          <button className="dot"></button>
-        </div>
+    <div className="slider">
+      <ul className="slides">
+        <li className="slide current-slide">
+          <Image src={"/images/planet_earth.jpeg"} width={1000} height={1000} />
+        </li>
+        <li className="slide">
+          {/* <h1>test</h1> */}
+          <Image src={"/images/planet_moon.jpeg"} width={1000} height={1000} />
+        </li>
+        <li className="slide">
+          <Image
+            src={"/images/planet_jupiter.jpeg"}
+            width={1000}
+            height={1000}
+          />
+        </li>
+        <li className="slide">
+          <Image
+            src={"/images/planet_jupiter.jpeg"}
+            width={1000}
+            height={1000}
+          />
+        </li>
+      </ul>
+      <div className="arrows">
+        <button className="arrow prev hidden">
+          <IoMdArrowDropleft size={70} />
+        </button>
+        <button className="arrow next">
+          <IoMdArrowDropright size={70} />
+        </button>
       </div>
-    </>
+      <div className="dots">
+        <button className="dot current-dot"></button>
+        <button className="dot"></button>
+        <button className="dot"></button>
+        <button className="dot"></button>
+      </div>
+    </div>
   );
 };
 

@@ -26,7 +26,8 @@
 // }
 
 export const config = {
-  matcher: ["/asdahldhi/ahsdialdhi"],
+  // matcher: ["/:path*"],
+  // matcher: ["/404"],
   // matcher: ["/auth/admin"],
   // matcher: ["/about", "/auth/admin"],
 };
@@ -36,19 +37,19 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-  const protectedPaths = ["/auth/admin"];
-  const matchesProtectedPath = protectedPaths.some((path) =>
-    pathname.startsWith(path)
-  );
-  console.log("");
-  console.log("\x1b[32mMiddleware\x1b[0m");
-  // console.log("pathname : ", pathname);
-  // console.log("matchesProtectedPath : ", matchesProtectedPath);
-  // const token = await getToken({ req: request });
-  // console.log("token : ", token);
-  console.log("request.url : ", request.url);
-  console.log("");
+  // const { pathname } = request.nextUrl;
+  // const protectedPaths = ["/auth/admin"];
+  // const matchesProtectedPath = protectedPaths.some((path) =>
+  //   pathname.startsWith(path)
+  // );
+  // console.log("");
+  // console.log("\x1b[32mMiddleware\x1b[0m");
+  // // console.log("pathname : ", pathname);
+  // // console.log("matchesProtectedPath : ", matchesProtectedPath);
+  // // const token = await getToken({ req: request });
+  // // console.log("token : ", token);
+  // console.log("request.url : ", request.url);
+  // console.log("");
 
   // if (matchesProtectedPath) {
   //   const token = await getToken({ req: request });

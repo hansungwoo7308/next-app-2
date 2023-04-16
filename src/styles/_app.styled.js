@@ -35,6 +35,14 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  textarea {
+    resize: none;
+  }
+
+  li {
+    list-style: none;
+  }
+
   // header, navigation
   header {
     width: 100%;
@@ -100,23 +108,26 @@ export const GlobalStyle = createGlobalStyle`
     justify-content: center;
     align-items: center;
     section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       width: 80%;
       /* min-width: 350px; */
       min-width: 700px;
       height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       outline: 2px solid coral;
+      padding-top: 50px;
     }
   }
 
   // pages
   .home {
     > section {
-      flex-direction: column;
+      /* flex-direction: column; */
       gap: 20px;
       position: relative;
+      padding-left: 20px;
+      padding-right: 20px;
       > h1 {
         position: absolute;
         top: 70px;
@@ -124,27 +135,20 @@ export const GlobalStyle = createGlobalStyle`
       }
       > div {
         width: 50%;
-        height: 50%;
+        height: 70%;
         outline: 3px solid coral;
         padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        h2 {
+          color: blue;
+        }
         button {
-          width: 300px;
+          /* width: 300px; */
           height: 30px;
         }
       }
-      .users {
-        width: 80%;
-        height: 70%;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-        outline: 2px solid coral;
-      }
-      .user {
-        outline: 2px solid;
-      }
-      
     }
   }
 
@@ -396,7 +400,6 @@ export const GlobalStyle = createGlobalStyle`
       textarea {
         width: 80%;
         height: 50%;
-        resize: none;
         padding: 10px;
         border: 2px solid;
         border-radius: 5px;
@@ -421,6 +424,108 @@ export const GlobalStyle = createGlobalStyle`
 
   }
 
+  // post-list page (나중에 posts로 변경할 계획)
+  .post-item {
+    .post-single-page {
+      width: 50%;
+      min-width: 500px;
+      outline: 2px solid coral;
+      .edit {
+        > button {
+          width: 300px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  .add-post {
+    > section {
+      /* flex-direction: column; */
+      gap: 20px;
+      position: relative;
+      padding-left: 20px;
+      padding-right: 20px;
+      > h1 {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+      }
+      > div {
+        width: 50%;
+        height: 70%;
+        outline: 3px solid coral;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        button {
+          /* width: 300px; */
+          height: 30px;
+        }
+      }
+    }
+    .add-post-form {
+      button:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+  }
+
+  .edit-post {
+    .edit-post-form {
+      outline: 2px solid coral;
+      width: 50%;
+      height: 50%;
+      padding: 20px;
+      > form {
+        /* height: 100%; */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 20px;
+        > input, select, textarea {
+          margin-bottom: 10px;
+        }
+        > textarea {
+          height: 100px;
+        }
+        > button {
+          height: 40px;
+          margin-top: 10px;
+        }
+      }
+
+    }
+  }
+
+  // users page
+  .users {
+    > section {
+      position: relative;
+      > h1 {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+      }
+      > div {
+        outline: 2px solid coral;
+      }
+    }
+  }
+  
+  .user {
+    > section {
+      > div {
+        display: flex;
+        flex-direction: column;
+        outline: 3px solid coral;
+      }
+
+    }
+  }
+  
   // components
   .auth-button {
     display: flex;
@@ -558,7 +663,6 @@ export const GlobalStyle = createGlobalStyle`
           width: 100%;
           height: 80%;
           padding: 10px;
-          resize: none;
         }
       }
       > button {
@@ -573,6 +677,39 @@ export const GlobalStyle = createGlobalStyle`
 
     }
 
+  }
+
+  .post-list {
+    > section {
+      position: relative;
+      > div {
+        outline: 3px solid coral;
+      }
+      > h1 {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+      }
+    }
+  }
+
+  .add-post-form {
+    outline: 2px solid coral;
+    display: flex;
+    flex-direction: column;
+    > form {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      > textarea {
+        height: 40%;
+
+      }
+      > button {
+        margin-top: 20px;
+      }
+    }
   }
 
 `;

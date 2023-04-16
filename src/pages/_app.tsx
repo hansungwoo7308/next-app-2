@@ -2,13 +2,20 @@ import App from "next/app";
 // types
 import type { AppContext, AppProps } from "next/app";
 // providers
-import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
-import store from "../../lib/store/store";
+import store from "lib/store/store";
+import { SessionProvider } from "next-auth/react";
 // styles
 import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import { NextPage } from "next";
+
+import { fetchUsers } from "lib/store/userSlice";
+import { fetchPosts } from "lib/store/postsSlice";
+
+// console.log("store : ", store.getState());
+store.dispatch(fetchUsers());
+store.dispatch(fetchPosts());
 
 // set the interface for custom
 interface MyAppProps extends AppProps {

@@ -135,14 +135,14 @@ const Posts = ({ itemsWithContents }: any) => {
           <div>
             <h1>posts</h1>
             <ul>
-              {posts
+              {/* {posts
                 .map((post: any, index: any) => (
                   <li key={index}>
                     <h3>{post.title}</h3>
                     <p>{post.content}</p>
                   </li>
                 ))
-                .slice(0, 4)}
+                .slice(0, 4)} */}
             </ul>
             <div>
               <button onClick={getPosts}>Get data</button>

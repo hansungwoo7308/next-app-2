@@ -13,15 +13,8 @@ let renderCount = 0;
 const PostList = () => {
   const [content, setContent]: any = useState("");
   const orderedPostIds = useSelector(selectPostIds);
-  console.log("orderedPostIds : ", orderedPostIds);
-
   const postStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
-  // const orderedList = postList
-  //   .slice() // make the new array // copied new array
-  //   .sort((a: any, b: any) => b.date.localeCompare(a.date))
-  //   .map((post: any) => <PostItem key={post.id} post={post} />)
-  //   .slice(0, 4);
 
   useEffect(() => {
     if (postStatus === "loading") {

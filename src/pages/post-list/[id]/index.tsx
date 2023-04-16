@@ -34,7 +34,7 @@ const PostItem = () => {
               <PostAuthor userId={post.userId} />
               <TimeAgo timestamp={post.date} />
             </p>
-            <Link className="edit" href={`/post2/edit/${post.id}`}>
+            <Link className="edit" href={`/post-list/edit/${post.id}`}>
               <button>Edit Post</button>
             </Link>
             <ReactionButtons post={post} />

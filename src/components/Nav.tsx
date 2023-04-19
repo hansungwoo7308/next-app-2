@@ -7,6 +7,7 @@ import { increaseCount, getCount } from "lib/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Nav = () => {
+  // internal data
   const router = useRouter();
   const focusRef: any = useRef();
   const homeRef: any = useRef();
@@ -16,13 +17,11 @@ const Nav = () => {
   const usersRef: any = useRef();
   const postListRef: any = useRef();
 
-  const dispatch = useDispatch();
-  const count = useSelector(getCount);
+  // const dispatch = useDispatch();
+  // const count = useSelector(getCount);
   // dispatch action으로 increaseCount를 전달하면,
   // 스토어는 count 데이터를 갱신하고,
   // 그 데이터를 selecting(참조)하고 있는 컴포넌트는 다시 렌더링된다.
-
-  // useEffect(() => {});
 
   const setColor = (target: any) => {
     // console.log("target : ", target);
@@ -42,6 +41,7 @@ const Nav = () => {
   };
 
   const handleChange = () => {
+    // console.log("router.pathname : ", router.pathname);
     if (router.pathname === "/") {
       setColor(homeRef.current);
       setUnderline(focusRef.current, homeRef.current);
@@ -54,7 +54,11 @@ const Nav = () => {
     } else if (router.pathname === "/post-list/add") {
       setColor(addPostRefRef.current);
       setUnderline(focusRef.current, addPostRefRef.current);
-    } else if (router.pathname === "/post-list") {
+    } else if (
+      router.pathname === "/post-list" ||
+      router.pathname === "/post-list/[id]" ||
+      router.pathname === "/post-list/edit/[id]"
+    ) {
       setColor(postListRef.current);
       setUnderline(focusRef.current, postListRef.current);
     } else if (router.pathname === "/users") {
@@ -101,7 +105,7 @@ const Nav = () => {
         <li ref={usersRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/users"}>Users</Link>
         </li>
-        <a onClick={() => dispatch(increaseCount())}>{count}</a>
+        {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
         {/* <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/blogs"}>BLOGS</Link>
         </li> */}

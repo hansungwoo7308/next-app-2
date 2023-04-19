@@ -144,10 +144,9 @@ export const GlobalStyle = createGlobalStyle`
         h2 {
           color: blue;
         }
-        button {
-          /* width: 300px; */
+        /* button {
           height: 30px;
-        }
+        } */
       }
     }
   }
@@ -425,17 +424,55 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   // post-list page (나중에 posts로 변경할 계획)
+  .post-list {
+    > section {
+      position: relative;
+      > div {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        outline: 3px solid coral;
+        > div {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+      > h1 {
+        position: absolute;
+        top: 70px;
+        right: 20px;
+      }
+      button {
+        background-color: initial;
+        color: initial;
+      }
+    }
+  }
+
   .post-item {
-    .post-single-page {
-      width: 50%;
-      min-width: 500px;
-      outline: 2px solid coral;
-      .edit {
-        > button {
+    > section {
+      > div {
+        width: 50%;
+        height: 50%;
+        min-width: 500px;
+        padding: 20px;
+        outline: 2px solid coral;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        > a > button {
           width: 300px;
           height: 30px;
         }
+        > div > button {
+          background-color: white;
+          color: black;
+        }
       }
+    }
+    .edit {
     }
   }
 
@@ -679,20 +716,6 @@ export const GlobalStyle = createGlobalStyle`
 
   }
 
-  .post-list {
-    > section {
-      position: relative;
-      > div {
-        outline: 3px solid coral;
-      }
-      > h1 {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-      }
-    }
-  }
-
   .add-post-form {
     outline: 2px solid coral;
     display: flex;
@@ -708,6 +731,39 @@ export const GlobalStyle = createGlobalStyle`
       }
       > button {
         margin-top: 20px;
+      }
+    }
+  }
+
+  .todos {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    > * {
+      outline: 2px solid lightgray;
+    }
+    > div:first-of-type {
+      width: 100%;
+      /* outline: 2px solid red; */
+      > form > div {
+        display: flex;
+        justify-content: space-between;
+
+      }
+    }
+    > div:last-of-type {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      /* outline: 2px solid blue; */
+      > article {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
       }
     }
   }

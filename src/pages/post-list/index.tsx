@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import PostItem from "@/components/PostItem";
+import PostItem from "@/components/posts/PostItem";
 import {
   selectPostIds,
   getPostsStatus,
@@ -11,7 +11,9 @@ import { useEffect, useState } from "react";
 let renderCount = 0;
 
 const PostList = () => {
+  // internal data
   const [content, setContent]: any = useState("");
+  // external data
   const orderedPostIds = useSelector(selectPostIds);
   const postStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
@@ -40,7 +42,7 @@ const PostList = () => {
         <section>
           <h1>renderCount : {renderCount}</h1>
           <div>
-            <h2>Post List</h2>
+            {/* <h2>Post List</h2> */}
             <div>{content}</div>
           </div>
         </section>

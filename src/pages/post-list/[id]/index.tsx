@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { selectPostById } from "lib/store/postsSlice";
 
-import PostAuthor from "@/components/PostAuthor";
-import TimeAgo from "@/components/TimeAgo";
-import ReactionButtons from "@/components/ReactionButtons";
+import PostAuthor from "@/components/posts/PostAuthor";
+import Time from "@/components/posts/Time";
+import Reactions from "@/components/posts/Reactions";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -26,18 +26,19 @@ const PostItem = () => {
     <>
       <main className="post-item">
         <section>
-          <div className="post-single-page">
-            <h1>Post Item</h1>
+          <div>
+            {/* <h1>Post Item</h1> */}
             <h2>{post.title}</h2>
             <p>{post.body}</p>
-            <p className="postCredit">
-              <PostAuthor userId={post.userId} />
-              <TimeAgo timestamp={post.date} />
+            <p>
+              Author : <PostAuthor userId={post.userId} />
+              <br />
+              Time : <Time timestamp={post.date} />
             </p>
+            <Reactions post={post} />
             <Link className="edit" href={`/post-list/edit/${post.id}`}>
               <button>Edit Post</button>
             </Link>
-            <ReactionButtons post={post} />
           </div>
         </section>
       </main>

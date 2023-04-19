@@ -1,6 +1,6 @@
 import PostAuthor from "./PostAuthor";
-import TimeAgo from "./TimeAgo";
-import ReactionButtons from "./ReactionButtons";
+import Time from "./Time";
+import Reactions from "./Reactions";
 import Link from "next/link";
 
 import { useSelector } from "react-redux";
@@ -18,9 +18,9 @@ const PostItem = ({ postId }: any) => {
       <p>{post.body.substring(0, 75)}</p>
       <p className="postCredit">
         <PostAuthor userId={post.userId} />
-        <TimeAgo timestamp={post.date} />
+        <Time timestamp={post.date} />
       </p>
-      <ReactionButtons post={post} />
+      <Reactions post={post} />
     </div>
   );
 };

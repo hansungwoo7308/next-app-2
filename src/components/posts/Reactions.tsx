@@ -9,15 +9,14 @@ const reactionEmoji = {
   coffee: "☕",
 };
 
-const ReactionButtons = ({ post }: any) => {
+const Reactions = ({ post }: any) => {
   const dispatch = useDispatch();
 
-  const reactionButtons = Object.entries(reactionEmoji).map(([key, value]) => {
+  const reactions = Object.entries(reactionEmoji).map(([key, value]) => {
     return (
       <button
         key={key}
         type="button"
-        className="reactionButton"
         onClick={() =>
           dispatch(reactionAdded({ postId: post.id, reaction: key }))
         }
@@ -27,6 +26,6 @@ const ReactionButtons = ({ post }: any) => {
     );
   });
 
-  return <div>{reactionButtons}</div>;
+  return <div>{reactions}</div>;
 };
-export default ReactionButtons;
+export default Reactions;

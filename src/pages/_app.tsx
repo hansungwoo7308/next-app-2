@@ -10,8 +10,12 @@ import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import { NextPage } from "next";
 
-import { fetchUsers } from "lib/store/userSlice";
+import { fetchUsers } from "lib/store/usersSlice";
 import { fetchPosts } from "lib/store/postsSlice";
+
+// related to rtk query
+import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
+import { apiSlice } from "lib/utility/apiSlice";
 
 // console.log("store : ", store.getState());
 store.dispatch(fetchUsers());
@@ -27,14 +31,16 @@ const MyApp = ({ Component, pageProps, something }: MyAppProps) => {
 
   return (
     <>
-      <Provider store={store}>
-        <SessionProvider session={pageProps.session}>
-          <Layout>
-            <StyleComponent.GlobalStyle />
-            <Component {...pageProps} someting />
-          </Layout>
-        </SessionProvider>
-      </Provider>
+      <ApiProvider api={apiSlice}>
+        <Provider store={store}>
+          <SessionProvider session={pageProps.session}>
+            <Layout>
+              <StyleComponent.GlobalStyle />
+              <Component {...pageProps} someting />
+            </Layout>
+          </SessionProvider>
+        </Provider>
+      </ApiProvider>
     </>
   );
 };

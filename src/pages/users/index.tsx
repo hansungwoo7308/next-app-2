@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { selectAllUsers } from "lib/store/userSlice";
+import { selectAllUsers } from "lib/store/usersSlice";
 import Link from "next/link";
 
 let renderCount = 0;

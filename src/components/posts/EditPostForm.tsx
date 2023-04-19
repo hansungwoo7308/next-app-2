@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, selectPostById, updatePost } from "lib/store/postsSlice";
-import { selectAllUsers } from "lib/store/userSlice";
+import { selectAllUsers } from "lib/store/usersSlice";
 import { useRouter } from "next/router";
 // import { selectPostById, updatePost, deletePost } from './postsSlice'
 // import { useParams, useNavigate } from 'react-router-dom'

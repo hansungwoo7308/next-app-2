@@ -1,14 +1,14 @@
 import { useRef, useState } from "react";
 
-const Modal = ({ modalRef, createPost, closeModal, getPosts }) => {
-  const titleRef = useRef();
-  const contentRef = useRef();
+const Modal = ({ modalRef, createPost, closeModal, getPosts }: any) => {
+  const titleRef: any = useRef();
+  const contentRef: any = useRef();
 
   // inputs
   // const [title, setTitle] = useState();
   // const [content, setContent] = useState();
 
-  const create = (e) => {
+  const create = (e: any) => {
     e.preventDefault();
     const title = titleRef.current.value;
     const content = contentRef.current.value;
@@ -32,8 +32,8 @@ const Modal = ({ modalRef, createPost, closeModal, getPosts }) => {
           <textarea
             name="content"
             id="content"
-            cols="30"
-            rows="10"
+            cols={30}
+            rows={10}
             ref={contentRef}
             placeholder="Content"
           ></textarea>

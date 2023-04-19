@@ -4,30 +4,35 @@ import { IoMdArrowDropleft, IoMdArrowDropright } from "react-icons/io";
 
 const Slider = () => {
   useEffect(() => {
-    const slides = document.querySelector(".slides");
-    const slidesArray = Array.from(slides.children);
-    const prev = document.querySelector(".prev");
-    const next = document.querySelector(".next");
-    const dots = document.querySelector(".dots");
+    const slides: any = document.querySelector(".slides");
+    const slidesArray: any = Array.from(slides.children);
+    const prev: any = document.querySelector(".prev");
+    const next: any = document.querySelector(".next");
+    const dots: any = document.querySelector(".dots");
     const dotsArray = Array.from(dots.children);
     const slideWidth = slidesArray[0].getBoundingClientRect().width;
 
-    slidesArray.map((slide, index) => {
+    slidesArray.map((slide: any, index: any) => {
       slide.style.left = slideWidth * index + "px";
     });
 
-    const moveSlides = (slides, current, target) => {
+    const moveSlides = (slides: any, current: any, target: any) => {
       slides.style.transform = `translateX(-${target.style.left})`;
       current.classList.remove("current-slide");
       target.classList.add("current-slide");
     };
 
-    const updateDots = (current, target) => {
+    const updateDots = (current: any, target: any) => {
       current.classList.remove("current-dot");
       target.classList.add("current-dot");
     };
 
-    const hideArrows = (slidesArray, prev, next, targetIndex) => {
+    const hideArrows = (
+      slidesArray: any,
+      prev: any,
+      next: any,
+      targetIndex: any
+    ) => {
       if (targetIndex === 0) {
         prev.classList.add("hidden");
         next.classList.remove("hidden");
@@ -41,11 +46,13 @@ const Slider = () => {
     };
 
     prev.addEventListener("click", () => {
-      const currentSlide = document.querySelector(".current-slide");
+      const currentSlide: any = document.querySelector(".current-slide");
       const prevSlide = currentSlide.previousSibling;
-      const currentDot = document.querySelector(".current-dot");
+      const currentDot: any = document.querySelector(".current-dot");
       const prevDot = currentDot.previousSibling;
-      const prevIndex = slidesArray.findIndex((slide) => slide === prevSlide);
+      const prevIndex = slidesArray.findIndex(
+        (slide: any) => slide === prevSlide
+      );
       console.log("prevSlide : ", prevSlide);
       moveSlides(slides, currentSlide, prevSlide);
       updateDots(currentDot, prevDot);
@@ -53,17 +60,19 @@ const Slider = () => {
     });
 
     next.addEventListener("click", () => {
-      const currentSlide = document.querySelector(".current-slide");
+      const currentSlide: any = document.querySelector(".current-slide");
       const nextSlide = currentSlide.nextSibling;
-      const currentDot = document.querySelector(".current-dot");
+      const currentDot: any = document.querySelector(".current-dot");
       const nextDot = currentDot.nextSibling;
-      const nextIndex = slidesArray.findIndex((slide) => slide === nextSlide);
+      const nextIndex = slidesArray.findIndex(
+        (slide: any) => slide === nextSlide
+      );
       moveSlides(slides, currentSlide, nextSlide);
       updateDots(currentDot, nextDot);
       hideArrows(slidesArray, prev, next, nextIndex);
     });
 
-    dots.addEventListener("click", (e) => {
+    dots.addEventListener("click", (e: any) => {
       const targetDot = e.target.closest("button");
       if (!targetDot) return;
       const currentSlide = document.querySelector(".current-slide");
@@ -80,17 +89,20 @@ const Slider = () => {
     <div className="slider">
       <ul className="slides">
         <li className="slide current-slide">
-          <Image src={"/images/planet_earth.jpeg"} width={1000} height={1000} />
+          <Image
+            src={"/images/planet_earth.jpeg"}
+            width={1000}
+            height={1000}
+            alt=""
+          />
         </li>
         <li className="slide">
           {/* <h1>test</h1> */}
-          <Image src={"/images/planet_moon.jpeg"} width={1000} height={1000} />
-        </li>
-        <li className="slide">
           <Image
-            src={"/images/planet_jupiter.jpeg"}
+            src={"/images/planet_moon.jpeg"}
             width={1000}
             height={1000}
+            alt=""
           />
         </li>
         <li className="slide">
@@ -98,6 +110,15 @@ const Slider = () => {
             src={"/images/planet_jupiter.jpeg"}
             width={1000}
             height={1000}
+            alt=""
+          />
+        </li>
+        <li className="slide">
+          <Image
+            src={"/images/planet_jupiter.jpeg"}
+            width={1000}
+            height={1000}
+            alt=""
           />
         </li>
       </ul>

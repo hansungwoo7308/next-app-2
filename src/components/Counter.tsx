@@ -13,7 +13,7 @@ import {
 
 const Counter = () => {
   // set the data
-  const [amount, setAmount] = useState<Number>(0);
+  const [amount, setAmount]: any = useState<Number>(0);
 
   // get the hooks
   const dispatch = useDispatch();

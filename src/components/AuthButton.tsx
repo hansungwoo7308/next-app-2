@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-const AuthButton = (props) => {
+const AuthButton = (props: any) => {
   const { data, status } = useSession();
 
   // console.log("");

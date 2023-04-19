@@ -1,8 +1,12 @@
+import TodoList from "@/components/TodoList";
 import Head from "next/head";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 
+let renderCount = 0;
+
 const Home = () => {
+  renderCount++;
   return (
     <>
       <Head>
@@ -12,7 +16,12 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="home">
-        <section></section>
+        <section>
+          <h1>renderCount : {renderCount}</h1>
+          <div>
+            <TodoList />
+          </div>
+        </section>
       </main>
     </>
   );

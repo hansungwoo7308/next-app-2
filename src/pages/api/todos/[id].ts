@@ -3,8 +3,8 @@ import { MongoClient } from "mongodb";
 
 export default async function handler(req: any, res: any) {
   console.log("");
-  console.log("/api/todos/[id]");
 
+  // set
   const URI: any = process.env.MONGODB_URI;
   const OPTIONS: any = {
     dbName: "bananaDB",
@@ -14,6 +14,7 @@ export default async function handler(req: any, res: any) {
   };
   const client = new MongoClient(URI, OPTIONS);
 
+  // connect
   try {
     // connect to db
     await client.connect();
@@ -26,9 +27,9 @@ export default async function handler(req: any, res: any) {
     console.log("connection error : ", error);
   }
 
-  // PATCH
   if (req.method === "PATCH") {
-    console.log(req.body);
+    console.log("/api/todos/[id] [PATCH]");
+    console.log("req.body : ", req.body);
     const result = await Todo.updateOne(
       {
         _id: req.body._id,
@@ -36,6 +37,15 @@ export default async function handler(req: any, res: any) {
       { completed: req.body.completed }
     );
     console.log("PATCH result : ", result);
+    res.status(200).json(req.body);
+  }
+
+  if (req.method === "DELETE") {
+    console.log("/api/todos/[id] [DELETE]");
+    // console.log("req.body : ", req.body);
+    // console.log("typeof req.body.id : ", typeof req.body.id);
+    const result = await Todo.deleteOne({ id: { $in: req.body } });
+    console.log("result : ", result);
     res.status(200).json(req.body);
   }
 

@@ -27,7 +27,7 @@ const TodoList = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    addTodo({ userId: 1, title: newTodo, completed: false });
+    addTodo({ userId: 1, id: 100, title: newTodo, completed: false });
     setNewTodo("");
     console.log("todos : ", todos);
   };
@@ -44,20 +44,21 @@ const TodoList = () => {
           placeholder="Enter new todo"
         />
         <button className="submit">
-          <h1>Upload</h1>
+          <h1>Create</h1>
         </button>
       </div>
     </form>
   );
 
   useEffect(() => {
+    // console.log(todos);
     if (isLoading) {
       setContent(<h1 style={{ color: "green" }}>loading...</h1>);
     } else if (isSuccess) {
       setContent(
         todos.map((todo: any) => {
           return (
-            <article key={todo.id}>
+            <article key={todo._id}>
               <div className="todo">
                 <input
                   type="checkbox"

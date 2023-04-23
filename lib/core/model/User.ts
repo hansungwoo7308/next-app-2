@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
-    requeired: true,
+    required: true,
     unique: true,
   },
   email: {
@@ -18,22 +21,23 @@ const userSchema = new Schema({
   //   required: true,
   //   minlength: 5,
   // },
-  password: {
-    type: String,
-    required: true,
-    minlength: 5,
-  },
-  role: {
-    type: String,
-    default: "user",
-    required: true,
-  },
-  image: {
-    type: String,
-  },
+  // password: {
+  //   type: String,
+  //   required: true,
+  //   minlength: 5,
+  // },
+  // role: {
+  //   type: String,
+  //   default: "user",
+  //   required: true,
+  // },
+  // image: {
+  //   type: String,
+  // },
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
+
 export default User;
 
 // import mongoose from "mongoose";

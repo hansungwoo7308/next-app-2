@@ -768,4 +768,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  
+
 `;

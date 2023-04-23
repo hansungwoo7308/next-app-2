@@ -30,15 +30,12 @@ interface State {
 // CRUD 작업을 최적화
 // Usage : createEntityAdapter({})
 const postsAdapter = createEntityAdapter({
-  // initialState의 posts를 어떻게 정렬할지를 정의한다.
-  // sort the postlist by the date
   sortComparer: (a: any, b: any) => b.date.localeCompare(a.date),
   // b.date가 a.date보다 나중이라면 return 1
   // b.date가 a.date보다 이전이라면 return -1
   // b.date가 a.date와 같다면 return 0
 });
 
-// set the initial state
 const initialState: any = postsAdapter.getInitialState({
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,

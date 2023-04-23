@@ -1,25 +1,30 @@
 import App from "next/app";
-// types
 import type { AppContext, AppProps } from "next/app";
-// providers
+
+// import RequireAuth from "@/components/RequireAuth";
+
+// redux provider
 import { Provider } from "react-redux";
 import store from "lib/store/store";
-import { SessionProvider } from "next-auth/react";
-// styles
-import Layout from "../components/layout/Layout";
-import * as StyleComponent from "../styles/_app.styled";
-import { NextPage } from "next";
-
 import { fetchUsers } from "lib/store/usersSlice";
 import { fetchPosts } from "lib/store/postsSlice";
 
-// related to rtk query
-import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
-import { apiSlice } from "lib/utility/apiSlice";
+// api redux provider
+// import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
+// import { apiSlice } from "lib/utility/todosApiSlice";
 
+// session provider
+import { SessionProvider } from "next-auth/react";
+
+// styles
+import Layout from "../components/layout/Layout";
+import * as StyleComponent from "../styles/_app.styled";
+// import { NextPage } from "next";
+
+// GET request
 // console.log("store : ", store.getState());
-store.dispatch(fetchUsers());
-store.dispatch(fetchPosts());
+// store.dispatch(fetchUsers());
+// store.dispatch(fetchPosts());
 
 // set the interface for custom
 interface MyAppProps extends AppProps {
@@ -31,16 +36,16 @@ const MyApp = ({ Component, pageProps, something }: MyAppProps) => {
 
   return (
     <>
-      <ApiProvider api={apiSlice}>
-        <Provider store={store}>
-          <SessionProvider session={pageProps.session}>
-            <Layout>
-              <StyleComponent.GlobalStyle />
-              <Component {...pageProps} someting />
-            </Layout>
-          </SessionProvider>
-        </Provider>
-      </ApiProvider>
+      {/* <ApiProvider api={apiSlice}> */}
+      <Provider store={store}>
+        <SessionProvider session={pageProps.session}>
+          <Layout>
+            <StyleComponent.GlobalStyle />
+            <Component {...pageProps} someting />
+          </Layout>
+        </SessionProvider>
+      </Provider>
+      {/* </ApiProvider> */}
     </>
   );
 };
@@ -52,6 +57,7 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // console.log("\x1b[33mcontext.Component : %s\x1b[0m", context.Component);
   // console.log("\x1b[33mcontext.router : %s\x1b[0m", context.router);
   // console.log("\x1b[33mcontext.ctx : %s\x1b[0m", context.ctx);
+
   return {
     ...appProps,
     something: "test...",

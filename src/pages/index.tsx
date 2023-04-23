@@ -18,9 +18,7 @@ const Home = () => {
       <main className="home">
         <section>
           <h1>renderCount : {renderCount}</h1>
-          <div>
-            <TodoList />
-          </div>
+          <div>{/* <TodoList /> */}</div>
         </section>
       </main>
     </>

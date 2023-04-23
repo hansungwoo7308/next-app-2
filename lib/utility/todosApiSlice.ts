@@ -1,9 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
-  reducerPath: "api", // just default
+  reducerPath: "api", // just default // redux store path
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }),
+
+  // cached data
+  // todolist는 데이터를 캐싱할 필요가 있다.
   tagTypes: ["Todos"],
+
   endpoints: (builder) => ({
     getTodos: builder.query({
       query: () => "/todos",
@@ -19,7 +23,7 @@ export const apiSlice = createApi({
         method: "POST",
         body: todo,
       }),
-      // 데이터를 추가하고, 설정된 Todos를 무효화 > getTodos를 다시 실행
+      // cached data를 invalidate하고 getTodos를 통해 query 요청을 한다.
       invalidatesTags: ["Todos"],
     }),
     updateTodo: builder.mutation({
@@ -41,6 +45,7 @@ export const apiSlice = createApi({
   }),
 });
 
+// api actions
 export const {
   useGetTodosQuery,
   useAddTodoMutation,

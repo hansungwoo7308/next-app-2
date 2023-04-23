@@ -3,7 +3,7 @@ import {
   useUpdateTodoMutation,
   useDeleteTodoMutation,
   useAddTodoMutation,
-} from "lib/utility/apiSlice";
+} from "lib/utility/todosApiSlice";
 import { useEffect, useState } from "react";
 
 let renderCount = 0;

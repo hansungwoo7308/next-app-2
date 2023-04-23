@@ -1,17 +1,13 @@
 // // middleware.ts
 // import { NextResponse } from "next/server";
 // import type { NextRequest } from "next/server";
-
-// // export function middleware(request) {
 // export function middleware(request: NextRequest) {
 //   console.log("");
 //   console.log("\x1b[31mMiddleware\x1b[0m");
 //   console.log("");
-
 //   // // Clone the request headers and set a new header `x-version`
 //   // const requestHeaders = new Headers(request.headers);
 //   // requestHeaders.set("x-version", "13");
-
 //   // // You can also set request headers in NextResponse.rewrite
 //   // const response = NextResponse.next({
 //   //   request: {
@@ -19,24 +15,17 @@
 //   //     headers: requestHeaders,
 //   //   },
 //   // });
-
 //   // // Set a new response header `x-version`
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
 
-export const config = {
-  // matcher: ["/:path*"],
-  // matcher: ["/404"],
-  // matcher: ["/auth/admin"],
-  // matcher: ["/about", "/auth/admin"],
-};
-
-// middleware.ts
-import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+// import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
+  // console.log("middleware...");
+  // return NextResponse.next();
   // const { pathname } = request.nextUrl;
   // const protectedPaths = ["/auth/admin"];
   // const matchesProtectedPath = protectedPaths.some((path) =>
@@ -50,7 +39,6 @@ export async function middleware(request: NextRequest) {
   // // console.log("token : ", token);
   // console.log("request.url : ", request.url);
   // console.log("");
-
   // if (matchesProtectedPath) {
   //   const token = await getToken({ req: request });
   //   if (!token) {
@@ -71,6 +59,12 @@ export async function middleware(request: NextRequest) {
   //   //   return NextResponse.rewrite(url);
   //   // }
   // }
-
-  return NextResponse.next();
 }
+
+export const config = {
+  // matcher: ["/:path*"],
+  // matcher: ["/404"],
+  // matcher: ["/auth/test/login"],
+  // matcher: ["/auth/admin"],
+  // matcher: ["/about", "/auth/admin"],
+};

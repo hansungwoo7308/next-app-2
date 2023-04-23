@@ -1,23 +1,36 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counterSlice";
+
+// Slices and Reducers (with Frontend)
+// import { counterSlice } from "./counterSlice";
 import postsReducer from "./postsSlice";
 import usersReducer from "./usersSlice";
-import { apiSlice as api } from "lib/utility/apiSlice";
+import authReducer from "./authSlice";
+
+// Api Slices and Reducers (with Backend)
+// import { apiSlice as usersApi } from "lib/utility/usersApiSlice";
+// import { apiSlice as todosApi } from "lib/utility/todosApiSlice";
+import { apiSlice } from "lib/utility/authApiSlice";
 
 // const combineReducer = combineReducers({ counter: counterSlice });
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    posts: postsReducer,
-    users: usersReducer,
-    [api.reducerPath]: api.reducer, // for using rtk query
-
+    // with frontend
     // counter: counterSlice.reducer,
-    // posts: postsSlice.reducer,
+    // posts: postsReducer,
+    // users: usersReducer,
+    auth: authReducer,
+
+    // with backend
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    // [usersApi.reducerPath]: usersApi.reducer, // for using rtk query
+    // [todosApi.reducerPath]: todosApi.reducer, // for using rtk query
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware), // for using rtk query
+    getDefaultMiddleware().concat(apiSlice.middleware), // for using rtk query
+  // getDefaultMiddleware().concat(todosApi.middleware), // for using rtk query
+  // getDefaultMiddleware().concat(usersApi.middleware), // for using rtk query
+  devTools: true,
 });
 // console.log("store : ", store);
 

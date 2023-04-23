@@ -43,7 +43,16 @@ const PostList = () => {
           <h1>renderCount : {renderCount}</h1>
           <div>
             {/* <h2>Post List</h2> */}
-            <div>{content}</div>
+            {/* <div>{content}</div> */}
+            {postStatus === "loading" ? (
+              <h1>Loading</h1>
+            ) : postStatus === "succeeded" ? (
+              orderedPostIds
+                .map((postId) => <PostItem key={postId} postId={postId} />)
+                .slice(0, 4)
+            ) : postStatus === "failed" ? (
+              <h1>{error}</h1>
+            ) : null}
           </div>
         </section>
       </main>

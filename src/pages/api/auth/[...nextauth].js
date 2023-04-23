@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../../lib/config/mongodb";
@@ -49,6 +50,10 @@ export const authOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
 
   callbacks: {
@@ -78,9 +83,10 @@ export const authOptions = {
   pages: {
     // custom pages
     signIn: "/auth/signin",
+    signIn: "/login",
   },
 
-  debug: process.env.NODE_ENV === "development",
+  // debug: process.env.NODE_ENV === "development",
   // adapter: MongoDBAdapter(clientPromise),
 
   session: {

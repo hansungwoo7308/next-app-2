@@ -28,7 +28,8 @@
     "lib/config/*.ts",
     "lib/config/connectDB.ts",
     "lib/config/mongodb.ts", // "src/middleware.ts"
-    "types/*"
+    "types/*",
+    "src/styles/login.styled.js"
   ],
   "exclude": ["node_modules"]
 }

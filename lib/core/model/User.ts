@@ -6,26 +6,30 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  name: {
+  username: {
     type: String,
     required: true,
     unique: true,
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  // email: {
+  //   type: String,
+  //   required: true,
+  //   unique: true,
+  // },
   // hashedPassword: {
   //   type: String,
   //   required: true,
   //   minlength: 5,
   // },
-  // password: {
-  //   type: String,
-  //   required: true,
-  //   minlength: 5,
-  // },
+  password: {
+    type: String,
+    required: true,
+    // minlength: 5,
+  },
+  refreshToken: {
+    type: String,
+    // required: true,
+  },
   // role: {
   //   type: String,
   //   default: "user",

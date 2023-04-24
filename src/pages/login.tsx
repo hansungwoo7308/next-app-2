@@ -17,8 +17,8 @@ const Login = () => {
   // internal
   const userRef: any = useRef();
   // const errRef: any = useRef();
-  const [user, setUser] = useState("");
-  const [pwd, setPwd] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   // const [errMsg, setErrMsg] = useState("");
   // const router = useRouter();
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Login = () => {
 
   // useEffect(() => {
   //   setErrMsg("");
-  // }, [user, pwd]);
+  // }, [username, password]);
 
   // external
   const [login, { isLoading }] = useLoginMutation();
@@ -40,13 +40,13 @@ const Login = () => {
     try {
       // backend
       // unwrap : payload를 추출한다.
-      const userData = await login({ user, pwd }).unwrap();
-      // console.log("userData : ", userData);
+      const userData = await login({ username, password }).unwrap();
+      console.log("userData : ", userData);
 
       // frontend
-      dispatch(setCredentials({ ...userData, user }));
-      setUser("");
-      setPwd("");
+      dispatch(setCredentials({ ...userData, username }));
+      setUsername("");
+      setPassword("");
       // router.push("/welcome");
     } catch (err: any) {
       console.log("error : ", err);
@@ -95,8 +95,8 @@ const Login = () => {
                     type="text"
                     id="username"
                     ref={userRef}
-                    value={user}
-                    onChange={(e: any) => setUser(e.target.value)}
+                    value={username}
+                    onChange={(e: any) => setUsername(e.target.value)}
                     autoComplete="off"
                     required
                     placeholder="username"
@@ -104,8 +104,8 @@ const Login = () => {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e: any) => setPwd(e.target.value)}
-                    value={pwd}
+                    onChange={(e: any) => setPassword(e.target.value)}
+                    value={password}
                     required
                     placeholder="password"
                   />
@@ -142,8 +142,8 @@ const Login = () => {
                     type="text"
                     id="username"
                     ref={userRef}
-                    value={user}
-                    onChange={(e: any) => setUser(e.target.value)}
+                    value={username}
+                    onChange={(e: any) => setUsername(e.target.value)}
                     autoComplete="off"
                     required
                     placeholder="username"
@@ -151,8 +151,8 @@ const Login = () => {
                   <input
                     type="password"
                     id="password"
-                    onChange={(e: any) => setPwd(e.target.value)}
-                    value={pwd}
+                    onChange={(e: any) => setPassword(e.target.value)}
+                    value={password}
                     required
                     placeholder="password"
                   />

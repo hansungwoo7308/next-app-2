@@ -1,20 +1,38 @@
 import mongoose from "mongoose";
-import db from "../../../data/db.json";
-// import Todo from "lib/core/model/Todo";
 import User from "lib/core/model/User";
+// import db from "../../../data/db.json";
+// import Todo from "lib/core/model/Todo";
 
 const URI: any = process.env.MONGODB_URI;
 const OPTIONS: any = {
-  dbName: "appleDB",
+  // dbName: "appleDB",
+  dbName: "animalDB",
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
+const users = [
+  {
+    id: 1,
+    username: "dog",
+    password: "123",
+  },
+  {
+    id: 2,
+    username: "cat",
+    password: "123",
+  },
+  {
+    id: 3,
+    username: "monkey",
+    password: "123",
+  },
+];
 
 export default async function handler(req: any, res: any) {
   try {
     await mongoose.connect(URI, OPTIONS);
     console.log("mongoose connected...");
-    await User.insertMany(db.users);
+    await User.insertMany(users);
     // await Todo.insertMany(db.todos);
     // const payload = await User.find({}).populate("name").exec();
     // console.log("payload : ", payload);

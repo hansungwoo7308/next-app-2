@@ -1,13 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
-  reducerPath: "api", // just default // redux store path
+  // redux store path
+  // just default
+  reducerPath: "api",
+
+  // query할 baseUrl을 설정한다.
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }),
 
   // cached data
   // todolist는 데이터를 캐싱할 필요가 있다.
   tagTypes: ["Todos"],
 
+  // endpoints property에
+  // builder object로 api actions를 생성하도록, 콜백을 설정한다.
   endpoints: (builder) => ({
     getTodos: builder.query({
       query: () => "/todos",

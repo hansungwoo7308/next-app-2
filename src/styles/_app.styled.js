@@ -121,36 +121,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   // pages
-  .home {
-    > section {
-      /* flex-direction: column; */
-      gap: 20px;
-      position: relative;
-      padding-left: 20px;
-      padding-right: 20px;
-      > h1 {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-      }
-      > div {
-        width: 50%;
-        height: 70%;
-        outline: 3px solid coral;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        h2 {
-          color: blue;
-        }
-        /* button {
-          height: 30px;
-        } */
-      }
-    }
-  }
-
   .signin {
     /* outline: 3px solid blue; */
     section {

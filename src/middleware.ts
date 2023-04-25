@@ -23,7 +23,14 @@
 import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
 
+// backend에 요청하기 전에 처리하는 미들웨어
 export async function middleware(request: NextRequest) {
+  // const cookie = request.cookies;
+  // console.log("reuest : ", request);
+  // console.log("reuest.url : ", request.url);
+  // const cookie: any = request.cookies.get("refreshToken");
+  // console.log("cookie in middleware : ", cookie);
+  // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
   // console.log("middleware...");
   // return NextResponse.next();
   // const { pathname } = request.nextUrl;
@@ -64,7 +71,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   // matcher: ["/:path*"],
   // matcher: ["/404"],
-  // matcher: ["/auth/test/login"],
+  // matcher: ["/welcome"],
+  // matcher: ["/"],
   // matcher: ["/auth/admin"],
   // matcher: ["/about", "/auth/admin"],
 };

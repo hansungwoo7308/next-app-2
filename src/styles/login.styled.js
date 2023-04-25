@@ -11,6 +11,7 @@ export const Main = styled.main`
       justify-content: center;
       align-items: center;
       gap: 20px;
+
       > form {
         min-width: 300px;
         display: flex;

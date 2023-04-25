@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiSlice = createApi({
+  // 다리역할을 해줄 api name을 설정한다.
   // redux store path
   // just default
   reducerPath: "api",
@@ -14,6 +15,9 @@ export const apiSlice = createApi({
 
   // endpoints property에
   // builder object로 api actions를 생성하도록, 콜백을 설정한다.
+  // baseUrl/query 경로로 요청하고 응답받은 데이터를
+  // 캐싱한 데이터(리덕스 스토어의 데이터)와 비교하고
+  // 변경이 있으면, getTodos를 다시 요청하고 client에 반영한다.
   endpoints: (builder) => ({
     getTodos: builder.query({
       query: () => "/todos",

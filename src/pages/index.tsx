@@ -1,5 +1,13 @@
-import TodoList from "@/components/TodoList";
+// internal
 import Head from "next/head";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+// external
+import TodoList from "@/components/TodoList";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "lib/store/authSlice";
+import { Main } from "../styles/home.styled";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 
@@ -7,6 +15,35 @@ let renderCount = 0;
 
 const Home = () => {
   renderCount++;
+
+  // const [auth, setAuth] = useState(false);
+  const accessToken = useSelector(selectCurrentToken);
+
+  const refreshTokens = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:3000/api/authentication/refresh",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("result : ", result);
+    } catch (error) {
+      console.log("error : ", error);
+    }
+  };
+
+  const checkAuth = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:3000/api/authentication/check"
+      );
+      console.log("result : ", result);
+    } catch (error) {
+      console.log("error : ", error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -15,12 +52,23 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="home">
+      <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
-          <div>{/* <TodoList /> */}</div>
+          <div>
+            {/* <TodoList /> */}
+            {/* <Link href={"/welcome"}>Welcome</Link> */}
+            <div>
+              <h5>accessToken : {accessToken}</h5>
+              <h5>refreshToken : {}</h5>
+            </div>
+            <div>
+              <button onClick={refreshTokens}>refresh the tokens</button>
+              <button onClick={checkAuth}>check the authentication</button>
+            </div>
+          </div>
         </section>
-      </main>
+      </Main>
     </>
   );
 };

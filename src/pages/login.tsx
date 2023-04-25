@@ -2,8 +2,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-// style
-import { Main } from "../styles/login.styled";
 
 // external
 import { useDispatch } from "react-redux";
@@ -12,6 +10,8 @@ import { useLoginMutation } from "lib/utility/authApiSlice";
 // import { useLoginMutation } from "lib/utility/authApiSlice";
 // nextauth
 import { signIn, signOut, useSession } from "next-auth/react";
+// style
+import { Main } from "../styles/login.styled";
 
 const Login = () => {
   // internal
@@ -20,7 +20,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   // const [errMsg, setErrMsg] = useState("");
-  // const router = useRouter();
+  const router = useRouter();
   const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -39,14 +39,16 @@ const Login = () => {
     e.preventDefault();
     try {
       // backend
+      // apiSlice.action > login > fetch(URL, baseQuery/endpoint)
       // unwrap : payload를 추출한다.
-      const userData = await login({ username, password }).unwrap();
-      console.log("userData : ", userData);
+      const loggedUser = await login({ username, password }).unwrap();
+      console.log("loggedUser : ", loggedUser);
 
       // frontend
-      dispatch(setCredentials({ ...userData, username }));
+      await dispatch(setCredentials({ ...loggedUser, username }));
       setUsername("");
       setPassword("");
+      router.push("/");
       // router.push("/welcome");
     } catch (err: any) {
       console.log("error : ", err);
@@ -78,45 +80,9 @@ const Login = () => {
       <Main>
         <section>
           <div>
-            {/* {isLoading ? (
+            {isLoading ? (
               <h1>Loading...</h1>
             ) : (
-              <>
-                <p
-                  ref={errRef}
-                  className={errMsg ? "errmsg" : "offscreen"}
-                  aria-live="assertive"
-                >
-                  {errMsg}
-                </p>
-                <h1>Employee Login</h1>
-                <form onSubmit={handleSubmit}>
-                  <input
-                    type="text"
-                    id="username"
-                    ref={userRef}
-                    value={username}
-                    onChange={(e: any) => setUsername(e.target.value)}
-                    autoComplete="off"
-                    required
-                    placeholder="username"
-                  />
-                  <input
-                    type="password"
-                    id="password"
-                    onChange={(e: any) => setPassword(e.target.value)}
-                    value={password}
-                    required
-                    placeholder="password"
-                  />
-                  <button>Sign In</button>
-                </form>
-              </>
-            )} */}
-            {
-              // session ? (
-              //   <h1>You are logged in.</h1>
-              // ) :
               <>
                 {/* <p
                   ref={errRef}
@@ -159,7 +125,7 @@ const Login = () => {
                   <button>Sign In</button>
                 </form>
               </>
-            }
+            )}
           </div>
         </section>
       </Main>

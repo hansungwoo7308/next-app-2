@@ -55,14 +55,14 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 export const apiSlice = createApi({
   // reducerPath: 'api', // default
   baseQuery: baseQueryWithReauth,
-  // endpoints: (builder) => ({}),
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => {
-        // credentials : client에서 user가 전달한 payload
+        // front client로부터 받은 credentials
         // console.log("credentials : ", credentials);
+        // query를 보낼때, 다음을 추가한다.
         return {
-          url: "/api/login",
+          url: "/api/authentication",
           method: "POST",
           body: { ...credentials },
         };

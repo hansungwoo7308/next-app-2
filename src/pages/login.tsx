@@ -12,6 +12,7 @@ import { useLoginMutation } from "lib/utility/authApiSlice";
 import { signIn, signOut, useSession } from "next-auth/react";
 // style
 import { Main } from "../styles/login.styled";
+import { customAxios } from "lib/utility/customAxios";
 
 const Login = () => {
   // internal
@@ -41,11 +42,17 @@ const Login = () => {
       // backend
       // apiSlice.action > login > fetch(URL, baseQuery/endpoint)
       // unwrap : payload를 추출한다.
-      const loggedUser = await login({ username, password }).unwrap();
-      console.log("loggedUser : ", loggedUser);
+      const loggedInUser = await login({ username, password }).unwrap();
+      // const result = await customAxios.post("/api/authentication", {
+      //   username,
+      //   password,
+      // });
+      // const loggedInUser = await result.data;
+
+      // console.log("loggedInUser : ", loggedInUser);
 
       // frontend
-      await dispatch(setCredentials({ ...loggedUser, username }));
+      await dispatch(setCredentials({ ...loggedInUser, username }));
       setUsername("");
       setPassword("");
       router.push("/");

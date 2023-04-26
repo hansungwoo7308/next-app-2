@@ -7,11 +7,15 @@ import { setCredentials, logOut } from "lib/store/authSlice";
 // header에 authorization bearer를 설정해준다.
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/",
+
+  // for accessToken
   credentials: "include",
+
+  // set the header
   prepareHeaders: (headers, { getState }: any) => {
-    const token = getState().auth.token;
-    if (token) {
-      headers.set("authorization", `Bearer ${token}`);
+    const accessToken = getState().auth.accessToken;
+    if (accessToken) {
+      headers.set("authorization", `Bearer ${accessToken}`);
     }
     return headers;
   },
@@ -59,12 +63,23 @@ export const apiSlice = createApi({
     login: builder.mutation({
       query: (credentials) => {
         // front client로부터 받은 credentials
-        // console.log("credentials : ", credentials);
+        console.log("credentials : ", credentials);
         // query를 보낼때, 다음을 추가한다.
         return {
           url: "/api/authentication",
           method: "POST",
           body: { ...credentials },
+        };
+      },
+    }),
+    refresh: builder.mutation({
+      query: () => {
+        // console.log("something : ", something);
+        // input : payload
+        // output : request(query) body에 payload를 실어서 보낸다.
+        return {
+          url: "/api/authentication/refresh",
+          method: "GET",
         };
       },
     }),
@@ -88,5 +103,5 @@ export const apiSlice = createApi({
 // });
 
 // api actions
-export const { useLoginMutation } = apiSlice;
+export const { useLoginMutation, useRefreshMutation } = apiSlice;
 // export const { useLoginMutation } = authApiSlice;

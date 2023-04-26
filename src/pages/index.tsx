@@ -5,39 +5,98 @@ import { useEffect, useState } from "react";
 // external
 import TodoList from "@/components/TodoList";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { selectCurrentToken } from "lib/store/authSlice";
+import { customAxios } from "lib/utility/customAxios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectAcessToken,
+  selectRefreshToken,
+  setCredentials,
+} from "lib/store/authSlice";
 import { Main } from "../styles/home.styled";
+import { useLoginMutation, useRefreshMutation } from "lib/utility/authApiSlice";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 
 let renderCount = 0;
 
+// export const getServerSideProps = (context: any) => {
+//   const serverCookies = context.req.cookies;
+//   console.log("serverCookies : ", serverCookies);
+//   return {
+//     props: {
+//       serverCookies,
+//     },
+//   };
+// };
+
+renderCount++;
 const Home = () => {
-  renderCount++;
+  // internal
+  const [cookies, setCookies]: any = useState();
+  // const [checkedUser, setCheckedUser]: any = useState();
 
-  // const [auth, setAuth] = useState(false);
-  const accessToken = useSelector(selectCurrentToken);
+  // external
+  const accessToken = useSelector(selectAcessToken);
+  const refreshToken = useSelector(selectRefreshToken);
+  const dispatch = useDispatch();
+  const [refresh, { isLoading }] = useRefreshMutation();
+  // const [login, { isLoading }] = useLoginMutation();
 
-  const refreshTokens = async () => {
+  const refreshTokens = async (e: any) => {
+    e.preventDefault();
     try {
-      const result = await axios.get(
-        "http://localhost:3000/api/authentication/refresh",
-        {
-          withCredentials: true,
-        }
-      );
-      console.log("result : ", result);
+      // const result = await customAxios.get("/api/authentication/refresh");
+      // const refreshUser = await result.data;
+      const refreshUser = await refresh({}).unwrap();
+      console.log("refreshUser : ", refreshUser);
+
+      dispatch(setCredentials(refreshUser));
     } catch (error) {
       console.log("error : ", error);
     }
   };
 
-  const checkAuth = async () => {
+  const checkTokens = async (e: any) => {
+    e.preventDefault();
     try {
-      const result = await axios.get(
-        "http://localhost:3000/api/authentication/check"
+      const result = await customAxios.get(
+        "http://localhost:3000/api/authentication/check",
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+
+        // {
+        //   withCredentials: true,
+        //   headers: {
+        //     Authorization: `Bearer ${accessToken}`,
+        //   },
+        // }
       );
+      const data = await result.data;
+      // setCheckedUser(JSON.stringify(result, null, 4));
+      console.log("data : ", data);
+    } catch (error) {
+      console.log("error : ", error);
+    }
+  };
+
+  // const getCookie = async (e: any) => {
+  //   e.preventDefault();
+  //   try {
+  //     const result = await customAxios.get("/api/authentication/getCookie");
+  //     const cookies = await result.data;
+  //     console.log("cookies : ", cookies);
+  //     setCookies(JSON.stringify(cookies, null, 4));
+  //   } catch (error) {
+  //     console.log("error : ", error);
+  //   }
+  // };
+
+  const clearCookie = async (e: any) => {
+    try {
+      const result = await customAxios.get("/api/authentication/clear");
       console.log("result : ", result);
     } catch (error) {
       console.log("error : ", error);
@@ -56,15 +115,28 @@ const Home = () => {
         <section>
           <h1>renderCount : {renderCount}</h1>
           <div>
+            <h1>Response Data</h1>
+            <h5>test...</h5>
+          </div>
+          <div>
             {/* <TodoList /> */}
             {/* <Link href={"/welcome"}>Welcome</Link> */}
             <div>
               <h5>accessToken : {accessToken}</h5>
-              <h5>refreshToken : {}</h5>
+              <h5>refreshToken : {refreshToken}</h5>
+              <h5>cookies : {cookies}</h5>
             </div>
             <div>
-              <button onClick={refreshTokens}>refresh the tokens</button>
-              <button onClick={checkAuth}>check the authentication</button>
+              <button onClick={(e: any) => refreshTokens(e)}>
+                refresh the tokens
+              </button>
+              <button onClick={(e: any) => checkTokens(e)}>
+                check the tokens
+              </button>
+              <button onClick={(e: any) => clearCookie(e)}>
+                clear the cookie
+              </button>
+              {/* <button onClick={clearCookie}>clear the cookie</button> */}
             </div>
           </div>
         </section>

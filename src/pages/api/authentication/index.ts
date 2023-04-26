@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
   console.log("");
   console.log("api/authentication");
+
   // get the request
   const cookies = req.cookies;
-  console.log("cookies : ", cookies);
-
+  console.log("refreshToken : ", cookies.refreshToken);
   const { username, password } = req.body;
   if (!username || !password)
     return res
@@ -28,7 +28,7 @@ export default async function handler(req: any, res: any) {
 
   // find the username
   const foundUser = await User.findOne({ username }).exec();
-  console.log("foundUser : ", foundUser);
+  // console.log("foundUser : ", foundUser);
   if (!foundUser)
     return res
       .status(401)
@@ -38,7 +38,7 @@ export default async function handler(req: any, res: any) {
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
 
-  // issue tokens
+  // issue the tokens
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
   const accessToken = jwt.sign(
     { username: foundUser.username },
@@ -47,25 +47,30 @@ export default async function handler(req: any, res: any) {
   );
 
   const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
-  const refreshToken = jwt.sign(
+  const newRefreshToken = jwt.sign(
     { username: foundUser.username },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "10m" }
   );
 
+  // save the issued tokens
   foundUser.accessToken = accessToken;
-  foundUser.refreshToken = refreshToken;
+  foundUser.refreshToken = newRefreshToken;
   const savedUser = await foundUser.save();
   console.log("savedUser : ", savedUser);
 
   // set the response
-  res.setHeader(
-    "Set-Cookie",
-    `refreshToken=${refreshToken}`
-    // `refreshToken=${refreshToken};httpOnly`
-    // `refreshToken=${refreshToken};HttpOnly;SameSite=None`
-  );
-  res.json({ accessToken, message: "You are logged in." });
+  res.setHeader("Set-Cookie", [
+    `accessToken=${accessToken};path=/`,
+    `refreshToken=${newRefreshToken};path=/`,
+  ]);
+  // `refreshToken=${refreshToken};HttpOnly;SameSite=None`
+  res.status(200).json({
+    username: foundUser.username,
+    accessToken: accessToken,
+    refreshToken: newRefreshToken,
+    // message: "You are logged in.",
+  });
   // res.json({ accessToken, message: "You are logged in." });
   // res.status(200).json({ ...req.body, accessToken: "jwt..." });
   console.log("");

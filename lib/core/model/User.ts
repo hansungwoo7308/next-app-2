@@ -26,9 +26,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     // minlength: 5,
   },
+  accessToken: {
+    type: String,
+  },
   refreshToken: {
     type: String,
-    // required: true,
   },
   // role: {
   //   type: String,

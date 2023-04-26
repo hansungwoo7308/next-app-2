@@ -3,7 +3,7 @@ import Link from "next/link";
 
 // external
 // import { useSession } from "next-auth/react";
-import { selectCurrentToken } from "lib/store/authSlice";
+import { selectAcessToken } from "lib/store/authSlice";
 import { useSelector } from "react-redux";
 import { Main } from "../styles/welcome.styled";
 import axios from "axios";
@@ -26,7 +26,7 @@ const Welcome = () => {
   // console.log("cookie : ", cookie);
 
   // const { status } = useSession();
-  const accessToken = useSelector(selectCurrentToken);
+  const accessToken = useSelector(selectAcessToken);
 
   const test = async () => {
     try {

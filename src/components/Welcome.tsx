@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
-import { selectCurrentToken, selectCurrentUser } from "lib/store/authSlice";
+import { selectAcessToken, selectCurrentUser } from "lib/store/authSlice";
 import Link from "next/link";
 
 const Welcome = () => {
   const user = useSelector(selectCurrentUser);
-  const token = useSelector(selectCurrentToken);
+  const token = useSelector(selectAcessToken);
   const welcome = user ? `Welcome ${user}!` : "Welcome!";
   const tokenAbbr = `${token.slice(0, 9)}...`;
 

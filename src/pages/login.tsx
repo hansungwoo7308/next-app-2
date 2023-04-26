@@ -7,7 +7,6 @@ import Head from "next/head";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "lib/store/authSlice";
 import { useLoginMutation } from "lib/utility/authApiSlice";
-// import { useLoginMutation } from "lib/utility/authApiSlice";
 // nextauth
 import { signIn, signOut, useSession } from "next-auth/react";
 // style
@@ -39,22 +38,21 @@ const Login = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      // backend
-      // apiSlice.action > login > fetch(URL, baseQuery/endpoint)
-      // unwrap : payload를 추출한다.
+      // request the authentication from backend
       const loggedInUser = await login({ username, password }).unwrap();
+      // unwrap : payload를 추출한다.
       // const result = await customAxios.post("/api/authentication", {
       //   username,
       //   password,
       // });
       // const loggedInUser = await result.data;
-
       // console.log("loggedInUser : ", loggedInUser);
 
-      // frontend
+      // update the client redux store
       await dispatch(setCredentials({ ...loggedInUser, username }));
       setUsername("");
       setPassword("");
+      // move to homepage
       router.push("/");
       // router.push("/welcome");
     } catch (err: any) {

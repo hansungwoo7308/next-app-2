@@ -14,6 +14,7 @@ const baseQuery = fetchBaseQuery({
   // set the header
   prepareHeaders: (headers, { getState }: any) => {
     const accessToken = getState().auth.accessToken;
+    console.log("accessToken : ", accessToken);
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
     }
@@ -62,9 +63,8 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => {
-        // front client로부터 받은 credentials
-        console.log("credentials : ", credentials);
-        // query를 보낼때, 다음을 추가한다.
+        // credentials : client payload
+        // console.log("credentials : ", credentials);
         return {
           url: "/api/authentication",
           method: "POST",
@@ -79,6 +79,14 @@ export const apiSlice = createApi({
         // output : request(query) body에 payload를 실어서 보낸다.
         return {
           url: "/api/authentication/refresh",
+          method: "GET",
+        };
+      },
+    }),
+    check: builder.mutation({
+      query: () => {
+        return {
+          url: "/api/authentication/check",
           method: "GET",
         };
       },
@@ -103,5 +111,6 @@ export const apiSlice = createApi({
 // });
 
 // api actions
-export const { useLoginMutation, useRefreshMutation } = apiSlice;
+export const { useLoginMutation, useRefreshMutation, useCheckMutation } =
+  apiSlice;
 // export const { useLoginMutation } = authApiSlice;

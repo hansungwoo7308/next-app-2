@@ -13,7 +13,11 @@ import {
   setCredentials,
 } from "lib/store/authSlice";
 import { Main } from "../styles/home.styled";
-import { useLoginMutation, useRefreshMutation } from "lib/utility/authApiSlice";
+import {
+  useCheckMutation,
+  useLoginMutation,
+  useRefreshMutation,
+} from "lib/utility/authApiSlice";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 
@@ -36,20 +40,22 @@ const Home = () => {
   // const [checkedUser, setCheckedUser]: any = useState();
 
   // external
+  // state
   const accessToken = useSelector(selectAcessToken);
   const refreshToken = useSelector(selectRefreshToken);
+  // dispatcher
   const dispatch = useDispatch();
-  const [refresh, { isLoading }] = useRefreshMutation();
-  // const [login, { isLoading }] = useLoginMutation();
+  // rtk fetch query
+  const [refresh] = useRefreshMutation();
+  const [check] = useCheckMutation();
 
   const refreshTokens = async (e: any) => {
     e.preventDefault();
     try {
-      // const result = await customAxios.get("/api/authentication/refresh");
-      // const refreshUser = await result.data;
-      const refreshUser = await refresh({}).unwrap();
+      const result = await customAxios.get("/api/authentication/refresh");
+      const refreshUser = await result.data;
+      // const refreshUser = await refresh({}).unwrap();
       console.log("refreshUser : ", refreshUser);
-
       dispatch(setCredentials(refreshUser));
     } catch (error) {
       console.log("error : ", error);
@@ -66,33 +72,16 @@ const Home = () => {
             Authorization: `Bearer ${accessToken}`,
           },
         }
-
-        // {
-        //   withCredentials: true,
-        //   headers: {
-        //     Authorization: `Bearer ${accessToken}`,
-        //   },
-        // }
       );
       const data = await result.data;
+      // const result = await check({}).unwrap();
+
       // setCheckedUser(JSON.stringify(result, null, 4));
-      console.log("data : ", data);
+      console.log("result : ", result);
     } catch (error) {
       console.log("error : ", error);
     }
   };
-
-  // const getCookie = async (e: any) => {
-  //   e.preventDefault();
-  //   try {
-  //     const result = await customAxios.get("/api/authentication/getCookie");
-  //     const cookies = await result.data;
-  //     console.log("cookies : ", cookies);
-  //     setCookies(JSON.stringify(cookies, null, 4));
-  //   } catch (error) {
-  //     console.log("error : ", error);
-  //   }
-  // };
 
   const clearCookie = async (e: any) => {
     try {

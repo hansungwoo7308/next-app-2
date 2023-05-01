@@ -18,6 +18,7 @@ const baseQuery = fetchBaseQuery({
     if (accessToken) {
       headers.set("authorization", `Bearer ${accessToken}`);
     }
+    console.log("headers : ", headers);
     return headers;
   },
 });
@@ -57,8 +58,8 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   return result;
 };
 
-export const apiSlice = createApi({
-  // reducerPath: 'api', // default
+export const authApiSlice = createApi({
+  reducerPath: "authApi", // default
   baseQuery: baseQueryWithReauth,
   endpoints: (builder) => ({
     login: builder.mutation({
@@ -91,11 +92,19 @@ export const apiSlice = createApi({
         };
       },
     }),
+    logout: builder.mutation({
+      query: () => {
+        return {
+          url: "/api/authentication/logout",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
 // endpoint를 apiSlice에 주입한다.
-// export const authApiSlice = apiSlice.injectEndpoints({
+// export const authApiSlice = authApiSlice.injectEndpoints({
 //   endpoints: (builder) => ({
 //     login: builder.mutation({
 //       query: (credentials) => {
@@ -111,6 +120,10 @@ export const apiSlice = createApi({
 // });
 
 // api actions
-export const { useLoginMutation, useRefreshMutation, useCheckMutation } =
-  apiSlice;
+export const {
+  useLoginMutation,
+  useRefreshMutation,
+  useCheckMutation,
+  useLogoutMutation,
+} = authApiSlice;
 // export const { useLoginMutation } = authApiSlice;

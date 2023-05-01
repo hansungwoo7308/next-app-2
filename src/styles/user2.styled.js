@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const Main = styled.main`
   > section {
+    padding-left: 20px;
+    padding-right: 20px;
+
     > div {
       /* width: 50%; */
       padding: 20px;
@@ -13,17 +16,9 @@ export const Main = styled.main`
       > h3 {
         word-break: break-all;
       }
-      > button {
+      > a > button {
         width: 100%;
         padding: 15px;
-      }
-      > div {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        > button {
-          padding: 5px;
-        }
       }
     }
   }

@@ -52,9 +52,7 @@ const Login = () => {
       await dispatch(setCredentials({ ...loggedInUser, username }));
       setUsername("");
       setPassword("");
-      // move to homepage
-      router.push("/");
-      // router.push("/welcome");
+      router.push("/welcome");
     } catch (err: any) {
       console.log("error : ", err);
       // if (!err?.originalStatus) {

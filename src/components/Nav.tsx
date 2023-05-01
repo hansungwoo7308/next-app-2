@@ -17,6 +17,9 @@ const Nav = () => {
   const usersRef: any = useRef();
   const postListRef: any = useRef();
   const loginRef: any = useRef();
+  const userListRef: any = useRef();
+  const welcomeRef: any = useRef();
+  const users2Ref: any = useRef();
 
   // const dispatch = useDispatch();
   // const count = useSelector(getCount);
@@ -65,9 +68,18 @@ const Nav = () => {
     } else if (router.pathname === "/users") {
       setColor(usersRef.current);
       setUnderline(focusRef.current, usersRef.current);
+    } else if (router.pathname === "/users2") {
+      setColor(users2Ref.current);
+      setUnderline(focusRef.current, users2Ref.current);
+    } else if (router.pathname === "/user-list") {
+      setColor(userListRef.current);
+      setUnderline(focusRef.current, userListRef.current);
     } else if (router.pathname === "/auth/login") {
       setColor(loginRef.current);
       setUnderline(focusRef.current, loginRef.current);
+    } else if (router.pathname === "/welcome") {
+      setColor(welcomeRef.current);
+      setUnderline(focusRef.current, welcomeRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -112,6 +124,15 @@ const Nav = () => {
         <li ref={loginRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/login"}>Login</Link>
         </li>
+        <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
+          <Link href={"/users2"}>Users2</Link>
+        </li>
+        {/* <li ref={userListRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/user-list"}>User List</Link>
+        </li> */}
+        {/* <li ref={welcomeRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/welcome"}>Welcome</Link>
+        </li> */}
         {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
         {/* <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/blogs"}>BLOGS</Link>

@@ -4,41 +4,41 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 // external
 import TodoList from "@/components/TodoList";
-import axios from "axios";
 import { customAxios } from "lib/utility/customAxios";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  logOut,
   selectAcessToken,
   selectRefreshToken,
   setCredentials,
 } from "lib/store/authSlice";
 import { Main } from "../styles/home.styled";
 import {
-  useCheckMutation,
-  useLoginMutation,
   useRefreshMutation,
+  useLogoutMutation,
 } from "lib/utility/authApiSlice";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
-
 let renderCount = 0;
-
-// export const getServerSideProps = (context: any) => {
-//   const serverCookies = context.req.cookies;
-//   console.log("serverCookies : ", serverCookies);
-//   return {
-//     props: {
-//       serverCookies,
-//     },
-//   };
-// };
-
 renderCount++;
+export const getServerSideProps = (context: any) => {
+  // const serverCookies = context.req.cookies;
+  // console.log("serverCookies : ", serverCookies);
+  const request = context.req;
+  const requestProps = Object.getOwnPropertyNames(context.req);
+  const authorization = request.headers.authorization || undefined;
+  console.log("authorization : ", authorization);
+  return {
+    props: {
+      // serverCookies,
+    },
+  };
+};
 const Home = () => {
   // internal
-  const [cookies, setCookies]: any = useState();
+  // const [cookies, setCookies]: any = useState();
   // const [checkedUser, setCheckedUser]: any = useState();
-
+  const [users, setUsers]: any = useState();
   // external
   // state
   const accessToken = useSelector(selectAcessToken);
@@ -47,9 +47,9 @@ const Home = () => {
   const dispatch = useDispatch();
   // rtk fetch query
   const [refresh] = useRefreshMutation();
-  const [check] = useCheckMutation();
-
-  const refreshTokens = async (e: any) => {
+  const [logout] = useLogoutMutation();
+  // const [check] = useCheckMutation();
+  const handleRefresh = async (e: any) => {
     e.preventDefault();
     try {
       const result = await customAxios.get("/api/authentication/refresh");
@@ -61,32 +61,26 @@ const Home = () => {
       console.log("error : ", error);
     }
   };
-
-  const checkTokens = async (e: any) => {
+  const handleLogout = async (e: any) => {
     e.preventDefault();
     try {
-      const result = await customAxios.get(
-        "http://localhost:3000/api/authentication/check",
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-      const data = await result.data;
-      // const result = await check({}).unwrap();
-
-      // setCheckedUser(JSON.stringify(result, null, 4));
-      console.log("result : ", result);
+      const result = await logout({});
+      console.log("logout result : ", result);
+      await dispatch(logOut());
     } catch (error) {
       console.log("error : ", error);
     }
   };
-
-  const clearCookie = async (e: any) => {
+  const handleGetUsers = async (e: any) => {
     try {
-      const result = await customAxios.get("/api/authentication/clear");
+      const result = await customAxios.options("/api/users", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const users = await result.data;
       console.log("result : ", result);
+      setUsers(users);
     } catch (error) {
       console.log("error : ", error);
     }
@@ -105,27 +99,21 @@ const Home = () => {
           <h1>renderCount : {renderCount}</h1>
           <div>
             <h1>Response Data</h1>
-            <h5>test...</h5>
+            <div>
+              {users?.map((user: any) => (
+                <h5>{user}</h5>
+              ))}
+            </div>
           </div>
           <div>
-            {/* <TodoList /> */}
-            {/* <Link href={"/welcome"}>Welcome</Link> */}
             <div>
               <h5>accessToken : {accessToken}</h5>
               <h5>refreshToken : {refreshToken}</h5>
-              <h5>cookies : {cookies}</h5>
             </div>
             <div>
-              <button onClick={(e: any) => refreshTokens(e)}>
-                refresh the tokens
-              </button>
-              <button onClick={(e: any) => checkTokens(e)}>
-                check the tokens
-              </button>
-              <button onClick={(e: any) => clearCookie(e)}>
-                clear the cookie
-              </button>
-              {/* <button onClick={clearCookie}>clear the cookie</button> */}
+              <button onClick={(e: any) => handleRefresh(e)}>refresh</button>
+              <button onClick={(e: any) => handleLogout(e)}>logout</button>
+              <button onClick={(e: any) => handleGetUsers(e)}>get users</button>
             </div>
           </div>
         </section>

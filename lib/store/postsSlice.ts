@@ -1,3 +1,4 @@
+// modules
 import {
   createSlice,
   createAsyncThunk,
@@ -10,7 +11,6 @@ import axios from "axios";
 // set the constant variables
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_limit=10";
 const POSTS_URL2 = "https://jsonplaceholder.typicode.com/posts";
-
 // set the interfaces
 interface Post {
   id: String;
@@ -24,11 +24,9 @@ interface State {
   error: null | string;
   count: number;
 }
-
 // set the adapter (tool) that manages the state of the object
 // 상태관리 최적화를 위한 도구
 // CRUD 작업을 최적화
-// Usage : createEntityAdapter({})
 const postsAdapter = createEntityAdapter({
   sortComparer: (a: any, b: any) => b.date.localeCompare(a.date),
   // b.date가 a.date보다 나중이라면 return 1
@@ -36,12 +34,13 @@ const postsAdapter = createEntityAdapter({
   // b.date가 a.date와 같다면 return 0
 });
 
+// state
 const initialState: any = postsAdapter.getInitialState({
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
   count: 0,
 });
-
+// slice
 const postsSlice: any = createSlice({
   name: "posts",
   initialState,
@@ -153,10 +152,9 @@ const postsSlice: any = createSlice({
       });
   },
 });
-
+// thunks
 // create a thunk(it's like a nock)
 // 비동기 포스트 관련 액션들을 만든다. (백엔드와 통신하여 처리할)
-
 export const fetchPosts: any = createAsyncThunk(
   // string action type value: 이 값에 따라 pending, fulfilled, rejected가 붙은 액션 타입이 생성된다.
   "posts/fetchPosts",
@@ -167,11 +165,6 @@ export const fetchPosts: any = createAsyncThunk(
     return response.data;
   }
 );
-
-// excution context(실행 문맥)이 thunk의 콜백함수에서 실행됨
-// backend process를 하고나서,
-// redux store에 build를 해놓은 callback like a switch case으로 excution context가 이동한다.
-// 결국, 빌더로 설정된 케이스에 따라서 처리된다.
 export const addNewPost: any = createAsyncThunk(
   "posts/addNewPost",
   async (initialPost) => {
@@ -184,7 +177,6 @@ export const addNewPost: any = createAsyncThunk(
     return response.data;
   }
 );
-
 export const updatePost: any = createAsyncThunk(
   "posts/updatePost",
   async (initialPost) => {
@@ -199,7 +191,6 @@ export const updatePost: any = createAsyncThunk(
     }
   }
 );
-
 export const deletePost: any = createAsyncThunk(
   "posts/deletePost",
   async (initialPost) => {
@@ -217,7 +208,6 @@ export const deletePost: any = createAsyncThunk(
     }
   }
 );
-
 // selectors
 // getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
@@ -229,7 +219,6 @@ export const {
 export const getPostsStatus = (state: any) => state.posts.status;
 export const getPostsError = (state: any) => state.posts.error;
 export const getCount = (state: any) => state.posts.count;
-
 // Optimization(최적화)
 // useSelector의 argument에서 사용될 store를 선택하는(참조하는) 값을
 // 이곳에서 구현한다. (원래는 페이지, 컴포넌트에서 구현했지만)
@@ -240,9 +229,7 @@ export const selectPostsByUser = createSelector(
   // 이전의 값을 캐시, 변경됐을때만 변경된값을 리턴한다.
   (posts, userId) => posts.filter((post: any) => post.userId === userId)
 );
-
 // actions
 export const { increaseCount, reactionAdded } = postsSlice.actions;
-
 // reducer
 export default postsSlice.reducer;

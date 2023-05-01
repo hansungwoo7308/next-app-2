@@ -1,18 +1,12 @@
 import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
 
-// import RequireAuth from "@/components/RequireAuth";
-
+// state
 // redux provider
 import { Provider } from "react-redux";
 import store from "lib/store/store";
 import { fetchUsers } from "lib/store/usersSlice";
 import { fetchPosts } from "lib/store/postsSlice";
-
-// api redux provider
-// import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
-// import { apiSlice } from "lib/utility/todosApiSlice";
-
 // session provider
 import { SessionProvider } from "next-auth/react";
 
@@ -21,48 +15,76 @@ import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 // import { NextPage } from "next";
 
-// GET request
-// console.log("store : ", store.getState());
+// fetch the data
 // store.dispatch(fetchUsers());
 // store.dispatch(fetchPosts());
 
-// set the interface for custom
+// set the interface
 interface MyAppProps extends AppProps {
-  something?: string;
+  auth?: Object;
 }
 
-const MyApp = ({ Component, pageProps, something }: MyAppProps) => {
-  // console.log("\x1b[33msomething : %s\x1b[0m", something);
-
+const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
+  // console.log("");
+  // console.log("\x1b[32m_app");
+  // console.log("");
   return (
     <>
-      {/* <ApiProvider api={apiSlice}> */}
       <Provider store={store}>
         <SessionProvider session={pageProps.session}>
           <Layout>
             <StyleComponent.GlobalStyle />
-            <Component {...pageProps} someting />
+            <Component {...pageProps} auth />
           </Layout>
         </SessionProvider>
       </Provider>
-      {/* </ApiProvider> */}
     </>
   );
 };
 
-// set the custom props of application
-MyApp.getInitialProps = async (AppContext: AppContext) => {
-  const appProps = await App.getInitialProps(AppContext);
-  // console.log("\x1b[33mcontext.AppTree : %s\x1b[0m", context.AppTree);
-  // console.log("\x1b[33mcontext.Component : %s\x1b[0m", context.Component);
-  // console.log("\x1b[33mcontext.router : %s\x1b[0m", context.router);
-  // console.log("\x1b[33mcontext.ctx : %s\x1b[0m", context.ctx);
+// MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (props) => {
+//   const { Component, ctx } = props;
+//   const pageProps = Component.getInitialProps
+//     ? await Component.getInitialProps(ctx)
+//     : {};
+//   //Anything returned here can be accessed by the client
+//   return { pageProps: pageProps, store: ctx.store };
+// });
 
-  return {
-    ...appProps,
-    something: "test...",
-  };
-};
+// set the custom props of application
+// MyApp.getInitialProps = wrapper.getInitialAppProps(
+//   (store: any) => async (AppContext: AppContext) => {
+//     console.log("store : ", store);
+//     // console.log("");
+//     // console.log("\x1b[32m_app initialize props");
+
+//     // auth
+//     const auth = { accessToken: "test..." };
+
+//     // console.log("AppTree : ", AppContext.AppTree);
+//     // console.log("Component : ", AppContext.Component);
+//     // console.log("ctx.req : ", Object.getOwnPropertyNames(AppContext.ctx.req));
+
+//     // const request: any = AppContext.ctx.req;
+//     // const cookies = request?.cookies;
+//     // console.log("cookies : ", cookies);
+
+//     // console.log("ctx.req.rawHeaders : ", AppContext.ctx.req?.rawHeaders);
+//     // console.log("ctx.res : ", Object.getOwnPropertyNames(AppContext.ctx.res));
+//     // console.log("ctx.pathname : ", AppContext.ctx.pathname);
+//     // console.log("ctx.query : ", AppContext.ctx.query);
+//     // console.log("router : ", AppContext.router);
+
+//     const appProps = await App.getInitialProps(AppContext);
+//     // console.log("appProps.pageProps : ", appProps.pageProps);
+//     // console.log("");
+
+//     return {
+//       ...appProps,
+//       auth,
+//     };
+//   }
+// );
 
 export default MyApp;
 

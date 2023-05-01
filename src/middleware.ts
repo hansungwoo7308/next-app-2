@@ -25,11 +25,33 @@ import { NextRequest, NextResponse } from "next/server";
 
 // backend에 요청하기 전에 처리하는 미들웨어
 export async function middleware(request: NextRequest) {
-  // const cookie = request.cookies;
-  // console.log("reuest : ", request);
-  // console.log("reuest.url : ", request.url);
-  // const cookie: any = request.cookies.get("refreshToken");
-  // console.log("cookie in middleware : ", cookie);
+  console.log("");
+  console.log("\x1b[32mmiddleware");
+  // console.log("cookies : ", request.cookies);
+  // console.log("cookies : ", request.cookies.getAll());
+  // console.log("refreshToken : ", request.cookies.get("refreshToken"));
+  // if (!request.cookies.get("accessToken"))
+  //   console.log("accessToken does not exist");
+
+  // console.log("request : ", Object.getOwnPropertyNames(request));
+  // console.log("request.credentials : ", request.credentials);
+  // const { authorization }: any = request.headers;
+  // console.log("authorization : ", authorization);
+  // console.log("request.credentials : ", typeof request.credentials);
+
+  // get
+  // const requestHeaders = new Headers(request.headers);
+  // const response = NextResponse.next();
+
+  // set
+  // console.log("request.headers.cookie : ", request.headers.get("cookie"));
+  // console.log("typeof request.headers : ", typeof request.headers);
+  // console.log("asdads : ", request.headers.get("Authorization"));
+  // console.log("test : ", test);
+  // requestHeaders.set("Authorization", "Bearer 1...");
+  // response.headers.set("Authorization", "Bearer 2...");
+  // response.cookies.set("vercel", "fast");
+
   // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
   // console.log("middleware...");
   // return NextResponse.next();
@@ -66,13 +88,17 @@ export async function middleware(request: NextRequest) {
   //   //   return NextResponse.rewrite(url);
   //   // }
   // }
+  console.log("");
+  // return response;
 }
 
 export const config = {
   // matcher: ["/:path*"],
   // matcher: ["/404"],
-  // matcher: ["/welcome"],
+  matcher: ["/welcome"],
   // matcher: ["/"],
+  // matcher: ["/api/users"],
+  // matcher: ["/user-list"],
   // matcher: ["/auth/admin"],
   // matcher: ["/about", "/auth/admin"],
 };

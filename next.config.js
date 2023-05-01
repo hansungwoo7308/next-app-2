@@ -5,38 +5,33 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
   },
 
+  // compiler: {
+  //   styledComponents:
+  // }
+
   // async headers() {
   //   return [
   //     {
-  //       // source: "/",
-  //       source: "/api/:path*",
-  //       headers:
-  //         // [
-  //         //   {
-  //         //     "Access-Control-Allow-Origin": "*",
-  //         //     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-  //         //     "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  //         //   },
-  //         // ],
-
-  //         [
-  //           {
-  //             key: "Access-Control-Allow-Origin",
-  //             value: "*",
-  //           },
-  //           {
-  //             key: "Access-Control-Allow-Methods",
-  //             value: "GET, POST, PUT, DELETE, OPTIONS",
-  //           },
-  //           {
-  //             key: "Access-Control-Allow-Methods",
-  //             value: "Content-Type, Authorization",
-  //           },
-  //           {
-  //             key: "Access-Control-Allow-Credentials",
-  //             value: "true",
-  //           },
-  //         ],
+  //       source: "/:path*",
+  //       // source: "/api/:path*",
+  //       headers: [
+  //         {
+  //           key: "Access-Control-Allow-Origin",
+  //           value: "*",
+  //         },
+  //         {
+  //           key: "Access-Control-Allow-Methods",
+  //           value: "GET, POST, PUT, DELETE, OPTIONS",
+  //         },
+  //         {
+  //           key: "Access-Control-Allow-Headers",
+  //           value: "Content-Type, Authorization",
+  //         },
+  //         {
+  //           key: "Access-Control-Allow-Credentials",
+  //           value: "true",
+  //         },
+  //       ],
   //     },
   //   ];
   // },

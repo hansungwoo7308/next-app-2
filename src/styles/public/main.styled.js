@@ -6,7 +6,8 @@ export const Main = styled.main`
     padding-left: 20px;
     padding-right: 20px;
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
     gap: 20px;
     > h1 {
       position: absolute;
@@ -14,7 +15,7 @@ export const Main = styled.main`
       right: 20px;
     }
     > div {
-      width: 100%;
+      width: 50%;
       min-height: 300px;
       outline: 3px solid green;
       padding: 20px;
@@ -23,21 +24,6 @@ export const Main = styled.main`
       justify-content: space-between;
       gap: 10px;
       color: green;
-      > div:first-of-type {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        word-break: break-all;
-      }
-      > div:last-of-type {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        > button {
-          padding: 20px;
-        }
-      }
     }
   }
 `;

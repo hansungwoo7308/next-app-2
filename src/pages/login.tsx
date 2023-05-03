@@ -12,7 +12,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 // style
 import { Main } from "../styles/login.styled";
 import { customAxios } from "lib/utility/customAxios";
-
 const Login = () => {
   // internal
   const userRef: any = useRef();
@@ -34,25 +33,26 @@ const Login = () => {
   // external
   const [login, { isLoading }] = useLoginMutation();
   // console.log("useLoginMutation() : ", useLoginMutation());
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      // request the authentication from backend
-      const loggedInUser = await login({ username, password }).unwrap();
+      // login by rtk query
       // unwrap : payload를 추출한다.
+      const loggedInUser = await login({ username, password }).unwrap();
+      // login by customAxios
       // const result = await customAxios.post("/api/authentication", {
       //   username,
       //   password,
       // });
       // const loggedInUser = await result.data;
       // console.log("loggedInUser : ", loggedInUser);
-
-      // update the client redux store
+      // set the store
       await dispatch(setCredentials({ ...loggedInUser, username }));
+      // set the state
       setUsername("");
       setPassword("");
-      router.push("/welcome");
+      // move to homepage
+      router.push("/");
     } catch (err: any) {
       console.log("error : ", err);
       // if (!err?.originalStatus) {
@@ -67,14 +67,12 @@ const Login = () => {
       // }
     }
   };
-
   // nextauth
   // const { data: session, status } = useSession();
   // useEffect(() => {
   //   console.log("session : ", session);
   //   console.log("status : ", status);
   // }, [status]);
-
   return (
     <>
       <Head>

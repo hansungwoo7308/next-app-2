@@ -3,7 +3,6 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 // external
-import TodoList from "@/components/TodoList";
 import { customAxios } from "lib/utility/customAxios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,6 +16,8 @@ import {
   useRefreshMutation,
   useLogoutMutation,
 } from "lib/utility/authApiSlice";
+import refreshTokens from "lib/utility/refreshTokens";
+// import TodoList from "@/components/TodoList";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 let renderCount = 0;
@@ -24,10 +25,19 @@ renderCount++;
 export const getServerSideProps = (context: any) => {
   // const serverCookies = context.req.cookies;
   // console.log("serverCookies : ", serverCookies);
-  const request = context.req;
-  const requestProps = Object.getOwnPropertyNames(context.req);
-  const authorization = request.headers.authorization || undefined;
-  console.log("authorization : ", authorization);
+  // const requestProps = Object.getOwnPropertyNames(context.req);
+  // let authorization =
+  //   context.req.headers.authorization || context.req.headers.Authorization;
+  console.log("");
+  console.log("\x1b[32m[Server]/pages/home");
+  // console.log(
+  //   "context.req.headers.Authorization : ",
+  //   context.req.headers.Authorization
+  // );
+  // context.req.headers.authorization = "askdhfdlshfls";
+  // console.log("context.req.headers : ", context.req.headers);
+  // console.log("authorization : ", authorization);
+  console.log("");
   return {
     props: {
       // serverCookies,
@@ -85,7 +95,29 @@ const Home = () => {
       console.log("error : ", error);
     }
   };
-
+  // const setTokens = async () => {
+  //   try {
+  //     const result = await customAxios.get("/api/authentication/refresh");
+  //     const refreshUser = await result.data;
+  //     console.log("refreshUser : ", refreshUser);
+  //     dispatch(setCredentials(refreshUser));
+  //   } catch (error) {
+  //     console.log("error : ", error);
+  //   }
+  // };
+  const handleSetAuth = async () => {
+    // refresh the tokens (from server)
+    // 새로운 토큰으로 갱신하고 새롭게 갱신된 사용자 데이터(토큰, 페이로드)를 받아온다.
+    const refreshUser = await refreshTokens(accessToken, refreshToken);
+    // set the store (to client)
+    // 새롭게 갱신된 사용자 데이터를 클라이언트 스토어에 저장한다.
+    await dispatch(setCredentials({ ...refreshUser }));
+  };
+  useEffect(() => {
+    // setTokens();
+    handleSetAuth();
+    // console.log("accessToken : ", accessToken);
+  }, []);
   return (
     <>
       <Head>

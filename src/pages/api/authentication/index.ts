@@ -1,11 +1,9 @@
 import User from "lib/core/model/User";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
-
 export default async function handler(req: any, res: any) {
   console.log("");
-  console.log("api/authentication");
-
+  console.log("\x1b[32m[Server]/api/authentication");
   // get the request
   const cookies = req.cookies;
   console.log("refreshToken : ", cookies.refreshToken);
@@ -16,7 +14,6 @@ export default async function handler(req: any, res: any) {
       .json({ message: "Username and Password are required." });
   // console.log("username : ", username);
   // console.log("password : ", password);
-
   // connect to db
   try {
     const URI: any = process.env.MONGODB_URI;
@@ -25,7 +22,6 @@ export default async function handler(req: any, res: any) {
   } catch (error) {
     console.log("connection error : ", error);
   }
-
   // find the username
   const foundUser = await User.findOne({ username }).exec();
   // console.log("foundUser : ", foundUser);
@@ -33,11 +29,9 @@ export default async function handler(req: any, res: any) {
     return res
       .status(401)
       .json({ message: "Your name was not found in database." });
-
   // evaluate the password
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
-
   // issue the tokens
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
   const accessToken = jwt.sign(
@@ -52,13 +46,11 @@ export default async function handler(req: any, res: any) {
     REFRESH_TOKEN_SECRET,
     { expiresIn: "10m" }
   );
-
   // save the issued tokens
   foundUser.accessToken = accessToken;
   foundUser.refreshToken = newRefreshToken;
   const savedUser = await foundUser.save();
   console.log("savedUser : ", savedUser);
-
   // set the response
   res.setHeader("Set-Cookie", [
     `accessToken=${accessToken};path=/`,

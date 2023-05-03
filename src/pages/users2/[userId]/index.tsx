@@ -13,7 +13,7 @@ export async function getServerSideProps(context: any) {
   const user: Promise<User> = await getUser(userId);
   const userPosts: Promise<Post[]> = await getUserPosts(userId);
   console.log("");
-  console.log("\x1b[32mpages/user2 [Server]");
+  console.log("\x1b[32m[Server]/pages/user2");
   console.log("");
   //   if (!) {
   //   return {
@@ -32,7 +32,7 @@ export async function getServerSideProps(context: any) {
 }
 export default function User2({ user, userPosts }: any) {
   console.log("");
-  console.log("\x1b[32mpages/user2 [Client]");
+  console.log("\x1b[32m[Client]/pages/user2");
   console.log("");
   //   console.log("user : ", user);
   //   console.log("userPosts : ", userPosts);

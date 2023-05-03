@@ -19,55 +19,55 @@
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
-
 import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
-
-// backend에 요청하기 전에 처리하는 미들웨어
 export async function middleware(request: NextRequest) {
-  console.log("");
-  console.log("\x1b[32mmiddleware");
+  // console.log("");
+  // console.log("\x1b[32mmiddleware");
+  // request.headers.set("Authorization", "Bearer 3...");
+  // console.log("request.headers : ", request.headers);
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("Authorization", "Bearer hfsldfhskdlfhl");
+  // console.log("requestHeaders : ", requestHeaders);
+
   // console.log("cookies : ", request.cookies);
   // console.log("cookies : ", request.cookies.getAll());
   // console.log("refreshToken : ", request.cookies.get("refreshToken"));
   // if (!request.cookies.get("accessToken"))
   //   console.log("accessToken does not exist");
-
   // console.log("request : ", Object.getOwnPropertyNames(request));
   // console.log("request.credentials : ", request.credentials);
   // const { authorization }: any = request.headers;
   // console.log("authorization : ", authorization);
   // console.log("request.credentials : ", typeof request.credentials);
-
-  // get
-  // const requestHeaders = new Headers(request.headers);
-  // const response = NextResponse.next();
-
   // set
   // console.log("request.headers.cookie : ", request.headers.get("cookie"));
   // console.log("typeof request.headers : ", typeof request.headers);
   // console.log("asdads : ", request.headers.get("Authorization"));
   // console.log("test : ", test);
-  // requestHeaders.set("Authorization", "Bearer 1...");
   // response.headers.set("Authorization", "Bearer 2...");
+  // console.log("response : ", response);
   // response.cookies.set("vercel", "fast");
-
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+  response.headers.set("test", "test");
+  // console.log("");
+  return response;
   // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
-  // console.log("middleware...");
-  // return NextResponse.next();
   // const { pathname } = request.nextUrl;
   // const protectedPaths = ["/auth/admin"];
   // const matchesProtectedPath = protectedPaths.some((path) =>
   //   pathname.startsWith(path)
   // );
-  // console.log("");
-  // console.log("\x1b[32mMiddleware\x1b[0m");
   // // console.log("pathname : ", pathname);
   // // console.log("matchesProtectedPath : ", matchesProtectedPath);
   // // const token = await getToken({ req: request });
   // // console.log("token : ", token);
   // console.log("request.url : ", request.url);
-  // console.log("");
   // if (matchesProtectedPath) {
   //   const token = await getToken({ req: request });
   //   if (!token) {
@@ -88,15 +88,11 @@ export async function middleware(request: NextRequest) {
   //   //   return NextResponse.rewrite(url);
   //   // }
   // }
-  console.log("");
   // return response;
 }
-
 export const config = {
+  matcher: ["/"],
   // matcher: ["/:path*"],
-  // matcher: ["/404"],
-  matcher: ["/welcome"],
-  // matcher: ["/"],
   // matcher: ["/api/users"],
   // matcher: ["/user-list"],
   // matcher: ["/auth/admin"],

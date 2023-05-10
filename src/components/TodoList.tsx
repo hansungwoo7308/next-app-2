@@ -5,13 +5,13 @@ import {
   useAddTodoMutation,
 } from "lib/utility/todosApiSlice";
 import { useEffect, useState } from "react";
-
+import { Box } from "@/styles/components/TodoList.styled";
 let renderCount = 0;
-
-const TodoList = () => {
+export default function TodoList() {
+  // internal
   const [newTodo, setNewTodo] = useState("");
   const [content, setContent]: any = useState();
-
+  // external
   const {
     data: todos,
     isLoading,
@@ -20,18 +20,15 @@ const TodoList = () => {
     error,
   }: any = useGetTodosQuery();
   //   console.log("test : ", useGetTodosQuery({ query: "todos" }));
-
   const [addTodo] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     addTodo({ userId: 1, id: 100, title: newTodo, completed: false });
     setNewTodo("");
     console.log("todos : ", todos);
   };
-
   const newItemSection = (
     <form onSubmit={handleSubmit}>
       <label htmlFor="new-todo">Enter a new todo item</label>
@@ -49,7 +46,6 @@ const TodoList = () => {
       </div>
     </form>
   );
-
   useEffect(() => {
     // console.log(todos);
     if (isLoading) {
@@ -84,16 +80,13 @@ const TodoList = () => {
       setContent(<h1 style={{ color: "red" }}>{error.message}</h1>);
     }
   }, [todos]);
-
   renderCount++;
-
   return (
-    <div className="todos">
+    <Box>
       <h1>renderCount : {renderCount}</h1>
       <h1>Todo List</h1>
       <div>{newItemSection}</div>
       <div>{content}</div>
-    </div>
+    </Box>
   );
-};
-export default TodoList;
+}

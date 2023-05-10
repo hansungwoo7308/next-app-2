@@ -1,27 +1,20 @@
 import { useSelector } from "react-redux";
 import { selectPostById } from "lib/store/postsSlice";
-
 import PostAuthor from "@/components/posts/PostAuthor";
 import Time from "@/components/posts/Time";
 import Reactions from "@/components/posts/Reactions";
-
 import { useRouter } from "next/router";
 import Link from "next/link";
-
-const PostItem = () => {
+export default function PostItem() {
   const router = useRouter();
   const { id } = router.query;
-
   const post = useSelector((state) => selectPostById(state, Number(id)));
-
-  if (!post) {
+  if (!post)
     return (
       <div>
         <h2>Post not found!</h2>
       </div>
     );
-  }
-
   return (
     <>
       <main className="post-item">
@@ -44,5 +37,4 @@ const PostItem = () => {
       </main>
     </>
   );
-};
-export default PostItem;
+}

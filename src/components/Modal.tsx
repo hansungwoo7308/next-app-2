@@ -1,47 +1,42 @@
-import { useRef, useState } from "react";
-
-const Modal = ({ modalRef, createPost, closeModal, getPosts }: any) => {
-  const titleRef: any = useRef();
-  const contentRef: any = useRef();
-
-  // inputs
-  // const [title, setTitle] = useState();
-  // const [content, setContent] = useState();
-
+import { useState } from "react";
+import { Box } from "@/styles/components/Modal.styled";
+export default function Modal({ modalRef, createPost, closeModal }: any) {
+  // internal
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const create = (e: any) => {
     e.preventDefault();
-    const title = titleRef.current.value;
-    const content = contentRef.current.value;
+    // external
     createPost({ title, content });
     closeModal();
-    getPosts();
+    // internal
+    setTitle("");
+    setContent("");
   };
-
   return (
-    <div className="modal" ref={modalRef}>
-      <form>
+    <Box ref={modalRef}>
+      <form onSubmit={create}>
         <div>
           <input
             type="text"
             name="title"
             id="title"
-            ref={titleRef}
             placeholder="Title"
+            value={title}
+            onChange={(e: any) => setTitle(e.target.value)}
           />
-          <div></div>
           <textarea
             name="content"
             id="content"
             cols={30}
             rows={10}
-            ref={contentRef}
             placeholder="Content"
+            value={content}
+            onChange={(e: any) => setContent(e.target.value)}
           ></textarea>
         </div>
-        <button onClick={create}>Create a post</button>
+        <button>Create a post</button>
       </form>
-    </div>
+    </Box>
   );
-};
-
-export default Modal;
+}

@@ -1,12 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export const apiSlice = createApi({
-  // 다리역할을 해줄 api name을 설정한다.
-  // redux store path
-  // just default
-  reducerPath: "api",
-
-  // query할 baseUrl을 설정한다.
+export const todosApiSlice = createApi({
+  reducerPath: "todosApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api" }),
 
   // cached data
@@ -54,11 +48,10 @@ export const apiSlice = createApi({
     }),
   }),
 });
-
 // api actions
 export const {
   useGetTodosQuery,
   useAddTodoMutation,
   useUpdateTodoMutation,
   useDeleteTodoMutation,
-}: any = apiSlice;
+}: any = todosApiSlice;

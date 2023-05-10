@@ -1,17 +1,14 @@
 import Link from "next/link";
 import Nav from "../Nav";
 import AuthButton from "../AuthButton";
-
-const Header = () => {
+export default function Header() {
   return (
     <header>
       <section>
         <Link href={"/"}>LOGO</Link>
         <Nav />
-        <AuthButton />
+        {/* <AuthButton /> */}
       </section>
     </header>
   );
-};
-
-export default Header;
+}

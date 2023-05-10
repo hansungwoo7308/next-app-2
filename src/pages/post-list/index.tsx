@@ -5,19 +5,15 @@ import {
   getPostsStatus,
   getPostsError,
 } from "lib/store/postsSlice";
-
 import { useEffect, useState } from "react";
-
 let renderCount = 0;
-
-const PostList = () => {
+export default function PostList() {
   // internal data
   const [content, setContent]: any = useState("");
   // external data
   const orderedPostIds = useSelector(selectPostIds);
   const postStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
-
   useEffect(() => {
     if (postStatus === "loading") {
       setContent("loading");
@@ -33,9 +29,7 @@ const PostList = () => {
       setContent("idle");
     }
   }, [orderedPostIds]);
-
   renderCount++;
-
   return (
     <>
       <main className="post-list">
@@ -58,6 +52,4 @@ const PostList = () => {
       </main>
     </>
   );
-};
-
-export default PostList;
+}

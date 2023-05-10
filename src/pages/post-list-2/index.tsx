@@ -1,4 +1,3 @@
-// modules
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -102,7 +101,16 @@ export default function Posts({ itemsWithContents }: any) {
     }
     getPosts();
   };
-  const deletePost = async () => {};
+  const deletePost = async (title: any) => {
+    // console.log("title : ", title);
+    try {
+      const result = await axios.delete("/api/posts", { data: { title } });
+      console.log("delete result : ", result);
+    } catch (error) {
+      console.log("delete error : ", error);
+    }
+    getPosts();
+  };
   const openModal = () => {
     modalBackgroundRef.current.style.display = "block";
     modalBackgroundRef.current.style.background = "rgba(0,0,0,0.5)";
@@ -125,18 +133,24 @@ export default function Posts({ itemsWithContents }: any) {
           <h1>renderCount : {renderCount}</h1>
           <div>
             <ul>
-              {
-                posts.map((post: any, index: any) => (
-                  <li key={index}>
+              {posts.map((post: any, index: any) => (
+                <li key={index}>
+                  <Link href={`post-list-2/${post.title}`}>
                     <h3>{post.title}</h3>
-                    <p>{post.content}</p>
-                  </li>
-                ))
-                // .slice(0, 10)
-              }
+                  </Link>
+                  <p>{post.content}</p>
+                  <button
+                    onClick={(e: any) => {
+                      e.preventDefault();
+                      deletePost(post.title);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
             </ul>
             <div>
-              {/* <button onClick={getPosts}>Get data</button> */}
               <button onClick={openModal}>Create a post</button>
             </div>
           </div>
@@ -147,12 +161,6 @@ export default function Posts({ itemsWithContents }: any) {
             closeModal={closeModal}
           />
         </section>
-        {/* {itemsWithContents.map((item: any, index: any) => (
-              <Link key={index} href={`/posts/${item.slug}`}>
-                <h3>{item.date}</h3>
-                <h1>{item.title}</h1>
-              </Link>
-            ))} */}
       </Main>
     </>
   );

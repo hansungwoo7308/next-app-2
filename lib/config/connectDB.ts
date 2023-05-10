@@ -52,15 +52,16 @@ if (!cached) {
 }
 
 async function connectDB() {
-  console.log("");
+  // console.log("\x1b[32m");
+  // console.log("[Server-Database]Connecting...");
   // cached connection
   if (cached.conn) {
     // console.log("cached connections : ", cached.conn.connections);
     const connections = cached.conn.connections;
-    console.log("cached connections : ", Object.keys(connections[0]));
+    // console.log("connections[0].$dbName : ", connections[0].$dbName);
+    // console.log("connections[0].models : ", connections[0].models);
+    // console.log("cached connections : ", Object.keys(connections[0]));
     // console.log("connections[0] : ", connections[0]);
-    console.log("connections[0].$dbName : ", connections[0].$dbName);
-    console.log("connections[0].models : ", connections[0].models);
     // console.log("connections[0].db : ", connections[0].db);
     // console.log("connections[0].collections : ", connections[0].collections);
     // console.log("cached connections : ");
@@ -74,13 +75,13 @@ async function connectDB() {
   // new connection
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
-      console.log("new connections : ", mongoose);
+      // console.log("new connections : ", mongoose);
       return mongoose;
     });
   }
   cached.conn = await cached.promise;
   // console.log("cached.conn : ", cached.conn);
-  console.log("");
+  // console.log("");
   return cached.conn;
 }
 

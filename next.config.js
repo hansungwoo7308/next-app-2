@@ -5,6 +5,17 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
   },
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
+
   // compiler: {
   //   styledComponents:
   // }
@@ -15,10 +26,10 @@ const nextConfig = {
       {
         source: "/:path*",
         headers: [
-          {
-            key: "x-custom-header",
-            value: "custom value",
-          },
+          // {
+          //   key: "x-custom-header",
+          //   value: "custom value",
+          // },
           // {
           //   key: "Authorization",
           //   value: "bearer test",
@@ -28,6 +39,7 @@ const nextConfig = {
           {
             key: "Access-Control-Allow-Origin",
             value: "*",
+            // value: "http://localhost:3000",
           },
           {
             key: "Access-Control-Allow-Methods",

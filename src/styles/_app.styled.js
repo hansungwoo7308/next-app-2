@@ -1,12 +1,10 @@
 import { createGlobalStyle } from "styled-components";
-
 export const GlobalStyle = createGlobalStyle`
   // initialization
   :root {
     --color-main: #00704a;
     --color-focus: coral;
   }
-
   * {
     margin: 0;
     padding: 0;
@@ -14,17 +12,14 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
     /* outline: 1px solid; */
   }
-
   html, body {
     max-width: 100vw;
     /* overflow-x: hidden; */
   }
-
   a {
   color: inherit;
   text-decoration: none;
   }
-
   button {
     border: none;
     background-color: lightgray;
@@ -34,15 +29,12 @@ export const GlobalStyle = createGlobalStyle`
       color: white;
     }
   }
-
   textarea {
     resize: none;
   }
-
   li {
     list-style: none;
   }
-
   // header, navigation
   header {
     width: 100%;
@@ -59,6 +51,15 @@ export const GlobalStyle = createGlobalStyle`
       height: 100%;
       display: flex;
       justify-content: space-between;
+      > form {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        > input {
+          height: 50%;
+          padding: 10px;
+        }
+      }
     }
     ul, li, a {
       height: 100%;
@@ -101,7 +102,6 @@ export const GlobalStyle = createGlobalStyle`
       color: #fff;
     }
   }
-
   // common
   main {
     display: flex;
@@ -119,7 +119,6 @@ export const GlobalStyle = createGlobalStyle`
       padding-top: 50px;
     }
   }
-
   // pages
   .signin {
     /* outline: 3px solid blue; */
@@ -165,7 +164,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 
   }
-
   .signup {
     section {
       position: relative;
@@ -215,14 +213,12 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-
   .admin {
     section {
       flex-direction: column;
       gap: 15px;
     }
   }
-
   .blogs {
     section {
       div {
@@ -251,71 +247,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 
   }
-  
-  .posts {
-    > section {
-      position: relative;
-      > div:nth-child(1) {
-        width: 80%;
-        height: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 20px;
-        border: 2px solid coral;
-        gap: 20px;
-        > ul {
-          height: 70%;
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
-          list-style: none;
-          /* border: 2px solid red; */
-          > li {
-            border: 2px solid;
-          }
-        }
-        > div {
-          display: flex;
-          justify-content: center;
-          gap: 20px;
-          padding: 20px;
-          button {
-            width: 200px;
-            height: 30px;
-            border: none;
-            background-color: lightgray;
-            cursor: pointer;
-            :hover {
-              background-color: black;
-              color: white;
-            }
-          }
-        }
-      }
-      > div:nth-child(2) {
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        display: none;
-        outline: 2px solid red;
-      }
-      /* a {
-        outline: 3px solid;
-        border-radius: 5px;
-        padding: 10px;
-        :hover, :focus {
-          outline: 3px solid coral;
-        }
-        
-      } */
-    }
-
-  }
-
   .posts-slug, .blog {
     section {
       height: unset;
@@ -340,7 +271,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 
   }
-
   .blogs-create {
     section {
       flex-direction: column;
@@ -392,7 +322,6 @@ export const GlobalStyle = createGlobalStyle`
 
 
   }
-
   // post-list page (나중에 posts로 변경할 계획)
   .post-list {
     > section {
@@ -420,7 +349,6 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-
   .post-item {
     > section {
       > div {
@@ -445,7 +373,6 @@ export const GlobalStyle = createGlobalStyle`
     .edit {
     }
   }
-
   .add-post {
     > section {
       /* flex-direction: column; */
@@ -479,7 +406,6 @@ export const GlobalStyle = createGlobalStyle`
     }
 
   }
-
   .edit-post {
     .edit-post-form {
       outline: 2px solid coral;
@@ -506,7 +432,6 @@ export const GlobalStyle = createGlobalStyle`
 
     }
   }
-
   // users page
   .users {
     > section {
@@ -521,7 +446,6 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-  
   .user {
     > section {
       > div {
@@ -532,13 +456,11 @@ export const GlobalStyle = createGlobalStyle`
 
     }
   }
-  
   // components
   .auth-button {
     display: flex;
     gap: 40px;
   }
-
   .slider {
     width: 300px;
     height: 300px;
@@ -633,59 +555,11 @@ export const GlobalStyle = createGlobalStyle`
       :hover .dot {
         display: block;
       }
-
       .current-dot {
         background-color: coral;
       }
     }
   }
-
-  .modal {
-    width: 70%;
-    height: 70%;
-    position: absolute;
-    background-color: white;
-    outline: 2px solid coral;
-    padding: 20px;
-    display: none;
-    > form {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      /* outline: 2px solid blue; */
-      > div {
-        width: 100%;
-        height: 90%;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        /* border: 20px solid pink; */
-        > input {
-          width: 100%;
-          height: 30px;
-          padding: 10px;
-        }
-        > textarea {
-          width: 100%;
-          height: 80%;
-          padding: 10px;
-        }
-      }
-      > button {
-        width: 200px;
-        height: 40px;
-        /* border: 20px solid pink; */
-
-      }
-
-    
-
-
-    }
-
-  }
-
   .add-post-form {
     outline: 2px solid coral;
     display: flex;
@@ -704,7 +578,6 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-
   .todos {
     height: 100%;
     display: flex;
@@ -737,7 +610,4 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-
-  
-
 `;

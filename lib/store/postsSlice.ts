@@ -17,7 +17,6 @@ interface Post {
   title: String;
   content: String;
 }
-
 interface State {
   // posts: Post[];
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -44,7 +43,6 @@ const initialState: any = postsAdapter.getInitialState({
 const postsSlice: any = createSlice({
   name: "posts",
   initialState,
-
   // sync process
   reducers: {
     reactionAdded(state, action) {
@@ -64,7 +62,6 @@ const postsSlice: any = createSlice({
       state.count = state.count + 1;
     },
   },
-
   // async process
   extraReducers(builder) {
     // console.log("builder : ", builder);

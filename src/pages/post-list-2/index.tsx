@@ -1,82 +1,54 @@
+import Head from "next/head";
+import Link from "next/link";
+import fs from "fs";
+import matter from "gray-matter";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import Head from "next/head";
-import Modal from "../../components/Modal";
 import axios from "axios";
+import Modal from "../../components/Modal";
 import { Main } from "@/styles/posts.styled";
-import Link from "next/link";
+import { GetStaticPropsContext } from "next";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
-
-// import fs from "fs";
-// import matter from "gray-matter";
 // // import { PostMetaData } from "types/postMetaData";
 // import { PostMetaData } from "../../../types/PostMetaData";
-// export const getStaticPaths = (context: any) => {
-//   // const slugs = markDownPosts.map((file) => file.replace(".md", ""));
-//   // const slugsWithFullPath = slugs.map((slug) => "/posts/" + slug);
-//   // const slugsWithParams = slugs.map((slug) => ({
-//   //   params: {
-//   //     slug: slug,
-//   //   },
-//   // }));
-//   console.log("");
-//   //   console.log("\x1b[32mfiles : %s\x1b[0m", files);
-//   //   console.log("\x1b[32mmarkDownPosts : %s\x1b[0m", markDownPosts);
-//   //   console.log("\x1b[32mslugs : %s\x1b[0m", slugs);
-//   // console.log("\x1b[32mslugsWithDir : %s\x1b[0m", slugsWithFullPath);
-//   // console.log("\x1b[32mslugsWithParams : %s\x1b[0m", slugsWithParams);
-//   console.log("");
-//   return {
-//     // paths: [{ params: { slug: "data1" } }],
-//     //   paths: slugsWithParams,
-//     paths: [
-//       "/posts",
-//       //   "/posts/data2",
-//       //   "/posts/data3",
-//       //   "/posts/data4",
-//       //   "/posts/data5",
-//     ],
-//     fallback: false,
-//   };
-// };
-// export const getStaticProps = (context: any) => {
-//   // get the files
-//   const files = fs.readdirSync("data/");
-//   // get the files with markdown
-//   const filesWithMarkDown = files.filter((file) => file.endsWith(".md"));
-//   // get items with the contents from third party library
-//   const itemsWithContents: PostMetaData[] = filesWithMarkDown.map(
-//     (fileName) => {
-//       const contents = fs.readFileSync(`data/${fileName}`, "utf-8");
-//       const matterResult = matter(contents);
-//       // return an item
-//       return {
-//         title: matterResult.data.title,
-//         date: matterResult.data.date,
-//         subtitle: matterResult.data.subtitle,
-//         slug: fileName.replace(".md", ""),
-//       };
-//     }
-//   ) as [];
-//   //   console.log("\x1b[32mcontext in getStaticProps : %s\x1b[0m", context);
-//   //   console.log("\x1b[32mcontext : %s\x1b[0m", context);
-//   //   console.log("\x1b[32mfiles : %s\x1b[0m", files);
-//   //   console.log("\x1b[32mfilesWithMarkDown : %s\x1b[0m", filesWithMarkDown);
-//   //   console.log("\x1b[32mposts : %s\x1b[0m", posts);
-//   // console.log("");
-//   // itemsWithContents.map((item) =>
-//   //   console.log("\x1b[32mitem : %s\x1b[0m", item)
-//   // );
-//   // console.log("files : ", files);
-//   // console.log("");
-//   return {
-//     props: {
-//       itemsWithContents,
-//     },
-//   };
-// };
-// variables
+export const getStaticProps = (context: GetStaticPropsContext) => {
+  console.log("\x1b[32m");
+  console.log("[Server:getStaticProps]/pages/post-list-2");
+  // get the filenames
+  const filenames: Array<string> = fs.readdirSync("data/posts");
+  // console.log("filenames : ", filenames);
+  // get the filenames with markdown
+  const filenamesWithMarkdown: Array<string> = filenames.filter((filename) =>
+    filename.endsWith(".md")
+  );
+  // console.log("filenamesWithMarkdown : ", filenamesWithMarkdown);
+  // get items with the contents from third party library
+  const itemsWithContents: Array<object> = filenamesWithMarkdown.map(
+    (filename) => {
+      const contents = fs.readFileSync(`data/posts/${filename}`, "utf-8");
+      const matterResult = matter(contents);
+      // console.log(`${filename} contents : `, contents);
+      // console.log(`${filename} mattered contents : `, matterResult);
+
+      // return an item
+      return {
+        title: matterResult.data.title,
+        date: matterResult.data.date,
+        filename: filename.replace(".md", ""),
+        // subtitle: matterResult.data.subtitle,
+        // slug: filename.replace(".md", ""),
+      };
+    }
+  );
+  console.log("itemsWithContents : ", itemsWithContents);
+  console.log("");
+  return {
+    props: {
+      itemsWithContents,
+    },
+  };
+};
 let renderCount = 0;
 renderCount++;
 export default function Posts({ itemsWithContents }: any) {
@@ -120,9 +92,10 @@ export default function Posts({ itemsWithContents }: any) {
     modalBackgroundRef.current.style.display = "none";
     modalRef.current.style.display = "none";
   };
-  useEffect(() => {
-    getPosts();
-  }, []);
+  // useEffect(() => {
+  //   getPosts();
+  // }, []);
+  renderCount++;
   return (
     <>
       <Head>
@@ -133,7 +106,23 @@ export default function Posts({ itemsWithContents }: any) {
           <h1>renderCount : {renderCount}</h1>
           <div>
             <ul>
-              {posts.map((post: any, index: any) => (
+              {itemsWithContents.map((item: any, index: any) => (
+                <li key={index}>
+                  <h5>{item.date}</h5>
+                  <Link href={`post-list-2/${item.filename}`}>
+                    <h3>{item.title}</h3>
+                  </Link>
+                  {/* <button
+                    onClick={(e: any) => {
+                      e.preventDefault();
+                      // deletePost(post.title);
+                    }}
+                  >
+                    Delete
+                  </button> */}
+                </li>
+              ))}
+              {/* {posts.map((post: any, index: any) => (
                 <li key={index}>
                   <Link href={`post-list-2/${post.title}`}>
                     <h3>{post.title}</h3>
@@ -148,18 +137,18 @@ export default function Posts({ itemsWithContents }: any) {
                     Delete
                   </button>
                 </li>
-              ))}
+              ))} */}
             </ul>
             <div>
               <button onClick={openModal}>Create a post</button>
             </div>
           </div>
-          <div ref={modalBackgroundRef} onClick={closeModal} />
+          {/* <div ref={modalBackgroundRef} onClick={closeModal} />
           <Modal
             modalRef={modalRef}
             createPost={createPost}
             closeModal={closeModal}
-          />
+          /> */}
         </section>
       </Main>
     </>

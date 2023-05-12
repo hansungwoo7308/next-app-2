@@ -4,7 +4,6 @@ import fs from "fs";
 import matter from "gray-matter";
 import { Blog } from "types/interfaces/Blog";
 import { useEffect, useRef } from "react";
-
 export const getStaticProps = (context: any) => {
   // get the filenames
   const filenames = fs
@@ -21,7 +20,6 @@ export const getStaticProps = (context: any) => {
       date: matterResult.data.date,
     };
   });
-
   // console.log("");
   // console.log("\x1b[32mitems : %s\x1b[0m", items);
   // console.log("\x1b[32mgetStaticProps running well...\x1b[0m");
@@ -32,10 +30,8 @@ export const getStaticProps = (context: any) => {
     },
   };
 };
-
-const Blogs = ({ items }: any) => {
+export default function Blogs({ items }: any) {
   const blogRef: any = useRef();
-
   useEffect(() => {
     blogRef.current.focus();
     // blogRef.current.addEventListener("keydown", (e:any) => {
@@ -49,7 +45,6 @@ const Blogs = ({ items }: any) => {
     //   }
     // });
   }, []);
-
   useEffect(() => {
     const event: any = function (e: any) {
       if (e.key === "ArrowDown") {
@@ -102,6 +97,4 @@ const Blogs = ({ items }: any) => {
       </main>
     </>
   );
-};
-
-export default Blogs;
+}

@@ -22,13 +22,22 @@
 import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
 export async function middleware(request: NextRequest) {
-  // console.log("");
-  // console.log("\x1b[32mmiddleware");
+  console.log("\x1b[32m");
+  console.log("[Server]/middleware");
+  console.log("request.method : ", request.method);
+  console.log("request.url : ", request.url);
+  const origin = request.headers.get("origin");
+  // console.log("origin : ", origin);
+
+  const regex = new RegExp("/post-list-2");
+  // console.log("regex : ", regex);
+  const a = regex.test(request.url);
+  console.log("a : ", a);
   // request.headers.set("Authorization", "Bearer 3...");
   // console.log("request.headers : ", request.headers);
 
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("Authorization", "Bearer hfsldfhskdlfhl");
+  // const requestHeaders = new Headers(request.headers);
+  // requestHeaders.set("Authorization", "Bearer hfsldfhskdlfhl");
   // console.log("requestHeaders : ", requestHeaders);
 
   // console.log("cookies : ", request.cookies);
@@ -49,14 +58,15 @@ export async function middleware(request: NextRequest) {
   // response.headers.set("Authorization", "Bearer 2...");
   // console.log("response : ", response);
   // response.cookies.set("vercel", "fast");
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-  response.headers.set("test", "test");
-  // console.log("");
-  return response;
+  // const response = NextResponse.next({
+  //   request: {
+  //     headers: requestHeaders,
+  //   },
+  // });
+  // response.headers.set("test", "test");
+  console.log("");
+  return NextResponse.next();
+  // return response;
   // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
   // const { pathname } = request.nextUrl;
   // const protectedPaths = ["/auth/admin"];
@@ -91,8 +101,7 @@ export async function middleware(request: NextRequest) {
   // return response;
 }
 export const config = {
-  matcher: ["/"],
-  // matcher: ["/:path*"],
+  matcher: ["/", "/post-list-2"],
   // matcher: ["/api/users"],
   // matcher: ["/user-list"],
   // matcher: ["/auth/admin"],

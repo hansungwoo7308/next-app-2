@@ -1,7 +1,6 @@
 import fs from "fs";
 import matter from "gray-matter";
 import Markdown from "markdown-to-jsx";
-
 export const getStaticPaths = (context: any) => {
   const files = fs.readdirSync("data/");
   const markDownPosts = files.filter((file) => file.endsWith(".md"));
@@ -22,7 +21,6 @@ export const getStaticPaths = (context: any) => {
   // );
   // console.log("\x1b[32mslugsWithParams : %s\x1b[0m", slugsWithParams);
   // console.log("");
-
   return {
     // paths: [{ params: { slug: "data1" } }],
     paths: slugsWithParams,
@@ -36,7 +34,6 @@ export const getStaticPaths = (context: any) => {
     fallback: false,
   };
 };
-
 export const getStaticProps = (context: any) => {
   const content = fs.readFileSync(`data/${context.params.slug}.md`, "utf8");
   const matterResult = matter(content);
@@ -53,14 +50,12 @@ export const getStaticProps = (context: any) => {
     },
   };
 };
-
-const Slug = ({ content, title, date }: any) => {
+export default function Slug({ content, title, date }: any) {
   //   console.log("");
   //   console.log("\x1b[32mslug : %s\x1b[0m", slug);
   //   console.log("");
-
   return (
-    <div>
+    <>
       <main className="blog">
         <section>
           <div>
@@ -70,8 +65,6 @@ const Slug = ({ content, title, date }: any) => {
           </div>
         </section>
       </main>
-    </div>
+    </>
   );
-};
-
-export default Slug;
+}

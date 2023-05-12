@@ -4,7 +4,7 @@ import Head from "next/head";
 // external
 import getAllUsers from "lib/utility/getAllUsers";
 import { Main } from "@/styles/users2.styled";
-export const getServerSideProps = async (context: any) => {
+export async function getServerSideProps(context: any) {
   const users: Promise<User[]> = await getAllUsers();
   console.log("");
   console.log("\x1b[32mpages/users2 [Server]");
@@ -22,7 +22,7 @@ export const getServerSideProps = async (context: any) => {
       users,
     },
   };
-};
+}
 export default function Users2({ users }: any) {
   console.log("");
   console.log("\x1b[32mpages/users2 [Client]");

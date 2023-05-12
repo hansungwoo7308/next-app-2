@@ -15,15 +15,15 @@ export const Main = styled.main`
       right: 20px;
     }
     > div {
-      width: 50%;
+      width: 70%;
       min-height: 300px;
-      outline: 3px solid green;
       padding: 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       gap: 10px;
       color: green;
+      outline: 2px solid green;
     }
   }
 `;

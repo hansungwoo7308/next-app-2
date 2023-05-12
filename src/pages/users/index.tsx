@@ -1,20 +1,15 @@
 import { useSelector } from "react-redux";
 import { selectAllUsers } from "lib/store/usersSlice";
 import Link from "next/link";
-
 let renderCount = 0;
-
-const Users = () => {
+export default function Users() {
   const users = useSelector(selectAllUsers);
-
   const renderedUsers = users.map((user: any) => (
     <li key={user.id}>
       <Link href={`/users/${user.id}`}>{user.name}</Link>
     </li>
   ));
-
   renderCount++;
-
   return (
     <>
       <main className="users">
@@ -28,6 +23,4 @@ const Users = () => {
       </main>
     </>
   );
-};
-
-export default Users;
+}

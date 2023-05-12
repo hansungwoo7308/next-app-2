@@ -119,9 +119,9 @@ const Nav = () => {
         <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
           <Link href={"/post-list-2"}>Post List</Link>
         </li>
-        {/* <li ref={addPostRefRef} onClick={(e) => handleFocus(e)}>
+        <li ref={addPostRefRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/post-list/add"}>Add Post</Link>
-        </li> */}
+        </li>
         {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/users"}>Users</Link>
         </li> */}
@@ -141,9 +141,9 @@ const Nav = () => {
         {/* <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/blogs"}>BLOGS</Link>
         </li> */}
-        {/* <li ref={postsRef} onClick={(e) => handleFocus(e)}>
+        <li ref={postsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/posts"}>Posts</Link>
-        </li> */}
+        </li>
         {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
         </li> */}

@@ -7,15 +7,15 @@ export const Background = styled.div`
   justify-content: center;
   align-items: center;
   outline: 3px solid purple;
-  background-color: lightgray;
+  background-color: rgba(0, 0, 0, 0.5);
   :focus {
     /* border: 3px solid red; */
     display: none;
   }
 `;
 export const Box = styled.div`
-  width: 60%;
-  height: 60%;
+  width: 40%;
+  height: 40%;
   position: absolute;
   background-color: white;
   outline: 5px solid black;

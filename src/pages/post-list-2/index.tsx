@@ -9,7 +9,7 @@ import matter from "gray-matter";
 import axios from "axios";
 
 import Modal from "../../components/Modal";
-import { Main } from "@/styles/posts.styled";
+import { Main } from "@/styles/pages/post-list.styled";
 import MarkdownPostList from "@/components/list/MarkdownPostList";
 import PostList from "@/components/list/PostList";
 // import getFormattedDate from "@/lib/getFormattedDate"
@@ -28,34 +28,24 @@ export const getStaticProps = (context: GetStaticPropsContext) => {
   );
   // console.log("filenamesWithMarkdown : ", filenamesWithMarkdown);
   // get items with the contents from third party library
-  const itemsWithContents: Array<object> = filenamesWithMarkdown.map(
-    (filename) => {
-      const contents = fs.readFileSync(`data/posts/${filename}`, "utf-8");
-      const matterResult = matter(contents);
-      // console.log(`${filename} contents : `, contents);
-      // console.log(`${filename} mattered contents : `, matterResult);
-
-      // return an item
-      return {
-        title: matterResult.data.title,
-        date: matterResult.data.date,
-        filename: filename.replace(".md", ""),
-        // subtitle: matterResult.data.subtitle,
-        // slug: filename.replace(".md", ""),
-      };
-    }
-  );
-  console.log("itemsWithContents : ", itemsWithContents);
+  const list: Array<object> = filenamesWithMarkdown.map((filename) => {
+    const contents = fs.readFileSync(`data/posts/${filename}`, "utf-8");
+    const matterResult = matter(contents);
+    // console.log(`${filename} contents : `, contents);
+    // console.log(`${filename} mattered contents : `, matterResult);
+    return {
+      title: matterResult.data.title,
+      date: matterResult.data.date,
+      filename: filename.replace(".md", ""),
+    };
+  });
+  console.log("list : ", list);
   console.log("");
-  return {
-    props: {
-      itemsWithContents,
-    },
-  };
+  return { props: { list } };
 };
 let renderCount = 0;
 renderCount++;
-export default function Page({ itemsWithContents }: any) {
+export default function Page({ list }: any) {
   // Related to PostList
   const [posts, setPosts]: any = useState([]);
   // console.log("posts : ", posts);
@@ -68,9 +58,6 @@ export default function Page({ itemsWithContents }: any) {
       console.log("getPosts error : ", error);
     }
   };
-  useEffect(() => {
-    getPosts();
-  }, []);
   const handleDelete = async (title: any) => {
     // console.log("title : ", title);
     try {
@@ -81,15 +68,10 @@ export default function Page({ itemsWithContents }: any) {
     }
     getPosts();
   };
-  // const openModal = () => {
-  //   modalBackgroundRef.current.style.display = "block";
-  //   modalBackgroundRef.current.style.background = "rgba(0,0,0,0.5)";
-  //   modalRef.current.style.display = "block";
-  // };
-  // const closeModal = () => {
-  //   modalBackgroundRef.current.style.display = "none";
-  //   modalRef.current.style.display = "none";
-  // };
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   // Related to Modal
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -106,9 +88,7 @@ export default function Page({ itemsWithContents }: any) {
     }
     getPosts();
   };
-  useEffect(() => {
-    console.log("isOpen: ", isOpen);
-  }, [isOpen]);
+
   renderCount++;
   return (
     <>
@@ -118,9 +98,16 @@ export default function Page({ itemsWithContents }: any) {
       <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
-          <PostList list={posts} open={handleOpen} deleteItem={handleDelete} />
-          {isOpen && <Modal close={handleClose} create={handleCreate} />}
-          {/* <MarkdownPostList list={itemsWithContents} /> */}
+          <PostList
+            list={posts}
+            path={"post-list-2"}
+            openModal={handleOpen}
+            deleteItem={handleDelete}
+          />
+          {isOpen && (
+            <Modal closeModal={handleClose} createItem={handleCreate} />
+          )}
+          {/* <MarkdownPostList list={list} /> */}
         </section>
       </Main>
     </>

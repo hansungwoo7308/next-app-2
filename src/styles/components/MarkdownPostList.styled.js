@@ -9,36 +9,22 @@ export const Box = styled.div`
   gap: 20px;
   padding: 20px;
   border: 2px solid green;
-  > * {
-    /* border: 1px solid red; */
-  }
-  > ul {
-    /* flex: 1; */
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    list-style: none;
-    > li {
-      border: 2px solid;
-    }
-  }
   > div {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     gap: 20px;
-    padding: 20px;
-    > button {
-      width: 200px;
-      height: 30px;
-      border: none;
-      background-color: lightgray;
-      cursor: pointer;
-      :hover {
-        background-color: black;
-        color: white;
+    > ul {
+      /* flex: 1; */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      list-style: none;
+      > li {
+        border: 2px solid;
       }
     }
   }
+
   > button {
     padding: 20px;
   }

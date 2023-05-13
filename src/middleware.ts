@@ -26,13 +26,11 @@ export async function middleware(request: NextRequest) {
   console.log("[Server]/middleware");
   console.log("request.method : ", request.method);
   console.log("request.url : ", request.url);
-  const origin = request.headers.get("origin");
+  // const origin = request.headers.get("origin");
   // console.log("origin : ", origin);
-
-  const regex = new RegExp("/post-list-2");
-  // console.log("regex : ", regex);
-  const a = regex.test(request.url);
-  console.log("a : ", a);
+  // const regex = new RegExp("/post-list-2");
+  // const regexTest = regex.test(request.url);
+  // console.log("regexTest : ", regexTest);
   // request.headers.set("Authorization", "Bearer 3...");
   // console.log("request.headers : ", request.headers);
 

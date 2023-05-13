@@ -1,13 +1,17 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { GetStaticPropsContext } from "next";
+import { useEffect, useRef, useState } from "react";
+
 import fs from "fs";
 import matter from "gray-matter";
-import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/router";
 import axios from "axios";
+
 import Modal from "../../components/Modal";
 import { Main } from "@/styles/posts.styled";
-import { GetStaticPropsContext } from "next";
+import MarkdownPostList from "@/components/list/MarkdownPostList";
+import PostList from "@/components/list/PostList";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";
@@ -51,11 +55,10 @@ export const getStaticProps = (context: GetStaticPropsContext) => {
 };
 let renderCount = 0;
 renderCount++;
-export default function Posts({ itemsWithContents }: any) {
-  // internal
+export default function Page({ itemsWithContents }: any) {
+  // Related to PostList
   const [posts, setPosts]: any = useState([]);
-  const modalRef: any = useRef();
-  const modalBackgroundRef: any = useRef();
+  // console.log("posts : ", posts);
   const getPosts = async () => {
     try {
       const response = await axios.get("/api/posts");
@@ -65,15 +68,10 @@ export default function Posts({ itemsWithContents }: any) {
       console.log("getPosts error : ", error);
     }
   };
-  const createPost = async ({ title, content }: any) => {
-    try {
-      await axios.post("/api/posts", { title, content });
-    } catch (error) {
-      console.log("createPost error : ", error);
-    }
+  useEffect(() => {
     getPosts();
-  };
-  const deletePost = async (title: any) => {
+  }, []);
+  const handleDelete = async (title: any) => {
     // console.log("title : ", title);
     try {
       const result = await axios.delete("/api/posts", { data: { title } });
@@ -83,18 +81,34 @@ export default function Posts({ itemsWithContents }: any) {
     }
     getPosts();
   };
-  const openModal = () => {
-    modalBackgroundRef.current.style.display = "block";
-    modalBackgroundRef.current.style.background = "rgba(0,0,0,0.5)";
-    modalRef.current.style.display = "block";
+  // const openModal = () => {
+  //   modalBackgroundRef.current.style.display = "block";
+  //   modalBackgroundRef.current.style.background = "rgba(0,0,0,0.5)";
+  //   modalRef.current.style.display = "block";
+  // };
+  // const closeModal = () => {
+  //   modalBackgroundRef.current.style.display = "none";
+  //   modalRef.current.style.display = "none";
+  // };
+  // Related to Modal
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(true);
   };
-  const closeModal = () => {
-    modalBackgroundRef.current.style.display = "none";
-    modalRef.current.style.display = "none";
+  const handleClose = () => {
+    setIsOpen(false);
   };
-  // useEffect(() => {
-  //   getPosts();
-  // }, []);
+  const handleCreate = async ({ title, content }: any) => {
+    try {
+      await axios.post("/api/posts", { title, content });
+    } catch (error) {
+      console.log("createPost error : ", error);
+    }
+    getPosts();
+  };
+  useEffect(() => {
+    console.log("isOpen: ", isOpen);
+  }, [isOpen]);
   renderCount++;
   return (
     <>
@@ -104,51 +118,9 @@ export default function Posts({ itemsWithContents }: any) {
       <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
-          <div>
-            <ul>
-              {itemsWithContents.map((item: any, index: any) => (
-                <li key={index}>
-                  <h5>{item.date}</h5>
-                  <Link href={`post-list-2/${item.filename}`}>
-                    <h3>{item.title}</h3>
-                  </Link>
-                  {/* <button
-                    onClick={(e: any) => {
-                      e.preventDefault();
-                      // deletePost(post.title);
-                    }}
-                  >
-                    Delete
-                  </button> */}
-                </li>
-              ))}
-              {/* {posts.map((post: any, index: any) => (
-                <li key={index}>
-                  <Link href={`post-list-2/${post.title}`}>
-                    <h3>{post.title}</h3>
-                  </Link>
-                  <p>{post.content}</p>
-                  <button
-                    onClick={(e: any) => {
-                      e.preventDefault();
-                      deletePost(post.title);
-                    }}
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))} */}
-            </ul>
-            <div>
-              <button onClick={openModal}>Create a post</button>
-            </div>
-          </div>
-          {/* <div ref={modalBackgroundRef} onClick={closeModal} />
-          <Modal
-            modalRef={modalRef}
-            createPost={createPost}
-            closeModal={closeModal}
-          /> */}
+          <PostList list={posts} open={handleOpen} deleteItem={handleDelete} />
+          {isOpen && <Modal close={handleClose} create={handleCreate} />}
+          {/* <MarkdownPostList list={itemsWithContents} /> */}
         </section>
       </Main>
     </>

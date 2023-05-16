@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { selectPostById } from "lib/store/postsSlice";
-import PostAuthor from "@/components/posts/PostAuthor";
-import Time from "@/components/posts/Time";
-import Reactions from "@/components/posts/Reactions";
+import PostAuthor from "@/components/post/item/PostAuthor";
+import Time from "@/components/post/item/Time";
+import Reactions from "@/components/post/item/Reactions";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Main } from "@/styles/pages/post-item.styled.js";

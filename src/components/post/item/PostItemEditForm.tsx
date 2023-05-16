@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePost, selectPostById, updatePost } from "lib/store/postsSlice";
 import { selectAllUsers } from "lib/store/usersSlice";
 import { useRouter } from "next/router";
+import { Box } from "@/styles/components/post/item/PostItemEditForm.styled";
 // import { selectPostById, updatePost, deletePost } from './postsSlice'
 // import { useParams, useNavigate } from 'react-router-dom'
 let renderCount = 0;
-const EditPostForm = () => {
+export default function PostItemEditForm() {
   const router = useRouter();
   const { id } = router.query;
   // const { postId } = useParams()
@@ -89,7 +90,7 @@ const EditPostForm = () => {
   renderCount++;
 
   return (
-    <div className="edit-post-form">
+    <Box>
       <h2>Edit Post</h2>
       <form>
         <label htmlFor="postTitle">Post Title:</label>
@@ -123,8 +124,6 @@ const EditPostForm = () => {
           Delete Post
         </button>
       </form>
-    </div>
+    </Box>
   );
-};
-
-export default EditPostForm;
+}

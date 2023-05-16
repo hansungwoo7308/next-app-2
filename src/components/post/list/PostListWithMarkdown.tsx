@@ -1,4 +1,4 @@
-import { Box } from "@/styles/components/PostListWithMarkdown.styled";
+import { Box } from "@/styles/components/post/PostListWithMarkdown.styled";
 import Link from "next/link";
 export default function PostListWithMarkdown({ list, path }: any) {
   return (

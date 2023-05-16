@@ -1,11 +1,11 @@
-import { Box } from "@/styles/components/PostListByRTKquery.styled";
+import { Box } from "@/styles/components/post/PostListByRTKquery.styled";
 import {
   getPostsError,
   getPostsStatus,
   selectPostIds,
 } from "lib/store/postsSlice";
 import { useSelector } from "react-redux";
-import PostItem from "@/components/posts/PostItem";
+import PostItem from "@/components/post/item/PostItem";
 import Link from "next/link";
 export default function PostListByRTKquery() {
   const orderedPostIds = useSelector(selectPostIds);

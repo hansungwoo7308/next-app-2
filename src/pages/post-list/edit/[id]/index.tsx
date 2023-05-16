@@ -1,11 +1,11 @@
-import EditPostForm from "@/components/posts/EditPostForm";
+import PostItemEditForm from "@/components/post/item/PostItemEditForm";
 
 const EditPost = () => {
   return (
     <>
-      <main className="edit-post">
+      <main>
         <section>
-          <EditPostForm />
+          <PostItemEditForm />
         </section>
       </main>
     </>

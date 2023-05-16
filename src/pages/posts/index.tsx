@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import { PostMetaData } from "../../../types/PostMetaData";
 import { GetStaticPropsContext } from "next";
 import { Main } from "@/styles/posts.styled";
-import PostListWithMarkdown from "@/components/list/PostListWithMarkdown";
+import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 // import { useEffect, useRef, useState } from "react";
 // import { useRouter } from "next/router";
 // import getFormattedDate from "@/lib/getFormattedDate"

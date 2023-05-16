@@ -113,13 +113,13 @@ const Nav = () => {
           <Link href={"/"}>Home</Link>
         </li>
         <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/posts"}>Posts</Link>
+          <Link href={"/posts"}>Markdown Post List</Link>
         </li>
         <li ref={postListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list"}>Post List 1</Link>
+          <Link href={"/post-list"}>CDN Post List</Link>
         </li>
         <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list-2"}>Post List 2</Link>
+          <Link href={"/post-list-2"}>DB Post List</Link>
         </li>
 
         {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>

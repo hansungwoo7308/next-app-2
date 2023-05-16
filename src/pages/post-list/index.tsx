@@ -1,5 +1,5 @@
 import { Main } from "@/styles/pages/post-list.styled";
-import PostListByRTKquery from "@/components/list/PostListByRTKquery";
+import PostListByRTKquery from "@/components/post/list/PostListByRTKquery";
 let renderCount = 0;
 export default function PostList() {
   renderCount++;

@@ -10,8 +10,8 @@ import axios from "axios";
 
 import Modal from "../../components/Modal";
 import { Main } from "@/styles/pages/post-list.styled";
-import PostListWithMarkdown from "@/components/list/PostListWithMarkdown";
-import PostList from "@/components/list/PostList";
+import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
+import PostList from "@/components/post/list/PostList";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";

@@ -11,7 +11,6 @@ const Nav = () => {
   const homeRef: any = useRef();
   const blogsRef: any = useRef();
   const postsRef: any = useRef();
-  const addPostRefRef: any = useRef();
   const usersRef: any = useRef();
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
@@ -51,9 +50,6 @@ const Nav = () => {
     } else if (router.pathname === "/posts") {
       setColor(postsRef.current);
       setUnderline(focusRef.current, postsRef.current);
-    } else if (router.pathname === "/post-list/add") {
-      setColor(addPostRefRef.current);
-      setUnderline(focusRef.current, addPostRefRef.current);
     } else if (
       router.pathname === "/post-list" ||
       router.pathname === "/post-list/[id]" ||
@@ -116,12 +112,16 @@ const Nav = () => {
         <li ref={homeRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/"}>Home</Link>
         </li>
+        <li ref={postsRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/posts"}>Posts</Link>
+        </li>
+        <li ref={postListRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/post-list"}>Post List 1</Link>
+        </li>
         <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list-2"}>Post List</Link>
+          <Link href={"/post-list-2"}>Post List 2</Link>
         </li>
-        <li ref={addPostRefRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list/add"}>Add Post</Link>
-        </li>
+
         {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/users"}>Users</Link>
         </li> */}
@@ -141,9 +141,6 @@ const Nav = () => {
         {/* <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/blogs"}>BLOGS</Link>
         </li> */}
-        <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/posts"}>Posts</Link>
-        </li>
         {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
         </li> */}

@@ -5,10 +5,12 @@ import Time from "@/components/posts/Time";
 import Reactions from "@/components/posts/Reactions";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Main } from "@/styles/pages/post-item.styled.js";
 export default function PostItem() {
   const router = useRouter();
-  const { id } = router.query;
+  const { "post-id": id } = router.query;
   const post = useSelector((state) => selectPostById(state, Number(id)));
+  console.log("post : ", post);
   if (!post)
     return (
       <div>
@@ -17,11 +19,11 @@ export default function PostItem() {
     );
   return (
     <>
-      <main className="post-item">
+      <Main>
         <section>
           <div>
-            {/* <h1>Post Item</h1> */}
-            <h2>{post.title}</h2>
+            <h1>Post Item : {id}</h1>
+            <h3>{post.title}</h3>
             <p>{post.body}</p>
             <p>
               Author : <PostAuthor userId={post.userId} />
@@ -29,12 +31,12 @@ export default function PostItem() {
               Time : <Time timestamp={post.date} />
             </p>
             <Reactions post={post} />
-            <Link className="edit" href={`/post-list/edit/${post.id}`}>
+            <Link href={`/post-list/edit/${post.id}`}>
               <button>Edit Post</button>
             </Link>
           </div>
         </section>
-      </main>
+      </Main>
     </>
   );
 }

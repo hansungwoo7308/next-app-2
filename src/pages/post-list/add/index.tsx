@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "lib/store/postsSlice";
 import { selectAllUsers } from "lib/store/usersSlice";
-
+import { Main } from "@/styles/pages/post-item-create.styled";
 const AddPost = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
@@ -17,10 +17,10 @@ const AddPost = () => {
 
   return (
     <>
-      <main className="add-post">
+      <Main>
         <section>
           <div className="add-post-form">
-            <h2>Add a New Post</h2>
+            <h2>Create a New Post</h2>
             <form>
               <label htmlFor="postTitle">Title :</label>
               <input
@@ -91,7 +91,7 @@ const AddPost = () => {
             </form>
           </div>
         </section>
-      </main>
+      </Main>
     </>
   );
 };

@@ -15,7 +15,7 @@ import * as StyleComponent from "../styles/_app.styled";
 
 // fetch the data
 // store.dispatch(fetchUsers());
-// store.dispatch(fetchPosts());
+store.dispatch(fetchPosts());
 // set the interface
 interface MyAppProps extends AppProps {
   auth?: Object;

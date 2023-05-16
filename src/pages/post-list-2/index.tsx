@@ -10,7 +10,7 @@ import axios from "axios";
 
 import Modal from "../../components/Modal";
 import { Main } from "@/styles/pages/post-list.styled";
-import MarkdownPostList from "@/components/list/MarkdownPostList";
+import PostListWithMarkdown from "@/components/list/PostListWithMarkdown";
 import PostList from "@/components/list/PostList";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
@@ -107,7 +107,6 @@ export default function Page({ list }: any) {
           {isOpen && (
             <Modal closeModal={handleClose} createItem={handleCreate} />
           )}
-          {/* <MarkdownPostList list={list} /> */}
         </section>
       </Main>
     </>

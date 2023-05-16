@@ -322,90 +322,9 @@ export const GlobalStyle = createGlobalStyle`
 
 
   }
-  // post-list page (나중에 posts로 변경할 계획)
-  .post-list {
-    > section {
-      position: relative;
-      > div {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-        outline: 3px solid coral;
-        > div {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-      }
-      > h1 {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-      }
-      button {
-        background-color: initial;
-        color: initial;
-      }
-    }
-  }
-  .post-item {
-    > section {
-      > div {
-        width: 50%;
-        height: 50%;
-        min-width: 500px;
-        padding: 20px;
-        outline: 2px solid coral;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        > a > button {
-          width: 300px;
-          height: 30px;
-        }
-        > div > button {
-          background-color: white;
-          color: black;
-        }
-      }
-    }
-    .edit {
-    }
-  }
-  .add-post {
-    > section {
-      /* flex-direction: column; */
-      gap: 20px;
-      position: relative;
-      padding-left: 20px;
-      padding-right: 20px;
-      > h1 {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-      }
-      > div {
-        width: 50%;
-        height: 70%;
-        outline: 3px solid coral;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        button {
-          /* width: 300px; */
-          height: 30px;
-        }
-      }
-    }
-    .add-post-form {
-      button:disabled {
-        cursor: not-allowed;
-      }
-    }
-
-  }
+  
+  
+  
   .edit-post {
     .edit-post-form {
       outline: 2px solid coral;

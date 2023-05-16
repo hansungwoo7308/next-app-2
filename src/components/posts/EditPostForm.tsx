@@ -5,11 +5,8 @@ import { selectAllUsers } from "lib/store/usersSlice";
 import { useRouter } from "next/router";
 // import { selectPostById, updatePost, deletePost } from './postsSlice'
 // import { useParams, useNavigate } from 'react-router-dom'
-
 let renderCount = 0;
-
 const EditPostForm = () => {
-  // get the query parameter
   const router = useRouter();
   const { id } = router.query;
   // const { postId } = useParams()
@@ -18,16 +15,12 @@ const EditPostForm = () => {
   // get the state in the store
   const post = useSelector((state) => selectPostById(state, Number(id)));
   const users = useSelector(selectAllUsers);
-
   // set the local state from store
   const [title, setTitle] = useState(post?.title);
   const [content, setContent] = useState(post?.body);
   const [userId, setUserId] = useState(post?.userId);
   const [requestStatus, setRequestStatus] = useState("idle");
-
-  // get the dispatch
   const dispatch = useDispatch();
-
   if (!post) {
     return (
       <section>
@@ -35,16 +28,13 @@ const EditPostForm = () => {
       </section>
     );
   }
-
   // set the change handler
   const onTitleChanged = (e: any) => setTitle(e.target.value);
   const onContentChanged = (e: any) => setContent(e.target.value);
   const onAuthorChanged = (e: any) => setUserId(Number(e.target.value));
-
   // set the boolean variable
   const canSave =
     [title, content, userId].every(Boolean) && requestStatus === "idle";
-
   // set the save handler
   const onSavePostClicked = () => {
     if (canSave) {
@@ -71,14 +61,12 @@ const EditPostForm = () => {
       }
     }
   };
-
   // set the elements
   const usersOptions = users.map((user: any) => (
     <option key={user.id} value={user.id}>
       {user.name}
     </option>
   ));
-
   // set the delete handler
   const onDeletePostClicked = () => {
     try {

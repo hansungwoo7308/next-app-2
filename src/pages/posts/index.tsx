@@ -3,9 +3,9 @@ import Link from "next/link";
 import fs from "fs";
 import matter from "gray-matter";
 import { PostMetaData } from "../../../types/PostMetaData";
-import { Main } from "@/styles/posts.styled";
 import { GetStaticPropsContext } from "next";
-import MarkdownPostList from "@/components/list/MarkdownPostList";
+import { Main } from "@/styles/posts.styled";
+import PostListWithMarkdown from "@/components/list/PostListWithMarkdown";
 // import { useEffect, useRef, useState } from "react";
 // import { useRouter } from "next/router";
 // import getFormattedDate from "@/lib/getFormattedDate"
@@ -76,7 +76,7 @@ export default function Posts({ list }: any) {
       <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
-          <MarkdownPostList list={list} path={"posts"} />
+          <PostListWithMarkdown list={list} path={"posts"} />
         </section>
       </Main>
     </>

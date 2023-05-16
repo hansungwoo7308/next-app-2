@@ -1,11 +1,8 @@
 import Head from "next/head";
-import Link from "next/link";
-import fs from "fs";
-import matter from "gray-matter";
-import { PostMetaData } from "../../../types/PostMetaData";
-import { GetStaticPropsContext } from "next";
-import { Main } from "@/styles/posts.styled";
+import getMarkdown from "lib/server/getMarkdown";
 import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
+import { Main } from "@/styles/posts.styled";
+import { GetStaticPropsContext } from "next";
 // import { useEffect, useRef, useState } from "react";
 // import { useRouter } from "next/router";
 // import getFormattedDate from "@/lib/getFormattedDate"
@@ -43,25 +40,8 @@ import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 export const getStaticProps = (context: GetStaticPropsContext) => {
   console.log("\x1b[32m");
   console.log("[Server:getStaticProps]/pages/posts");
-  // get the filenames
-  const filenames: Array<string> = fs.readdirSync("data/");
-  // console.log("filenames : ", filenames);
-  // get the filenames with markdown
-  const filenamesWithMarkdown: Array<string> = filenames.filter((filename) =>
-    filename.endsWith(".md")
-  );
-  // console.log("filenamesWithMarkdown : ", filenamesWithMarkdown);
-  // get items with the contents from third party library
-  const list: Array<PostMetaData> = filenamesWithMarkdown.map((fileName) => {
-    const contents = fs.readFileSync(`data/${fileName}`, "utf-8");
-    const matterResult = matter(contents);
-    return {
-      title: matterResult.data.title,
-      date: matterResult.data.date,
-      filename: fileName.replace(".md", ""),
-      // subtitle: matterResult.data.subtitle,
-    };
-  }) as [];
+  const list = getMarkdown();
+  console.log("list : ", list);
   console.log("");
   return { props: { list } };
 };

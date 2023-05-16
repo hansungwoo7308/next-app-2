@@ -3,7 +3,7 @@ import {
   useUpdateTodoMutation,
   useDeleteTodoMutation,
   useAddTodoMutation,
-} from "lib/utility/todosApiSlice";
+} from "lib/utils/todosApiSlice";
 import { useEffect, useState } from "react";
 import { Box } from "@/styles/components/TodoList.styled";
 let renderCount = 0;

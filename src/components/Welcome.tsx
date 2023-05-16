@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux";
-import { selectAcessToken, selectCurrentUser } from "lib/store/authSlice";
+import {
+  selectAcessToken,
+  selectCurrentUser,
+} from "lib/client/store/authSlice";
 import Link from "next/link";
 
 const Welcome = () => {

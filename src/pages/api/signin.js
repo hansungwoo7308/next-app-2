@@ -1,4 +1,4 @@
-import User from "../../../lib/core/model/User";
+import User from "../../../lib/client/model/User";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {

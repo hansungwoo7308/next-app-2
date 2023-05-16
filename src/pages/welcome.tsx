@@ -2,13 +2,13 @@
 import Link from "next/link";
 // external
 // import { useSession } from "next-auth/react";
-import { selectAcessToken } from "lib/store/authSlice";
+import { selectAcessToken } from "lib/client/store/authSlice";
 import { useSelector } from "react-redux";
 import { Main } from "../styles/welcome.styled";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import RequireAuth from "@/components/RequireAuth";
-import getAllUsers from "lib/utility/getAllUsers";
+import getAllUsers from "lib/utils/getAllUsers";
 export const getServerSideProps = async (context: any) => {
   console.log("");
   console.log("\x1b[32mpages/welcome");

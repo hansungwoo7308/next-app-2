@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCredentials, logOut } from "lib/store/authSlice";
+import { setCredentials, logOut } from "lib/client/store/authSlice";
 
 // set the base query
 // baseQuery에 endpoint를 더하여 요청경로를 완성한다.

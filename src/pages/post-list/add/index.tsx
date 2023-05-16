@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewPost } from "lib/store/postsSlice";
-import { selectAllUsers } from "lib/store/usersSlice";
+import { addNewPost } from "lib/client/store/postsSlice";
+import { selectAllUsers } from "lib/client/store/usersSlice";
 import { Main } from "@/styles/pages/post-item-create.styled";
-const AddPost = () => {
+export default function AddPost() {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
+  // console.log("users : ", users);
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -94,6 +95,4 @@ const AddPost = () => {
       </Main>
     </>
   );
-};
-
-export default AddPost;
+}

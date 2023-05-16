@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Head from "next/head";
 // external
-import getAllUsers from "lib/utility/getAllUsers";
+import getAllUsers from "lib/utils/getAllUsers";
 import { Main } from "@/styles/users2.styled";
 export async function getServerSideProps(context: any) {
   const users: Promise<User[]> = await getAllUsers();

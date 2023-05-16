@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost, selectPostById, updatePost } from "lib/store/postsSlice";
-import { selectAllUsers } from "lib/store/usersSlice";
+import {
+  deletePost,
+  selectPostById,
+  updatePost,
+} from "lib/client/store/postsSlice";
+import { selectAllUsers } from "lib/client/store/usersSlice";
 import { useRouter } from "next/router";
 import { Box } from "@/styles/components/post/item/PostItemEditForm.styled";
 // import { selectPostById, updatePost, deletePost } from './postsSlice'

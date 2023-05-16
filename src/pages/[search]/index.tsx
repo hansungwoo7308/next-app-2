@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
-import getWikiResults from "lib/utility/getWiki";
+import getWikiResults from "lib/utils/getWiki";
 import { Main } from "@/styles/search.styled";
 export async function getServerSideProps(context: any) {
   const wikiResults: SearchResult = await getWikiResults(context.params.search);

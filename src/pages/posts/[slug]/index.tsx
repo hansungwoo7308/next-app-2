@@ -50,7 +50,7 @@ export const getStaticProps = (context: any) => {
     },
   };
 };
-export default function Slug({ content, title, date }: any) {
+export default function Page({ content, title, date }: any) {
   //   console.log("");
   //   console.log("\x1b[32mslug : %s\x1b[0m", slug);
   //   console.log("");

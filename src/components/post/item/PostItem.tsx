@@ -4,7 +4,7 @@ import Reactions from "./Reactions";
 import Link from "next/link";
 
 import { useSelector } from "react-redux";
-import { selectPostById } from "lib/store/postsSlice";
+import { selectPostById } from "lib/client/store/postsSlice";
 
 // post props가 변경되지 않으면, 리렌더링하지 않는다. (memo)
 const PostItem = ({ postId }: any) => {

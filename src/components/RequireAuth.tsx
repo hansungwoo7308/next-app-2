@@ -1,7 +1,7 @@
 // import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { selectAcessToken } from "lib/store/authSlice";
-import { customAxios } from "lib/utility/customAxios";
+import { selectAcessToken } from "lib/client/store/authSlice";
+import { customAxios } from "lib/utils/customAxios";
 import { useState } from "react";
 
 const RequireAuth = ({ children }: any) => {

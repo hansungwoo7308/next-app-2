@@ -5,13 +5,13 @@ import Head from "next/head";
 
 // external
 import { useDispatch } from "react-redux";
-import { setCredentials } from "lib/store/authSlice";
-import { useLoginMutation } from "lib/utility/authApiSlice";
+import { setCredentials } from "lib/client/store/authSlice";
+import { useLoginMutation } from "lib/utils/authApiSlice";
 // nextauth
 import { signIn, signOut, useSession } from "next-auth/react";
 // style
 import { Main } from "../styles/login.styled";
-import { customAxios } from "lib/utility/customAxios";
+import { customAxios } from "lib/utils/customAxios";
 const Login = () => {
   // internal
   const userRef: any = useRef();

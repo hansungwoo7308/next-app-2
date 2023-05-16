@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { increaseCount, getCount } from "lib/store/postsSlice";
+import { increaseCount, getCount } from "lib/client/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 const Nav = () => {
   // internal

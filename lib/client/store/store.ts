@@ -9,9 +9,9 @@ import authReducer from "./authSlice";
 
 // Api Slices and Reducers (with Backend)
 // import { apiSlice as usersApi } from "lib/utility/usersApiSlice";
-import { todosApiSlice } from "lib/utility/todosApiSlice";
-import { authApiSlice } from "lib/utility/authApiSlice";
-import { usersApiSlice } from "lib/utility/usersApiSlice";
+import { todosApiSlice } from "lib/utils/todosApiSlice";
+import { authApiSlice } from "lib/utils/authApiSlice";
+import { usersApiSlice } from "lib/utils/usersApiSlice";
 
 // const combineReducer = combineReducers({ counter: counterSlice });
 

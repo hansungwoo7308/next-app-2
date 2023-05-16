@@ -5,8 +5,8 @@ import Link from "next/link";
 import Head from "next/head";
 
 // external
-import getUser from "lib/utility/getUser";
-import getUserPosts from "lib/utility/getUserPosts";
+import getUser from "lib/utils/getUser";
+import getUserPosts from "lib/utils/getUserPosts";
 import { Main } from "@/styles/user2.styled";
 export async function getServerSideProps(context: any) {
   const userId = context.params.userId;

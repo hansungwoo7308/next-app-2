@@ -3,9 +3,9 @@ import type { AppContext, AppProps } from "next/app";
 // state
 // redux
 import { Provider } from "react-redux";
-import store from "lib/store/store";
-import { fetchUsers } from "lib/store/usersSlice";
-import { fetchPosts } from "lib/store/postsSlice";
+import store from "lib/client/store/store";
+import { fetchUsers } from "lib/client/store/usersSlice";
+import { fetchPosts } from "lib/client/store/postsSlice";
 // session
 import { SessionProvider } from "next-auth/react";
 // styles
@@ -14,7 +14,7 @@ import * as StyleComponent from "../styles/_app.styled";
 // import { NextPage } from "next";
 
 // fetch the data
-// store.dispatch(fetchUsers());
+store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 // set the interface
 interface MyAppProps extends AppProps {

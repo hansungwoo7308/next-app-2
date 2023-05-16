@@ -1,5 +1,5 @@
-import User from "../../../../lib/core/model/User";
-import connectDB from "../../../../lib/config/connectDB";
+import User from "../../../../lib/client/model/User";
+import connectDB from "../../../../lib/client/config/connectDB";
 
 export default async function handler(req, res) {
   // log

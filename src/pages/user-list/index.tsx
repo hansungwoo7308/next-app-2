@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 // external
-import { useGetUsersQuery } from "lib/utility/usersApiSlice";
+import { useGetUsersQuery } from "lib/utils/usersApiSlice";
 import { Main } from "../../styles/public/main.styled";
 let renderCount = 0;
 const UserList = () => {

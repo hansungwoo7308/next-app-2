@@ -9,7 +9,7 @@ import {
   increment,
   reset,
   incrementByAmount,
-} from "../../lib/store/counterSlice";
+} from "../../lib/client/store/counterSlice";
 
 const Counter = () => {
   // set the data

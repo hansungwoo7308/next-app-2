@@ -6,13 +6,10 @@ import {
   selectAcessToken,
   selectRefreshToken,
   setCredentials,
-} from "lib/store/authSlice";
-import {
-  useLogoutMutation,
-  useRefreshMutation,
-} from "lib/utility/authApiSlice";
-import { customAxios } from "lib/utility/customAxios";
-import refreshTokens from "lib/utility/refreshTokens";
+} from "lib/client/store/authSlice";
+import { useLogoutMutation, useRefreshMutation } from "lib/utils/authApiSlice";
+import { customAxios } from "lib/utils/customAxios";
+import refreshTokens from "lib/utils/refreshTokens";
 import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@/styles/components/JWT.styled.js";
 export default function JWT() {

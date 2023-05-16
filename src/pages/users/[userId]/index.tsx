@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
-import { selectUserById } from "lib/store/usersSlice";
-import { selectAllPosts, selectPostsByUser } from "lib/store/postsSlice";
+import { selectUserById } from "lib/client/store/usersSlice";
+import { selectAllPosts, selectPostsByUser } from "lib/client/store/postsSlice";
 import { useRouter } from "next/router";
 import Link from "next/link";
 export default function User() {

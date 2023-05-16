@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-import User from "lib/core/model/User";
+import User from "lib/client/model/User";
 // import db from "../../../data/db.json";
-// import Todo from "lib/core/model/Todo";
 
 const URI: any = process.env.MONGODB_URI;
 const OPTIONS: any = {

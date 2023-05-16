@@ -3,10 +3,10 @@ import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
-import clientPromise from "../../../../lib/config/mongodb";
+import clientPromise from "../../../../lib/client/config/mongodb";
 
-import connectDB from "../../../../lib/config/connectDB";
-import User from "../../../../lib/core/model/User";
+import connectDB from "../../../../lib/client/config/connectDB";
+import User from "../../../../lib/client/model/User";
 
 export const authOptions = {
   providers: [

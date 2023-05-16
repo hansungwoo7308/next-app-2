@@ -44,12 +44,14 @@ export const Box = styled.div`
       }
     }
     > div:nth-of-type(2) {
+      width: 100%;
       display: flex;
+      justify-content: center;
       gap: 10px;
+      /* outline: 1px solid blue; */
       > button {
-        width: 200px;
-        height: 40px;
-        /* outline: 5px solid red; */
+        width: 50%;
+        padding: 10px;
       }
     }
   }

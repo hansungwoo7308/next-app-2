@@ -1,24 +1,26 @@
-const Create = () => {
+import { Main } from "@/styles/public/main.styled";
+
+export default function Create() {
   return (
     <>
-      <main className="blogs-create">
+      <Main>
         <section>
-          <form>
-            <input type="text" placeholder="Blog Title" />
-            <textarea
-              name="content"
-              id="content"
-              cols={30}
-              rows={10}
-              placeholder="Content"
-              required
-            />
-            <button>Regist</button>
-          </form>
+          <div>
+            <form>
+              <input type="text" placeholder="Title" />
+              <textarea
+                name="content"
+                id="content"
+                cols={30}
+                rows={10}
+                placeholder="Content"
+                required
+              />
+              <button>Regist</button>
+            </form>
+          </div>
         </section>
-      </main>
+      </Main>
     </>
   );
-};
-
-export default Create;
+}

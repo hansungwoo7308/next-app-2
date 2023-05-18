@@ -46,8 +46,8 @@ export default function User2({ user, userPosts }: any) {
           {user?.id ? (
             <div>
               <h1>User2 Page</h1>
-              {userPosts.map((post: any) => (
-                <div>
+              {userPosts.map((post: any, index: number) => (
+                <div key={index}>
                   <h1>{post.name}</h1>
                   <p>{post.body}</p>
                 </div>

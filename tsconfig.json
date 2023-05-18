@@ -29,7 +29,8 @@
     "lib/client/config/connectDB.ts",
     "lib/client/config/mongodb.ts", // "src/middleware.ts"
     "types/*",
-    "src/styles/login.styled.js"
+    "src/styles/login.styled.js",
+    "src/styles/components/JWT.styled.ts"
   ],
   "exclude": ["node_modules"]
 }

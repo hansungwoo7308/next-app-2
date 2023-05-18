@@ -1,4 +1,3 @@
-import { Box } from "@/styles/components/post/PostListByRTKquery.styled";
 import {
   getPostsError,
   getPostsStatus,
@@ -7,6 +6,7 @@ import {
 import { useSelector } from "react-redux";
 import PostItem from "@/components/post/item/PostItem";
 import Link from "next/link";
+import { Box } from "@/styles/components/post/PostListByRTKquery.styled";
 export default function PostListByRTKquery() {
   const orderedPostIds = useSelector(selectPostIds);
   const postStatus = useSelector(getPostsStatus);

@@ -1,41 +1,34 @@
 import Head from "next/head";
-import Link from "next/link";
-
 import fs from "fs";
 import matter from "gray-matter";
 import Markdown from "markdown-to-jsx";
-
-export const getStaticPaths = (context: any) => {
-  const filenames = fs
+import { Main } from "@/styles/public/main.styled";
+export function getStaticPaths(context: any) {
+  const paths = fs
     .readdirSync("data/blogs/")
     .filter((filename) => filename.endsWith(".md")) // only get the markdown files
     .map((filename) => ({ params: { blog: filename.replace(".md", "") } }));
-
   //   console.log("");
-  //   filenames.map((filename) =>
+  //   paths.map((filename) =>
   //     console.log("\x1b[32mfilename.params : %s\x1b[0m", filename.params)
   //   );
   //   console.log("");
-
   return {
-    // paths: [{ params: { blog: "test" } }],
-    paths: filenames,
+    paths: paths,
     fallback: false,
+    // paths: [{ params: { blog: "test" } }],
   };
-};
-
-export const getStaticProps = (context: any) => {
+}
+export function getStaticProps(context: any) {
   const content = fs.readFileSync(
     `data/blogs/${context.params.blog}.md`,
     "utf-8"
   );
   const matterResult = matter(content);
-
   console.log("");
   //   console.log("\x1b[32mmatterResult : %s\x1b[0m", matterResult.content);
   //   console.log("context.params.blog : ", context.params.blog);
   console.log("");
-
   return {
     props: {
       blog: {
@@ -46,15 +39,14 @@ export const getStaticProps = (context: any) => {
       //   test: "test",
     },
   };
-};
-
-const Blog = ({ blog }: any) => {
+}
+export default function Blog({ blog }: any) {
   return (
     <>
       <Head>
         <title>Blog</title>
       </Head>
-      <main className="blog">
+      <Main>
         <section>
           <div>
             <p>{blog.date}</p>
@@ -62,9 +54,7 @@ const Blog = ({ blog }: any) => {
             <Markdown>{blog.content}</Markdown>
           </div>
         </section>
-      </main>
+      </Main>
     </>
   );
-};
-
-export default Blog;
+}

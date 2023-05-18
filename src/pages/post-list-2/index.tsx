@@ -1,48 +1,23 @@
 import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { GetStaticPropsContext } from "next";
-import { useEffect, useRef, useState } from "react";
-
-import fs from "fs";
-import matter from "gray-matter";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
 import Modal from "../../components/Modal";
-import { Main } from "@/styles/pages/post-list.styled";
-import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 import PostList from "@/components/post/list/PostList";
+import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
+import getMarkdown from "lib/server/getMarkdown";
+import { Main } from "@/styles/pages/post-list.styled";
+import { GetStaticPropsContext } from "next";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";
 // import { PostMetaData } from "../../../types/PostMetaData";
-export const getStaticProps = (context: GetStaticPropsContext) => {
+export function getStaticProps(context: GetStaticPropsContext) {
   console.log("\x1b[32m");
   console.log("[Server:getStaticProps]/pages/post-list-2");
-  // get the filenames
-  const filenames: Array<string> = fs.readdirSync("data/posts");
-  // console.log("filenames : ", filenames);
-  // get the filenames with markdown
-  const filenamesWithMarkdown: Array<string> = filenames.filter((filename) =>
-    filename.endsWith(".md")
-  );
-  // console.log("filenamesWithMarkdown : ", filenamesWithMarkdown);
-  // get items with the contents from third party library
-  const list: Array<object> = filenamesWithMarkdown.map((filename) => {
-    const contents = fs.readFileSync(`data/posts/${filename}`, "utf-8");
-    const matterResult = matter(contents);
-    // console.log(`${filename} contents : `, contents);
-    // console.log(`${filename} mattered contents : `, matterResult);
-    return {
-      title: matterResult.data.title,
-      date: matterResult.data.date,
-      filename: filename.replace(".md", ""),
-    };
-  });
-  console.log("list : ", list);
+  const list = getMarkdown("data/posts");
   console.log("");
   return { props: { list } };
-};
+}
 let renderCount = 0;
 renderCount++;
 export default function Page({ list }: any) {

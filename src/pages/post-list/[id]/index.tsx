@@ -8,7 +8,8 @@ import Link from "next/link";
 import { Main } from "@/styles/pages/post-item.styled.js";
 export default function PostItem() {
   const router = useRouter();
-  const { "post-id": id } = router.query;
+  // const { "post-id": id } = router.query;
+  const { id } = router.query;
   const post = useSelector((state) => selectPostById(state, Number(id)));
   console.log("post : ", post);
   if (!post)

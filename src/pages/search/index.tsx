@@ -1,4 +1,3 @@
-// import { Main } from "../styles/welcome.styled";
 import Search from "@/components/Search";
 export default function index() {
   return (

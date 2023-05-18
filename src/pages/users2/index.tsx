@@ -1,14 +1,9 @@
-// internal
 import Link from "next/link";
 import Head from "next/head";
-// external
 import getAllUsers from "lib/utils/getAllUsers";
 import { Main } from "@/styles/users2.styled";
 export async function getServerSideProps(context: any) {
   const users: Promise<User[]> = await getAllUsers();
-  console.log("");
-  console.log("\x1b[32mpages/users2 [Server]");
-  console.log("");
   //   if (!) {
   //   return {
   //     redirect: {
@@ -17,16 +12,9 @@ export async function getServerSideProps(context: any) {
   //     },
   //   };
   // }
-  return {
-    props: {
-      users,
-    },
-  };
+  return { props: { users } };
 }
 export default function Users2({ users }: any) {
-  console.log("");
-  console.log("\x1b[32mpages/users2 [Client]");
-  console.log("");
   return (
     <>
       <Head>
@@ -35,7 +23,7 @@ export default function Users2({ users }: any) {
       <Main>
         <section>
           <div>
-            <h1>Users2 Page</h1>
+            <h1>CDN Users2 List</h1>
             {users.map((user: any) => (
               <div key={user.id}>
                 <h3>{user.name}</h3>

@@ -1,10 +1,9 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { PostMetaData } from "types/PostMetaData";
-
-export default function getMarkdown() {
+export default function getMarkdown(path: string) {
   // get the filenames
-  const filenames: Array<string> = fs.readdirSync("data/");
+  const filenames: Array<string> = fs.readdirSync(`${path}/`);
   // console.log("filenames : ", filenames);
   // get the filenames with markdown
   const filenamesWithMarkdown: Array<string> = filenames.filter((filename) =>
@@ -13,7 +12,7 @@ export default function getMarkdown() {
   // console.log("filenamesWithMarkdown : ", filenamesWithMarkdown);
   // get items with the contents from third party library
   const list: Array<PostMetaData> = filenamesWithMarkdown.map((fileName) => {
-    const contents = fs.readFileSync(`data/${fileName}`, "utf-8");
+    const contents = fs.readFileSync(`${path}/${fileName}`, "utf-8");
     const matterResult = matter(contents);
     return {
       title: matterResult.data.title,

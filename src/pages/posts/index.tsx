@@ -40,14 +40,14 @@ import { GetStaticPropsContext } from "next";
 export const getStaticProps = (context: GetStaticPropsContext) => {
   console.log("\x1b[32m");
   console.log("[Server:getStaticProps]/pages/posts");
-  const list = getMarkdown();
-  console.log("list : ", list);
+  const list = getMarkdown("data");
+  console.log("Markdown file list : ", list);
   console.log("");
   return { props: { list } };
 };
 let renderCount = 0;
 renderCount++;
-export default function Posts({ list }: any) {
+export default function Page({ list }: any) {
   return (
     <>
       <Head>

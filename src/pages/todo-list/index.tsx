@@ -1,10 +1,11 @@
 import TodoList from "@/components/TodoList";
-export default function index() {
+import { Main } from "@/styles/public/main.styled";
+export default function Page() {
   return (
-    <main>
+    <Main>
       <section>
         <TodoList />
       </section>
-    </main>
+    </Main>
   );
 }

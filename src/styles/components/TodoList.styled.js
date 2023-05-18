@@ -1,8 +1,8 @@
 import styled from "styled-components";
-
 export const Box = styled.div`
-  /* border: 2px solid red; */
-  height: 50%;
+  width: 500px;
+  height: 500px;
+  /* min-height: 50%; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -11,15 +11,19 @@ export const Box = styled.div`
   > * {
     outline: 2px solid lightgray;
   }
-  > div:first-of-type {
+  > form {
     width: 100%;
     /* outline: 2px solid red; */
-    > form > div {
+    > div {
       display: flex;
       justify-content: space-between;
+      gap: 20px;
+      > * {
+        width: 100%;
+      }
     }
   }
-  > div:last-of-type {
+  > div {
     width: 100%;
     flex: 1;
     display: flex;

@@ -1,15 +1,12 @@
-import PostAuthor from "./PostAuthor";
-import Time from "./Time";
-import Reactions from "./Reactions";
 import Link from "next/link";
-
 import { useSelector } from "react-redux";
 import { selectPostById } from "lib/client/store/postsSlice";
-
+import Time from "./Time";
+import PostAuthor from "./PostAuthor";
+import Reactions from "./Reactions";
 // post props가 변경되지 않으면, 리렌더링하지 않는다. (memo)
-const PostItem = ({ postId }: any) => {
+export default function PostItem({ postId }: any) {
   const post = useSelector((state) => selectPostById(state, postId));
-
   return (
     <li>
       <Link href={`post-list/${post.id}`}>
@@ -23,5 +20,4 @@ const PostItem = ({ postId }: any) => {
       {/* <Reactions post={post} /> */}
     </li>
   );
-};
-export default PostItem;
+}

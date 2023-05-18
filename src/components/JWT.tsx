@@ -1,6 +1,4 @@
-// internal
 import { useEffect, useState } from "react";
-// external
 import {
   logOut,
   selectAcessToken,
@@ -11,11 +9,10 @@ import { useLogoutMutation, useRefreshMutation } from "lib/utils/authApiSlice";
 import { customAxios } from "lib/utils/customAxios";
 import refreshTokens from "lib/utils/refreshTokens";
 import { useDispatch, useSelector } from "react-redux";
-import { Box } from "@/styles/components/JWT.styled.js";
-export default function JWT() {
-  // internal
+import { Box } from "@/styles/components/JWT.styled";
+export default function JWT({ style }: any) {
+  console.log("style : ", style);
   const [users, setUsers]: any = useState();
-  // external
   // state
   const accessToken = useSelector(selectAcessToken);
   const refreshToken = useSelector(selectRefreshToken);
@@ -84,12 +81,12 @@ export default function JWT() {
     // console.log("accessToken : ", accessToken);
   }, []);
   return (
-    <Box>
+    <Box width={style.width} height={style.height} color={style.color}>
       <div>
         <h1>Response Data</h1>
         <div>
-          {users?.map((user: any) => (
-            <h5>{user}</h5>
+          {users?.map((user: any, index: number) => (
+            <h5 key={index}>{user}</h5>
           ))}
         </div>
       </div>

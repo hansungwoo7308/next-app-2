@@ -27,7 +27,7 @@ export default function User() {
         <section>
           <div>
             <h1>User Page</h1>
-            <h3>{user?.name}'s post list</h3>
+            <h3>{`${user?.name}'s post list`}</h3>
             <ol>{postTitles}</ol>
           </div>
         </section>

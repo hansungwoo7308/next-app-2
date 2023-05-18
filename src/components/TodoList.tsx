@@ -1,17 +1,14 @@
+import { useEffect, useState } from "react";
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
   useDeleteTodoMutation,
   useAddTodoMutation,
 } from "lib/utils/todosApiSlice";
-import { useEffect, useState } from "react";
 import { Box } from "@/styles/components/TodoList.styled";
-let renderCount = 0;
 export default function TodoList() {
-  // internal
   const [newTodo, setNewTodo] = useState("");
   const [content, setContent]: any = useState();
-  // external
   const {
     data: todos,
     isLoading,
@@ -29,23 +26,6 @@ export default function TodoList() {
     setNewTodo("");
     console.log("todos : ", todos);
   };
-  const newItemSection = (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="new-todo">Enter a new todo item</label>
-      <div className="new-todo">
-        <input
-          type="text"
-          id="new-todo"
-          value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
-          placeholder="Enter new todo"
-        />
-        <button className="submit">
-          <h1>Create</h1>
-        </button>
-      </div>
-    </form>
-  );
   useEffect(() => {
     // console.log(todos);
     if (isLoading) {
@@ -80,12 +60,21 @@ export default function TodoList() {
       setContent(<h1 style={{ color: "red" }}>{error.message}</h1>);
     }
   }, [todos]);
-  renderCount++;
   return (
     <Box>
-      <h1>renderCount : {renderCount}</h1>
-      <h1>Todo List</h1>
-      <div>{newItemSection}</div>
+      <h1>Database Todo List (Dynamic)</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Enter a new todo item</label>
+        <div>
+          <input
+            type="text"
+            value={newTodo}
+            onChange={(e) => setNewTodo(e.target.value)}
+            placeholder="Enter new todo"
+          />
+          <button className="submit">Create</button>
+        </div>
+      </form>
       <div>{content}</div>
     </Box>
   );

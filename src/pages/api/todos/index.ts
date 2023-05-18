@@ -1,10 +1,8 @@
+import mongoose from "mongoose";
 import Todo from "lib/client/model/Todo";
 // import { MongoClient } from "mongodb";
-import mongoose from "mongoose";
-
 export default async function handler(req: any, res: any) {
   console.log("");
-
   // set
   const URI: any = process.env.MONGODB_URI;
   const OPTIONS: any = {
@@ -17,7 +15,6 @@ export default async function handler(req: any, res: any) {
 
   // connect
   try {
-    // connect to db
     // await client.connect();
     await mongoose.connect(URI, OPTIONS);
     // get the collection data
@@ -38,20 +35,6 @@ export default async function handler(req: any, res: any) {
     // console.log("todos : ", todos);
   }
 
-  // get
-  // if (req.method === "GET") {
-  //   console.log("req.method === 'GET'");
-  //   try {
-  //     console.log("Post.find({})");
-  //     const result = await Todo.find({});
-  //     console.log("result : ", result);
-  //     res.status(200).json(result);
-  //   } catch (error) {
-  //     console.log("getTodos error : ", error);
-  //     res.status(400).json(error);
-  //   }
-  // }
-
   // POST
   if (req.method === "POST") {
     console.log("/api/todos/ [POST]");
@@ -62,6 +45,5 @@ export default async function handler(req: any, res: any) {
     await Todo.create(req.body);
     res.status(200).json(req.body);
   }
-
   console.log("");
 }

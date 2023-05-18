@@ -1,11 +1,8 @@
-// internal
 import Link from "next/link";
-
-// external
 import { useGetUsersQuery } from "lib/utils/usersApiSlice";
 import { Main } from "../../styles/public/main.styled";
 let renderCount = 0;
-const UserList = () => {
+export default function UserList() {
   const {
     data: users,
     isLoading,
@@ -18,16 +15,16 @@ const UserList = () => {
     <>
       <Main>
         <section>
-          {/* <h1>renderCount : {renderCount}</h1> */}
+          <h1>renderCount : {renderCount}</h1>
           <div>
             {isLoading ? (
               <h1>Loading...</h1>
             ) : isSuccess ? (
               <>
-                <h1>UserList</h1>
+                <h1>Undefined User List</h1>
                 <div>
-                  {users.map((user: any) => (
-                    <h5>{user}</h5>
+                  {users.map((user: any, index: number) => (
+                    <h5 key={index}>{user}</h5>
                   ))}
                 </div>
               </>
@@ -39,6 +36,4 @@ const UserList = () => {
       </Main>
     </>
   );
-};
-
-export default UserList;
+}

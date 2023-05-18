@@ -99,7 +99,7 @@ export async function middleware(request: NextRequest) {
   // return response;
 }
 export const config = {
-  matcher: ["/", "/post-list-2"],
+  matcher: ["/"],
   // matcher: ["/api/users"],
   // matcher: ["/user-list"],
   // matcher: ["/auth/admin"],

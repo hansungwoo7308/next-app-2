@@ -5,7 +5,7 @@ import Modal from "../../components/Modal";
 import PostList from "@/components/post/list/PostList";
 import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 import getMarkdown from "lib/server/getMarkdown";
-import { Main } from "@/styles/pages/post-list.styled";
+import { Main } from "@/styles/public/main.styled";
 import { GetStaticPropsContext } from "next";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"

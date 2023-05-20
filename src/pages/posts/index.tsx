@@ -1,7 +1,7 @@
 import Head from "next/head";
 import getMarkdown from "lib/server/getMarkdown";
 import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
-import { Main } from "@/styles/posts.styled";
+import { Main } from "@/styles/public/main.styled";
 import { GetStaticPropsContext } from "next";
 // import { useEffect, useRef, useState } from "react";
 // import { useRouter } from "next/router";

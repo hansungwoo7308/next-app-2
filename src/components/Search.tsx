@@ -12,7 +12,7 @@ export default function Search() {
       onSubmit={(e) => {
         e.preventDefault();
         setSearch("");
-        router.push(`/${search}`);
+        router.push(`/search/${search}`);
       }}
     >
       <input

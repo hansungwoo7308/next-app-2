@@ -35,7 +35,7 @@ export default function TodoList() {
         todos.map((todo: any) => {
           return (
             <article key={todo._id}>
-              <div className="todo">
+              <div>
                 <input
                   type="checkbox"
                   checked={todo.completed}

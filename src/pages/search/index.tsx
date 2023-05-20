@@ -1,15 +1,16 @@
 import Search from "@/components/Search";
-export default function index() {
+import { Main } from "@/styles/pages/search.styled";
+export default function Page() {
   return (
     <>
-      <main>
+      <Main>
         <section>
           <div>
             <h1>Search Page</h1>
             <Search />
           </div>
         </section>
-      </main>
+      </Main>
     </>
   );
 }

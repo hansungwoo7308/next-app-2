@@ -4,25 +4,90 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { increaseCount, getCount } from "lib/client/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+const NavStyle = styled.nav`
+  .selectedMenu {
+    color: coral;
+    a:hover {
+      color: coral;
+    }
+  }
+  .unselectedMenu {
+    color: #ccc;
+  }
+  /* Main List */
+  > ul {
+    position: relative;
+    display: flex;
+    gap: 40px;
+    > .focus {
+      height: 3px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background-color: coral;
+      outline: none;
+      transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    > li {
+      min-width: 70px;
+      /* outline: 2px solid coral; */
+      position: relative;
+      :hover > ul {
+        display: flex;
+      }
+      > a {
+        display: flex;
+        justify-content: center;
+      }
+      /* Sub List */
+      > ul {
+        height: initial;
+        position: absolute;
+        top: 100%;
+        border: 3px solid green;
+        background-color: black;
+        color: white;
+        /* display: flex; */
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        > li {
+          width: 100%;
+          min-width: 70px;
+          white-space: nowrap;
+          > a {
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
+`;
 export default function Nav() {
-  // internal
   const router = useRouter();
   const focusRef: any = useRef();
   const homeRef: any = useRef();
+  const listRef: any = useRef();
 
+  // blog
   const blogsRef: any = useRef();
+  // user
   const usersRef: any = useRef();
   const users2Ref: any = useRef();
-
+  const userListRef: any = useRef();
+  // post
   const postsRef: any = useRef();
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
-  const userListRef: any = useRef();
+  // todo
   const todoListRef: any = useRef();
 
+  // auth
   const loginRef: any = useRef();
   const jwtRef: any = useRef();
 
+  // search
   const searchRef: any = useRef();
   const setColor = (target: any) => {
     const array = Array.from(target.parentNode.childNodes);
@@ -42,32 +107,35 @@ export default function Nav() {
     if (router.pathname === "/") {
       setColor(homeRef.current);
       setUnderline(focusRef.current, homeRef.current);
+    } else if (router.pathname === "/list") {
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/blogs") {
-      setColor(blogsRef.current);
-      setUnderline(focusRef.current, blogsRef.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/posts") {
-      setColor(postsRef.current);
-      setUnderline(focusRef.current, postsRef.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (
       router.pathname === "/post-list" ||
       router.pathname === "/post-list/[id]" ||
       router.pathname === "/post-list/edit/[id]"
     ) {
-      setColor(postListRef.current);
-      setUnderline(focusRef.current, postListRef.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/post-list-2") {
-      setColor(postList2Ref.current);
-      setUnderline(focusRef.current, postList2Ref.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/users") {
-      setColor(usersRef.current);
-      setUnderline(focusRef.current, usersRef.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/users2") {
-      setColor(users2Ref.current);
-      setUnderline(focusRef.current, users2Ref.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/user-list") {
-      setColor(userListRef.current);
-      setUnderline(focusRef.current, userListRef.current);
-    } else if (router.pathname === "/auth/login") {
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
+    } else if (router.pathname === "/authentication/login") {
       setColor(loginRef.current);
       setUnderline(focusRef.current, loginRef.current);
     } else if (router.pathname === "/search") {
@@ -77,8 +145,8 @@ export default function Nav() {
       setColor(jwtRef.current);
       setUnderline(focusRef.current, jwtRef.current);
     } else if (router.pathname === "/todo-list") {
-      setColor(todoListRef.current);
-      setUnderline(focusRef.current, todoListRef.current);
+      setColor(listRef.current);
+      setUnderline(focusRef.current, listRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -101,56 +169,56 @@ export default function Nav() {
     handleChange();
   });
   return (
-    <nav>
+    <NavStyle>
       <ul>
         <li ref={focusRef} className="focus"></li>
-
         <li ref={homeRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/"}>Home</Link>
         </li>
-
-        {/* Post List */}
-        {/* <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/posts"}>Markdown Post List</Link>
+        <li ref={listRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/list"}>List</Link>
+          <ul>
+            {/* Post List */}
+            <li ref={postsRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/posts"}>Markdown Post List</Link>
+            </li>
+            <li ref={postListRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/post-list"}>CDN Post List</Link>
+            </li>
+            <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
+              <Link href={"/post-list-2"}>DB Post List</Link>
+            </li>
+            {/* User List */}
+            <li ref={usersRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/users"}>Users</Link>
+            </li>
+            <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
+              <Link href={"/users2"}>Users2</Link>
+            </li>
+            <li ref={userListRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/user-list"}>User List</Link>
+            </li>
+            {/* Blog */}
+            <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/blogs"}>BLOGS</Link>
+            </li>
+          </ul>
         </li>
-        <li ref={postListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list"}>CDN Post List</Link>
+        <li ref={loginRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/authentication/login"}>Login</Link>
         </li>
-        <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-          <Link href={"/post-list-2"}>DB Post List</Link>
-        </li> */}
-
-        {/* User List */}
-        {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/users"}>Users</Link>
-        </li>
-        <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
-          <Link href={"/users2"}>Users2</Link>
-        </li>
-        <li ref={userListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/user-list"}>User List</Link>
-        </li> */}
-
-        {/* Blog */}
-        {/* <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/blogs"}>BLOGS</Link>
-        </li> */}
-
-        {/* <li ref={loginRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/login"}>Login</Link>
-        </li> */}
-        {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
-        {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
+        <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
+        </li>
+        {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/jwt"}>JWT</Link>
+        </li> */}
+        {/* <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/todo-list"}>Todo List</Link>
         </li> */}
 
-        <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/jwt"}>JWT</Link>
-        </li>
-        <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/todo-list"}>Todo List</Link>
-        </li>
+        {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
       </ul>
-    </nav>
+    </NavStyle>
   );
 }

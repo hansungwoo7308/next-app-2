@@ -17,12 +17,16 @@ export const GlobalStyle = createGlobalStyle`
     /* overflow-x: hidden; */
   }
   a {
-  color: inherit;
-  text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+    
   }
   button {
     border: none;
     background-color: lightgray;
+    padding: 10px;
     cursor: pointer;
     :hover {
       background-color: black;
@@ -36,7 +40,11 @@ export const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   img {
-    width: 100%;
+    /* width: 100%;
+    height: 100%; */
+  }
+  input {
+    padding: 5px;
   }
   // header, navigation
   header {
@@ -69,34 +77,6 @@ export const GlobalStyle = createGlobalStyle`
       display: flex;
       align-items: center;
     }
-    nav {
-      /* outline: 2px dashed green; */
-      ul {
-        position: relative;
-        list-style: none;
-        display: flex;
-        gap: 40px;
-      }
-      .focus {
-        height: 3px;
-        position: absolute;
-        left:0;
-        bottom: 0;
-        background-color: coral;
-        outline: none;
-        transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-      }
-      .selectedMenu {
-        color: coral;
-        a:hover {
-          color: coral;
-        }
-      }
-      .unselectedMenu {
-        color: #ccc;
-      }
-    }
-    
     button {
       all: unset;
       cursor: pointer;
@@ -205,7 +185,6 @@ export const GlobalStyle = createGlobalStyle`
       gap: 15px;
     }
   }
-  
   // users page
   .users {
     > section {
@@ -352,36 +331,5 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-  .todos {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    > * {
-      outline: 2px solid lightgray;
-    }
-    > div:first-of-type {
-      width: 100%;
-      /* outline: 2px solid red; */
-      > form > div {
-        display: flex;
-        justify-content: space-between;
-
-      }
-    }
-    > div:last-of-type {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 10px;
-      /* outline: 2px solid blue; */
-      > article {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-  }
+  
 `;

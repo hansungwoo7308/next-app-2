@@ -1,9 +1,29 @@
-// modules
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
 import getWikiResults from "lib/utils/getWiki";
-import { Main } from "@/styles/search.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
+const Main = styled(PublicMain)`
+  // Override
+  > section {
+    > div {
+      width: 100%;
+      > ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 20px;
+        > li {
+          display: flex;
+          gap: 10px;
+          padding: 10px;
+          outline: 2px solid;
+        }
+      }
+    }
+  }
+`;
 export async function getServerSideProps(context: any) {
   const wikiResults: SearchResult = await getWikiResults(context.params.search);
   const pages: any = wikiResults?.query?.pages;
@@ -19,8 +39,8 @@ export async function getServerSideProps(context: any) {
     },
   };
 }
-export default function index({ query, items }: any) {
-  // console.log("items : ", items);
+export default function Page({ query, items }: any) {
+  console.log("items : ", items);
   if (!items)
     return (
       <>
@@ -51,7 +71,6 @@ export default function index({ query, items }: any) {
                     <Link
                       href={`https://en.wikipedia.org/?curid=${item.pageid}`}
                       target="_blank"
-                      className="text-xl font-bold underline"
                     >
                       <Image
                         src={item.thumbnail.source}
@@ -68,7 +87,6 @@ export default function index({ query, items }: any) {
                     <Link
                       href={`https://en.wikipedia.org/?curid=${item.pageid}`}
                       target="_blank"
-                      className="text-xl font-bold underline"
                     >
                       <h3>{item.title}</h3>
                     </Link>

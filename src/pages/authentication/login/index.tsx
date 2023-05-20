@@ -1,31 +1,42 @@
-// internal
 import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-
-// external
 import { useDispatch } from "react-redux";
 import { setCredentials } from "lib/client/store/authSlice";
 import { useLoginMutation } from "lib/utils/authApiSlice";
-// nextauth
 import { signIn, signOut, useSession } from "next-auth/react";
-// style
-import { Main } from "../styles/login.styled";
 import { customAxios } from "lib/utils/customAxios";
-const Login = () => {
-  // internal
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
+const Main = styled(PublicMain)`
+  > section {
+    height: 100vh;
+    > div {
+      width: 50%;
+      height: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+      > form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  }
+`;
+export default function Page() {
   const userRef: any = useRef();
-  // const errRef: any = useRef();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // const [errMsg, setErrMsg] = useState("");
   const router = useRouter();
   const dispatch = useDispatch();
-
+  // const errRef: any = useRef();
+  // const [errMsg, setErrMsg] = useState("");
   // useEffect(() => {
   //   userRef.current?.focus();
   // }, []);
-
   // useEffect(() => {
   //   setErrMsg("");
   // }, [username, password]);
@@ -48,10 +59,8 @@ const Login = () => {
       // console.log("loggedInUser : ", loggedInUser);
       // set the store
       await dispatch(setCredentials({ ...loggedInUser, username }));
-      // set the state
       setUsername("");
       setPassword("");
-      // move to homepage
       router.push("/");
     } catch (err: any) {
       console.log("error : ", err);
@@ -132,6 +141,4 @@ const Login = () => {
       </Main>
     </>
   );
-};
-
-export default Login;
+}

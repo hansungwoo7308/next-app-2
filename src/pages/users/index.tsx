@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { selectAllUsers } from "lib/client/store/usersSlice";
 import { Main } from "@/styles/public/main.styled";
 let renderCount = 0;
-export default function Users() {
+export default function Page() {
   const users = useSelector(selectAllUsers);
   const list = users.map((user: any) => (
     <li key={user.id}>

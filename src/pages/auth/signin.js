@@ -3,8 +3,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-
-const Signin = () => {
+export default function Page() {
   const router = useRouter();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -58,6 +57,4 @@ const Signin = () => {
       </main>
     </>
   );
-};
-
-export default Signin;
+}

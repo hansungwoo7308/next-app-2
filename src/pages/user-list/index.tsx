@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useGetUsersQuery } from "lib/utils/usersApiSlice";
 import { Main } from "../../styles/public/main.styled";
 let renderCount = 0;
-export default function UserList() {
+export default function Page() {
   const {
     data: users,
     isLoading,

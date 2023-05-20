@@ -21,7 +21,6 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     color: inherit;
     text-decoration: none;
-    
   }
   button {
     border: none;

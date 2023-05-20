@@ -4,10 +4,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import axios from "axios";
-
 let renderCount = 0;
-
-const Signup = () => {
+export default function Page() {
   const router = useRouter();
   const { status } = useSession();
   const {
@@ -165,6 +163,4 @@ const Signup = () => {
         </main>
       </>
     );
-};
-
-export default Signup;
+}

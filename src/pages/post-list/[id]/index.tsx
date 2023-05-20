@@ -5,8 +5,8 @@ import Time from "@/components/post/item/Time";
 import Reactions from "@/components/post/item/Reactions";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Main } from "@/styles/pages/post-item.styled.js";
-export default function PostItem() {
+import { Main } from "@/styles/public/main.styled";
+export default function Page() {
   const router = useRouter();
   // const { "post-id": id } = router.query;
   const { id } = router.query;

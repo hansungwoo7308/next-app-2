@@ -1,15 +1,13 @@
 import PostItemEditForm from "@/components/post/item/PostItemEditForm";
-
-const EditPost = () => {
+import { Main } from "@/styles/public/main.styled";
+export default function Page() {
   return (
     <>
-      <main>
+      <Main>
         <section>
           <PostItemEditForm />
         </section>
-      </main>
+      </Main>
     </>
   );
-};
-
-export default EditPost;
+}

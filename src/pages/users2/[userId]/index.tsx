@@ -1,13 +1,10 @@
-// internal
 import { Suspense } from "react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-
-// external
 import getUser from "lib/utils/getUser";
 import getUserPosts from "lib/utils/getUserPosts";
-import { Main } from "@/styles/user2.styled";
+import { Main } from "@/styles/public/main.styled";
 export async function getServerSideProps(context: any) {
   const userId = context.params.userId;
   const user: Promise<User> = await getUser(userId);
@@ -30,7 +27,7 @@ export async function getServerSideProps(context: any) {
     },
   };
 }
-export default function User2({ user, userPosts }: any) {
+export default function Page({ user, userPosts }: any) {
   console.log("");
   console.log("\x1b[32m[Client]/pages/user2");
   console.log("");

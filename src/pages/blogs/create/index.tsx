@@ -1,6 +1,5 @@
 import { Main } from "@/styles/public/main.styled";
-
-export default function Create() {
+export default function Page() {
   return (
     <>
       <Main>

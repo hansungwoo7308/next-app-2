@@ -3,7 +3,7 @@ import { selectUserById } from "lib/client/store/usersSlice";
 import { selectAllPosts, selectPostsByUser } from "lib/client/store/postsSlice";
 import { useRouter } from "next/router";
 import Link from "next/link";
-export default function User() {
+export default function Page() {
   const router = useRouter();
   const { userId } = router.query;
   // find the user in the store

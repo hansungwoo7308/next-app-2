@@ -40,7 +40,7 @@ export function getStaticProps(context: any) {
     },
   };
 }
-export default function Blog({ blog }: any) {
+export default function Page({ blog }: any) {
   return (
     <>
       <Head>

@@ -11,7 +11,7 @@ export function getServerSideProps(context: GetServerSidePropsContext) {
   // console.log("id : ", id);
   return { props: { id } };
 }
-export default function index({ id }: any) {
+export default function Page({ id }: any) {
   return (
     <Main>
       <section>

@@ -1,5 +1,12 @@
 import Search from "@/components/Search";
-import { Main } from "@/styles/pages/search.styled";
+import styled from "styled-components";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+const Main = styled(PublicMain)`
+  > section {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+`;
 export default function Page() {
   return (
     <>

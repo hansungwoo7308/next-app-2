@@ -4,16 +4,13 @@ import { getSession, useSession } from "next-auth/react";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
-
 // export async function getServerSideProps(context) {
 //   // const session = await getSession(context);
 //   const session = await getServerSession(context.req, context.res, authOptions);
-
 //   console.log("");
 //   console.log("\x1b[32m/api/auth/admin [getServerSideProps]");
 //   console.log("\x1b[32msession : ", session);
 //   console.log("");
-
 //   if (!session) {
 //     return {
 //       redirect: {
@@ -22,23 +19,18 @@ import { getSession, useSession } from "next-auth/react";
 //       },
 //     };
 //   }
-
 //   return {
 //     props: {
 //       session,
 //     },
 //   };
 // }
-
-const Admin = () => {
+export default function Page() {
   const { data: session, status } = useSession();
-
-  // logs
   console.log("");
   console.log("\x1b[34mAdmin\x1b[0m");
   console.log("\x1b[34msession : ", session);
   console.log("");
-
   return (
     <>
       <Head>
@@ -58,6 +50,4 @@ const Admin = () => {
       </main>
     </>
   );
-};
-
-export default Admin;
+}

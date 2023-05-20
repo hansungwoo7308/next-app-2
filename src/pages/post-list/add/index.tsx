@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNewPost } from "lib/client/store/postsSlice";
 import { selectAllUsers } from "lib/client/store/usersSlice";
 import { Main } from "@/styles/pages/post-item-create.styled";
-export default function AddPost() {
+export default function Page() {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
   // console.log("users : ", users);

@@ -6,13 +6,19 @@ import { increaseCount, getCount } from "lib/client/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 const NavStyle = styled.nav`
-  .selectedMenu {
-    color: coral;
-    a:hover {
-      color: coral;
+  /* Public */
+  li {
+    color: #ccc;
+    :hover {
+      /* outline: 2px solid red; */
+      color: #fff;
     }
   }
-  .unselectedMenu {
+  /* Condition */
+  .setColor {
+    color: coral;
+  }
+  .unsetColor {
     color: #ccc;
   }
   /* Main List */
@@ -45,9 +51,9 @@ const NavStyle = styled.nav`
         height: initial;
         position: absolute;
         top: 100%;
-        border: 3px solid green;
-        background-color: black;
-        color: white;
+        background-color: #000;
+        color: #ccc;
+        /* border: 3px solid green; */
         /* display: flex; */
         display: none;
         flex-direction: column;
@@ -69,33 +75,28 @@ export default function Nav() {
   const focusRef: any = useRef();
   const homeRef: any = useRef();
   const listRef: any = useRef();
-
-  // blog
+  // list
   const blogsRef: any = useRef();
-  // user
   const usersRef: any = useRef();
   const users2Ref: any = useRef();
   const userListRef: any = useRef();
-  // post
   const postsRef: any = useRef();
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
-  // todo
   const todoListRef: any = useRef();
-
   // auth
   const loginRef: any = useRef();
   const jwtRef: any = useRef();
-
   // search
   const searchRef: any = useRef();
   const setColor = (target: any) => {
-    const array = Array.from(target.parentNode.childNodes);
-    array.map((child: any) => {
+    const list = Array.from(target.parentNode.childNodes);
+    // console.log("list : ", list);
+    list.map((child: any) => {
       if (child.className === "focus") return;
-      child.className = "unselectedMenu";
+      child.className = "unsetColor";
     });
-    target.className = "selectedMenu";
+    target.className = "setColor";
   };
   const setUnderline = (targetUnderline: any, targetItem: any) => {
     targetUnderline.style.width =
@@ -178,44 +179,45 @@ export default function Nav() {
         <li ref={listRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/list"}>List</Link>
           <ul>
-            {/* Post List */}
+            {/* Markdown List */}
             <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/posts"}>Markdown Post List</Link>
+              <Link href={"/posts"}>Markdown Post</Link>
             </li>
+            <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/blogs"}>Markdown Blog</Link>
+            </li>
+            {/* CDN List */}
             <li ref={postListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list"}>CDN Post List</Link>
+              <Link href={"/post-list"}>CDN Post</Link>
             </li>
+            <li ref={usersRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/users"}>CDN Users</Link>
+            </li>
+            <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
+              <Link href={"/users2"}>CDN Users2</Link>
+            </li>
+            {/* Database List */}
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list-2"}>DB Post List</Link>
             </li>
-            {/* User List */}
-            <li ref={usersRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users"}>Users</Link>
+            <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/todo-list"}>DB Todo List</Link>
             </li>
-            <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users2"}>Users2</Link>
-            </li>
+            {/* Undefined List */}
             <li ref={userListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/user-list"}>User List</Link>
-            </li>
-            {/* Blog */}
-            <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/blogs"}>BLOGS</Link>
+              <Link href={"/user-list"}>Undefined User List</Link>
             </li>
           </ul>
-        </li>
-        <li ref={loginRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/authentication/login"}>Login</Link>
         </li>
         <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
         </li>
-        {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
+        <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
-        </li> */}
-        {/* <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/todo-list"}>Todo List</Link>
-        </li> */}
+        </li>
+        <li ref={loginRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/authentication/login"}>Login</Link>
+        </li>
 
         {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
       </ul>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import getAllUsers from "lib/utils/getAllUsers";
-import { Main } from "@/styles/users2.styled";
+import { Main } from "@/styles/public/main.styled";
 export async function getServerSideProps(context: any) {
   const users: Promise<User[]> = await getAllUsers();
   //   if (!) {
@@ -14,7 +14,7 @@ export async function getServerSideProps(context: any) {
   // }
   return { props: { users } };
 }
-export default function Users2({ users }: any) {
+export default function Page({ users }: any) {
   return (
     <>
       <Head>

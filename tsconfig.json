@@ -30,7 +30,9 @@
     "lib/client/config/mongodb.ts", // "src/middleware.ts"
     "types/*",
     "src/styles/login.styled.js",
-    "src/styles/components/JWT.styled.ts"
+    "src/styles/components/JWT.styled.ts",
+    "src/pages/auth/*.ts",
+    "src/pages/api/restricted/index.js"
   ],
   "exclude": ["node_modules"]
 }

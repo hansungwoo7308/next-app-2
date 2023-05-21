@@ -51,7 +51,7 @@ if (!cached) {
   cached = globalWithMongoose.mongoose = { conn: null, promise: null };
 }
 
-async function connectDB() {
+export default async function connectDB() {
   // console.log("\x1b[32m");
   // console.log("[Server-Database]Connecting...");
   // cached connection
@@ -84,8 +84,6 @@ async function connectDB() {
   // console.log("");
   return cached.conn;
 }
-
-export default connectDB;
 
 // import mongoose from "mongoose";
 

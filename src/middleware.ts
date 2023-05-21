@@ -19,13 +19,19 @@
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
+import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 // import { getToken } from "next-auth/jwt";
-export async function middleware(request: NextRequest) {
+export async function middleware(req: NextRequest) {
   console.log("\x1b[32m");
-  console.log("[Server]/middleware");
-  console.log("request.method : ", request.method);
-  console.log("request.url : ", request.url);
+  console.log("middleware");
+  // get the next-auth jwt token
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  console.log("token : ", token);
+  const { pathname } = req.nextUrl;
+  console.log("pathname : ", pathname);
+  // console.log("request.method : ", request.method);
+  // console.log("request.url : ", request.url);
   // const origin = request.headers.get("origin");
   // console.log("origin : ", origin);
   // const regex = new RegExp("/post-list-2");

@@ -2,7 +2,7 @@ import connectDB from "../../../../lib/client/config/connectDB";
 import Post from "../../../../lib/client/model/Post";
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m");
-  console.log("[Server]/api/posts/");
+  console.log("api/posts/");
   // connect to database
   try {
     await connectDB();
@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
   }
   // get posts
   if (req.method === "GET") {
-    // console.log("[Server]/api/posts/");
+    // console.log("api/posts/");
     try {
       const foundPosts = await Post.find({});
       console.log("foundPosts : ", foundPosts);
@@ -23,7 +23,7 @@ export default async function handler(req: any, res: any) {
   }
   // create a post
   if (req.method === "POST") {
-    // console.log("[Server]/api/posts/");
+    // console.log("api/posts/");
     // get the request data
     const data = req.body;
     try {

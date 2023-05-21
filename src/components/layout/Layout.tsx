@@ -1,12 +1,9 @@
 import Header from "./Header";
-
-const Layout = ({ children }: any) => {
+export default function Layout({ children }: any) {
   return (
     <>
       <Header />
       {children}
     </>
   );
-};
-
-export default Layout;
+}

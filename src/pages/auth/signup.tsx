@@ -1,10 +1,62 @@
 import { useRef, useEffect } from "react";
-import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import axios from "axios";
+import styled from "styled-components";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 let renderCount = 0;
+const Main = styled(PublicMain)`
+  section {
+    position: relative;
+    form {
+      width: 50%;
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      outline: 3px solid green;
+      padding: 20px;
+      div {
+        width: 50%;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        outline: none;
+        border: 3px solid royalblue;
+        /* border: 3px solid steelblue; */
+        /* border: 3px solid dodgerblue; */
+        border-radius: 5px;
+        :hover,
+        :focus {
+          border: 3px solid var(--color-focus);
+        }
+      }
+      small {
+        color: red;
+      }
+      button {
+        /* all: unset; */
+        width: 50%;
+        background-color: darkgray;
+        color: white;
+        /* outline: none; */
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 30px;
+        cursor: pointer;
+        :hover {
+          background-color: #000;
+        }
+      }
+    }
+  }
+`;
 export default function Page() {
   const router = useRouter();
   const { status } = useSession();
@@ -18,8 +70,7 @@ export default function Page() {
   const password = useRef();
   password.current = watch("password");
   // passwordRef.current = watch("name");
-
-  const handleSignup = async (data) => {
+  const handleSignup = async (data: any) => {
     try {
       const result = await axios
         .post("/api/auth/signup", data)
@@ -30,22 +81,17 @@ export default function Page() {
       console.log("error : ", error);
     }
   };
-
   useEffect(() => {
     setFocus("name");
   }, []);
-
   // useEffect(() => {
   //   setFocus("name", { shouldSelect: true });
   // }, [setFocus]);
-
   renderCount++;
-
   // logs
   // console.log("");
   // console.log("\x1b[32m/auth/signup\x1b[0m");
   // console.log("");
-
   if (status === "authenticated") router.push("/");
   if (status === "loading")
     return (
@@ -53,11 +99,11 @@ export default function Page() {
         <Head>
           <title>Sign Up</title>
         </Head>
-        <main>
+        <Main>
           <section>
             <h1>Loading...</h1>
           </section>
-        </main>
+        </Main>
       </>
     );
   if (status === "unauthenticated")
@@ -66,20 +112,9 @@ export default function Page() {
         <Head>
           <title>Sign Up</title>
         </Head>
-        <main className="signup">
+        <Main>
           <section>
-            <div
-              style={{
-                position: "absolute",
-                top: "70px",
-                right: "20px",
-                fontSize: "18px",
-                fontWeight: "800",
-              }}
-            >
-              <span>renderCount : </span>
-              {renderCount}
-            </div>
+            <h1>renderCount : {renderCount}</h1>
             <form onSubmit={handleSubmit(handleSignup)}>
               <div>
                 <input
@@ -160,7 +195,7 @@ export default function Page() {
               <button type="submit">Sign Up</button>
             </form>
           </section>
-        </main>
+        </Main>
       </>
     );
 }

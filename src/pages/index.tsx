@@ -1,23 +1,19 @@
-// internal
-import Head from "next/head";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-// external
-import { Main } from "@/styles/pages/home.styled";
-import TodoList from "@/components/TodoList";
+import Head from "next/head";
+import { Main } from "@/styles/public/main.styled";
+// import Link from "next/link";
+// import TodoList from "@/components/TodoList";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
-// varialbes
 let renderCount = 0;
-renderCount++;
-export const getServerSideProps = (context: any) => {
+export function getServerSideProps(context: any) {
   // const serverCookies = context.req.cookies;
   // console.log("serverCookies : ", serverCookies);
   // const requestProps = Object.getOwnPropertyNames(context.req);
   // let authorization =
   //   context.req.headers.authorization || context.req.headers.Authorization;
   console.log("");
-  console.log("\x1b[32m[Server]/pages/home");
+  console.log("\x1b[32mpages/home");
   // console.log(
   //   "context.req.headers.Authorization : ",
   //   context.req.headers.Authorization
@@ -31,12 +27,12 @@ export const getServerSideProps = (context: any) => {
       // serverCookies,
     },
   };
-};
-export default function Home() {
-  // internal
+}
+export default function Page() {
   // const [cookies, setCookies]: any = useState();
   // const [checkedUser, setCheckedUser]: any = useState();
-  const [users, setUsers]: any = useState();
+  // const [users, setUsers]: any = useState();
+  renderCount++;
   return (
     <>
       <Head>
@@ -48,7 +44,6 @@ export default function Home() {
       <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
-          {/* <TodoList /> */}
         </section>
       </Main>
     </>

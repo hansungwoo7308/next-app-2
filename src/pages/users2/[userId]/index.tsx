@@ -10,7 +10,7 @@ export async function getServerSideProps(context: any) {
   const user: Promise<User> = await getUser(userId);
   const userPosts: Promise<Post[]> = await getUserPosts(userId);
   console.log("");
-  console.log("\x1b[32m[Server]/pages/user2");
+  console.log("\x1b[32mpages/user2");
   console.log("");
   //   if (!) {
   //   return {

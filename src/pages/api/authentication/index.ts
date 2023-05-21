@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
   console.log("");
-  console.log("\x1b[32m[Server]/api/authentication");
+  console.log("\x1b[32mapi/authentication");
   // get the request
   const cookies = req.cookies;
   console.log("refreshToken : ", cookies.refreshToken);

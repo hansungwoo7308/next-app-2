@@ -21,6 +21,8 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     color: inherit;
     text-decoration: none;
+    display: flex;
+    justify-content: center;
   }
   button {
     border: none;
@@ -45,139 +47,7 @@ export const GlobalStyle = createGlobalStyle`
   input {
     padding: 5px;
   }
-  // header, navigation
-  header {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    background-color: black;
-    color: #ccc;
-    z-index: 100;
-    section {
-      width: 80%;
-      height: 100%;
-      display: flex;
-      justify-content: space-between;
-      > form {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-        > input {
-          height: 50%;
-          padding: 10px;
-        }
-      }
-    }
-    ul, li, a {
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-    button {
-      all: unset;
-      cursor: pointer;
-    }
-    a:hover, li:hover, button:hover {
-      color: #fff;
-    }
-  }
   // pages
-  .signin {
-    /* outline: 3px solid blue; */
-    section {
-      display: flex;
-      flex-direction: column;
-      form {
-        width: 50%;
-        height: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
-        border: 2px solid red;
-      }
-      input {
-        width: 50%;
-        padding: 8px;
-        outline: none;
-        border: 3px solid royalblue;
-        /* border: 3px solid steelblue; */
-        /* border: 3px solid dodgerblue; */
-        border-radius: 5px;
-        :hover, :focus {
-          border: 3px solid var(--color-focus);
-        }
-      }
-      button {
-        /* all: unset; */
-        width: 50%;
-        background-color: darkgray;
-        color: white;
-        /* outline: none; */
-        border: none;
-        border-radius: 5px;
-        padding: 10px;
-        cursor: pointer;
-        :hover {
-          background-color: #000;
-        }
-      }
-    }
-
-  }
-  .signup {
-    section {
-      position: relative;
-      form {
-        width: 50%;
-        min-width: 300px;
-        height: 50%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        /* border: 1px solid red; */
-        div {
-          width: 50%;
-        }
-        input {
-          width: 100%;
-          padding: 8px;
-          outline: none;
-          border: 3px solid royalblue;
-          /* border: 3px solid steelblue; */
-          /* border: 3px solid dodgerblue; */
-          border-radius: 5px;
-          :hover, :focus {
-            border: 3px solid var(--color-focus);
-          }
-        }
-        small {
-          color: red;
-        }
-        button {
-          /* all: unset; */
-          width: 50%;
-          background-color: darkgray;
-          color: white;
-          /* outline: none; */
-          border: none;
-          border-radius: 5px;
-          padding: 10px;
-          margin-top: 30px;
-          cursor: pointer;
-          :hover {
-            background-color: #000;
-          }
-        }
-      }
-    }
-  }
   .admin {
     section {
       flex-direction: column;
@@ -209,10 +79,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   // components
-  .auth-button {
-    display: flex;
-    gap: 40px;
-  }
   .slider {
     width: 300px;
     height: 300px;

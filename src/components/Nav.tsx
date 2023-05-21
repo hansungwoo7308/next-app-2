@@ -6,6 +6,13 @@ import { increaseCount, getCount } from "lib/client/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 const NavStyle = styled.nav`
+  /* Condition */
+  .setColor {
+    color: coral;
+  }
+  .unsetColor {
+    color: #ccc;
+  }
   /* Public */
   li {
     color: #ccc;
@@ -14,18 +21,12 @@ const NavStyle = styled.nav`
       color: #fff;
     }
   }
-  /* Condition */
-  .setColor {
-    color: coral;
-  }
-  .unsetColor {
-    color: #ccc;
-  }
-  /* Main List */
+  /* Private */
   > ul {
+    /* Main List */
     position: relative;
     display: flex;
-    gap: 40px;
+    /* gap: 20px; */
     > .focus {
       height: 3px;
       position: absolute;
@@ -46,8 +47,8 @@ const NavStyle = styled.nav`
         display: flex;
         justify-content: center;
       }
-      /* Sub List */
       > ul {
+        /* Sub List */
         height: initial;
         position: absolute;
         top: 100%;

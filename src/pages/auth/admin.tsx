@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { getSession, useSession } from "next-auth/react";
+import { Main } from "@/styles/public/main.styled";
 // import { useEffect, useRef, useState } from "react";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
@@ -26,7 +27,7 @@ import { getSession, useSession } from "next-auth/react";
 //   };
 // }
 export default function Page() {
-  const { data: session, status } = useSession();
+  const { data: session, status }: any = useSession();
   console.log("");
   console.log("\x1b[34mAdmin\x1b[0m");
   console.log("\x1b[34msession : ", session);
@@ -36,18 +37,19 @@ export default function Page() {
       <Head>
         <title>Admin</title>
       </Head>
-      <main className="admin">
+      <Main>
         <section>
           {status === "authenticated" && (
             <div>
               <h1>Admin</h1>
-              <p>name : {session.user.name}</p>
+              <p>{session.user.kkk}</p>
+              {/* <p>name : {session.user.name}</p>
               <p>email : {session.user.email}</p>
-              <p>role : {session.user.role}</p>
+              <p>role : {session.user.role}</p> */}
             </div>
           )}
         </section>
-      </main>
+      </Main>
     </>
   );
 }

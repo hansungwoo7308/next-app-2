@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
   console.log("");
-  console.log("\x1b[32m[Server]/api/authentication/refresh");
+  console.log("\x1b[32mapi/authentication/refresh");
   // get the accessToken
   const authorization = req.headers.authorization;
   const accessToken = authorization.split(" ")[1];

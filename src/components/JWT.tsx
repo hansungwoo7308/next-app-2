@@ -13,7 +13,6 @@ import { Box } from "@/styles/components/JWT.styled";
 export default function JWT({ style }: any) {
   console.log("style : ", style);
   const [users, setUsers]: any = useState();
-  // state
   const accessToken = useSelector(selectAcessToken);
   const refreshToken = useSelector(selectRefreshToken);
   const dispatch = useDispatch();

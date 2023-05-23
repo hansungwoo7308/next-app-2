@@ -1,16 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut } from "lib/client/store/authSlice";
-
 // set the base query
 // baseQuery에 endpoint를 더하여 요청경로를 완성한다.
 // credentials를 포함한다.
 // header에 authorization bearer를 설정해준다.
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/",
-
   // for accessToken
   credentials: "include",
-
   // set the header
   prepareHeaders: (headers, { getState }: any) => {
     const accessToken = getState().auth.accessToken;
@@ -22,7 +19,6 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
-
 // query with re-auth
 // createApi에 객체프로퍼티 중에서 baseQuery는 3개의 파라미터를 가지는 콜백함수를 통해 설정한다.
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
@@ -57,7 +53,6 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
 
   return result;
 };
-
 export const authApiSlice = createApi({
   reducerPath: "authApi", // default
   baseQuery: baseQueryWithReauth,
@@ -102,7 +97,6 @@ export const authApiSlice = createApi({
     }),
   }),
 });
-
 // endpoint를 apiSlice에 주입한다.
 // export const authApiSlice = authApiSlice.injectEndpoints({
 //   endpoints: (builder) => ({
@@ -118,7 +112,6 @@ export const authApiSlice = createApi({
 //     }),
 //   }),
 // });
-
 // api actions
 export const {
   useLoginMutation,

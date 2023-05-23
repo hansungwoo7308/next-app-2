@@ -1,53 +1,51 @@
 import mongoose from "mongoose";
-
 const userSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
+  // client로부터 채워지는 데이터
   username: {
+    type: String,
+    // required: true,
+    // unique: true,
+  },
+  email: {
     type: String,
     required: true,
     unique: true,
   },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   unique: true,
-  // },
-  // hashedPassword: {
-  //   type: String,
-  //   required: true,
-  //   minlength: 5,
-  // },
   password: {
     type: String,
     required: true,
     // minlength: 5,
   },
-  accessToken: {
-    type: String,
-  },
+
+  // server로부터 채워지는 데이터
+  // id: {
+  //   type: Number,
+  //   required: true,
+  //   unique: true,
+  // },
   refreshToken: {
     type: String,
   },
-  // role: {
+  role: {
+    type: String,
+    default: "user",
+    // required: true,
+  },
+  // hashedPassword: {
   //   type: String,
-  //   default: "user",
   //   required: true,
+  //   minlength: 5,
+  // },
+  // accessToken: {
+  //   type: String,
   // },
   // image: {
   //   type: String,
   // },
 });
-
 const User = mongoose.models.User || mongoose.model("User", userSchema);
-
 export default User;
-
 // import mongoose from "mongoose";
-
 // const userSchema = new mongoose.Schema({
 //   name: {
 //     type: String,
@@ -76,6 +74,5 @@ export default User;
 //   //   },
 //   // refreshToken: [String],
 // });
-
 // // module.exports = mongoose.models?.User || mongoose.model("User", userSchema);
 // export default mongoose.models?.User || mongoose.model("User", userSchema);

@@ -1,10 +1,5 @@
 // // middleware.ts
-// import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
 // export function middleware(request: NextRequest) {
-//   console.log("");
-//   console.log("\x1b[31mMiddleware\x1b[0m");
-//   console.log("");
 //   // // Clone the request headers and set a new header `x-version`
 //   // const requestHeaders = new Headers(request.headers);
 //   // requestHeaders.set("x-version", "13");
@@ -21,46 +16,63 @@
 // }
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-// import { getToken } from "next-auth/jwt";
+// import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
-  console.log("\x1b[32m");
-  console.log("middleware");
+  console.log("\x1b[33m");
+  console.log("[middleware]");
+  // next-auth 를 사용한다면
+  // 특정페이지는 특정한 사용자만 사용할 수 있게, 프로텍티드 페이지를 구현
   // get the next-auth jwt token
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  console.log("token : ", token);
   const { pathname } = req.nextUrl;
+  // console.log("req.nextUrl : ", req.nextUrl);
+  // console.log("req.url : ", req.url);
   console.log("pathname : ", pathname);
-  // console.log("request.method : ", request.method);
-  // console.log("request.url : ", request.url);
+  if (pathname === "/") {
+    console.log("next-auth token : ", token);
+    if (!token) console.log("\x1b[31mYou dont have a token.");
+  }
+  if (pathname === "/api/restricted") {
+    // const body = req.body;
+    // const credentials = req.credentials;
+    // const headers = req.headers;
+    const authorization = req.headers.get("authorization");
+    const accessToken = authorization?.split(" ")[1];
+    console.log("accessToken : ", accessToken);
+    if (!accessToken) {
+      console.log("Redirected.");
+      // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
+      // return NextResponse.redirect(new URL("/auth/signin", req.url));
+      // console.log("Rewrited.");
+      // return NextResponse.rewrite(new URL("auth/signin", req.url));
+    }
+    // console.log("request body : ", body);
+    // console.log("request credentials : ", credentials);
+    // console.log("request headers : ", headers);
+    // console.log("request authorization : ", authorization);
+  }
+  // check the request properties
+  // console.log("req.url : ", req.url);
+  // console.log("req.cookies : ", req.cookies);
+  // console.log("req.cookies.getAll() : ", req.cookies.getAll());
+
   // const origin = request.headers.get("origin");
-  // console.log("origin : ", origin);
   // const regex = new RegExp("/post-list-2");
   // const regexTest = regex.test(request.url);
-  // console.log("regexTest : ", regexTest);
   // request.headers.set("Authorization", "Bearer 3...");
-  // console.log("request.headers : ", request.headers);
-
   // const requestHeaders = new Headers(request.headers);
   // requestHeaders.set("Authorization", "Bearer hfsldfhskdlfhl");
-  // console.log("requestHeaders : ", requestHeaders);
-
-  // console.log("cookies : ", request.cookies);
-  // console.log("cookies : ", request.cookies.getAll());
   // console.log("refreshToken : ", request.cookies.get("refreshToken"));
   // if (!request.cookies.get("accessToken"))
   //   console.log("accessToken does not exist");
   // console.log("request : ", Object.getOwnPropertyNames(request));
   // console.log("request.credentials : ", request.credentials);
   // const { authorization }: any = request.headers;
-  // console.log("authorization : ", authorization);
   // console.log("request.credentials : ", typeof request.credentials);
   // set
   // console.log("request.headers.cookie : ", request.headers.get("cookie"));
-  // console.log("typeof request.headers : ", typeof request.headers);
   // console.log("asdads : ", request.headers.get("Authorization"));
-  // console.log("test : ", test);
   // response.headers.set("Authorization", "Bearer 2...");
-  // console.log("response : ", response);
   // response.cookies.set("vercel", "fast");
   // const response = NextResponse.next({
   //   request: {
@@ -105,9 +117,8 @@ export async function middleware(req: NextRequest) {
   // return response;
 }
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/api/restricted:path*"],
   // matcher: ["/api/users"],
-  // matcher: ["/user-list"],
   // matcher: ["/auth/admin"],
   // matcher: ["/about", "/auth/admin"],
 };

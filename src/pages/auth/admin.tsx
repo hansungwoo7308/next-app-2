@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import { getSession, useSession } from "next-auth/react";
-import { Main } from "@/styles/public/main.styled";
-// import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -26,12 +28,49 @@ import { Main } from "@/styles/public/main.styled";
 //     },
 //   };
 // }
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      width: 80%;
+      height: 70vh;
+      padding: 20px;
+      > h1 {
+        margin-bottom: 20px;
+      }
+    }
+  }
+`;
+export function getServerSideProps(context: any) {
+  // console.log("\x1b[32m");
+  // console.log("[pages/auth/admin]");
+  // console.log("");
+  return {
+    props: {},
+  };
+}
 export default function Page() {
+  const [test, setTest]: any = useState();
   const { data: session, status }: any = useSession();
-  console.log("");
-  console.log("\x1b[34mAdmin\x1b[0m");
-  console.log("\x1b[34msession : ", session);
-  console.log("");
+  // console.log("\x1b[34m");
+  // console.log("[pages/admin]");
+  // // console.log("session : ", session);
+  // console.log("");
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.get("/api/restricted", {
+        headers: { Authorization: token ? `Bearer ${token}` : "" },
+      });
+      const data = response.data;
+      console.log("data : ", data);
+      setTest(data.message);
+    } catch (error) {
+      console.log("error : ", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <Head>
@@ -42,12 +81,15 @@ export default function Page() {
           {status === "authenticated" && (
             <div>
               <h1>Admin</h1>
-              <p>{session.user.kkk}</p>
-              {/* <p>name : {session.user.name}</p>
+              <p>name : {session.user.name}</p>
               <p>email : {session.user.email}</p>
-              <p>role : {session.user.role}</p> */}
+              <p>role : {session.user.role}</p>
             </div>
           )}
+          <div>
+            <h1>Admin (Protected Page)</h1>
+            <p>{test}</p>
+          </div>
         </section>
       </Main>
     </>

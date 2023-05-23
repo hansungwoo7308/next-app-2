@@ -12,14 +12,10 @@ export const authOptions = {
     Credentials({
       id: "credentials",
       name: "Credentials",
-      // credentials: {
-      //   email: { type: "text" },
-      //   password: { type: "text" },
-      // },
       async authorize(credentials, req) {
         // authentication(matched) and authorization(permision and role)
         console.log("\x1b[32m");
-        console.log("api/auth/[...nextauth]");
+        console.log("[api/auth/[...nextauth]]");
         console.log("providers : credentials");
         // get the user data
         const { email, password } = credentials;
@@ -65,8 +61,8 @@ export const authOptions = {
     // },
     async jwt({ token, user }) {
       // client jwt
-      console.log("\x1b[33m");
-      console.log("api/auth/callbacks/jwt");
+      // console.log("\x1b[32m");
+      // console.log("[api/auth/callbacks/jwt]");
       // console.log("user : ", user);
       // console.log("token : ", token);
       // if (account) {
@@ -75,15 +71,14 @@ export const authOptions = {
       if (user) {
         token.authorizedUser = user;
       }
-      console.log("token : ", token);
-      // console.log("token.authorizedUser.name : ", token.authorizedUser.name);
-      console.log("");
+      // console.log("token : ", token);
+      // console.log("");
       return token;
     },
     async session({ session, token }) {
       // server session
-      console.log("\x1b[33m");
-      console.log("api/auth/callbacks/session");
+      console.log("\x1b[32m");
+      console.log("[api/auth/callbacks/session]");
       // console.log("token : ", token);
       // if (session.user) {
       //   session.user.role = token.role;
@@ -93,8 +88,9 @@ export const authOptions = {
       if (session.user) {
         session.user.name = token.authorizedUser.name;
         session.user.email = token.authorizedUser.email;
+        session.user.role = token.authorizedUser.role;
       }
-      console.log("session.user : ", session.user);
+      // console.log("session.user : ", session.user);
       console.log("session : ", session);
       console.log("");
       return session;

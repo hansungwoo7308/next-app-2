@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
 import Head from "next/head";
 import { Main } from "@/styles/public/main.styled";
-// import Link from "next/link";
-// import TodoList from "@/components/TodoList";
+import { useEffect, useState } from "react";
+import axios from "axios";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 let renderCount = 0;
@@ -12,12 +11,9 @@ export function getServerSideProps(context: any) {
   // const requestProps = Object.getOwnPropertyNames(context.req);
   // let authorization =
   //   context.req.headers.authorization || context.req.headers.Authorization;
-  console.log("");
-  console.log("\x1b[32mpages/home");
-  // console.log(
-  //   "context.req.headers.Authorization : ",
-  //   context.req.headers.Authorization
-  // );
+  console.log("\x1b[32m");
+  console.log("[pages/home]");
+
   // context.req.headers.authorization = "askdhfdlshfls";
   // console.log("context.req.headers : ", context.req.headers);
   // console.log("authorization : ", authorization);
@@ -44,6 +40,9 @@ export default function Page() {
       <Main>
         <section>
           <h1>renderCount : {renderCount}</h1>
+          <div>
+            <h1>Home</h1>
+          </div>
         </section>
       </Main>
     </>

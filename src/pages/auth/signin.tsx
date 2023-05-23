@@ -5,12 +5,14 @@ import Link from "next/link";
 import Head from "next/head";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
+import axios from "axios";
 const Main = styled(PublicMain)`
   > section {
     display: flex;
     flex-direction: column;
     > form {
       width: 50%;
+      min-width: 500px;
       height: 50vh;
       display: flex;
       flex-direction: column;
@@ -31,6 +33,12 @@ const Main = styled(PublicMain)`
         :focus {
           border: 3px solid var(--color-focus);
         }
+      }
+      > button:nth-of-type(1) {
+        background-color: lightcoral;
+      }
+      > button:nth-of-type(2) {
+        background-color: lightblue;
       }
       > button {
         /* all: unset; */
@@ -56,16 +64,32 @@ export default function Page() {
   useEffect(() => {
     emailRef.current.focus();
   }, []);
-  const handleSignin = async (e: any) => {
+  const handleSigninWithNextauth = async (e: any) => {
     e.preventDefault();
     await signIn("credentials", {
       email: emailRef.current.value,
       password: passwordRef.current.value,
-      ppp: "ppp",
       callbackUrl: "/auth/admin",
-
       // redirect: false,
     });
+  };
+  const handleSigninGenerally = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/authentication/login",
+        {
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }
+      );
+      const result = response.data;
+      console.log("login result : ", result);
+      localStorage.setItem("accessToken", result.accessToken);
+      router.push("/auth/admin");
+    } catch (error) {
+      console.log("login error : ", error);
+    }
   };
   return (
     <>
@@ -88,7 +112,10 @@ export default function Page() {
               placeholder="password"
               ref={passwordRef}
             />
-            <button onClick={handleSignin}>signin</button>
+            <button onClick={handleSigninWithNextauth}>
+              Sign in with next-auth
+            </button>
+            <button onClick={handleSigninGenerally}>Sign in genernally</button>
             <button
               onClick={(e) => {
                 e.preventDefault();

@@ -6,7 +6,6 @@ import Head from "next/head";
 import axios from "axios";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
-let renderCount = 0;
 const Main = styled(PublicMain)`
   section {
     position: relative;
@@ -72,13 +71,15 @@ export default function Page() {
   // passwordRef.current = watch("name");
   const handleSignup = async (data: any) => {
     try {
-      const result = await axios
-        .post("/api/auth/signup", data)
-        .then((res) => res.data);
-      console.log("result : ", result);
-      if (result.success === true) router.push("/auth/signin");
+      const response = await axios.post("/api/authentication/signup", data);
+      // .post("/api/auth/signup", data)
+      // .then((res) => res.data);
+      // const data = await response.data;
+      const result = response.data;
+      console.log("signup result : ", result);
+      // if (response.success === true) router.push("/auth/signin");
     } catch (error) {
-      console.log("error : ", error);
+      console.log("signup error : ", error);
     }
   };
   useEffect(() => {
@@ -87,11 +88,6 @@ export default function Page() {
   // useEffect(() => {
   //   setFocus("name", { shouldSelect: true });
   // }, [setFocus]);
-  renderCount++;
-  // logs
-  // console.log("");
-  // console.log("\x1b[32m/auth/signup\x1b[0m");
-  // console.log("");
   if (status === "authenticated") router.push("/");
   if (status === "loading")
     return (
@@ -114,11 +110,10 @@ export default function Page() {
         </Head>
         <Main>
           <section>
-            <h1>renderCount : {renderCount}</h1>
             <form onSubmit={handleSubmit(handleSignup)}>
               <div>
                 <input
-                  {...register("name", {
+                  {...register("username", {
                     // required: true,
                     required: "This is required",
                     maxLength: 8,

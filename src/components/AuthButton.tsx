@@ -21,7 +21,7 @@ export default function AuthButton(props: any) {
     <Box>
       {status === "authenticated" ? (
         <>
-          <button onClick={() => signOut({ callbackUrl: "/auth/signin" })}>
+          <button onClick={() => signOut({ callbackUrl: "/" })}>
             Sign out
           </button>
           <div>

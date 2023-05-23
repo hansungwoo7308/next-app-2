@@ -11,6 +11,7 @@ import { SessionProvider } from "next-auth/react";
 // styles
 import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
+import SessionLoader from "@/components/SessionLoader";
 // import { NextPage } from "next";
 
 // fetch the data
@@ -28,10 +29,12 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
     <>
       <Provider store={store}>
         <SessionProvider session={pageProps.session}>
-          <Layout>
-            <StyleComponent.GlobalStyle />
-            <Component {...pageProps} auth />
-          </Layout>
+          <SessionLoader>
+            <Layout>
+              <StyleComponent.GlobalStyle />
+              <Component {...pageProps} auth />
+            </Layout>
+          </SessionLoader>
         </SessionProvider>
       </Provider>
     </>

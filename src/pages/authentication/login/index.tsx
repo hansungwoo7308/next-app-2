@@ -4,10 +4,10 @@ import Head from "next/head";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "lib/client/store/authSlice";
 import { useLoginMutation } from "lib/utils/authApiSlice";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { customAxios } from "lib/utils/customAxios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
+// import { signIn, signOut, useSession } from "next-auth/react";
+// import { customAxios } from "lib/utils/customAxios";
 const Main = styled(PublicMain)`
   > section {
     height: 100vh;
@@ -35,13 +35,8 @@ export default function Page() {
   // const errRef: any = useRef();
   // const [errMsg, setErrMsg] = useState("");
   // useEffect(() => {
-  //   userRef.current?.focus();
-  // }, []);
-  // useEffect(() => {
   //   setErrMsg("");
   // }, [username, password]);
-
-  // external
   const [login, { isLoading }] = useLoginMutation();
   // console.log("useLoginMutation() : ", useLoginMutation());
   const handleSubmit = async (e: any) => {
@@ -132,7 +127,7 @@ export default function Page() {
                     required
                     placeholder="password"
                   />
-                  <button>Sign In</button>
+                  <button>Sign In with RTK query</button>
                 </form>
               </>
             )}

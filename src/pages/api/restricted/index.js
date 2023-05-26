@@ -1,6 +1,8 @@
 // import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
+import jwt from "jsonwebtoken";
+import verifyJWT from "lib/server/verifyJWT";
 export default async function index(req, res) {
   // const session = await getServerSession(req, res, authOptions);
   // if (session) {
@@ -16,13 +18,9 @@ export default async function index(req, res) {
   // }
   console.log("\x1b[32m");
   console.log("[api/restricted]");
-  const authorization = req.headers.authorization;
-  const accessToken = authorization?.split(" ")[1];
-  console.log("accessToken : ", accessToken);
-  if (!accessToken) {
-    console.log("");
-    return res.status(200).json({ message: "Forbidden" });
-  }
+  const result = verifyJWT(req, res);
+  console.log("result : ", result);
+  // if (!result) return res.status(444).json("expired333");
+  // return res.status(222).json(result);
   console.log("");
-  return res.status(200).json({ message: "Protected Data" });
 }

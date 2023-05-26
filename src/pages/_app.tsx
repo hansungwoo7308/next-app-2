@@ -12,6 +12,7 @@ import { SessionProvider } from "next-auth/react";
 import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import SessionLoader from "@/components/SessionLoader";
+import axios from "axios";
 // import { NextPage } from "next";
 
 // fetch the data
@@ -49,8 +50,8 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
 //   return { pageProps: pageProps, store: ctx.store };
 // });
 MyApp.getInitialProps = async (AppContext: AppContext) => {
-  // console.log("");
-  // console.log("\x1b[32m_app initialize props");
+  // console.log("\x1b[32m");
+  // console.log("[_app]");
   const appProps = await App.getInitialProps(AppContext);
   const auth = { accessToken: "test..." };
   // console.log("AppTree : ", AppContext.AppTree);
@@ -59,10 +60,9 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // console.log("ctx.pathname : ", AppContext.ctx.pathname);
   // console.log("ctx.query : ", AppContext.ctx.query);
   // console.log("router : ", AppContext.router);
-  // const authorization = AppContext.ctx.req?.headers.authorization;
-  // const cookie = AppContext.ctx.req?.headers.cookie;
+  // const { authorization }: any = AppContext.ctx.req?.headers;
   // console.log("authorization : ", authorization);
-  // console.log("cookie : ", cookie);
+  // axios.defaults.headers.Authorization = `Bearer test`;
   // console.log("");
   return {
     ...appProps,

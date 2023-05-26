@@ -1,3 +1,5 @@
+// backend modules을 사용할 수 없다. (예: jwt.verify())
+// server에서 response를 최종적으로 보내기 전에 사전작업(전처리)을 하기 위한 곳
 // // middleware.ts
 // export function middleware(request: NextRequest) {
 //   // // Clone the request headers and set a new header `x-version`
@@ -16,36 +18,38 @@
 // }
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
 export async function middleware(req: NextRequest) {
-  console.log("\x1b[33m");
-  console.log("[middleware]");
+  // console.log("\x1b[33m");
+  // console.log("[middleware]");
   // next-auth 를 사용한다면
   // 특정페이지는 특정한 사용자만 사용할 수 있게, 프로텍티드 페이지를 구현
   // get the next-auth jwt token
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { pathname } = req.nextUrl;
+  // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   // console.log("req.nextUrl : ", req.nextUrl);
   // console.log("req.url : ", req.url);
-  console.log("pathname : ", pathname);
-  if (pathname === "/") {
-    console.log("next-auth token : ", token);
-    if (!token) console.log("\x1b[31mYou dont have a token.");
-  }
+  // if (pathname === "/") {
+  //   console.log("next-auth token : ", token);
+  //   if (!token) console.log("\x1b[31mYou dont have a token.");
+  // }
+
+  // Protected Pages Or API-routes
+  const { pathname } = req.nextUrl;
+  // console.log("pathname : ", pathname);
   if (pathname === "/api/restricted") {
     // const body = req.body;
     // const credentials = req.credentials;
     // const headers = req.headers;
     const authorization = req.headers.get("authorization");
     const accessToken = authorization?.split(" ")[1];
-    console.log("accessToken : ", accessToken);
-    if (!accessToken) {
-      console.log("Redirected.");
-      // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
-      // return NextResponse.redirect(new URL("/auth/signin", req.url));
-      // console.log("Rewrited.");
-      // return NextResponse.rewrite(new URL("auth/signin", req.url));
-    }
+    // console.log("accessToken : ", accessToken);
+
+    // if (!accessToken) {
+    //   // console.log("Redirected.");
+    //   // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
+    //   // return NextResponse.redirect(new URL("/auth/signin", req.url));
+    //   // console.log("Rewrited.");
+    //   // return NextResponse.rewrite(new URL("auth/signin", req.url));
+    // }
     // console.log("request body : ", body);
     // console.log("request credentials : ", credentials);
     // console.log("request headers : ", headers);
@@ -80,7 +84,7 @@ export async function middleware(req: NextRequest) {
   //   },
   // });
   // response.headers.set("test", "test");
-  console.log("");
+  // console.log("");
   return NextResponse.next();
   // return response;
   // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
@@ -117,8 +121,7 @@ export async function middleware(req: NextRequest) {
   // return response;
 }
 export const config = {
-  matcher: ["/", "/api/restricted:path*"],
+  matcher: ["/", "/api/restricted/:path*"],
   // matcher: ["/api/users"],
   // matcher: ["/auth/admin"],
-  // matcher: ["/about", "/auth/admin"],
 };

@@ -90,6 +90,8 @@ export default function Nav() {
   const jwtRef: any = useRef();
   // search
   const searchRef: any = useRef();
+  // Private Page (Protected, Restricted)
+  const restrictedRef: any = useRef();
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -149,6 +151,9 @@ export default function Nav() {
     } else if (router.pathname === "/todo-list") {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
+    } else if (router.pathname === "/restricted") {
+      setColor(restrictedRef.current);
+      setUnderline(focusRef.current, restrictedRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -210,14 +215,17 @@ export default function Nav() {
             </li>
           </ul>
         </li>
-        <li ref={searchRef} onClick={(e) => handleFocus(e)}>
+        {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
-        </li>
-        <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
+        </li> */}
+        {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
-        </li>
-        <li ref={loginRef} onClick={(e) => handleFocus(e)}>
+        </li> */}
+        {/* <li ref={loginRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/authentication/login"}>Login</Link>
+        </li> */}
+        <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/restricted"}>Restricted</Link>
         </li>
 
         {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}

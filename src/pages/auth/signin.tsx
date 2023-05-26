@@ -86,7 +86,7 @@ export default function Page() {
       const result = response.data;
       console.log("login result : ", result);
       localStorage.setItem("accessToken", result.accessToken);
-      router.push("/auth/admin");
+      router.push("/restricted");
     } catch (error) {
       console.log("login error : ", error);
     }

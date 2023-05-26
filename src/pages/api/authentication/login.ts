@@ -6,7 +6,7 @@ export default async function handler(req: any, res: any) {
   console.log("[api/authentication/login]");
   // get the request
   const cookies = req.cookies;
-  console.log("refreshToken : ", cookies.refreshToken);
+  // console.log("refreshToken : ", cookies.refreshToken);
   const { email, password } = req.body;
   if (!email || !password)
     return res

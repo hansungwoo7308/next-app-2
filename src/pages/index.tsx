@@ -11,12 +11,10 @@ export function getServerSideProps(context: any) {
   // const requestProps = Object.getOwnPropertyNames(context.req);
   // let authorization =
   //   context.req.headers.authorization || context.req.headers.Authorization;
+
   console.log("\x1b[32m");
   console.log("[pages/home]");
-
-  // context.req.headers.authorization = "askdhfdlshfls";
-  // console.log("context.req.headers : ", context.req.headers);
-  // console.log("authorization : ", authorization);
+  // console.log("authorization : ", context.req.headers.authorization);
   console.log("");
   return {
     props: {

@@ -6,7 +6,7 @@ export default function logResponse(response: any) {
   const data = response.data;
   console.group(`${url} : `, status, statusText);
   if (Authorization) console.log({ Authorization });
-  if (data) console.log({ data });
+  if (data) console.log(data);
   console.groupEnd();
   // console.log("response.config.method : ", response.config.method);
 }

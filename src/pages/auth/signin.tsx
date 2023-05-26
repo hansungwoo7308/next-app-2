@@ -6,6 +6,8 @@ import Head from "next/head";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import axios from "axios";
+import logResponse from "lib/client/log/logResponse";
+import logError from "lib/client/log/logError";
 const Main = styled(PublicMain)`
   > section {
     display: flex;
@@ -76,19 +78,18 @@ export default function Page() {
   const handleSigninGenerally = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/authentication/login",
-        {
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-        }
-      );
+      const response = await axios.post("/api/authentication/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      });
       const data = response.data;
       console.log("response : ", response);
+      logResponse(response);
       localStorage.setItem("accessToken", data.accessToken);
       router.push("/restricted");
     } catch (error) {
-      console.log("error : ", error);
+      // console.log("error : ", error);
+      logError(error);
     }
   };
   return (

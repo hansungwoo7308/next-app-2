@@ -20,7 +20,7 @@ export default function verifyJWT(req: any, res: any) {
     (error: any, decoded: any) => {
       if (error) {
         console.log("error : ", error);
-        res.status(403).json("Forbidden");
+        res.status(403).json(error);
         return "Forbidden";
       }
       console.log("decoded : ", decoded);

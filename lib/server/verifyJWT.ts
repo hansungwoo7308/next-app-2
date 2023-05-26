@@ -24,7 +24,7 @@ export default function verifyJWT(req: any, res: any) {
         return "Forbidden";
       }
       console.log("decoded : ", decoded);
-      res.status(200).json(decoded.email);
+      res.status(200).json({ email: decoded.email });
       return decoded.email;
     }
   );

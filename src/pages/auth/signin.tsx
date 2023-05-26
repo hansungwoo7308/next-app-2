@@ -83,12 +83,12 @@ export default function Page() {
           password: passwordRef.current.value,
         }
       );
-      const result = response.data;
-      console.log("login result : ", result);
-      localStorage.setItem("accessToken", result.accessToken);
+      const data = response.data;
+      console.log("response : ", response);
+      localStorage.setItem("accessToken", data.accessToken);
       router.push("/restricted");
     } catch (error) {
-      console.log("login error : ", error);
+      console.log("error : ", error);
     }
   };
   return (

@@ -3,6 +3,7 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import axios from "axios";
 import { useRouter } from "next/router";
+import logError from "lib/client/log/logError";
 const Main = styled(PublicMain)`
   > section {
     > div {
@@ -27,6 +28,7 @@ export function getServerSideProps(context: any) {
 export default function Page() {
   const [accessToken, setAccessToken] = useState();
   const [email, setEmail]: any = useState();
+  const [auth, setAuth]: any = useState(false);
   const router = useRouter();
   const fetchData = async () => {
     try {
@@ -35,12 +37,13 @@ export default function Page() {
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
       console.log("response : ", response);
-      console.log("response.data : ", response.data);
-      setEmail(response.data);
+      const data = response.data;
+      setAuth(true);
+      setEmail(data.email);
     } catch (error: any) {
-      console.log("error.response.data : ", error.response.data);
+      logError(error);
+      setAuth(false);
       setEmail(error.response.data);
-      // if (error.response.status === 403) router.push("/");
     }
   };
   useEffect(() => {
@@ -53,8 +56,12 @@ export default function Page() {
       <section>
         <div>
           <h1>Restricted Page</h1>
-          <p>{accessToken}</p>
-          <p>email : {email}</p>
+          {auth && (
+            <div>
+              <p>{accessToken}</p>
+              <p>email : {email}</p>
+            </div>
+          )}
         </div>
       </section>
     </Main>

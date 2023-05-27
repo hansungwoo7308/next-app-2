@@ -5,6 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
+var cookie = require("cookie");
 const Main = styled(PublicMain)`
   > section {
     > div {
@@ -17,14 +18,32 @@ const Main = styled(PublicMain)`
       > * {
         word-break: break-all;
       }
+      // spin
+      > p {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #ccc;
+        border-top-color: coral;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     }
   }
 `;
 export function getServerSideProps(context: any) {
   console.log("\x1b[32m");
-  console.log("[pages/restricted]");
+  console.log("[/restricted]");
   // console.log("authorization : ", context.req.headers.authorization);
-  console.log("");
+  // const parsedCookie = cookie.parse(context.req.headers.cookie);
+  // console.log("refreshToken : ", parsedCookie.refreshToken);
   return {
     props: {},
   };
@@ -53,7 +72,7 @@ export default function Page() {
   useEffect(() => {
     // const accessToken: any = localStorage.getItem("accessToken");
     // setAccessToken(accessToken);
-    fetchData();
+    // fetchData();
   }, []);
   return (
     <Main>
@@ -69,6 +88,7 @@ export default function Page() {
               <p>{errorMessage}</p>
             </div>
           )}
+          {/* <p className="spiner" /> */}
         </div>
       </section>
     </Main>

@@ -1,6 +1,5 @@
 import App from "next/app";
 import type { AppContext, AppProps } from "next/app";
-// state
 // redux
 import { Provider } from "react-redux";
 import store from "lib/client/store/store";
@@ -13,8 +12,8 @@ import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import SessionLoader from "@/components/SessionLoader";
 import axios from "axios";
+var cookie = require("cookie");
 // import { NextPage } from "next";
-
 // fetch the data
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
@@ -54,6 +53,12 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // console.log("[_app]");
   const appProps = await App.getInitialProps(AppContext);
   const auth = { accessToken: "test..." };
+
+  const serializedCooke = AppContext.ctx.req?.headers.cookie;
+  const parsedCookie = cookie.parse(serializedCooke);
+  // console.log("refreshToken : ", parsedCookie.refreshToken);
+  // console.log("");
+
   // console.log("AppTree : ", AppContext.AppTree);
   // console.log("Component : ", AppContext.Component);
   // console.log("ctx.req : ", Object.getOwnPropertyNames(AppContext.ctx.req));
@@ -63,7 +68,6 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // const { authorization }: any = AppContext.ctx.req?.headers;
   // console.log("authorization : ", authorization);
   // axios.defaults.headers.Authorization = `Bearer test`;
-  // console.log("");
   return {
     ...appProps,
     auth,

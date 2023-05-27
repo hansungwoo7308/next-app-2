@@ -6,7 +6,7 @@ export default async function handler(req: any, res: any) {
   console.log("[api/authentication/refresh]");
   // get the accessToken
   const authorization = req.headers.authorization;
-  const accessToken = authorization.split(" ")[1];
+  const accessToken = authorization?.split(" ")[1];
   console.log("accessToken : ", accessToken);
   // get the refreshToken
   const cookies = req.cookies;

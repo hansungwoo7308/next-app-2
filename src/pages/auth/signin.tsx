@@ -83,7 +83,7 @@ export default function Page() {
         password: passwordRef.current.value,
       });
       const data = response.data;
-      console.log("response : ", response);
+      // console.log("response : ", response);
       logResponse(response);
       localStorage.setItem("accessToken", data.accessToken);
       router.push("/restricted");

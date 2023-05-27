@@ -16,13 +16,15 @@
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
+import verifyJWT from "lib/server/verifyJWT";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
+const cookie = require("cookie");
 export async function middleware(req: NextRequest) {
-  // console.log("\x1b[33m");
-  // console.log("[middleware]");
-  // next-auth 를 사용한다면
-  // 특정페이지는 특정한 사용자만 사용할 수 있게, 프로텍티드 페이지를 구현
+  console.log("\x1b[33m");
+  const { pathname } = req.nextUrl;
+  console.log(`[${pathname}]:middleware`);
+  // next-auth
   // get the next-auth jwt token
   // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   // console.log("req.nextUrl : ", req.nextUrl);
@@ -32,29 +34,43 @@ export async function middleware(req: NextRequest) {
   //   if (!token) console.log("\x1b[31mYou dont have a token.");
   // }
 
-  // Protected Pages Or API-routes
-  const { pathname } = req.nextUrl;
-  // console.log("pathname : ", pathname);
-  if (pathname === "/api/restricted") {
-    // const body = req.body;
-    // const credentials = req.credentials;
-    // const headers = req.headers;
-    const authorization = req.headers.get("authorization");
-    const accessToken = authorization?.split(" ")[1];
-    // console.log("accessToken : ", accessToken);
+  // get the refreshToken from cookie
+  // const serializedCookie = req.headers.get("cookie");
+  // const parsedCookie = cookie.parse(serializedCookie);
+  // const refreshToken = parsedCookie.refreshToken;
+  // console.log("serializedCookie : ", serializedCookie);
+  // console.log("parsedCookie : ", parsedCookie);
+  // console.log("refreshToken : ", refreshToken);
 
-    // if (!accessToken) {
-    //   // console.log("Redirected.");
-    //   // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
-    //   // return NextResponse.redirect(new URL("/auth/signin", req.url));
-    //   // console.log("Rewrited.");
-    //   // return NextResponse.rewrite(new URL("auth/signin", req.url));
-    // }
-    // console.log("request body : ", body);
-    // console.log("request credentials : ", credentials);
-    // console.log("request headers : ", headers);
-    // console.log("request authorization : ", authorization);
+  // protect the routes
+  const refreshToken = req.cookies.get("refreshToken")?.value;
+  if (pathname === "/restricted" && !refreshToken) {
+    console.log("No refreshToken");
+    console.log("Redirecting to page [/auth/signin]...");
+    return NextResponse.rewrite(new URL("/auth/signin", req.nextUrl));
   }
+  // if (pathname === "/api/restricted") {
+  //   // const body = req.body;
+  //   // const credentials = req.credentials;
+  //   // const headers = req.headers;
+  //   // get the accessToken
+  //   // const authorization = req.headers.get("authorization");
+  //   // const accessToken = authorization?.split(" ")[1];
+  //   // console.log("accessToken : ", accessToken);
+  //   // get the refreshToken
+  //   // const refreshToken = req.headers
+  //   // if (!accessToken) {
+  //   //   // console.log("Redirected.");
+  //   //   // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
+  //   //   // return NextResponse.redirect(new URL("/auth/signin", req.url));
+  //   //   // console.log("Rewrited.");
+  //   //   // return NextResponse.rewrite(new URL("auth/signin", req.url));
+  //   // }
+  //   // console.log("request body : ", body);
+  //   // console.log("request credentials : ", credentials);
+  //   // console.log("request headers : ", headers);
+  //   // console.log("request authorization : ", authorization);
+  // }
   // check the request properties
   // console.log("req.url : ", req.url);
   // console.log("req.cookies : ", req.cookies);
@@ -121,7 +137,11 @@ export async function middleware(req: NextRequest) {
   // return response;
 }
 export const config = {
-  matcher: ["/", "/api/restricted/:path*"],
+  matcher: [
+    "/",
+    // "/api/restricted/:path*",
+    "/restricted/:path*",
+  ],
   // matcher: ["/api/users"],
   // matcher: ["/auth/admin"],
 };

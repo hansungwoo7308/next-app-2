@@ -15,14 +15,15 @@ export default async function handler(req: any, res: any) {
   // connect to db
   try {
     const URI: any = process.env.MONGODB_URI;
-    const OPTIONS = { dbName: "animalDB" };
+    const OPTIONS = { dbName: "bananaDB" };
+    // const OPTIONS = { dbName: "animalDB" };
     await mongoose.connect(URI, OPTIONS);
   } catch (error) {
     console.log("connection error : ", error);
   }
   // find the email
   const foundUser = await User.findOne({ email }).exec();
-  // console.log("foundUser : ", foundUser);
+  console.log("foundUser : ", foundUser);
   if (!foundUser)
     return res
       .status(401)

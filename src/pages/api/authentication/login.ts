@@ -2,8 +2,7 @@ import User from "lib/client/model/User";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
-  console.log("\x1b[32m");
-  console.log("[api/authentication/login]");
+  console.log("\x1b[32m\n[api/authentication/login]");
   // get the request
   const cookies = req.cookies;
   // console.log("refreshToken : ", cookies.refreshToken);
@@ -23,7 +22,7 @@ export default async function handler(req: any, res: any) {
   }
   // find the email
   const foundUser = await User.findOne({ email }).exec();
-  console.log("foundUser : ", foundUser);
+  // console.log("foundUser : ", foundUser);
   if (!foundUser)
     return res
       .status(401)
@@ -38,7 +37,6 @@ export default async function handler(req: any, res: any) {
     ACCESS_TOKEN_SECRET,
     { expiresIn: "1m" }
   );
-
   const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
   const newRefreshToken = jwt.sign(
     { email: foundUser.email },
@@ -62,6 +60,7 @@ export default async function handler(req: any, res: any) {
     // refreshToken: newRefreshToken,
     // message: "You are logged in.",
   });
+  console.log("accessToken : ", accessToken);
   // res.json({ accessToken, message: "You are logged in." });
   // res.status(200).json({ ...req.body, accessToken: "jwt..." });
   console.log("");

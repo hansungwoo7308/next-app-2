@@ -54,8 +54,8 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   const appProps = await App.getInitialProps(AppContext);
   const auth = { accessToken: "test..." };
 
-  const serializedCooke = AppContext.ctx.req?.headers.cookie;
-  const parsedCookie = cookie.parse(serializedCooke);
+  // const serializedCooke = AppContext.ctx.req?.headers.cookie;
+  // const parsedCookie = cookie.parse(serializedCooke || '');
   // console.log("refreshToken : ", parsedCookie.refreshToken);
   // console.log("");
 

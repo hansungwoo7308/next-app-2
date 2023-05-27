@@ -83,12 +83,40 @@ export default function Page() {
         password: passwordRef.current.value,
       });
       const data = response.data;
+      const accessToken = data.accessToken;
       // console.log("response : ", response);
       logResponse(response);
-      localStorage.setItem("accessToken", data.accessToken);
+      // localStorage.setItem("accessToken", data.accessToken);
+      // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      // setTimeout(() => {
+      //   // console.log("refresh signing...");
+      //   onRefresh();
+      // }, 1000 * 5);
+      onSetAuth(accessToken);
       router.push("/restricted");
     } catch (error) {
       // console.log("error : ", error);
+      logError(error);
+    }
+  };
+  const onSetAuth = (accessToken: any) => {
+    console.log("onSetAuth");
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    setTimeout(() => {
+      // console.log("refresh signing...");
+      console.log("onRefresh timeout...(5 seconds)");
+      onRefresh();
+    }, 1000 * 20);
+  };
+  const onRefresh = async () => {
+    try {
+      const response = await axios.post("/api/authentication/refresh");
+      console.log("onRefresh response : ", response);
+      const data = response.data;
+      const accessToken = data.accessToken;
+      onSetAuth(accessToken);
+    } catch (error) {
       logError(error);
     }
   };

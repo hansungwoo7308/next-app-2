@@ -74,7 +74,7 @@ export default async function handler(req: any, res: any) {
   // foundUser.accessToken = newAccessToken;
   foundUser.refreshToken = newRefreshToken;
   const savedUser = await foundUser.save();
-  console.log("savedUser : ", savedUser);
+  console.log("\x1b[32msavedUser : ", savedUser);
   // set the payload
   res.setHeader("Set-Cookie", [
     // `accessToken=${newAccessToken};path=/`,

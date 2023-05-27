@@ -12,6 +12,9 @@ import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import SessionLoader from "@/components/SessionLoader";
 import axios from "axios";
+import { useEffect } from "react";
+import logError from "lib/client/log/logError";
+import logResponse from "lib/client/log/logResponse";
 var cookie = require("cookie");
 // import { NextPage } from "next";
 // fetch the data
@@ -22,9 +25,30 @@ interface MyAppProps extends AppProps {
   auth?: Object;
 }
 const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
-  // console.log("");
-  // console.log("\x1b[32m_app");
-  // console.log("");
+  console.log("\x1b[32m\n[_app]");
+  const setAuth = (accessToken: any) => {
+    console.log("setAuth");
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    setTimeout(() => {
+      // console.log("refresh signing...");
+      console.log("refreshAuth timeout...(20 seconds)");
+      refreshAuth();
+    }, 1000 * 60);
+  };
+  const refreshAuth = async () => {
+    try {
+      const response = await axios.post("/api/authentication/refresh");
+      logResponse(response);
+      setAuth(response.data.accessToken);
+    } catch (error) {
+      logError(error);
+    }
+  };
+  useEffect(() => {
+    console.log("\x1b[31m\nMyApp effect");
+    refreshAuth();
+  }, []);
   return (
     <>
       <Provider store={store}>

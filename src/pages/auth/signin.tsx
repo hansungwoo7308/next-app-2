@@ -84,38 +84,31 @@ export default function Page() {
       });
       const data = response.data;
       const accessToken = data.accessToken;
-      // console.log("response : ", response);
       logResponse(response);
-      // localStorage.setItem("accessToken", data.accessToken);
-      // axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-      // setTimeout(() => {
-      //   // console.log("refresh signing...");
-      //   onRefresh();
-      // }, 1000 * 5);
-      onSetAuth(accessToken);
+      setAuth(accessToken);
       router.push("/restricted");
     } catch (error) {
       // console.log("error : ", error);
       logError(error);
     }
   };
-  const onSetAuth = (accessToken: any) => {
-    console.log("onSetAuth");
+  const setAuth = (accessToken: any) => {
+    console.log("setAuth");
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     setTimeout(() => {
       // console.log("refresh signing...");
-      console.log("onRefresh timeout...(5 seconds)");
-      onRefresh();
+      console.log("refreshAuth timeout...(20 seconds)");
+      refreshAuth();
     }, 1000 * 20);
   };
-  const onRefresh = async () => {
+  const refreshAuth = async () => {
     try {
       const response = await axios.post("/api/authentication/refresh");
-      console.log("onRefresh response : ", response);
+      console.log("refreshAuth response : ", response);
       const data = response.data;
       const accessToken = data.accessToken;
-      onSetAuth(accessToken);
+      setAuth(accessToken);
     } catch (error) {
       logError(error);
     }

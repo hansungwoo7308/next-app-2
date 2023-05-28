@@ -94,17 +94,15 @@ export default function Page() {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     setTimeout(() => {
       // console.log("refresh signing...");
-      console.log("refreshAuth timeout...(20 seconds)");
+      console.log("refreshAuth timeout...(60 seconds)");
       refreshAuth();
-    }, 1000 * 20);
+    }, 1000 * 60);
   };
   const refreshAuth = async () => {
     try {
       const response = await axios.post("/api/authentication/refresh");
-      console.log("refreshAuth response : ", response);
-      const data = response.data;
-      const accessToken = data.accessToken;
-      setAuth(accessToken);
+      logResponse(response);
+      setAuth(response.data.accessToken);
     } catch (error) {
       logError(error);
     }
@@ -118,21 +116,9 @@ export default function Page() {
         <section>
           <form>
             <h1>Signin</h1>
-            <input
-              name="email"
-              type="text"
-              placeholder="email"
-              ref={emailRef}
-            />
-            <input
-              name="password"
-              type="password"
-              placeholder="password"
-              ref={passwordRef}
-            />
-            <button onClick={handleSigninWithNextauth}>
-              Sign in with next-auth
-            </button>
+            <input name="email" type="text" placeholder="email" ref={emailRef} />
+            <input name="password" type="password" placeholder="password" ref={passwordRef} />
+            <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button>
             <button onClick={handleSigninGenerally}>Sign in genernally</button>
             <button
               onClick={(e) => {

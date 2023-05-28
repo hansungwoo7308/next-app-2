@@ -8,9 +8,7 @@ export default async function handler(req: any, res: any) {
   // console.log("refreshToken : ", cookies.refreshToken);
   const { email, password } = req.body;
   if (!email || !password)
-    return res
-      .status(400)
-      .json({ message: "Email and Password are required." });
+    return res.status(400).json({ message: "Email and Password are required." });
   // connect to db (연결)
   try {
     const URI: any = process.env.MONGODB_URI;
@@ -23,45 +21,49 @@ export default async function handler(req: any, res: any) {
   // find(search) the email (탐색)
   const foundUser = await User.findOne({ email }).exec();
   // console.log("foundUser : ", foundUser);
-  if (!foundUser)
-    return res
-      .status(401)
-      .json({ message: "Your email was not found in database." });
+  if (!foundUser) return res.status(401).json({ message: "Your email was not found in database." });
   // evaluate(verify) the password (검증)
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
   // issue the tokens (발급)
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
+  const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
   const accessToken = jwt.sign(
-    { email: foundUser.email },
+    {
+      username: foundUser.username,
+      email: foundUser.email,
+    },
     ACCESS_TOKEN_SECRET,
     { expiresIn: "1m" }
   );
-  const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
-  const newRefreshToken = jwt.sign(
-    { email: foundUser.email },
+  const refreshToken = jwt.sign(
+    {
+      username: foundUser.username,
+      email: foundUser.email,
+    },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "10m" }
   );
   // save the issued tokens to DB (저장:database)
   // foundUser.accessToken = accessToken;
-  foundUser.refreshToken = newRefreshToken;
+  foundUser.refreshToken = refreshToken;
   const savedUser = await foundUser.save();
-  console.log("savedUser : ", savedUser);
+  console.log("accessToken : ", accessToken.slice(-5));
+  console.log("refreshToken : ", refreshToken.slice(-5));
+  // console.log("savedUser : ", savedUser);
   // set the response for Client (저장:client)
   res.setHeader("Set-Cookie", [
     // `accessToken=${accessToken};path=/`,
-    `refreshToken=${newRefreshToken};path=/`,
+    `refreshToken=${refreshToken};path=/`,
   ]);
   // `refreshToken=${refreshToken};HttpOnly;SameSite=None`
   res.status(200).json({
-    email: foundUser.email,
+    username: foundUser.username,
     accessToken: accessToken,
-    // refreshToken: newRefreshToken,
-    // message: "You are logged in.",
+    refreshToken: refreshToken,
+    slicedTokens: {
+      accessToken: accessToken.slice(-5),
+      refreshToken: refreshToken.slice(-5),
+    },
   });
-  console.log("accessToken : ", accessToken);
-  // res.json({ accessToken, message: "You are logged in." });
-  // res.status(200).json({ ...req.body, accessToken: "jwt..." });
-  console.log("");
 }

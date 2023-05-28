@@ -11,8 +11,9 @@ export function getServerSideProps(context: any) {
   // const requestProps = Object.getOwnPropertyNames(context.req);
   // let authorization =
   //   context.req.headers.authorization || context.req.headers.Authorization;
-  console.log("\x1b[32m\n[/]");
-  // console.log("authorization : ", context.req.headers.authorization);
+
+  // console.log("\x1b[32m\n[/]");
+  // console.log("refreshToken : ", context.req.cookies.refreshToken);
   return {
     props: {
       // serverCookies,
@@ -23,7 +24,6 @@ export default function Page() {
   // const [cookies, setCookies]: any = useState();
   // const [checkedUser, setCheckedUser]: any = useState();
   // const [users, setUsers]: any = useState();
-
   renderCount++;
   return (
     <>

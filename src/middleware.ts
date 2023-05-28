@@ -21,9 +21,9 @@ import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 const cookie = require("cookie");
 export async function middleware(req: NextRequest) {
-  console.log("\x1b[33m");
   const { pathname } = req.nextUrl;
-  console.log(`[${pathname}]:middleware`);
+  // console.log(`\x1b[33m\n[${pathname}]:middleware`);
+
   // next-auth
   // get the next-auth jwt token
   // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
@@ -138,7 +138,7 @@ export async function middleware(req: NextRequest) {
 }
 export const config = {
   matcher: [
-    "/",
+    // "/",
     // "/api/restricted/:path*",
     "/restricted/:path*",
   ],

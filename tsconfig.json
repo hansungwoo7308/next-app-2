@@ -32,7 +32,7 @@
     "src/styles/login.styled.js",
     "src/styles/components/JWT.styled.ts",
     "src/pages/auth/*.ts",
-    "src/pages/api/restricted/index.js",
+    "src/pages/api/restricted/index.ts",
     "src/pages/api/authentication/signup.ts"
   ],
   "exclude": ["node_modules"]

@@ -58,12 +58,10 @@ export default function Page() {
       const response = await axios.get("/api/restricted", {
         headers: { Authorization: token ? `Bearer ${token}` : "" },
       });
-      // console.log(response);
       logResponse(response);
       setAuth(true);
       setEmail(response.data.email);
     } catch (error: any) {
-      // console.log(error);
       logError(error);
       setAuth(false);
       setErrorMessage(error.response.data.message);

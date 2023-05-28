@@ -25,14 +25,18 @@ interface MyAppProps extends AppProps {
   auth?: Object;
 }
 const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
-  console.log("\x1b[32m\n[_app]");
-  const setAuth = (accessToken: any) => {
+  // console.log("\x1b[32m\n[_app]");
+  const setAuth = (accessTokenPassed?: any) => {
+    const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+    const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
+    // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
+    // console.log("accessToken : ", accessToken);
     localStorage.setItem("accessToken", accessToken);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    console.log("refreshAuth timeout...(60 seconds)");
-    setTimeout(() => {
-      refreshAuth();
-    }, 1000 * 60);
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    // console.log("refreshAuth timeout...(60 seconds)");
+    // setTimeout(() => {
+    //   refreshAuth();
+    // }, 1000 * 60);
   };
   const refreshAuth = async () => {
     try {
@@ -46,6 +50,7 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
   useEffect(() => {
     // console.log("\x1b[31m\nClient Effect");
     // refreshAuth();
+    setAuth();
   }, []);
   return (
     <>

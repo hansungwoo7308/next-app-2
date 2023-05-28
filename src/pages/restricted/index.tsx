@@ -50,8 +50,8 @@ export function getServerSideProps(context: any) {
 }
 export default function Page() {
   const [auth, setAuth]: any = useState(false);
+  const [username, setUsername]: any = useState();
   const [email, setEmail]: any = useState();
-  const [errorMessage, setErrorMessage]: any = useState();
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -60,11 +60,39 @@ export default function Page() {
       });
       logResponse(response);
       setAuth(true);
+      setUsername(response.data.username);
       setEmail(response.data.email);
     } catch (error: any) {
       logError(error);
       setAuth(false);
-      setErrorMessage(error.response.data.message);
+      await refreshAuth();
+      fetchData();
+    }
+  };
+  const setAuthorization = (accessTokenPassed?: any) => {
+    const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
+    const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
+    // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
+    // console.log("accessToken : ", accessToken);
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    // console.log("refreshAuth timeout...(60 seconds)");
+    // setTimeout(() => {
+    //   refreshAuth();
+    // }, 1000 * 60);
+  };
+  const refreshAuth = async () => {
+    try {
+      // const token = localStorage.getItem("accessToken");
+      const response = await axios.get("/api/authentication/refresh");
+      logResponse(response);
+      setAuthorization(response.data.accessToken);
+      // setAuth(true);
+      // setUsername(response.data.username);
+      // setEmail(response.data.email);
+    } catch (error) {
+      console.log("?????");
+      logError(error);
     }
   };
   useEffect(() => {
@@ -77,13 +105,10 @@ export default function Page() {
       <section>
         <div>
           <h1>Restricted Page</h1>
-          {auth ? (
+          {auth && (
             <div>
+              <p>username : {username}</p>
               <p>email : {email}</p>
-            </div>
-          ) : (
-            <div>
-              <p>{errorMessage}</p>
             </div>
           )}
           {/* <p className="spiner" /> */}

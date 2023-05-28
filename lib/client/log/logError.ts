@@ -6,6 +6,7 @@ export default function logError(error: any, props?: string) {
   const Authorization = error.response.config.headers.Authorization;
 
   console.group(`${url} : `, status, statusText);
+  console.log({ message });
   // if (props) {
   //   const foundProps = Object.fromEntries(
   //     Object.entries(error.config.headers).filter(([key]) =>
@@ -14,8 +15,7 @@ export default function logError(error: any, props?: string) {
   //   );
   //   console.log(foundProps);
   // }
-  if (Authorization) console.log({ Authorization });
-  console.log({ message });
+  // if (Authorization) console.log({ Authorization });
   // console.log({ Authorization: error.config.headers.Authorization });
   console.groupEnd();
 }

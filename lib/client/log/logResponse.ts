@@ -6,7 +6,13 @@ export default function logResponse(response: any) {
   const data = response.data;
 
   console.group(`${url} : `, status, statusText);
-  console.log({ payload: data });
+  // console.log({ payload: data });
+  console.log(data.message);
+  if (url === "/api/restricted") {
+    console.log(data.decoded);
+    console.groupEnd();
+    return;
+  }
   console.log({ accessToken: data.slicedTokens.accessToken });
   console.log({ refreshToken: data.slicedTokens.refreshToken });
   // console.log({ accessToken: data.accessToken });

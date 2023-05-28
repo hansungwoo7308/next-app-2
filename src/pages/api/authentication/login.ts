@@ -58,6 +58,7 @@ export default async function handler(req: any, res: any) {
   ]);
   // `refreshToken=${refreshToken};HttpOnly;SameSite=None`
   res.status(200).json({
+    message: { message: "Login Success" },
     username: foundUser.username,
     accessToken: accessToken,
     refreshToken: refreshToken,

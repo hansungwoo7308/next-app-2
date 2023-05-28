@@ -19,9 +19,12 @@ export default function verifyJWT(req: any, res: any) {
       return res.status(403).json(error);
     }
     console.log("decoded : ", decoded);
+    console.log("\x1b[34mmessage : The accessToken was verified\x1b[0m");
     return res.status(200).json({
-      accessToken,
-      refreshToken: "",
+      message: { message: "The accessToken was verified" },
+      decoded: decoded,
+      // accessToken,
+      // refreshToken: "",
       username: decoded.username,
       email: decoded.email,
       slicedTokens: {

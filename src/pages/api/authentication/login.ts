@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/login]");
-  // get the request
+  // get the request (추출)
   const cookies = req.cookies;
   // console.log("refreshToken : ", cookies.refreshToken);
   const { email, password } = req.body;
@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
     return res
       .status(400)
       .json({ message: "Email and Password are required." });
-  // connect to db
+  // connect to db (연결)
   try {
     const URI: any = process.env.MONGODB_URI;
     const OPTIONS = { dbName: "bananaDB" };
@@ -20,17 +20,17 @@ export default async function handler(req: any, res: any) {
   } catch (error) {
     console.log("connection error : ", error);
   }
-  // find the email
+  // find(search) the email (탐색)
   const foundUser = await User.findOne({ email }).exec();
   // console.log("foundUser : ", foundUser);
   if (!foundUser)
     return res
       .status(401)
       .json({ message: "Your email was not found in database." });
-  // evaluate the password
+  // evaluate(verify) the password (검증)
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
-  // issue the tokens
+  // issue the tokens (발급)
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
   const accessToken = jwt.sign(
     { email: foundUser.email },
@@ -43,12 +43,12 @@ export default async function handler(req: any, res: any) {
     REFRESH_TOKEN_SECRET,
     { expiresIn: "10m" }
   );
-  // save the issued tokens
+  // save the issued tokens to DB (저장:database)
   // foundUser.accessToken = accessToken;
   foundUser.refreshToken = newRefreshToken;
   const savedUser = await foundUser.save();
   console.log("savedUser : ", savedUser);
-  // set the response
+  // set the response for Client (저장:client)
   res.setHeader("Set-Cookie", [
     // `accessToken=${accessToken};path=/`,
     `refreshToken=${newRefreshToken};path=/`,

@@ -14,7 +14,7 @@ export default function logError(error: any, props?: string) {
   //   console.log(foundProps);
   // }
   if (Authorization) console.log({ Authorization });
-  console.log({ Reason: message });
+  console.log({ message });
   // console.log({ Authorization: error.config.headers.Authorization });
   console.groupEnd();
 }

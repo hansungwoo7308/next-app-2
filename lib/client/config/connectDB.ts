@@ -3,12 +3,10 @@ Source :
 https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/utils/dbConnect.js 
 **/
 import mongoose from "mongoose";
-
 // check the env
 if (!process.env.MONGODB_URI) {
   throw new Error("Please add your MONGODB_URI to .env.local");
 }
-
 // get the database uri and option
 const MONGODB_URI: string = process.env.MONGODB_URI;
 const OPTION = {
@@ -17,7 +15,6 @@ const OPTION = {
   useNewUrlParser: true,
   bufferCommands: false,
 };
-
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially
@@ -52,12 +49,11 @@ if (!cached) {
 }
 
 export default async function connectDB() {
-  // console.log("\x1b[32m");
-  // console.log("[Server-Database]Connecting...");
+  // console.log("\x1b[32m\n[DB]:connectDB");
   // cached connection
   if (cached.conn) {
-    // console.log("cached connections : ", cached.conn.connections);
     const connections = cached.conn.connections;
+    // console.log("cached connections : ", cached.conn.connections);
     // console.log("connections[0].$dbName : ", connections[0].$dbName);
     // console.log("connections[0].models : ", connections[0].models);
     // console.log("cached connections : ", Object.keys(connections[0]));
@@ -71,7 +67,6 @@ export default async function connectDB() {
     // console.log("models : ", connections.models);
     // return cached.conn;
   }
-
   // new connection
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
@@ -81,7 +76,6 @@ export default async function connectDB() {
   }
   cached.conn = await cached.promise;
   // console.log("cached.conn : ", cached.conn);
-  // console.log("");
   return cached.conn;
 }
 

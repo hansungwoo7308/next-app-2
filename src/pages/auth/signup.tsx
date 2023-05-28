@@ -6,11 +6,13 @@ import Head from "next/head";
 import axios from "axios";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
+import logError from "lib/client/log/logError";
+import logResponse from "lib/client/log/logResponse";
 const Main = styled(PublicMain)`
   section {
     position: relative;
     form {
-      width: 50%;
+      width: 70%;
       height: 50vh;
       display: flex;
       flex-direction: column;
@@ -21,6 +23,7 @@ const Main = styled(PublicMain)`
       padding: 20px;
       div {
         width: 50%;
+        max-width: 300px;
       }
       input {
         width: 100%;
@@ -74,12 +77,10 @@ export default function Page() {
       const response = await axios.post("/api/authentication/signup", data);
       // .post("/api/auth/signup", data)
       // .then((res) => res.data);
-      // const data = await response.data;
-      const result = response.data;
-      console.log("signup result : ", result);
+      logResponse(response);
       // if (response.success === true) router.push("/auth/signin");
     } catch (error) {
-      console.log("signup error : ", error);
+      logError(error);
     }
   };
   useEffect(() => {

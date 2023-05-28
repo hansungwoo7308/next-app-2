@@ -72,7 +72,7 @@ export default function Page() {
   useEffect(() => {
     // const accessToken: any = localStorage.getItem("accessToken");
     // setAccessToken(accessToken);
-    // fetchData();
+    fetchData();
   }, []);
   return (
     <Main>

@@ -27,12 +27,10 @@ interface MyAppProps extends AppProps {
 const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
   console.log("\x1b[32m\n[_app]");
   const setAuth = (accessToken: any) => {
-    console.log("setAuth");
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    console.log("refreshAuth timeout...(60 seconds)");
     setTimeout(() => {
-      // console.log("refresh signing...");
-      console.log("refreshAuth timeout...(20 seconds)");
       refreshAuth();
     }, 1000 * 60);
   };
@@ -46,8 +44,8 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
     }
   };
   useEffect(() => {
-    console.log("\x1b[31m\nMyApp effect");
-    refreshAuth();
+    // console.log("\x1b[31m\nClient Effect");
+    // refreshAuth();
   }, []);
   return (
     <>
@@ -73,11 +71,9 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
 //   return { pageProps: pageProps, store: ctx.store };
 // });
 MyApp.getInitialProps = async (AppContext: AppContext) => {
-  // console.log("\x1b[32m");
-  // console.log("[_app]");
   const appProps = await App.getInitialProps(AppContext);
-  const auth = { accessToken: "test..." };
-
+  // console.log("\x1b[32m\n[_app]");
+  // const auth = { accessToken: "test..." };
   // const serializedCooke = AppContext.ctx.req?.headers.cookie;
   // const parsedCookie = cookie.parse(serializedCooke || '');
   // console.log("refreshToken : ", parsedCookie.refreshToken);
@@ -94,24 +90,7 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // axios.defaults.headers.Authorization = `Bearer test`;
   return {
     ...appProps,
-    auth,
+    // auth,
   };
 };
 export default MyApp;
-{
-  // protected routes 를 여기서 구현할 수 있다.
-  /* <AuthProvider> // next-auth, AWS, firebase
-  {
-    // 정적 
-    // 동적으로하려면 (데이터베이스 이용) 미들웨어에서 현재의 nextauth session 정보를 가지고 와서
-    // 구현해야하지 않을까
-    Component.requireAuth ? ( // protect 하고 싶은 페이지만 Admin.requireAuth : true
-    <AuthGuard> // here is where put auth logic // loading indicator while querying
-      <Component /> // page component
-    </AuthGuard>
-    ) : (
-      <Component /> // page component
-    )
-  }
-</AuthProvider> */
-}

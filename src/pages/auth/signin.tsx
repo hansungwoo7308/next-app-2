@@ -82,18 +82,14 @@ export default function Page() {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
-      const data = response.data;
-      const accessToken = data.accessToken;
       logResponse(response);
-      setAuth(accessToken);
+      setAuth(response.data.accessToken);
       router.push("/restricted");
     } catch (error) {
-      // console.log("error : ", error);
       logError(error);
     }
   };
   const setAuth = (accessToken: any) => {
-    console.log("setAuth");
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     setTimeout(() => {

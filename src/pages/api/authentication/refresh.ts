@@ -14,7 +14,9 @@ export default async function handler(req: any, res: any) {
   console.log("accessToken : ", accessToken);
   // find the user
   const foundUser = await User.findOne({ refreshToken }).exec();
-  // console.log("foundUser : ", foundUser);
+  console.log("foundUser : ", foundUser);
+  console.log("foundUser.name : ", foundUser.name);
+
   if (!foundUser) return res.status(403).json({ message: "Forbidden" });
   // verify the refreshToken
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
@@ -61,12 +63,12 @@ export default async function handler(req: any, res: any) {
   // console.log("decoded(outer) : ", decoded);
   // issue the new tokens
   const newAccessToken = jwt.sign(
-    { username: foundUser.username },
+    { username: foundUser.name },
     ACCESS_TOKEN_SECRET,
     { expiresIn: "1m" }
   );
   const newRefreshToken = jwt.sign(
-    { username: foundUser.username },
+    { username: foundUser.name },
     REFRESH_TOKEN_SECRET,
     { expiresIn: "10m" }
   );
@@ -81,7 +83,7 @@ export default async function handler(req: any, res: any) {
     `refreshToken=${newRefreshToken};path=/`,
   ]);
   res.status(200).json({
-    username: "foundUser.username",
+    username: foundUser.name,
     accessToken: newAccessToken,
     // refreshToken: newRefreshToken,
   });

@@ -15,11 +15,12 @@ export default function verifyJWT(req: any, res: any) {
   const accessSecret: any = process.env.ACCESS_TOKEN_SECRET;
   jwt.verify(accessToken, accessSecret, (error: any, decoded: any) => {
     if (error) {
-      console.log(`\x1b[31merror : ${error.message}\x1b[0m`);
-      return res.status(403).json(error);
+      console.log(`\x1b[31mThe accessToken was expired.\x1b[0m`);
+      // console.log(`\x1b[31merror : ${error.message}\x1b[0m`);
+      return res.status(403).json({ message: "The accessToken was expired." });
     }
     console.log("decoded : ", decoded);
-    console.log("\x1b[34mmessage : The accessToken was verified\x1b[0m");
+    console.log("\x1b[34mThe accessToken was verified\x1b[0m");
     return res.status(200).json({
       message: { message: "The accessToken was verified" },
       decoded: decoded,

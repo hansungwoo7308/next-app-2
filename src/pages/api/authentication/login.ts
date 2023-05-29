@@ -34,7 +34,7 @@ export default async function handler(req: any, res: any) {
       email: foundUser.email,
     },
     ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" }
+    { expiresIn: "10s" }
   );
   const refreshToken = jwt.sign(
     {
@@ -42,14 +42,12 @@ export default async function handler(req: any, res: any) {
       email: foundUser.email,
     },
     REFRESH_TOKEN_SECRET,
-    { expiresIn: "3m" }
+    { expiresIn: "20s" }
   );
   // save the issued tokens to DB (저장:database)
   // foundUser.accessToken = accessToken;
   foundUser.refreshToken = refreshToken;
   const savedUser = await foundUser.save();
-  console.log(`\x1b[32maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
-  console.log(`\x1b[32mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
   // console.log("savedUser : ", savedUser);
   // set the response for Client (저장:client)
   res.setHeader("Set-Cookie", [
@@ -67,4 +65,7 @@ export default async function handler(req: any, res: any) {
       refreshToken: refreshToken.slice(-5),
     },
   });
+  console.log(`\x1b[33maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
+  console.log(`\x1b[33mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
+  console.log("\x1b[34mLogin Success\x1b[0m");
 }

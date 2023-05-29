@@ -92,9 +92,8 @@ export default function Page() {
   const setAuth = (accessToken: any) => {
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    console.log("Slient Refresh in 60 seconds");
     setTimeout(() => {
-      // console.log("refresh signing...");
-      console.log("refreshAuth timeout...(60 seconds)");
       refreshAuth();
     }, 1000 * 60);
   };

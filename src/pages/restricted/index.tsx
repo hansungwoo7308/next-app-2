@@ -52,6 +52,7 @@ export default function Page() {
   const [auth, setAuth]: any = useState(false);
   const [username, setUsername]: any = useState();
   const [email, setEmail]: any = useState();
+  // get the Data with accessToken
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -68,6 +69,7 @@ export default function Page() {
       await refreshAuth();
     }
   };
+  // set the Authorization Header
   const setAuthorization = (accessTokenPassed?: any) => {
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
@@ -80,6 +82,7 @@ export default function Page() {
     //   refreshAuth();
     // }, 1000 * 60);
   };
+  // refresh the accessToken and refreshToken with refreshToken
   const refreshAuth = async () => {
     try {
       // const token = localStorage.getItem("accessToken");

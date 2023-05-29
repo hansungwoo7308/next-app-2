@@ -7,6 +7,7 @@ export default function logError(error: any, props?: string) {
 
   console.group(`${url} : `, status, statusText);
   console.log({ message });
+
   // if (props) {
   //   const foundProps = Object.fromEntries(
   //     Object.entries(error.config.headers).filter(([key]) =>

@@ -4,10 +4,8 @@ export default function logError(error: any, props?: string) {
   const statusText = error.response.statusText;
   const message = error.response.data.message;
   const Authorization = error.response.config.headers.Authorization;
-
   console.group(`${url} : `, status, statusText);
   console.log({ message });
-
   // if (props) {
   //   const foundProps = Object.fromEntries(
   //     Object.entries(error.config.headers).filter(([key]) =>

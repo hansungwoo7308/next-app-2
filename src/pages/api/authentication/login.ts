@@ -42,14 +42,14 @@ export default async function handler(req: any, res: any) {
       email: foundUser.email,
     },
     REFRESH_TOKEN_SECRET,
-    { expiresIn: "10m" }
+    { expiresIn: "3m" }
   );
   // save the issued tokens to DB (저장:database)
   // foundUser.accessToken = accessToken;
   foundUser.refreshToken = refreshToken;
   const savedUser = await foundUser.save();
-  console.log("accessToken : ", accessToken.slice(-5));
-  console.log("refreshToken : ", refreshToken.slice(-5));
+  console.log(`\x1b[32maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
+  console.log(`\x1b[32mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
   // console.log("savedUser : ", savedUser);
   // set the response for Client (저장:client)
   res.setHeader("Set-Cookie", [

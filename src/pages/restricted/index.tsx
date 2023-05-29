@@ -66,16 +66,15 @@ export default function Page() {
       logError(error);
       setAuth(false);
       await refreshAuth();
-      fetchData();
     }
   };
   const setAuthorization = (accessTokenPassed?: any) => {
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
-    // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
-    // console.log("accessToken : ", accessToken);
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
+    // console.log("accessToken : ", accessToken);
     // console.log("refreshAuth timeout...(60 seconds)");
     // setTimeout(() => {
     //   refreshAuth();
@@ -87,11 +86,11 @@ export default function Page() {
       const response = await axios.get("/api/authentication/refresh");
       logResponse(response);
       setAuthorization(response.data.accessToken);
+      await fetchData();
       // setAuth(true);
       // setUsername(response.data.username);
       // setEmail(response.data.email);
     } catch (error) {
-      console.log("?????");
       logError(error);
     }
   };

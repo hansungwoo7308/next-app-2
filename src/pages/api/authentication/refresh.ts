@@ -10,23 +10,40 @@ export default async function handler(req: any, res: any) {
   const refreshToken = cookies.refreshToken;
   console.log("accessToken : ", accessToken.slice(-5));
   console.log("refreshToken : ", refreshToken.slice(-5));
-  if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+  if (!refreshToken) {
+    console.log(`\x1b[31mThere are no refreshToken.\x1b[0m`);
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  // connect to db (연결)
+  try {
+    const URI: any = process.env.MONGODB_URI;
+    const OPTIONS = { dbName: "bananaDB" };
+    // const OPTIONS = { dbName: "animalDB" };
+    await mongoose.connect(URI, OPTIONS);
+  } catch (error) {
+    // console.log("connection error : ", error);
+    console.log(`\x1b[31mConnection error : ${error}\x1b[0m`);
+  }
   // find the user
   const foundUser = await User.findOne({ refreshToken }).exec();
   // console.log("foundUser : ", foundUser);
-  if (!foundUser) return res.status(403).json({ message: "Forbidden" });
+  if (!foundUser) {
+    console.log(`\x1b[31mThe foundUser do not exist.\x1b[0m`);
+    return res.status(401).json({ message: "The foundUser do not exist." });
+  }
   // verify the refreshToken
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
   const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
   jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (error: any, decoded: any) => {
     if (error) {
-      console.log("verify error : ", error);
+      console.log(`\x1b[31mThe refreshToken verification error : ${error}\x1b[0m`);
       // foundUser.refreshToken = [...newRefreshTokenArray];
       // const result = await foundUser.save();
       // console.log(`result : `, result);
+      return res.status(403).json({ message: "The refreshToken was expired." });
     }
-    if (error || foundUser.username !== decoded.username) return res.status(403);
-    console.log("decoded(inner) : ", decoded);
+    // if (error || foundUser.username !== decoded.username) return res.status(403);
+    // console.log("decoded(inner) : ", decoded);
     // 1) issue the accessToken and refreshToken
     // const roles = Object.values(foundUser.roles);
     // const accessToken = jwt.sign(
@@ -65,7 +82,7 @@ export default async function handler(req: any, res: any) {
     { username: foundUser.username, email: foundUser.email },
     REFRESH_TOKEN_SECRET,
     {
-      expiresIn: "10m",
+      expiresIn: "3m",
     }
   );
   // save the issued tokens

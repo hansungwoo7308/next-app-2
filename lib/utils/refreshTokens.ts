@@ -9,10 +9,7 @@ export const axiosPrivate = axios.create({
     "Content-Type": "application/json",
   },
 });
-export default async function refreshTokens(
-  accessToken: string,
-  refreshToken: string
-) {
+export default async function refreshTokens(accessToken: string) {
   console.log("\x1b[32m");
   console.log("[Client]/setTokens");
   // xml http request
@@ -25,16 +22,13 @@ export default async function refreshTokens(
   //   console.log("refresh result : ", result);
   //   console.log("refreshUser : ", refreshUser);
   // fetch
-  const refreshUser = fetch(
-    "http://localhost:3000/api/authentication/refresh",
-    {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  )
+  const refreshUser = fetch("http://localhost:3000/api/authentication/refresh", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  })
     .then((res) => res.json())
     .catch((err) => console.log("fetch error : ", err));
   console.log("refreshUser : ", refreshUser);

@@ -53,7 +53,7 @@ export default function Page() {
   const [username, setUsername]: any = useState();
   const [email, setEmail]: any = useState();
   // get the Data with accessToken
-  const fetchData = async () => {
+  const getData = async () => {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await axios.get("/api/restricted", {
@@ -70,7 +70,7 @@ export default function Page() {
     }
   };
   // set the Authorization Header
-  const setAuthorization = (accessTokenPassed?: any) => {
+  const setHeader = (accessTokenPassed?: any) => {
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
     localStorage.setItem("accessToken", accessToken);
@@ -88,8 +88,8 @@ export default function Page() {
       // const token = localStorage.getItem("accessToken");
       const response = await axios.get("/api/authentication/refresh");
       logResponse(response);
-      setAuthorization(response.data.accessToken);
-      await fetchData();
+      setHeader(response.data.accessToken);
+      await getData();
       // setAuth(true);
       // setUsername(response.data.username);
       // setEmail(response.data.email);
@@ -100,7 +100,7 @@ export default function Page() {
   useEffect(() => {
     // const accessToken: any = localStorage.getItem("accessToken");
     // setAccessToken(accessToken);
-    fetchData();
+    getData();
   }, []);
   return (
     <Main>

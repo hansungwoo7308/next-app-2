@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import {
   logOut,
   selectAcessToken,
-  selectRefreshToken,
+  // selectRefreshToken,
   setCredentials,
 } from "lib/client/store/authSlice";
 import { useLogoutMutation, useRefreshMutation } from "lib/utils/authApiSlice";
@@ -14,7 +14,6 @@ export default function JWT({ style }: any) {
   console.log("style : ", style);
   const [users, setUsers]: any = useState();
   const accessToken = useSelector(selectAcessToken);
-  const refreshToken = useSelector(selectRefreshToken);
   const dispatch = useDispatch();
   // rtk fetch query
   const [refresh] = useRefreshMutation();
@@ -69,7 +68,7 @@ export default function JWT({ style }: any) {
   const handleSetAuth = async () => {
     // refresh the tokens (from server)
     // 새로운 토큰으로 갱신하고 새롭게 갱신된 사용자 데이터(토큰, 페이로드)를 받아온다.
-    const refreshUser = await refreshTokens(accessToken, refreshToken);
+    const refreshUser = await refreshTokens(accessToken);
     // set the store (to client)
     // 새롭게 갱신된 사용자 데이터를 클라이언트 스토어에 저장한다.
     await dispatch(setCredentials({ ...refreshUser }));
@@ -92,7 +91,7 @@ export default function JWT({ style }: any) {
       <div>
         <div>
           <h5>accessToken : {accessToken}</h5>
-          <h5>refreshToken : {refreshToken}</h5>
+          {/* <h5>refreshToken : {refreshToken}</h5> */}
         </div>
         <div>
           <button onClick={(e: any) => handleRefresh(e)}>refresh</button>

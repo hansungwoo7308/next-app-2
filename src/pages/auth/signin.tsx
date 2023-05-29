@@ -8,6 +8,8 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
+import { setCredentials } from "lib/client/store/authSlice";
+import { useDispatch } from "react-redux";
 const Main = styled(PublicMain)`
   > section {
     display: flex;
@@ -60,6 +62,7 @@ const Main = styled(PublicMain)`
   }
 `;
 export default function Page() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const emailRef: any = useRef();
   const passwordRef: any = useRef();
@@ -82,30 +85,33 @@ export default function Page() {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       });
+      const username = response.data.username;
+      const accessToken = response.data.accessToken;
       logResponse(response);
-      setAuth(response.data.accessToken);
-      router.push("/restricted");
+      setHeader(accessToken);
+      dispatch(setCredentials({ username, accessToken }));
+      // router.push("/restricted");
     } catch (error) {
       logError(error);
     }
   };
-  const setAuth = (accessToken: any) => {
+  const setHeader = (accessToken: any) => {
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
     console.log("Slient Refresh in 60 seconds");
-    setTimeout(() => {
-      refreshAuth();
-    }, 1000 * 60);
+    // setTimeout(() => {
+    //   refreshAuth();
+    // }, 1000 * 60);
   };
-  const refreshAuth = async () => {
-    try {
-      const response = await axios.post("/api/authentication/refresh");
-      logResponse(response);
-      setAuth(response.data.accessToken);
-    } catch (error) {
-      logError(error);
-    }
-  };
+  // const refreshAuth = async () => {
+  //   try {
+  //     const response = await axios.post("/api/authentication/refresh");
+  //     logResponse(response);
+  //     setHeader(response.data.accessToken);
+  //   } catch (error) {
+  //     logError(error);
+  //   }
+  // };
   return (
     <>
       <Head>

@@ -34,7 +34,7 @@ export default async function handler(req: any, res: any) {
       email: foundUser.email,
     },
     ACCESS_TOKEN_SECRET,
-    { expiresIn: "10s" }
+    { expiresIn: "1m" }
   );
   const refreshToken = jwt.sign(
     {
@@ -42,7 +42,7 @@ export default async function handler(req: any, res: any) {
       email: foundUser.email,
     },
     REFRESH_TOKEN_SECRET,
-    { expiresIn: "20s" }
+    { expiresIn: "30m" }
   );
   // save the issued tokens to DB (저장:database)
   // foundUser.accessToken = accessToken;

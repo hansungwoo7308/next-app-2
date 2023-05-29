@@ -1,6 +1,12 @@
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut, selectAcessToken, setCredentials } from "lib/client/store/authSlice";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import logError from "lib/client/log/logError";
+import logResponse from "lib/client/log/logResponse";
 const Box = styled.div`
   display: flex;
   > button,
@@ -14,16 +20,67 @@ const Box = styled.div`
   }
 `;
 export default function AuthButton(props: any) {
+  const dispatch = useDispatch();
+  const auth = useSelector(selectAcessToken);
+  // next-auth
   const { data, status } = useSession();
   // console.log("status : ", status);
   // console.log("data : ", data);
+  const logoutAuth = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await axios({
+        method: "get",
+        url: "/api/authentication/logout",
+      });
+      logResponse(response);
+      dispatch(logOut());
+      // setCredentials({ status: false });
+    } catch (error) {
+      logError(error);
+    }
+  };
+  // const checkAuth = async (accessToken: any) => {
+  //   try {
+  //     const response = await axios({
+  //       method: "get",
+  //       url: "/api/authentication/check",
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+  //     logResponse(response);
+  //     setCredentials({ status: true });
+  //   } catch (error) {
+  //     logError(error);
+  //     setCredentials({ status: false });
+  //   }
+  // };
   return (
     <Box>
-      {status === "authenticated" ? (
+      {/* {status === "authenticated" ? (
         <>
-          <button onClick={() => signOut({ callbackUrl: "/" })}>
-            Sign out
-          </button>
+          <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out</button>
+          <div>
+            <Link href={"/auth/admin"}>Admin</Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <a href="">Auth({auth ? "true" : "false"})</a>
+          </div>
+          <div>
+            <Link href={"/auth/signin"}>Sign in</Link>
+          </div>
+          <div>
+            <Link href={"/auth/signup"}>Sign up</Link>
+          </div>
+        </>
+      )} */}
+      {auth ? (
+        <>
+          <button onClick={logoutAuth}>Sign out</button>
           <div>
             <Link href={"/auth/admin"}>Admin</Link>
           </div>

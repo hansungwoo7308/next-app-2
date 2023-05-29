@@ -37,27 +37,25 @@ export default async function handler(req: any, res: any) {
   jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (error: any, decoded: any) => {
     if (error) {
       console.log(`\x1b[31mThe refreshToken was expired.\x1b[0m`);
+      return res.status(403).json({ message: "The refreshToken was expired." });
       // foundUser.refreshToken = [...newRefreshTokenArray];
       // const result = await foundUser.save();
       // console.log(`result : `, result);
-      return res.status(403).json({ message: "The refreshToken was expired." });
     }
     // if (error || foundUser.username !== decoded.username) return res.status(403);
-    // console.log("decoded(inner) : ", decoded);
-
     // issue the new tokens
     const newAccessToken = jwt.sign(
       { username: foundUser.username, email: foundUser.email },
       ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "10s",
+        expiresIn: "1m",
       }
     );
     const newRefreshToken = jwt.sign(
       { username: foundUser.username, email: foundUser.email },
       REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "20s",
+        expiresIn: "30m",
       }
     );
     // save the issued tokens

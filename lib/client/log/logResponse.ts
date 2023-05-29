@@ -13,8 +13,8 @@ export default function logResponse(response: any) {
     console.groupEnd();
     return;
   }
-  console.log({ accessToken: data.slicedTokens.accessToken });
-  console.log({ refreshToken: data.slicedTokens.refreshToken });
+  console.log({ accessToken: data.slicedTokens?.accessToken });
+  console.log({ refreshToken: data.slicedTokens?.refreshToken });
   // console.log({ accessToken: data.accessToken });
   // console.log({ refreshToken: data.refreshToken });
 

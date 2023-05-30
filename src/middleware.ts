@@ -42,6 +42,10 @@ export async function middleware(req: NextRequest) {
   // console.log("parsedCookie : ", parsedCookie);
   // console.log("refreshToken : ", refreshToken);
 
+  // if(pathname==='/auth/admin') {
+
+  // }
+
   // protect the routes
   const refreshToken = req.cookies.get("refreshToken")?.value;
   if (pathname === "/restricted" && !refreshToken) {

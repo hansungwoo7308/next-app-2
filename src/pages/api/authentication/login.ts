@@ -56,7 +56,7 @@ export default async function handler(req: any, res: any) {
   ]);
   // `refreshToken=${refreshToken};HttpOnly;SameSite=None`
   res.status(200).json({
-    message: { message: "Login Success" },
+    message: { message: "Logged In" },
     username: foundUser.username,
     accessToken: accessToken,
     refreshToken: refreshToken,
@@ -67,5 +67,5 @@ export default async function handler(req: any, res: any) {
   });
   console.log(`\x1b[33maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
   console.log(`\x1b[33mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
-  console.log("\x1b[34mLogin Success\x1b[0m");
+  console.log("\x1b[34mLogged In\x1b[0m");
 }

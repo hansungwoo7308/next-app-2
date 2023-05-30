@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import verifyJWT from "lib/server/verifyJWT";
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/check]");

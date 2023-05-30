@@ -5,7 +5,9 @@ import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { selectAcessToken } from "lib/client/store/authSlice";
+import { logOut, selectAcessToken, setCredentials } from "lib/client/store/authSlice";
+import logResponse from "lib/client/log/logResponse";
+import logError from "lib/client/log/logError";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -51,28 +53,60 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
+  console.log("\x1b[32m\n[/auth/admin]");
   const dispatch = useDispatch();
   const auth = useSelector(selectAcessToken);
+  const [users, setUsers]: any = useState();
   const { data: session, status }: any = useSession();
   // console.log("\x1b[34m");
   // console.log("[pages/admin]");
   // // console.log("session : ", session);
   // console.log("");
-  const fetchData = async () => {
+  const getData = async () => {
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await axios.get("/api/restricted", {
-        headers: { Authorization: token ? `Bearer ${token}` : "" },
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios({
+        method: "get",
+        url: "/api/users",
+        headers: {
+          Authorization: `Bearer ${accessToken ? accessToken : ""}`,
+        },
       });
-      const data = response.data;
-      console.log("data : ", data);
+      logResponse(response);
+      setUsers(response.data.users);
     } catch (error) {
-      console.log("error : ", error);
+      logError(error);
+      // refreshAuth();
     }
   };
+  const refreshAuth = async () => {
+    try {
+      // const token = localStorage.getItem("accessToken");
+      const response = await axios({
+        method: "get",
+        url: "/api/authentication/refresh",
+      });
+      const accessToken = response.data.accessToken;
+      logResponse(response);
+      setXmlHttpRequestHeader(accessToken);
+      getData();
+      // dispatch(setCredentials({ username: response.data.username, accessToken }));
+    } catch (error) {
+      logError(error);
+      dispatch(logOut());
+    }
+  };
+  const setXmlHttpRequestHeader = (accessToken: any) => {
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    // console.log("refreshAuth timeout...(60 seconds)");
+    // setTimeout(() => {
+    //   refreshAuth();
+    // }, 1000 * 60);
+  };
+
   useEffect(() => {
-    fetchData();
-  }, []);
+    getData();
+  }, [auth]);
   return (
     <>
       <Head>
@@ -94,7 +128,12 @@ export default function Page() {
           </div> */}
           {auth ? (
             <div>
-              <h1>Private Page</h1>
+              <h1>Users Data</h1>
+              <p>
+                {users?.map((user: any) => (
+                  <h3>{user}</h3>
+                ))}
+              </p>
             </div>
           ) : (
             <div>

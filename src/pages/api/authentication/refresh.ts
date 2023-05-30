@@ -26,7 +26,7 @@ export default async function handler(req: any, res: any) {
   }
   // find the user
   const foundUser = await User.findOne({ refreshToken }).exec();
-  console.log("foundUser : ", foundUser);
+  // console.log("foundUser : ", foundUser);
   if (!foundUser) {
     console.log(`\x1b[31mThe foundUser do not exist.\x1b[0m`);
     return res.status(401).json({ message: "The foundUser do not exist." });
@@ -75,12 +75,12 @@ export default async function handler(req: any, res: any) {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
       slicedTokens: {
-        accessToken: accessToken.slice(-5),
-        refreshToken: refreshToken.slice(-5),
+        accessToken: accessToken?.slice(-5),
+        refreshToken: refreshToken?.slice(-5),
       },
     });
-    console.log("\x1b[33mnewAccessToken : ", newAccessToken.slice(-5));
-    console.log("\x1b[33mnewRefreshToken : ", newRefreshToken.slice(-5));
+    console.log("\x1b[33mnewAccessToken : ", newAccessToken?.slice(-5));
+    console.log("\x1b[33mnewRefreshToken : ", newRefreshToken?.slice(-5));
     console.log("\x1b[34mThe accessToken and refreshToken was refreshed.\x1b[0m");
   });
 }

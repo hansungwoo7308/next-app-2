@@ -8,7 +8,7 @@ export default async function handler(req: any, res: any) {
   const accessToken = authorization?.split(" ")[1];
   const cookies = req.cookies;
   const refreshToken = cookies.refreshToken;
-  console.log("accessToken : ", accessToken?.slice(-5));
+  // console.log("accessToken : ", accessToken?.slice(-5));
   console.log("refreshToken : ", refreshToken?.slice(-5));
   if (!refreshToken) {
     console.log(`\x1b[31mThere are no refreshToken.\x1b[0m`);
@@ -70,17 +70,17 @@ export default async function handler(req: any, res: any) {
       `refreshToken=${newRefreshToken};path=/`,
     ]);
     res.status(200).json({
-      message: { message: "The refreshToken was refreshed" },
+      message: { message: "The accessToken and refreshToken was refreshed" },
       username: foundUser.name,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
       slicedTokens: {
-        accessToken: accessToken?.slice(-5),
-        refreshToken: refreshToken?.slice(-5),
+        accessToken: newAccessToken?.slice(-5),
+        refreshToken: newRefreshToken?.slice(-5),
       },
     });
+    console.log("\x1b[34mThe accessToken and refreshToken was refreshed.\x1b[0m");
     console.log("\x1b[33mnewAccessToken : ", newAccessToken?.slice(-5));
     console.log("\x1b[33mnewRefreshToken : ", newRefreshToken?.slice(-5));
-    console.log("\x1b[34mThe accessToken and refreshToken was refreshed.\x1b[0m");
   });
 }

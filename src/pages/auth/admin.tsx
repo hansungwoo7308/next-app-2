@@ -45,15 +45,12 @@ const Main = styled(PublicMain)`
   }
 `;
 export function getServerSideProps(context: any) {
-  // console.log("\x1b[32m");
-  // console.log("[pages/auth/admin]");
-  // console.log("");
+  console.log("\x1b[32m\n[/auth/admin]");
   return {
     props: {},
   };
 }
 export default function Page() {
-  console.log("\x1b[32m\n[/auth/admin]");
   const dispatch = useDispatch();
   const auth = useSelector(selectAcessToken);
   const [users, setUsers]: any = useState();

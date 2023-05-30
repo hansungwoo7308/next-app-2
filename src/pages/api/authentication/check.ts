@@ -1,7 +1,11 @@
 import verifyJWT from "lib/server/verifyJWT";
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/check]");
-  verifyJWT(req, res);
+  const decoded = verifyJWT(req, res);
+  if (decoded)
+    res.status(200).json({
+      message: { message: "The accessToken was verified." },
+    });
   // get the accessToken
   // const authorization = req.headers.authorization;
   // const accessToken = authorization.split(" ")[1];

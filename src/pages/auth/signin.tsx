@@ -90,7 +90,7 @@ export default function Page() {
       logResponse(response);
       setHeader(accessToken);
       dispatch(setCredentials({ username, accessToken }));
-      // router.push("/restricted");
+      router.push("/auth/admin");
     } catch (error) {
       logError(error);
     }

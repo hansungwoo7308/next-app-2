@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
+import { useRouter } from "next/router";
 const Box = styled.div`
   display: flex;
   > button,
@@ -20,6 +21,8 @@ const Box = styled.div`
   }
 `;
 export default function AuthButton(props: any) {
+  // console.log("\x1b[33m\n[AuthButton]");
+  const router = useRouter();
   const dispatch = useDispatch();
   const auth = useSelector(selectAcessToken);
   // next-auth
@@ -52,6 +55,7 @@ export default function AuthButton(props: any) {
       const accessToken = response.data.accessToken;
       logResponse(response);
       setXmlHttpRequestHeader(accessToken);
+      localStorage.setItem("accessToken", accessToken);
       dispatch(setCredentials({ username: response.data.username, accessToken }));
     } catch (error) {
       logError(error);
@@ -73,8 +77,9 @@ export default function AuthButton(props: any) {
         url: "/api/authentication/logout",
       });
       logResponse(response);
+      localStorage.removeItem("accessToken");
       dispatch(logOut());
-      // setCredentials({ status: false });
+      router.push("/");
     } catch (error) {
       logError(error);
     }
@@ -84,7 +89,6 @@ export default function AuthButton(props: any) {
     const accessToken = localStorage.getItem("accessToken");
     checkAuth(accessToken);
   }, []);
-
   return (
     <Box>
       {/* {status === "authenticated" ? (

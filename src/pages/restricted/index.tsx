@@ -39,8 +39,7 @@ const Main = styled(PublicMain)`
   }
 `;
 export function getServerSideProps(context: any) {
-  console.log("\x1b[32m");
-  console.log("[/restricted]");
+  console.log("\x1b[32m\n[/restricted]");
   // console.log("authorization : ", context.req.headers.authorization);
   // const parsedCookie = cookie.parse(context.req.headers.cookie);
   // console.log("refreshToken : ", parsedCookie.refreshToken);

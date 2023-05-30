@@ -65,7 +65,7 @@ export default async function handler(req: any, res: any) {
       refreshToken: refreshToken.slice(-5),
     },
   });
+  console.log("\x1b[34mLogged In\x1b[0m");
   console.log(`\x1b[33maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
   console.log(`\x1b[33mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
-  console.log("\x1b[34mLogged In\x1b[0m");
 }

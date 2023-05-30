@@ -5,6 +5,7 @@ export default async function handler(req: any, res: any) {
   if (decoded)
     res.status(200).json({
       message: { message: "The accessToken was verified." },
+      username: decoded.username,
     });
   // get the accessToken
   // const authorization = req.headers.authorization;

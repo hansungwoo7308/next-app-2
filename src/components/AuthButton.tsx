@@ -38,10 +38,10 @@ export default function AuthButton(props: any) {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      // logResponse(response);
+      logResponse(response);
       dispatch(setCredentials({ username: response.data.username, accessToken }));
     } catch (error) {
-      // logError(error);
+      logError(error);
       refreshAuth();
     }
   };

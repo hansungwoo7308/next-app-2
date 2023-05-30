@@ -73,34 +73,34 @@ export default function Page() {
       setUsers(response.data.users);
     } catch (error) {
       logError(error);
-      // refreshAuth();
+      // await refreshAuth();
     }
   };
-  const refreshAuth = async () => {
-    try {
-      // const token = localStorage.getItem("accessToken");
-      const response = await axios({
-        method: "get",
-        url: "/api/authentication/refresh",
-      });
-      const accessToken = response.data.accessToken;
-      logResponse(response);
-      setXmlHttpRequestHeader(accessToken);
-      getData();
-      // dispatch(setCredentials({ username: response.data.username, accessToken }));
-    } catch (error) {
-      logError(error);
-      dispatch(logOut());
-    }
-  };
-  const setXmlHttpRequestHeader = (accessToken: any) => {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    // console.log("refreshAuth timeout...(60 seconds)");
-    // setTimeout(() => {
-    //   refreshAuth();
-    // }, 1000 * 60);
-  };
-
+  // const refreshAuth = async () => {
+  //   try {
+  //     // const token = localStorage.getItem("accessToken");
+  //     const response = await axios({
+  //       method: "get",
+  //       url: "/api/authentication/refresh",
+  //     });
+  //     const accessToken = response.data.accessToken;
+  //     logResponse(response);
+  //     setXmlHttpRequestHeader(accessToken);
+  //     localStorage.setItem("accessToken", accessToken);
+  //     dispatch(setCredentials({ username: response.data.username, accessToken }));
+  //     getData();
+  //   } catch (error) {
+  //     logError(error);
+  //     dispatch(logOut());
+  //   }
+  // };
+  // const setXmlHttpRequestHeader = (accessToken: any) => {
+  //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  //   // console.log("refreshAuth timeout...(60 seconds)");
+  //   // setTimeout(() => {
+  //   //   refreshAuth();
+  //   // }, 1000 * 60);
+  // };
   useEffect(() => {
     getData();
   }, [auth]);

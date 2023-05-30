@@ -4,6 +4,8 @@ export default function logResponse(response: any) {
   const statusText = response.statusText;
   const Authorization = response.config.headers.Authorization;
   const data = response.data;
+  const accessToken = data.slicedTokens?.accessToken;
+  const refreshToken = data.slicedTokens?.refreshToken;
 
   console.group(`${url} : `, status, statusText);
   // console.log({ payload: data });
@@ -13,11 +15,8 @@ export default function logResponse(response: any) {
     console.groupEnd();
     return;
   }
-  console.log({ accessToken: data.slicedTokens?.accessToken });
-  console.log({ refreshToken: data.slicedTokens?.refreshToken });
-  // console.log({ accessToken: data.accessToken });
-  // console.log({ refreshToken: data.refreshToken });
-
+  accessToken && console.log({ accessToken });
+  refreshToken && console.log({ refreshToken });
   console.groupEnd();
 
   // if (Authorization) console.log({ Authorization });

@@ -26,6 +26,45 @@ export default function AuthButton(props: any) {
   const { data, status } = useSession();
   // console.log("status : ", status);
   // console.log("data : ", data);
+  const checkAuth = async (accessToken: any) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: "/api/authentication/check",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      logResponse(response);
+      dispatch(setCredentials({ username: response.data.username, accessToken }));
+    } catch (error) {
+      logError(error);
+      refreshAuth();
+    }
+  };
+  const refreshAuth = async () => {
+    try {
+      // const token = localStorage.getItem("accessToken");
+      const response = await axios({
+        method: "get",
+        url: "/api/authentication/refresh",
+      });
+      const accessToken = response.data.accessToken;
+      logResponse(response);
+      setXmlHttpRequestHeader(accessToken);
+      dispatch(setCredentials({ username: response.data.username, accessToken }));
+    } catch (error) {
+      logError(error);
+      dispatch(logOut());
+    }
+  };
+  const setXmlHttpRequestHeader = (accessToken: any) => {
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    // console.log("refreshAuth timeout...(60 seconds)");
+    // setTimeout(() => {
+    //   refreshAuth();
+    // }, 1000 * 60);
+  };
   const logoutAuth = async (e: any) => {
     e.preventDefault();
     try {
@@ -40,22 +79,12 @@ export default function AuthButton(props: any) {
       logError(error);
     }
   };
-  // const checkAuth = async (accessToken: any) => {
-  //   try {
-  //     const response = await axios({
-  //       method: "get",
-  //       url: "/api/authentication/check",
-  //       headers: {
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     });
-  //     logResponse(response);
-  //     setCredentials({ status: true });
-  //   } catch (error) {
-  //     logError(error);
-  //     setCredentials({ status: false });
-  //   }
-  // };
+  useEffect(() => {
+    // console.log("checking auth...");
+    const accessToken = localStorage.getItem("accessToken");
+    checkAuth(accessToken);
+  }, []);
+
   return (
     <Box>
       {/* {status === "authenticated" ? (

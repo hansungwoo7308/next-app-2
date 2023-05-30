@@ -26,12 +26,7 @@ interface MyAppProps extends AppProps {
 }
 const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
   // console.log("\x1b[32m\n[_app]");
-  const setAuth = (accessTokenPassed?: any) => {
-    const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
-    const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
-    // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
-    // console.log("accessToken : ", accessToken);
-    localStorage.setItem("accessToken", accessToken);
+  const setHeader = (accessToken: any) => {
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // console.log("refreshAuth timeout...(60 seconds)");
     // setTimeout(() => {
@@ -41,17 +36,20 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
   const refreshAuth = async () => {
     try {
       const response = await axios.post("/api/authentication/refresh");
+      const accessToken = response.data.accessToken;
       logResponse(response);
-      setAuth(response.data.accessToken);
+      setHeader(accessToken);
     } catch (error) {
       logError(error);
     }
   };
-  useEffect(() => {
-    // console.log("\x1b[31m\nClient Effect");
-    // refreshAuth();
-    setAuth();
-  }, []);
+  // useEffect(() => {
+  //   // console.log("\x1b[31m\nClient Effect");
+  //   // refreshAuth();
+  //   // const accessToken = localStorage.getItem("accessToken");
+  //   // setReduxAuth(accessToken);
+  //   // setHeader();
+  // }, []);
   return (
     <>
       <Provider store={store}>

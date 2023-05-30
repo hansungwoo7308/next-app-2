@@ -66,7 +66,7 @@ export default function Page() {
     } catch (error: any) {
       logError(error);
       setAuth(false);
-      await refreshAuth();
+      // await refreshAuth();
     }
   };
   // set the Authorization Header
@@ -100,7 +100,7 @@ export default function Page() {
   useEffect(() => {
     // const accessToken: any = localStorage.getItem("accessToken");
     // setAccessToken(accessToken);
-    getData();
+    // getData();
   }, []);
   return (
     <Main>

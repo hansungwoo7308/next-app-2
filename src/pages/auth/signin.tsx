@@ -123,8 +123,8 @@ export default function Page() {
             <h1>Signin</h1>
             <input name="email" type="text" placeholder="email" ref={emailRef} />
             <input name="password" type="password" placeholder="password" ref={passwordRef} />
-            <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button>
             <button onClick={handleSigninGenerally}>Sign in genernally</button>
+            <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button>
             <button
               onClick={(e) => {
                 e.preventDefault();

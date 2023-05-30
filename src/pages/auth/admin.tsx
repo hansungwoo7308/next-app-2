@@ -4,6 +4,8 @@ import { getSession, useSession } from "next-auth/react";
 import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAcessToken } from "lib/client/store/authSlice";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -49,7 +51,8 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  const [test, setTest]: any = useState();
+  const dispatch = useDispatch();
+  const auth = useSelector(selectAcessToken);
   const { data: session, status }: any = useSession();
   // console.log("\x1b[34m");
   // console.log("[pages/admin]");
@@ -63,7 +66,6 @@ export default function Page() {
       });
       const data = response.data;
       console.log("data : ", data);
-      setTest(data.message);
     } catch (error) {
       console.log("error : ", error);
     }
@@ -78,18 +80,27 @@ export default function Page() {
       </Head>
       <Main>
         <section>
-          {status === "authenticated" && (
+          {/* {status === "authenticated" && (
             <div>
               <h1>Admin</h1>
               <p>name : {session.user.name}</p>
               <p>email : {session.user.email}</p>
               <p>role : {session.user.role}</p>
             </div>
-          )}
-          <div>
+          )} */}
+          {/* <div>
             <h1>Admin (Protected Page)</h1>
             <p>{test}</p>
-          </div>
+          </div> */}
+          {auth ? (
+            <div>
+              <h1>Private Page</h1>
+            </div>
+          ) : (
+            <div>
+              <h1>Restricted</h1>
+            </div>
+          )}
         </section>
       </Main>
     </>

@@ -73,6 +73,7 @@ export default function Page() {
       setUsers(response.data.users);
     } catch (error) {
       logError(error);
+
       // await refreshAuth();
     }
   };

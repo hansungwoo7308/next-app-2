@@ -88,7 +88,7 @@ export default function AuthButton(props: any) {
     // console.log("checking auth...");
     const accessToken = localStorage.getItem("accessToken");
     checkAuth(accessToken);
-  }, []);
+  });
   return (
     <Box>
       {/* {status === "authenticated" ? (

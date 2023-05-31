@@ -5,72 +5,6 @@ import { signOut, useSession } from "next-auth/react";
 import { increaseCount, getCount } from "lib/client/store/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-const NavStyle = styled.nav`
-  /* Condition */
-  .setColor {
-    color: coral;
-  }
-  .unsetColor {
-    color: #ccc;
-  }
-  /* Public */
-  li {
-    color: #ccc;
-    :hover {
-      /* outline: 2px solid red; */
-      color: #fff;
-    }
-  }
-  /* Private */
-  > ul {
-    /* Main List */
-    position: relative;
-    display: flex;
-    /* gap: 20px; */
-    > .focus {
-      height: 3px;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      background-color: coral;
-      outline: none;
-      transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-    }
-    > li {
-      min-width: 70px;
-      /* outline: 2px solid coral; */
-      position: relative;
-      :hover > ul {
-        display: flex;
-      }
-      > a {
-        display: flex;
-        justify-content: center;
-      }
-      > ul {
-        /* Sub List */
-        height: initial;
-        position: absolute;
-        top: 100%;
-        background-color: #000;
-        color: #ccc;
-        /* border: 3px solid green; */
-        /* display: flex; */
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        > li {
-          width: 100%;
-          min-width: 70px;
-          white-space: nowrap;
-          > a {
-            padding: 10px;
-          }
-        }
-      }
-    }
-  }
-`;
 export default function Nav() {
   const router = useRouter();
   const focusRef: any = useRef();
@@ -102,8 +36,7 @@ export default function Nav() {
     target.className = "setColor";
   };
   const setUnderline = (targetUnderline: any, targetItem: any) => {
-    targetUnderline.style.width =
-      targetItem.getBoundingClientRect().width + "px";
+    targetUnderline.style.width = targetItem.getBoundingClientRect().width + "px";
     targetUnderline.style.left = targetItem.offsetLeft + "px";
   };
   const handleChange = () => {
@@ -111,20 +44,16 @@ export default function Nav() {
     if (router.pathname === "/") {
       setColor(homeRef.current);
       setUnderline(focusRef.current, homeRef.current);
-    } else if (router.pathname === "/list") {
+    } else if (router.pathname.startsWith("/list")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/blogs") {
+    } else if (router.pathname.startsWith("/blogs")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/posts") {
+    } else if (router.pathname.startsWith("/posts")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (
-      router.pathname === "/post-list" ||
-      router.pathname === "/post-list/[id]" ||
-      router.pathname === "/post-list/edit/[id]"
-    ) {
+    } else if (router.pathname.startsWith("/post-list")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/post-list-2") {
@@ -187,33 +116,37 @@ export default function Nav() {
           <ul>
             {/* Markdown List */}
             <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/posts"}>Markdown Post</Link>
+              <Link href={"/posts"}>posts (Markdown)</Link>
             </li>
             <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/blogs"}>Markdown Blog</Link>
+              <Link href={"/blogs"}>blogs (Markdown)</Link>
             </li>
             {/* CDN List */}
             <li ref={postListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list"}>CDN Post</Link>
+              <Link href={"/post-list"}>post-list (CDN)</Link>
             </li>
             <li ref={usersRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users"}>CDN Users</Link>
+              <Link href={"/users"}>users (CDN)</Link>
             </li>
             <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users2"}>CDN Users2</Link>
+              <Link href={"/users2"}>users2 (CDN)</Link>
             </li>
             {/* Database List */}
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list-2"}>DB Post List</Link>
+              <Link href={"/post-list-2"}>post-list-2 (DB)</Link>
             </li>
             <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/todo-list"}>DB Todo List</Link>
+              <Link href={"/todo-list"}>todo-list (DB)</Link>
             </li>
             {/* Undefined List */}
             <li ref={userListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/user-list"}>Undefined User List</Link>
+              <Link href={"/user-list"}>user-list (Undefined)</Link>
             </li>
           </ul>
+        </li>
+
+        <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/restricted"}>Restricted</Link>
         </li>
         {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
@@ -221,15 +154,75 @@ export default function Nav() {
         {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
         </li> */}
-        {/* <li ref={loginRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/authentication/login"}>Login</Link>
-        </li> */}
-        <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/restricted"}>Restricted</Link>
-        </li>
-
         {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
       </ul>
     </NavStyle>
   );
 }
+const NavStyle = styled.nav`
+  /* Condition */
+  .setColor {
+    color: coral;
+  }
+  .unsetColor {
+    color: #ccc;
+  }
+  /* Public */
+  li {
+    color: #ccc;
+    :hover {
+      /* outline: 2px solid red; */
+      color: #fff;
+    }
+  }
+  /* Private */
+  > ul {
+    /* Main List */
+    position: relative;
+    display: flex;
+    gap: 10px;
+    /* gap: 20px; */
+    > .focus {
+      height: 3px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background-color: coral;
+      outline: none;
+      transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+    > li {
+      min-width: 70px;
+      position: relative;
+      /* outline: 2px solid coral; */
+      :hover > ul {
+        display: flex;
+      }
+      > a {
+        display: flex;
+        justify-content: center;
+      }
+      > ul {
+        /* Sub List */
+        height: initial;
+        position: absolute;
+        top: 100%;
+        background-color: #000;
+        color: #ccc;
+        /* border: 3px solid green; */
+        /* display: flex; */
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+        > li {
+          width: 100%;
+          min-width: 70px;
+          white-space: nowrap;
+          > a {
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
+`;

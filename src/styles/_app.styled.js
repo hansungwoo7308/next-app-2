@@ -21,8 +21,6 @@ export const GlobalStyle = createGlobalStyle`
     height: 100%;
     color: inherit;
     text-decoration: none;
-    display: flex;
-    justify-content: center;
   }
   button {
     border: none;
@@ -41,8 +39,8 @@ export const GlobalStyle = createGlobalStyle`
     list-style: none;
   }
   img {
-    /* width: 100%;
-    height: 100%; */
+    width: 100%;
+    height: 100%;
   }
   input {
     padding: 5px;

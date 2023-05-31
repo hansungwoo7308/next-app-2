@@ -1,8 +1,9 @@
 import Head from "next/head";
 import getMarkdown from "lib/server/getMarkdown";
 import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 import { GetStaticPropsContext } from "next";
+import styled from "styled-components";
 // import { useEffect, useRef, useState } from "react";
 // import { useRouter } from "next/router";
 // import getFormattedDate from "@/lib/getFormattedDate"
@@ -38,16 +39,14 @@ import { GetStaticPropsContext } from "next";
 //   };
 // };
 export const getStaticProps = (context: GetStaticPropsContext) => {
-  console.log("\x1b[32m");
-  console.log("[Server:getStaticProps]/pages/posts");
   const list = getMarkdown("data");
-  console.log("Markdown file list : ", list);
-  console.log("");
+  console.log("\x1b[32m\n[/posts]");
+  console.log("Markdown list : ", list);
   return { props: { list } };
 };
 let renderCount = 0;
-renderCount++;
 export default function Page({ list }: any) {
+  renderCount++;
   return (
     <>
       <Head>
@@ -62,3 +61,14 @@ export default function Page({ list }: any) {
     </>
   );
 }
+// 사이즈만 오버라이딩
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      width: 80%;
+      max-width: 800px;
+      height: 50vh;
+      outline: 3px solid coral;
+    }
+  }
+`;

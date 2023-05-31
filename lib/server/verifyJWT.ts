@@ -6,7 +6,7 @@ export default function verifyJWT(req: any, res: any) {
   const accessToken = authorization?.split(" ")[1];
   console.log("accessToken : ", accessToken?.slice(-5));
   if (!accessToken) {
-    console.log("\x1b[31mNo accessToken, No Authorization Header");
+    console.log("\x1b[31mNo accessToken");
     return res.status(401).json({ message: "Unauthorized" });
   }
   // if (!authorization?.startsWith("Bearer ")) {

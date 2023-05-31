@@ -35,7 +35,7 @@ export default function AuthButton(props: any) {
         method: "get",
         url: "/api/authentication/check",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken ? accessToken : ""}`,
         },
       });
       logResponse(response);
@@ -88,7 +88,8 @@ export default function AuthButton(props: any) {
     // console.log("checking auth...");
     const accessToken = localStorage.getItem("accessToken");
     checkAuth(accessToken);
-  });
+  }, []);
+  // });
   return (
     <Box>
       {/* {status === "authenticated" ? (

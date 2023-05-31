@@ -21,6 +21,7 @@ export const Main = styled.main`
       right: 20px;
     }
     > div {
+      padding: 20px;
       outline: 3px solid green;
     }
   }

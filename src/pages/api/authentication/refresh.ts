@@ -11,7 +11,7 @@ export default async function handler(req: any, res: any) {
   // console.log("accessToken : ", accessToken?.slice(-5));
   console.log("refreshToken : ", refreshToken?.slice(-5));
   if (!refreshToken) {
-    console.log(`\x1b[31mThere are no refreshToken.\x1b[0m`);
+    console.log(`\x1b[31mNo refreshToken.\x1b[0m`);
     return res.status(401).json({ message: "Unauthorized" });
   }
   // connect to db (연결)
@@ -55,7 +55,7 @@ export default async function handler(req: any, res: any) {
       { username: foundUser.username, email: foundUser.email },
       REFRESH_TOKEN_SECRET,
       {
-        expiresIn: "30m",
+        expiresIn: "1d",
       }
     );
     // save the issued tokens

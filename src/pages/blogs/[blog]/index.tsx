@@ -2,7 +2,8 @@ import Head from "next/head";
 import fs from "fs";
 import matter from "gray-matter";
 import Markdown from "markdown-to-jsx";
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
 export function getStaticPaths(context: any) {
   const paths = fs
     .readdirSync("data/blogs/")
@@ -20,15 +21,11 @@ export function getStaticPaths(context: any) {
   };
 }
 export function getStaticProps(context: any) {
-  const content = fs.readFileSync(
-    `data/blogs/${context.params.blog}.md`,
-    "utf-8"
-  );
+  console.log("\x1b[32m\n[/blogs/[id]]");
+  const content = fs.readFileSync(`data/blogs/${context.params.blog}.md`, "utf-8");
   const matterResult = matter(content);
-  console.log("");
   //   console.log("\x1b[32mmatterResult : %s\x1b[0m", matterResult.content);
   //   console.log("context.params.blog : ", context.params.blog);
-  console.log("");
   return {
     props: {
       blog: {
@@ -36,7 +33,6 @@ export function getStaticProps(context: any) {
         title: matterResult.data.title,
         content: matterResult.content,
       },
-      //   test: "test",
     },
   };
 }
@@ -58,3 +54,13 @@ export default function Page({ blog }: any) {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      width: 80%;
+      min-width: 500px;
+      /* max-width: 800px; */
+      outline: 3px solid coral;
+    }
+  }
+`;

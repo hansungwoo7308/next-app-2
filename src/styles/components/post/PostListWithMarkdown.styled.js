@@ -1,33 +1,17 @@
 import styled from "styled-components";
 
 export const Box = styled.div`
-  width: 80%;
-  height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 20px;
   padding: 20px;
-  border: 2px solid green;
-  > div {
+  outline: 3px solid green;
+  > ul {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    > ul {
-      /* flex: 1; */
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      list-style: none;
-      > li {
-        border: 2px solid;
-      }
+    gap: 10px;
+    > li {
+      border: 2px solid;
     }
-  }
-
-  > button {
-    width: 50%;
-    padding: 20px;
-    margin: 0 auto;
   }
 `;

@@ -10,57 +10,6 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { setCredentials } from "lib/client/store/authSlice";
 import { useDispatch } from "react-redux";
-const Main = styled(PublicMain)`
-  > section {
-    display: flex;
-    flex-direction: column;
-    > form {
-      width: 50%;
-      min-width: 500px;
-      height: 50vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      border: 3px solid green;
-      padding: 20px;
-      > input {
-        width: 50%;
-        padding: 8px;
-        outline: none;
-        border: 3px solid royalblue;
-        /* border: 3px solid steelblue; */
-        /* border: 3px solid dodgerblue; */
-        border-radius: 5px;
-        :hover,
-        :focus {
-          border: 3px solid var(--color-focus);
-        }
-      }
-      > button:nth-of-type(1) {
-        background-color: lightcoral;
-      }
-      > button:nth-of-type(2) {
-        background-color: lightblue;
-      }
-      > button {
-        /* all: unset; */
-        width: 50%;
-        background-color: darkgray;
-        color: white;
-        /* outline: none; */
-        border: none;
-        border-radius: 5px;
-        padding: 10px;
-        cursor: pointer;
-        :hover {
-          background-color: #000;
-        }
-      }
-    }
-  }
-`;
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -139,3 +88,54 @@ export default function Page() {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    display: flex;
+    flex-direction: column;
+    > form {
+      width: 50%;
+      min-width: 500px;
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      border: 3px solid green;
+      padding: 20px;
+      > input {
+        width: 50%;
+        padding: 8px;
+        outline: none;
+        border: 3px solid royalblue;
+        /* border: 3px solid steelblue; */
+        /* border: 3px solid dodgerblue; */
+        border-radius: 5px;
+        :hover,
+        :focus {
+          border: 3px solid var(--color-focus);
+        }
+      }
+      > button:nth-of-type(1) {
+        background-color: lightcoral;
+      }
+      > button:nth-of-type(2) {
+        background-color: lightblue;
+      }
+      > button {
+        /* all: unset; */
+        width: 50%;
+        background-color: darkgray;
+        color: white;
+        /* outline: none; */
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        cursor: pointer;
+        :hover {
+          background-color: #000;
+        }
+      }
+    }
+  }
+`;

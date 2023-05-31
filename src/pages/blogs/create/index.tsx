@@ -1,4 +1,5 @@
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
 export default function Page() {
   return (
     <>
@@ -23,3 +24,18 @@ export default function Page() {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      width: 70%;
+      max-width: 700px;
+      height: 50vh;
+      > form {
+        /* outline: 2px solid; */
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  }
+`;

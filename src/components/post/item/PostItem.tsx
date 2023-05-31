@@ -11,9 +11,9 @@ export default function PostItem({ postId }: any) {
     <li>
       <Link href={`post-list/${post.id}`}>
         <h3>{post.title}</h3>
+        <Time timestamp={post.date} />
       </Link>
       {/* <p>{post.body.substring(0, 75)}</p> */}
-      <Time timestamp={post.date} />
       {/* <p className="postCredit">
         <PostAuthor userId={post.userId} />
       </p> */}

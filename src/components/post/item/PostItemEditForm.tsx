@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deletePost,
-  selectPostById,
-  updatePost,
-} from "lib/client/store/postsSlice";
+import { deletePost, selectPostById, updatePost } from "lib/client/store/postsSlice";
 import { selectAllUsers } from "lib/client/store/usersSlice";
 import { useRouter } from "next/router";
-import { Box } from "@/styles/components/post/item/PostItemEditForm.styled";
+// import { Box } from "@/styles/components/post/item/PostItemEditForm.styled";
+import styled from "styled-components";
 // import { selectPostById, updatePost, deletePost } from './postsSlice'
 // import { useParams, useNavigate } from 'react-router-dom'
 let renderCount = 0;
@@ -38,8 +35,7 @@ export default function PostItemEditForm() {
   const onContentChanged = (e: any) => setContent(e.target.value);
   const onAuthorChanged = (e: any) => setUserId(Number(e.target.value));
   // set the boolean variable
-  const canSave =
-    [title, content, userId].every(Boolean) && requestStatus === "idle";
+  const canSave = [title, content, userId].every(Boolean) && requestStatus === "idle";
   // set the save handler
   const onSavePostClicked = () => {
     if (canSave) {
@@ -111,23 +107,34 @@ export default function PostItemEditForm() {
           {usersOptions}
         </select>
         <label htmlFor="postContent">Content:</label>
-        <textarea
-          id="postContent"
-          name="postContent"
-          value={content}
-          onChange={onContentChanged}
-        />
+        <textarea id="postContent" name="postContent" value={content} onChange={onContentChanged} />
         <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
           Save Post
         </button>
-        <button
-          className="deleteButton"
-          type="button"
-          onClick={onDeletePostClicked}
-        >
+        <button className="deleteButton" type="button" onClick={onDeletePostClicked}>
           Delete Post
         </button>
       </form>
     </Box>
   );
 }
+const Box = styled.div`
+  > form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 20px;
+    > input,
+    select,
+    textarea {
+      margin-bottom: 10px;
+    }
+    > textarea {
+      height: 100px;
+    }
+    > button {
+      height: 40px;
+      margin-top: 10px;
+    }
+  }
+`;

@@ -19,9 +19,4 @@ export const Main = styled.main`
       }
     }
   }
-  .add-post-form {
-    button:disabled {
-      cursor: not-allowed;
-    }
-  }
 `;

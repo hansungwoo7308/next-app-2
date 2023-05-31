@@ -13,7 +13,7 @@ export const Main = styled.main`
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    /* gap: 20px; */
     outline: 2px solid coral;
     > h1 {
       position: absolute;

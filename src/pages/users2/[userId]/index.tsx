@@ -9,9 +9,7 @@ export async function getServerSideProps(context: any) {
   const userId = context.params.userId;
   const user: Promise<User> = await getUser(userId);
   const userPosts: Promise<Post[]> = await getUserPosts(userId);
-  console.log("");
-  console.log("\x1b[32mpages/user2");
-  console.log("");
+  console.log("\x1b[32m\n[/user2]");
   //   if (!) {
   //   return {
   //     redirect: {
@@ -20,19 +18,11 @@ export async function getServerSideProps(context: any) {
   //     },
   //   };
   // }
-  return {
-    props: {
-      user,
-      userPosts,
-    },
-  };
+  return { props: { user, userPosts } };
 }
 export default function Page({ user, userPosts }: any) {
-  console.log("");
-  console.log("\x1b[32m[Client]/pages/user2");
-  console.log("");
-  //   console.log("user : ", user);
-  //   console.log("userPosts : ", userPosts);
+  console.log("user : ", user);
+  console.log("userPosts : ", userPosts);
   return (
     <>
       <Head>

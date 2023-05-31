@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectAllUsers } from "lib/client/store/usersSlice";
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
+import styled from "styled-components";
 let renderCount = 0;
 export default function Page() {
   const users = useSelector(selectAllUsers);
@@ -10,7 +11,7 @@ export default function Page() {
       <Link href={`/users/${user.id}`}>{user.name}</Link>
     </li>
   ));
-  console.log("users : ", users);
+  // console.log("users : ", users);
   renderCount++;
   return (
     <>
@@ -26,3 +27,12 @@ export default function Page() {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      width: 70%;
+      height: 70%;
+      max-width: 700px;
+    }
+  }
+`;

@@ -1,5 +1,6 @@
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 import PostListByRTKquery from "@/components/post/list/PostListByRTKquery";
+import styled from "styled-components";
 let renderCount = 0;
 export default function Page() {
   renderCount++;
@@ -14,3 +15,12 @@ export default function Page() {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+`;

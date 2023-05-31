@@ -42,40 +42,16 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
   }
-  input {
+  input, select {
     padding: 5px;
   }
-  // pages
-  .admin {
-    section {
-      flex-direction: column;
-      gap: 15px;
-    }
-  }
-  // users page
-  .users {
-    > section {
-      position: relative;
-      > h1 {
-        position: absolute;
-        top: 70px;
-        right: 20px;
-      }
-      > div {
-        outline: 2px solid coral;
-      }
-    }
-  }
-  .user {
-    > section {
-      > div {
-        display: flex;
-        flex-direction: column;
-        outline: 3px solid coral;
-      }
+  textarea{
+    padding: 10px;
 
-    }
   }
+  
+  
+  
   // components
   .slider {
     width: 300px;
@@ -176,23 +152,6 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-  .add-post-form {
-    outline: 2px solid coral;
-    display: flex;
-    flex-direction: column;
-    > form {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      > textarea {
-        height: 40%;
-
-      }
-      > button {
-        margin-top: 20px;
-      }
-    }
-  }
+  
   
 `;

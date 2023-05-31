@@ -128,8 +128,8 @@ export default function Page() {
             <div>
               <h1>Users Data</h1>
               <p>
-                {users?.map((user: any) => (
-                  <h3>{user}</h3>
+                {users?.map((user: any, index: any) => (
+                  <h3 key={index}>{user}</h3>
                 ))}
               </p>
             </div>

@@ -45,7 +45,7 @@ const Main = styled(PublicMain)`
           grid-template-columns: repeat(2, 1fr);
           gap: 1rem;
         }
-        @media (width < 400px) {
+        @media (width < 500px) {
           grid-template-columns: repeat(1, minmax(25%, auto));
         }
       }

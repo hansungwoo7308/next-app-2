@@ -78,7 +78,7 @@ const FooterStyle = styled.footer`
         align-items: flex-end;
       }
     }
-    @media (width<400px) {
+    @media (width<500px) {
       flex-direction: column;
       > div:nth-of-type(2) {
         align-items: stretch;

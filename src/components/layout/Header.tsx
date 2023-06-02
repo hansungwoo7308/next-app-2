@@ -2,6 +2,19 @@ import Link from "next/link";
 import Nav from "../Nav";
 import AuthButton from "../AuthButton";
 import styled from "styled-components";
+export default function Header() {
+  return (
+    <HeaderStyle>
+      <section>
+        <div>
+          <Link href={"/"}>LOGO</Link>
+        </div>
+        <Nav />
+        <AuthButton />
+      </section>
+    </HeaderStyle>
+  );
+}
 const HeaderStyle = styled.header`
   width: 100%;
   height: 50px;
@@ -14,9 +27,12 @@ const HeaderStyle = styled.header`
   z-index: 100;
   section {
     width: 80%;
+    max-width: 1000px;
     height: 100%;
     display: flex;
     justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
     > form {
       display: flex;
       gap: 15px;
@@ -44,16 +60,3 @@ const HeaderStyle = styled.header`
     color: #fff;
   }
 `;
-export default function Header() {
-  return (
-    <HeaderStyle>
-      <section>
-        <div>
-          <Link href={"/"}>LOGO</Link>
-        </div>
-        <Nav />
-        <AuthButton />
-      </section>
-    </HeaderStyle>
-  );
-}

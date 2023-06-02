@@ -14,7 +14,8 @@ export const Main = styled.main`
     justify-content: center;
     align-items: center;
     /* gap: 20px; */
-    outline: 2px solid coral;
+    border: 2px solid coral;
+    /* outline: 2px solid coral; */
     > h1 {
       position: absolute;
       top: 70px;
@@ -38,7 +39,7 @@ export const Main = styled.main`
       }
     }
   }
-  @media (width<400px) {
+  @media (width<500px) {
     width: 100%;
     background-color: gray;
     > section {

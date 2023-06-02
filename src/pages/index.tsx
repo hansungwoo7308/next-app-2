@@ -1,10 +1,20 @@
 import Head from "next/head";
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 let renderCount = 0;
+const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
+suffered alteration in some form, by injected humour, or randomised words which don't
+look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
+need to be sure there isn't anything embarrassing hidden in the middle of text. All the
+Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary,
+making this the first true generator on the Internet. It uses a dictionary of over 200
+Latin words, combined with a handful of model sentence structures, to generate Lorem
+Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from
+repetition, injected humour, or non-characteristic words etc.`;
 export function getServerSideProps(context: any) {
   // const serverCookies = context.req.cookies;
   // console.log("serverCookies : ", serverCookies);
@@ -34,13 +44,117 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <section>
-          <h1>renderCount : {renderCount}</h1>
-          <div>
+        <section className="home">
+          {/* <h1>renderCount : {renderCount}</h1> */}
+          <div className="side-nav">
+            <ul>
+              <li>Home</li>
+              <li>About</li>
+              <li>Works</li>
+              <li>Stack</li>
+            </ul>
+          </div>
+          <div className="description">
             <h1>Home</h1>
+            <p>{sentence}</p>
+          </div>
+        </section>
+        <section className="about">
+          <div>
+            <h3>About Me</h3>
+            <p>{sentence}</p>
+          </div>
+        </section>
+        <section>
+          <div>
+            <h3>Stack</h3>
+            <ul>
+              <li>NextJS</li>
+              <li>NodeJS</li>
+              <li>ReactJS</li>
+              <li>Typescript</li>
+              <li>Styled-Components</li>
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>Javascript</li>
+
+              <li>...</li>
+            </ul>
+          </div>
+        </section>
+        <section className="works">
+          <div>
+            <h1>Works Page</h1>
+            <ul>
+              <li>work1</li>
+              <li>work2</li>
+              <li>work3</li>
+              <li>work4</li>
+              <li>work5</li>
+              <li>work6</li>
+              <li>work7</li>
+              <li>work8</li>
+            </ul>
           </div>
         </section>
       </Main>
     </>
   );
 }
+const Main = styled(PublicMain)`
+  flex-direction: column;
+  background-color: #222;
+  color: #fff;
+  > section {
+    > div {
+    }
+  }
+  > .home {
+    max-width: 100%;
+    width: 100%;
+    > div {
+      width: 50%;
+    }
+    > .side-nav {
+      width: 5rem;
+      height: 30rem;
+      outline: 2px solid green;
+      position: fixed;
+      left: 3rem;
+      > ul {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+    }
+  }
+  > .works {
+    > div {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      > ul {
+        /* display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-content: flex-start; */
+        display: grid;
+        /* grid-template-columns: repeat(4, minmax(100px, 1fr)); */
+        grid-template-columns: repeat(2, minmax(300px, 1fr));
+        grid-template-rows: repeat(4, minmax(300px, 1fr));
+        gap: 2rem;
+        /* outline: 2px solid red; */
+        > li {
+          outline: 2px solid green;
+        }
+        @media (width < 1000px) {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+        }
+        @media (width < 500px) {
+          grid-template-columns: repeat(1, minmax(25%, auto));
+        }
+      }
+    }
+  }
+`;

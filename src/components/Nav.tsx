@@ -88,6 +88,9 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/works")) {
       setColor(worksRef.current);
       setUnderline(focusRef.current, worksRef.current);
+    } else if (router.pathname.startsWith("/about")) {
+      setColor(aboutRef.current);
+      setUnderline(focusRef.current, aboutRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -152,9 +155,9 @@ export default function Nav() {
         <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/about"}>About</Link>
         </li>
-        <li ref={worksRef} onClick={(e) => handleFocus(e)}>
+        {/* <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"}>Works</Link>
-        </li>
+        </li> */}
         {/* <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/restricted"}>Restricted</Link>
         </li> */}

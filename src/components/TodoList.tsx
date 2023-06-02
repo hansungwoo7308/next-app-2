@@ -9,13 +9,7 @@ import { Box } from "@/styles/components/TodoList.styled";
 export default function TodoList() {
   const [newTodo, setNewTodo] = useState("");
   const [content, setContent]: any = useState();
-  const {
-    data: todos,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  }: any = useGetTodosQuery();
+  const { data: todos, isLoading, isSuccess, isError, error }: any = useGetTodosQuery();
   //   console.log("test : ", useGetTodosQuery({ query: "todos" }));
   const [addTodo] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
@@ -40,16 +34,11 @@ export default function TodoList() {
                   type="checkbox"
                   checked={todo.completed}
                   id={todo.id}
-                  onChange={() =>
-                    updateTodo({ ...todo, completed: !todo.completed })
-                  }
+                  onChange={() => updateTodo({ ...todo, completed: !todo.completed })}
                 />
                 <label htmlFor={todo.id}>{todo.title}</label>
               </div>
-              <button
-                className="trash"
-                onClick={() => deleteTodo({ id: todo.id })}
-              >
+              <button className="trash" onClick={() => deleteTodo({ id: todo.id })}>
                 <h1>Delete</h1>
               </button>
             </article>
@@ -62,7 +51,7 @@ export default function TodoList() {
   }, [todos]);
   return (
     <Box>
-      <h1>Database Todo List (Dynamic)</h1>
+      <h1>todo-list (Dynamic : Database)</h1>
       <form onSubmit={handleSubmit}>
         <label>Enter a new todo item</label>
         <div>

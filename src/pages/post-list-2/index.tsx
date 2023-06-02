@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "../../components/Modal";
 import PostList from "@/components/post/list/PostList";
-import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 import getMarkdown from "lib/server/getMarkdown";
-import { Main } from "@/styles/public/main.styled";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 import { GetStaticPropsContext } from "next";
+import styled from "styled-components";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";
@@ -19,7 +19,6 @@ export function getStaticProps(context: GetStaticPropsContext) {
   return { props: { list } };
 }
 let renderCount = 0;
-renderCount++;
 export default function Page({ list }: any) {
   // Related to PostList
   const [posts, setPosts]: any = useState([]);
@@ -46,7 +45,6 @@ export default function Page({ list }: any) {
   useEffect(() => {
     getPosts();
   }, []);
-
   // Related to Modal
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -63,7 +61,6 @@ export default function Page({ list }: any) {
     }
     getPosts();
   };
-
   renderCount++;
   return (
     <>
@@ -79,11 +76,23 @@ export default function Page({ list }: any) {
             openModal={handleOpen}
             deleteItem={handleDelete}
           />
-          {isOpen && (
-            <Modal closeModal={handleClose} createItem={handleCreate} />
-          )}
+          {isOpen && <Modal closeModal={handleClose} createItem={handleCreate} />}
         </section>
       </Main>
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    > div:first-of-type {
+      width: 70%;
+      height: 70vh;
+      max-width: 1000px;
+    }
+    // set the size of Modal Component
+    > div:last-of-type {
+      width: 100%;
+      height: 100%;
+    }
+  }
+`;

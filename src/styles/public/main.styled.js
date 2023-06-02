@@ -1,11 +1,11 @@
 import styled from "styled-components";
-
 export const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
   > section {
     width: 80%;
+    max-width: 1000px;
     min-height: 100vh;
     position: relative;
     padding: 20px;
@@ -21,8 +21,33 @@ export const Main = styled.main`
       right: 20px;
     }
     > div {
-      padding: 20px;
+      width: 100%;
+      padding: 1rem;
       outline: 3px solid green;
+    }
+  }
+  @media (width < 1000px) {
+    width: 100%;
+    background-color: lightgreen;
+    > section {
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      > div {
+        width: 100%;
+      }
+    }
+  }
+  @media (width<400px) {
+    width: 100%;
+    background-color: gray;
+    > section {
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      > div {
+        width: 100%;
+      }
     }
   }
 `;

@@ -19,7 +19,7 @@ export default function Page() {
         <section>
           <h1>renderCount : {renderCount}</h1>
           <div>
-            <h1>CDN User List</h1>
+            <h1>users (static : CDN)</h1>
             <ul>{list}</ul>
           </div>
         </section>

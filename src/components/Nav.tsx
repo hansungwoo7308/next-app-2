@@ -26,6 +26,8 @@ export default function Nav() {
   const searchRef: any = useRef();
   // Private Page (Protected, Restricted)
   const restrictedRef: any = useRef();
+  const aboutRef: any = useRef();
+  const worksRef: any = useRef();
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -83,6 +85,9 @@ export default function Nav() {
     } else if (router.pathname === "/restricted") {
       setColor(restrictedRef.current);
       setUnderline(focusRef.current, restrictedRef.current);
+    } else if (router.pathname.startsWith("/works")) {
+      setColor(worksRef.current);
+      setUnderline(focusRef.current, worksRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -144,10 +149,15 @@ export default function Nav() {
             </li>
           </ul>
         </li>
-
-        <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/restricted"}>Restricted</Link>
+        <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/about"}>About</Link>
         </li>
+        <li ref={worksRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/works"}>Works</Link>
+        </li>
+        {/* <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/restricted"}>Restricted</Link>
+        </li> */}
         {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
         </li> */}

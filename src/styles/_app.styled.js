@@ -14,6 +14,10 @@ export const GlobalStyle = createGlobalStyle`
   }
   html, body {
     max-width: 100vw;
+    /* height: 100%; */
+    /* overflow: hidden; */
+    /* background-color: gray; */
+    /* outline: 10px solid green; */
     /* overflow-x: hidden; */
   }
   a {

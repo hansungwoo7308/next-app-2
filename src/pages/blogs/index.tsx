@@ -66,6 +66,7 @@ export default function Page({ list }: any) {
       <Main>
         <section>
           <div>
+            <h1>blogs (static : Markdown)</h1>
             <ul>
               {list.map((item: any, index: number) => (
                 <Link
@@ -99,7 +100,7 @@ const Main = styled(PublicMain)`
       display: flex;
       flex-direction: column;
       gap: 10px;
-      outline: 3px solid coral;
+      outline: 3px solid green;
       > ul {
         display: flex;
         flex-direction: column;

@@ -25,7 +25,7 @@ export default function Page({ users }: any) {
       <Main>
         <section>
           <div>
-            <h1>CDN Users2 List</h1>
+            <h1>users2 (static : CDN)</h1>
             <ul>
               {users.map((user: any) => (
                 <li key={user.id}>

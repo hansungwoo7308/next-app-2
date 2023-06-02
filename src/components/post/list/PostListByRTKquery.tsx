@@ -9,7 +9,7 @@ export default function PostListByRTKquery() {
   const error = useSelector(getPostsError);
   return (
     <Box>
-      <h2>CDN Post List (Static)</h2>
+      <h2>post-list (Static : CDN)</h2>
       <ul>
         {typeof window && postStatus === "loading" ? (
           <h1>Loading</h1>

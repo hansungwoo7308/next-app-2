@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function PostListWithMarkdown({ list, path }: any) {
   return (
     <Box>
-      <h1>Markdown Post List (Static)</h1>
+      <h1>posts (Static : Markdown)</h1>
       <ul>
         {list.map((item: any, index: any) => (
           <li key={index}>

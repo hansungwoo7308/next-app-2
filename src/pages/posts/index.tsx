@@ -68,7 +68,7 @@ const Main = styled(PublicMain)`
       width: 80%;
       max-width: 800px;
       height: 50vh;
-      outline: 3px solid coral;
+      outline: 3px solid green;
     }
   }
 `;

@@ -1,12 +1,11 @@
 import Head from "next/head";
 import { Main as PublicMain } from "@/styles/public/main.styled";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Link from "next/link";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
-let renderCount = 0;
 const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
 suffered alteration in some form, by injected humour, or randomised words which don't
 look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
@@ -35,7 +34,12 @@ export default function Page() {
   // const [cookies, setCookies]: any = useState();
   // const [checkedUser, setCheckedUser]: any = useState();
   // const [users, setUsers]: any = useState();
-  renderCount++;
+  const navRef: any = useRef();
+  const markerRef: any = useRef();
+  const setMarker = (e: any) => {
+    markerRef.current.style.top =
+      e.target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
+  };
   return (
     <>
       <Head>
@@ -45,23 +49,25 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        {/* <h1>renderCount : {renderCount}</h1> */}
-        <div className="side-nav">
-          <ul>
-            <li className="home">
-              <a href={"#home"}></a>
-            </li>
-            <li className="about">
-              <a href={"#about"}></a>
-            </li>
-            <li className="skills">
-              <a href={"#skills"}></a>
-            </li>
-            <li className="works">
-              <a href={"#works"}></a>
-            </li>
-          </ul>
-        </div>
+        <section className="sider">
+          <div className="nav" ref={navRef}>
+            <ul>
+              <div className="marker" ref={markerRef}></div>
+              <li className="home" onClick={setMarker}>
+                <a href={"#home"}>00</a>
+              </li>
+              <li className="about" onClick={setMarker}>
+                <a href={"#about"}>01</a>
+              </li>
+              <li className="skills" onClick={setMarker}>
+                <a href={"#skills"}>02</a>
+              </li>
+              <li className="works" onClick={setMarker}>
+                <a href={"#works"}>03</a>
+              </li>
+            </ul>
+          </div>
+        </section>
         <section className="home" id="home">
           <div className="description">
             <h1>Front-End Developer</h1>
@@ -122,67 +128,97 @@ export default function Page() {
 }
 const Main = styled(PublicMain)`
   flex-direction: column;
-  > .side-nav {
+  > .sider {
+    width: 10vw;
     position: fixed;
-    width: 5rem;
     top: 50px;
-    bottom: 50px;
     left: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    padding: 0;
     z-index: 10;
-    /* outline: 2px solid green; */
-    text-align: center;
-    margin-top: 50px;
-    /* background-color: #fff; */
-    > ul {
+    padding-bottom: 50px;
+    > .nav {
+      width: 5rem;
       display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      > li {
-        width: 1rem;
-        height: 1rem;
-        background-color: green;
-        border-radius: 50%;
-        position: relative;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      /* outline: 2px solid red; */
+      outline: none;
+      position: relative;
+      padding: 0;
+      ::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: purple;
+        /* outline: 1px solid purple; */
+      }
+      > ul {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        ::after {
-          /* height: 3rem; */
-          /* outline: 2px solid coral; */
+        flex-direction: column;
+        gap: 2rem;
+        > .marker {
+          width: 0.5rem;
+          height: 2rem;
           position: absolute;
-          left: 1.5rem;
           top: 0;
-          bottom: 0;
-          display: none;
+          left: 0;
+          background-color: purple;
+          transition: all 0.5s ease-in-out;
+        }
+        > li {
+          width: 2rem;
+          height: 2rem;
+          /* outline: 2px solid green; */
+          position: relative;
+          display: flex;
           justify-content: center;
           align-items: center;
-          font-size: 0.8rem;
+          ::after {
+            /* outline: 2px solid coral; */
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+          }
+          :hover::after {
+            display: flex;
+          }
+          > a {
+            // 앵커에 내용이 비어 있고, 앵커가 동작하기를 원한다면,
+            // 없는 내용물을 지정하기 위해서, 블락요소로 지정해준다.
+            /* display: block; */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
-        :hover::after {
-          display: flex;
+        .home::after {
+          content: "Home";
         }
-        > a {
-          display: block;
+        .about::after {
+          content: "About";
+        }
+        .skills::after {
+          content: "Skills";
+        }
+        .works::after {
+          content: "Works";
         }
       }
-      .home::after {
-        content: "Home";
+      @media (width<1000px) {
+        display: none;
       }
-      .about::after {
-        content: "About";
-      }
-      .skills::after {
-        content: "Skills";
-      }
-      .works::after {
-        content: "Works";
-      }
-    }
-    @media (width<1000px) {
-      display: none;
     }
   }
   > section {

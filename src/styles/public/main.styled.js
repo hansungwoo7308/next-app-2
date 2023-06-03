@@ -3,6 +3,8 @@ export const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #222;
+  color: #fff;
   > section {
     width: 80%;
     max-width: 1000px;

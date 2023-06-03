@@ -3,6 +3,7 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import Link from "next/link";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 let renderCount = 0;
@@ -44,28 +45,37 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <section className="home">
-          {/* <h1>renderCount : {renderCount}</h1> */}
-          <div className="side-nav">
-            <ul>
-              <li>Home</li>
-              <li>About</li>
-              <li>Works</li>
-              <li>Stack</li>
-            </ul>
-          </div>
+        {/* <h1>renderCount : {renderCount}</h1> */}
+        <div className="side-nav">
+          <ul>
+            <li className="home">
+              <a href={"#home"}></a>
+            </li>
+            <li className="about">
+              <a href={"#about"}></a>
+            </li>
+            <li className="skills">
+              <a href={"#skills"}></a>
+            </li>
+            <li className="works">
+              <a href={"#works"}></a>
+            </li>
+          </ul>
+        </div>
+        <section className="home" id="home">
           <div className="description">
-            <h1>Home</h1>
+            <h1>Front-End Developer</h1>
             <p>{sentence}</p>
           </div>
         </section>
-        <section className="about">
+        <section className="about" id="about">
           <div>
-            <h3>About Me</h3>
+            <h3>{`Hi, I'm sungwoo, Han.`}</h3>
+            <h5>Web Front-End Developer</h5>
             <p>{sentence}</p>
           </div>
         </section>
-        <section>
+        <section className="skills" id="skills">
           <div>
             <h3>Stack</h3>
             <ul>
@@ -77,16 +87,25 @@ export default function Page() {
               <li>HTML</li>
               <li>CSS</li>
               <li>Javascript</li>
-
-              <li>...</li>
+              <li>Git</li>
             </ul>
           </div>
         </section>
-        <section className="works">
+        <section className="works" id="works">
           <div>
             <h1>Works Page</h1>
             <ul>
-              <li>work1</li>
+              <li>
+                <h5>E-Commerce</h5>
+                <h1>Project Name 1</h1>
+                <p>{sentence.slice(0, 200)}</p>
+                <div>
+                  <Link href={"#"}>View the code</Link>
+                </div>
+                <div>
+                  <Link href={"#"}>Visit the site</Link>
+                </div>
+              </li>
               <li>work2</li>
               <li>work3</li>
               <li>work4</li>
@@ -103,8 +122,69 @@ export default function Page() {
 }
 const Main = styled(PublicMain)`
   flex-direction: column;
-  background-color: #222;
-  color: #fff;
+  > .side-nav {
+    position: fixed;
+    width: 5rem;
+    top: 50px;
+    bottom: 50px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    /* outline: 2px solid green; */
+    text-align: center;
+    margin-top: 50px;
+    /* background-color: #fff; */
+    > ul {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      > li {
+        width: 1rem;
+        height: 1rem;
+        background-color: green;
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ::after {
+          /* height: 3rem; */
+          /* outline: 2px solid coral; */
+          position: absolute;
+          left: 1.5rem;
+          top: 0;
+          bottom: 0;
+          display: none;
+          justify-content: center;
+          align-items: center;
+          font-size: 0.8rem;
+        }
+        :hover::after {
+          display: flex;
+        }
+        > a {
+          display: block;
+        }
+      }
+      .home::after {
+        content: "Home";
+      }
+      .about::after {
+        content: "About";
+      }
+      .skills::after {
+        content: "Skills";
+      }
+      .works::after {
+        content: "Works";
+      }
+    }
+    @media (width<1000px) {
+      display: none;
+    }
+  }
   > section {
     > div {
     }
@@ -114,18 +194,6 @@ const Main = styled(PublicMain)`
     width: 100%;
     > div {
       width: 50%;
-    }
-    > .side-nav {
-      width: 5rem;
-      height: 30rem;
-      outline: 2px solid green;
-      position: fixed;
-      left: 3rem;
-      > ul {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-      }
     }
   }
   > .works {
@@ -146,6 +214,8 @@ const Main = styled(PublicMain)`
         /* outline: 2px solid red; */
         > li {
           outline: 2px solid green;
+          /* display: flex;
+          flex-direction: column; */
         }
         @media (width < 1000px) {
           grid-template-columns: repeat(2, 1fr);

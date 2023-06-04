@@ -45,7 +45,7 @@ export default function Page() {
     currentRef.current = e.target;
     setIndicator(e);
   };
-  const handleMouseOver = (e: any) => {
+  const handleMouseEnter = (e: any) => {
     console.log("Mouse Over");
     setIndicator(e);
   };
@@ -76,7 +76,7 @@ export default function Page() {
                 className="home"
                 ref={currentRef}
                 onClick={handleClick}
-                onMouseOver={handleMouseOver}
+                onMouseEnter={handleMouseEnter}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#home"}>00</a>
@@ -84,7 +84,7 @@ export default function Page() {
               <li
                 className="about"
                 onClick={handleClick}
-                onMouseOver={handleMouseOver}
+                onMouseEnter={handleMouseEnter}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#about"}>01</a>
@@ -92,7 +92,7 @@ export default function Page() {
               <li
                 className="skills"
                 onClick={handleClick}
-                onMouseOver={handleMouseOver}
+                onMouseEnter={handleMouseEnter}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#skills"}>02</a>
@@ -100,7 +100,7 @@ export default function Page() {
               <li
                 className="works"
                 onClick={handleClick}
-                onMouseOver={handleMouseOver}
+                onMouseEnter={handleMouseEnter}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#works"}>03</a>

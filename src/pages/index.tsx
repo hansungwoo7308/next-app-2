@@ -37,13 +37,33 @@ export default function Page() {
   const navRef: any = useRef();
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
+  const setCurrentRef = (e: any) => {
+    const anchor = e.target;
+    currentRef.current = anchor;
+    // const listItem = anchor.parentNode;
+  };
   const setIndicator = (e: any) => {
-    indicatorRef.current.style.top =
-      e.target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
+    const anchor = e.target;
+    const listItem = anchor.parentNode;
+    const listItemOffsetTop = listItem.offsetTop;
+    indicatorRef.current.style.top = listItemOffsetTop + "px";
+    // console.log(anchorOffsetTop);
+    // e.target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
+  };
+  const revertIndicator = () => {
+    const currentAnchor = currentRef.current;
+    const currentListItem = currentAnchor.parentNode;
+    indicatorRef.current.style.top = currentListItem.offsetTop + "px";
   };
   const handleClick = (e: any) => {
-    currentRef.current = e.target;
+    setCurrentRef(e);
     setIndicator(e);
+    // console.log(currentRef.current);
+    // const anchor = e.target;
+    // const listItem = anchor.parentNode;
+    // const listItemOffsetTop = listItem.offsetTop;
+    // console.log(listItem);
+    // console.log("listItemOffsetTop : ", listItemOffsetTop);
   };
   const handleMouseOver = (e: any) => {
     // console.log("Mouse Over");
@@ -51,10 +71,10 @@ export default function Page() {
   };
   const handleMouseOut = (e: any) => {
     // console.log("Mouse Out");
-    indicatorRef.current.style.top =
-      currentRef.current.getBoundingClientRect().top -
-      navRef.current.getBoundingClientRect().top +
-      "px";
+    revertIndicator();
+    // currentRef.current.getBoundingClientRect().top -
+    // navRef.current.getBoundingClientRect().top +
+    // "px";
   };
   return (
     <>
@@ -68,39 +88,47 @@ export default function Page() {
         <section className="sider">
           <div className="nav" ref={navRef}>
             <ul>
-              <div className="marker" ref={indicatorRef}></div>
-              <li
-                className="home"
-                ref={currentRef}
-                onClick={handleClick}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-              >
-                <a href={"#home"}>00</a>
+              <div className="indicator" ref={indicatorRef}></div>
+              <li className="home">
+                <a
+                  href={"#home"}
+                  ref={currentRef}
+                  onClick={handleClick}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                >
+                  00
+                </a>
               </li>
-              <li
-                className="about"
-                onClick={handleClick}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-              >
-                <a href={"#about"}>01</a>
+              <li className="about">
+                <a
+                  href={"#about"}
+                  onClick={handleClick}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                >
+                  01
+                </a>
               </li>
-              <li
-                className="skills"
-                onClick={handleClick}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-              >
-                <a href={"#skills"}>02</a>
+              <li className="skills">
+                <a
+                  href={"#skills"}
+                  onClick={handleClick}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                >
+                  02
+                </a>
               </li>
-              <li
-                className="works"
-                onClick={handleClick}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-              >
-                <a href={"#works"}>03</a>
+              <li className="works">
+                <a
+                  href={"#works"}
+                  onClick={handleClick}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                >
+                  03
+                </a>
               </li>
             </ul>
           </div>
@@ -200,7 +228,7 @@ const Main = styled(PublicMain)`
         display: flex;
         flex-direction: column;
         gap: 2rem;
-        > .marker {
+        > .indicator {
           width: 5px;
           height: 2rem;
           position: absolute;
@@ -258,6 +286,7 @@ const Main = styled(PublicMain)`
       }
     }
   }
+
   > section {
     > div {
     }

@@ -45,20 +45,17 @@ export default function Page() {
     currentRef.current = e.target;
     setIndicator(e);
   };
-  const handleMouseEnter = (e: any) => {
-    console.log("Mouse Over");
+  const handleMouseOver = (e: any) => {
+    // console.log("Mouse Over");
     setIndicator(e);
   };
   const handleMouseOut = (e: any) => {
-    console.log("Mouse Out");
+    // console.log("Mouse Out");
     indicatorRef.current.style.top =
       currentRef.current.getBoundingClientRect().top -
       navRef.current.getBoundingClientRect().top +
       "px";
   };
-  // useEffect(() => {
-  //   console.log("test : ", test);
-  // }, [test]);
   return (
     <>
       <Head>
@@ -76,7 +73,7 @@ export default function Page() {
                 className="home"
                 ref={currentRef}
                 onClick={handleClick}
-                onMouseEnter={handleMouseEnter}
+                onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#home"}>00</a>
@@ -84,7 +81,7 @@ export default function Page() {
               <li
                 className="about"
                 onClick={handleClick}
-                onMouseEnter={handleMouseEnter}
+                onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#about"}>01</a>
@@ -92,7 +89,7 @@ export default function Page() {
               <li
                 className="skills"
                 onClick={handleClick}
-                onMouseEnter={handleMouseEnter}
+                onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#skills"}>02</a>
@@ -100,7 +97,7 @@ export default function Page() {
               <li
                 className="works"
                 onClick={handleClick}
-                onMouseEnter={handleMouseEnter}
+                onMouseOver={handleMouseOver}
                 onMouseOut={handleMouseOut}
               >
                 <a href={"#works"}>03</a>

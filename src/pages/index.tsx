@@ -34,42 +34,27 @@ export default function Page() {
   // const [cookies, setCookies]: any = useState();
   // const [checkedUser, setCheckedUser]: any = useState();
   // const [users, setUsers]: any = useState();
-  const [test, setTest]: any = useState("home");
   const navRef: any = useRef();
-  const markerRef: any = useRef();
-  const currentRef: any = useRef("home");
-  const setMarker = (e: any) => {
-    // console.log("e.target : ", e.target);
-    // console.log("e.target.className : ", e.target.parentNode.className);
-    markerRef.current.style.top =
+  const indicatorRef: any = useRef();
+  const currentRef: any = useRef();
+  const setIndicator = (e: any) => {
+    indicatorRef.current.style.top =
       e.target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
   };
   const handleClick = (e: any) => {
-    setTest(e.target.parentNode.className);
-    setMarker(e);
+    currentRef.current = e.target;
+    setIndicator(e);
   };
   const handleMouseOver = (e: any) => {
-    console.group("handleMouseOver");
-    setMarker(e);
-    console.groupEnd();
+    console.log("Mouse Over");
+    setIndicator(e);
   };
   const handleMouseOut = (e: any) => {
-    console.group("handleMouseOut");
-    const ul = navRef.current.children;
-    const checked = ul[0].querySelector(`.${test}`);
-    // console.log("checked : ", checked);
-    // console.log(checked.getBoundingClientRect());
-    console.log("currentRef.current : ", currentRef.current);
-    console.groupEnd();
-
-    markerRef.current.style.top =
-      checked.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
-
-    // console.log("ul tag : ", ul);
-    // console.log("target.style.top : ", target.style.top);
-    // console.log("target.getBoundingClientRect() : ", target.getBoundingClientRect());
-    // target.style.top =
-    //   target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
+    console.log("Mouse Out");
+    indicatorRef.current.style.top =
+      currentRef.current.getBoundingClientRect().top -
+      navRef.current.getBoundingClientRect().top +
+      "px";
   };
   // useEffect(() => {
   //   console.log("test : ", test);
@@ -86,7 +71,7 @@ export default function Page() {
         <section className="sider">
           <div className="nav" ref={navRef}>
             <ul>
-              <div className="marker" ref={markerRef}></div>
+              <div className="marker" ref={indicatorRef}></div>
               <li
                 className="home"
                 ref={currentRef}

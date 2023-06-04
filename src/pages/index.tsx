@@ -31,24 +31,16 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  // const [cookies, setCookies]: any = useState();
-  // const [checkedUser, setCheckedUser]: any = useState();
-  // const [users, setUsers]: any = useState();
-  const navRef: any = useRef();
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
   const setCurrentRef = (e: any) => {
-    const anchor = e.target;
-    currentRef.current = anchor;
-    // const listItem = anchor.parentNode;
+    const clickedAnchor = e.target;
+    currentRef.current = clickedAnchor;
   };
   const setIndicator = (e: any) => {
     const anchor = e.target;
     const listItem = anchor.parentNode;
-    const listItemOffsetTop = listItem.offsetTop;
-    indicatorRef.current.style.top = listItemOffsetTop + "px";
-    // console.log(anchorOffsetTop);
-    // e.target.getBoundingClientRect().top - navRef.current.getBoundingClientRect().top + "px";
+    indicatorRef.current.style.top = listItem.offsetTop + "px";
   };
   const revertIndicator = () => {
     const currentAnchor = currentRef.current;
@@ -58,23 +50,12 @@ export default function Page() {
   const handleClick = (e: any) => {
     setCurrentRef(e);
     setIndicator(e);
-    // console.log(currentRef.current);
-    // const anchor = e.target;
-    // const listItem = anchor.parentNode;
-    // const listItemOffsetTop = listItem.offsetTop;
-    // console.log(listItem);
-    // console.log("listItemOffsetTop : ", listItemOffsetTop);
   };
   const handleMouseOver = (e: any) => {
-    // console.log("Mouse Over");
     setIndicator(e);
   };
   const handleMouseOut = (e: any) => {
-    // console.log("Mouse Out");
     revertIndicator();
-    // currentRef.current.getBoundingClientRect().top -
-    // navRef.current.getBoundingClientRect().top +
-    // "px";
   };
   return (
     <>
@@ -86,7 +67,7 @@ export default function Page() {
       </Head>
       <Main>
         <section className="sider">
-          <div className="nav" ref={navRef}>
+          <div className="nav">
             <ul>
               <div className="indicator" ref={indicatorRef}></div>
               <li className="home">

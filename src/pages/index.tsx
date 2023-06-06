@@ -96,6 +96,7 @@ export default function Page() {
         // console.log(nextSection);
         currentSectionRef.current = nextSection;
         window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        // currentSectionRef.current.scrollIntoView({});
         // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
 
         // console.log("currentSectionRef.current.className : ", currentSectionRef.current.className);
@@ -103,6 +104,7 @@ export default function Page() {
         // console.log(currentSectionRef.current);
         // console.log(currentSectionRef.current.className);
         setCurrentMenuRef(currentSectionRef.current.className);
+        history.pushState("", "", `/#${currentSectionRef.current.className}`);
       }
     }
   };
@@ -115,8 +117,10 @@ export default function Page() {
         // console.log(previousSection);
         currentSectionRef.current = previousSection;
         window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        // currentSectionRef.current.scrollIntoView({});
         // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
         setCurrentMenuRef(currentSectionRef.current.className);
+        history.pushState("", "", `/#${currentSectionRef.current.className}`);
       }
     }
   };

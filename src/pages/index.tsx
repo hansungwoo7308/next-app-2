@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import Link from "next/link";
+import { useRouter } from "next/router";
 // import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
@@ -31,6 +32,9 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
+  const router = useRouter();
+
+  // sider
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
   const setCurrentRef = (e: any) => {
@@ -50,6 +54,13 @@ export default function Page() {
   const handleClick = (e: any) => {
     setCurrentRef(e);
     setIndicator(e);
+    // console.log("window.innerHeight : ", window.innerHeight);
+    // console.log(e.target);
+    // console.log("currentSectionRef.current : ", currentSectionRef.current);
+    const currentSection = currentSectionRef.current;
+    const currentSectionRect = currentSection.getBoundingClientRect();
+    console.log(currentSection);
+    console.log(currentSectionRect);
   };
   const handleMouseOver = (e: any) => {
     setIndicator(e);
@@ -57,6 +68,66 @@ export default function Page() {
   const handleMouseOut = (e: any) => {
     revertIndicator();
   };
+
+  // home~works
+  const navListRef: any = useRef();
+  const currentSectionRef: any = useRef();
+  const setCurrentMenuRef = (className: any) => {
+    // const currentItem = currentRef.current;
+    // const list = currentItem.parentNode.parentNode;
+    const list = navListRef.current;
+    const childNodes = Array.from(list.childNodes);
+    // console.log(currentItem);
+    // console.log(list);
+    // console.log(childNodes);
+    // childNodes.find((v: any) => console.log(v.className));
+    const foundItem: any = childNodes.find((v: any) => v.className === className);
+    console.log("foundItem : ", foundItem);
+    // console.log("foundItem.offsetTop : ", foundItem.offsetTop);
+    currentRef.current = foundItem;
+    indicatorRef.current.style.top = foundItem.offsetTop + "px";
+  };
+  const handleKeydown = (e: any) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const currentSection = currentSectionRef.current;
+      const nextSection = currentSection.nextSibling;
+      if (nextSection) {
+        // console.log(nextSection);
+        currentSectionRef.current = nextSection;
+        window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
+
+        // console.log("currentSectionRef.current.className : ", currentSectionRef.current.className);
+        // const currentSection = currentSectionRef.current;
+        // console.log(currentSectionRef.current);
+        // console.log(currentSectionRef.current.className);
+        setCurrentMenuRef(currentSectionRef.current.className);
+      }
+    }
+  };
+  const handleKeyup = (e: any) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const currentSection = currentSectionRef.current;
+      const previousSection = currentSection.previousSibling;
+      if (previousSection) {
+        // console.log(previousSection);
+        currentSectionRef.current = previousSection;
+        window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
+        setCurrentMenuRef(currentSectionRef.current.className);
+      }
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeydown);
+    window.addEventListener("keyup", handleKeyup);
+    return () => {
+      window.removeEventListener("keydown", handleKeydown);
+      window.removeEventListener("keyup", handleKeyup);
+    };
+  }, []);
   return (
     <>
       <Head>
@@ -66,58 +137,59 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <section className="sider">
-          <div className="nav">
-            <ul>
-              <div className="indicator" ref={indicatorRef}></div>
-              <li className="home">
-                <a
-                  href={"#home"}
-                  ref={currentRef}
-                  onClick={handleClick}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                >
-                  00
-                </a>
-              </li>
-              <li className="about">
-                <a
-                  href={"#about"}
-                  onClick={handleClick}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                >
-                  01
-                </a>
-              </li>
-              <li className="skills">
-                <a
-                  href={"#skills"}
-                  onClick={handleClick}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                >
-                  02
-                </a>
-              </li>
-              <li className="works">
-                <a
-                  href={"#works"}
-                  onClick={handleClick}
-                  onMouseOver={handleMouseOver}
-                  onMouseOut={handleMouseOut}
-                >
-                  03
-                </a>
-              </li>
-            </ul>
-          </div>
-        </section>
-        <section className="home" id="home">
+        <section className="home" id="home" ref={currentSectionRef}>
+          <section className="sider">
+            <div className="nav">
+              <ul ref={navListRef}>
+                <div className="indicator" ref={indicatorRef}></div>
+                <li className="home">
+                  <a
+                    href={"#home"}
+                    ref={currentRef}
+                    onClick={handleClick}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                  >
+                    00
+                  </a>
+                </li>
+                <li className="about">
+                  <a
+                    href={"#about"}
+                    onClick={handleClick}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                  >
+                    01
+                  </a>
+                </li>
+                <li className="skills">
+                  <a
+                    href={"#skills"}
+                    onClick={handleClick}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                  >
+                    02
+                  </a>
+                </li>
+                <li className="works">
+                  <a
+                    href={"#works"}
+                    onClick={handleClick}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                  >
+                    03
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
           <div className="description">
             <h1>Front-End Developer</h1>
             <p>{sentence}</p>
+            <a href={"#about"}>About Me</a>
           </div>
         </section>
         <section className="about" id="about">
@@ -167,6 +239,20 @@ export default function Page() {
               <li>work8</li>
             </ul>
           </div>
+          <h3>
+            <a
+              onClick={(e: any) => {
+                // e.preventDefault();
+                // console.log(e);
+                // router.push("#home");
+                // window.scrollBy(0, 0);
+                window.scrollTo(0, 0);
+              }}
+            >
+              Go to Top
+            </a>
+            {/* <a href={"#home"}>Go to Top</a> */}
+          </h3>
         </section>
       </Main>
     </>
@@ -174,110 +260,116 @@ export default function Page() {
 }
 const Main = styled(PublicMain)`
   flex-direction: column;
-  > .sider {
-    width: 10vw;
-    position: fixed;
-    top: 50px;
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0;
-    z-index: 10;
-    padding-bottom: 50px;
-    > .nav {
-      width: 5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      /* outline: 2px solid red; */
-      outline: none;
-      position: relative;
-      padding: 0;
-      ::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 1px;
-        background-color: #fff;
-        /* outline: 1px solid purple; */
-      }
-      > ul {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-        > .indicator {
-          width: 5px;
-          height: 2rem;
-          position: absolute;
-          top: 0;
-          left: 0;
-          background-color: #fff;
-          transition: all 0.5s ease-in-out;
-        }
-        > li {
-          width: 2rem;
-          height: 2rem;
-          /* outline: 2px solid green; */
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          ::after {
-            /* outline: 2px solid coral; */
-            position: absolute;
-            left: 2rem;
-            top: 0;
-            bottom: 0;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.8rem;
-          }
-          :hover::after {
-            display: flex;
-          }
-          > a {
-            // 앵커에 내용이 비어 있고, 앵커가 동작하기를 원한다면,
-            // 없는 내용물을 지정하기 위해서, 블락요소로 지정해준다.
-            /* display: block; */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-        }
-        .home::after {
-          content: "Home";
-        }
-        .about::after {
-          content: "About";
-        }
-        .skills::after {
-          content: "Skills";
-        }
-        .works::after {
-          content: "Works";
-        }
-      }
-      @media (width<1000px) {
-        display: none;
-      }
-    }
-  }
-
   > section {
     > div {
     }
   }
   > .home {
+    > .sider {
+      width: 10vw;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      margin-left: 5vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0;
+      z-index: 10;
+      padding-top: 50px;
+      border: none;
+      /* border: 2px solid red; */
+      > .nav {
+        width: 5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        /* outline: 2px solid red; */
+        outline: none;
+        position: relative;
+        padding: 0;
+        ::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          width: 1px;
+          background-color: #fff;
+          /* outline: 1px solid purple; */
+        }
+        > ul {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          > .indicator {
+            width: 5px;
+            height: 2rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: #fff;
+            transition: all 0.5s ease-in-out;
+          }
+          > li {
+            width: 2rem;
+            height: 2rem;
+            /* outline: 2px solid green; */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            ::after {
+              /* outline: 2px solid coral; */
+              position: absolute;
+              left: 2rem;
+              top: 0;
+              bottom: 0;
+              display: none;
+              justify-content: center;
+              align-items: center;
+              font-size: 0.8rem;
+            }
+            :hover::after {
+              display: flex;
+            }
+            > a {
+              // 앵커에 내용이 비어 있고, 앵커가 동작하기를 원한다면,
+              // 없는 내용물을 지정하기 위해서, 블락요소로 지정해준다.
+              /* display: block; */
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .home::after {
+            content: "Home";
+          }
+          .about::after {
+            content: "About";
+          }
+          .skills::after {
+            content: "Skills";
+          }
+          .works::after {
+            content: "Works";
+          }
+        }
+        @media (width<1000px) {
+          display: none;
+        }
+      }
+    }
     max-width: 100%;
     width: 100%;
     > div {
       width: 50%;
     }
+  }
+  > .about {
+    height: 200vh;
   }
   > .works {
     > div {
@@ -308,6 +400,14 @@ const Main = styled(PublicMain)`
           grid-template-columns: repeat(1, minmax(25%, auto));
         }
       }
+    }
+    > h3 {
+      position: absolute;
+      outline: 5px solid yellow;
+      /* width: 100px;
+      height: 100px; */
+      right: -110px;
+      bottom: 10vh;
     }
   }
 `;

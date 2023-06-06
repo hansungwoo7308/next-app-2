@@ -138,58 +138,74 @@ export default function Page() {
       </Head>
       <Main>
         <section className="home" id="home" ref={currentSectionRef}>
-          <section className="sider">
-            <div className="nav">
-              <ul ref={navListRef}>
-                <div className="indicator" ref={indicatorRef}></div>
-                <li className="home">
-                  <a
-                    href={"#home"}
-                    ref={currentRef}
-                    onClick={handleClick}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                  >
-                    00
-                  </a>
-                </li>
-                <li className="about">
-                  <a
-                    href={"#about"}
-                    onClick={handleClick}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                  >
-                    01
-                  </a>
-                </li>
-                <li className="skills">
-                  <a
-                    href={"#skills"}
-                    onClick={handleClick}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                  >
-                    02
-                  </a>
-                </li>
-                <li className="works">
-                  <a
-                    href={"#works"}
-                    onClick={handleClick}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                  >
-                    03
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </section>
           <div className="description">
             <h1>Front-End Developer</h1>
             <p>{sentence}</p>
             <a href={"#about"}>About Me</a>
+          </div>
+          <div className="temp">
+            <section className="sider">
+              <div className="nav">
+                <ul ref={navListRef}>
+                  <div className="indicator" ref={indicatorRef}></div>
+                  <li className="home">
+                    <a
+                      href={"#home"}
+                      ref={currentRef}
+                      onClick={handleClick}
+                      onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
+                    >
+                      00
+                    </a>
+                  </li>
+                  <li className="about">
+                    <a
+                      href={"#about"}
+                      onClick={handleClick}
+                      onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
+                    >
+                      01
+                    </a>
+                  </li>
+                  <li className="skills">
+                    <a
+                      href={"#skills"}
+                      onClick={handleClick}
+                      onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
+                    >
+                      02
+                    </a>
+                  </li>
+                  <li className="works">
+                    <a
+                      href={"#works"}
+                      onClick={handleClick}
+                      onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
+                    >
+                      03
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <h3>
+              <a
+                onClick={(e: any) => {
+                  // e.preventDefault();
+                  // console.log(e);
+                  // router.push("#home");
+                  // window.scrollBy(0, 0);
+                  window.scrollTo(0, 0);
+                }}
+              >
+                Top
+              </a>
+              {/* <a href={"#home"}>Go to Top</a> */}
+            </h3>
           </div>
         </section>
         <section className="about" id="about">
@@ -239,20 +255,6 @@ export default function Page() {
               <li>work8</li>
             </ul>
           </div>
-          <h3>
-            <a
-              onClick={(e: any) => {
-                // e.preventDefault();
-                // console.log(e);
-                // router.push("#home");
-                // window.scrollBy(0, 0);
-                window.scrollTo(0, 0);
-              }}
-            >
-              Go to Top
-            </a>
-            {/* <a href={"#home"}>Go to Top</a> */}
-          </h3>
         </section>
       </Main>
     </>
@@ -265,111 +267,126 @@ const Main = styled(PublicMain)`
     }
   }
   > .home {
-    > .sider {
-      width: 10vw;
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      margin-left: 5vw;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0;
-      z-index: 10;
-      padding-top: 50px;
-      border: none;
-      /* border: 2px solid red; */
-      > .nav {
-        width: 5rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        /* outline: 2px solid red; */
-        outline: none;
-        position: relative;
-        padding: 0;
-        ::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          bottom: 0;
-          width: 1px;
-          background-color: #fff;
-          /* outline: 1px solid purple; */
-        }
-        > ul {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-          > .indicator {
-            width: 5px;
-            height: 2rem;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: #fff;
-            transition: all 0.5s ease-in-out;
-          }
-          > li {
-            width: 2rem;
-            height: 2rem;
-            /* outline: 2px solid green; */
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            ::after {
-              /* outline: 2px solid coral; */
-              position: absolute;
-              left: 2rem;
-              top: 0;
-              bottom: 0;
-              display: none;
-              justify-content: center;
-              align-items: center;
-              font-size: 0.8rem;
-            }
-            :hover::after {
-              display: flex;
-            }
-            > a {
-              // 앵커에 내용이 비어 있고, 앵커가 동작하기를 원한다면,
-              // 없는 내용물을 지정하기 위해서, 블락요소로 지정해준다.
-              /* display: block; */
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-          }
-          .home::after {
-            content: "Home";
-          }
-          .about::after {
-            content: "About";
-          }
-          .skills::after {
-            content: "Skills";
-          }
-          .works::after {
-            content: "Works";
-          }
-        }
-        @media (width<1000px) {
-          display: none;
-        }
-      }
-    }
     max-width: 100%;
     width: 100%;
+
     > div {
       width: 50%;
     }
+    > .temp {
+      width: 80%;
+      height: 100vh;
+      max-width: 1000px;
+      position: fixed;
+      border: 2px solid yellowgreen;
+      outline: none;
+      pointer-events: none;
+      > .sider {
+        position: absolute;
+        left: 100%;
+        margin-left: 1rem;
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        pointer-events: initial;
+        > .nav {
+          width: 5rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          /* outline: 2px solid red; */
+          outline: none;
+          position: relative;
+          padding: 0;
+          ::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #fff;
+            /* outline: 1px solid purple; */
+          }
+          > ul {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            > .indicator {
+              width: 5px;
+              height: 2rem;
+              position: absolute;
+              top: 0;
+              left: 0;
+              background-color: #fff;
+              transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+              /* transition: all 0.5s ease-in-out; */
+            }
+            > li {
+              width: 2rem;
+              height: 2rem;
+              /* outline: 2px solid green; */
+              position: relative;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              ::after {
+                /* outline: 2px solid coral; */
+                position: absolute;
+                left: 2rem;
+                top: 0;
+                bottom: 0;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                font-size: 0.8rem;
+              }
+              :hover::after {
+                display: flex;
+              }
+              > a {
+                // 앵커에 내용이 비어 있고, 앵커가 동작하기를 원한다면,
+                // 없는 내용물을 지정하기 위해서, 블락요소로 지정해준다.
+                /* display: block; */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+            }
+            .home::after {
+              content: "Home";
+            }
+            .about::after {
+              content: "About";
+            }
+            .skills::after {
+              content: "Skills";
+            }
+            .works::after {
+              content: "Works";
+            }
+          }
+          @media (width<1000px) {
+            display: none;
+          }
+        }
+      }
+      > h3 {
+        position: absolute;
+        left: 100%;
+        margin-left: 1rem;
+        bottom: 10vh;
+        outline: 5px solid yellow;
+        pointer-events: initial;
+        cursor: pointer;
+        /* width: 100px;
+        height: 100px; */
+      }
+    }
   }
   > .about {
-    height: 200vh;
   }
   > .works {
     > div {
@@ -400,14 +417,6 @@ const Main = styled(PublicMain)`
           grid-template-columns: repeat(1, minmax(25%, auto));
         }
       }
-    }
-    > h3 {
-      position: absolute;
-      outline: 5px solid yellow;
-      /* width: 100px;
-      height: 100px; */
-      right: -110px;
-      bottom: 10vh;
     }
   }
 `;

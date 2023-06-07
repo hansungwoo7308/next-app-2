@@ -35,6 +35,9 @@ export default function Page() {
   // define the side navigator section event handler
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
+  const navListRef: any = useRef();
+  const currentSectionRef: any = useRef();
+
   const setCurrentRef = (e: any) => {
     const clickedAnchor = e.target;
     currentRef.current = clickedAnchor;
@@ -57,13 +60,14 @@ export default function Page() {
   const handleClick = (e: any) => {
     setCurrentRef(e);
     setIndicator(e);
+    // console.log(e.target.parentNode.className);
+    // const currentSection = currentSectionRef.current;
+    // const currentSectionRect = currentSection.getBoundingClientRect();
     // console.log("window.innerHeight : ", window.innerHeight);
     // console.log(e.target);
     // console.log("currentSectionRef.current : ", currentSectionRef.current);
-    const currentSection = currentSectionRef.current;
-    const currentSectionRect = currentSection.getBoundingClientRect();
-    console.log(currentSection);
-    console.log(currentSectionRect);
+    // console.log(currentSection);
+    // console.log(currentSectionRect);
   };
   const handleMouseOver = (e: any) => {
     setIndicator(e);
@@ -72,58 +76,51 @@ export default function Page() {
     revertIndicator();
   };
   // define the home~works section event handler
-  const navListRef: any = useRef();
-  const currentSectionRef: any = useRef();
-  const setCurrentMenuRef = (className: any) => {
-    // const currentItem = currentRef.current;
-    // const list = currentItem.parentNode.parentNode;
+  const setSection = (section: any) => {
+    window.scrollBy(0, section.getBoundingClientRect().y);
+  };
+  const setNavigation = (className: any) => {
     const list = navListRef.current;
     const childNodes: any = Array.from(list.childNodes);
-    // console.log(currentItem);
-    // console.log(list);
-    // console.log(childNodes);
-    // childNodes.find((v: any) => console.log(v.className));
     const foundItem: any = childNodes.find((v: any) => v.className === className);
-    // console.log("foundItem : ", foundItem);
-    console.log("foundItem.childNode : ", foundItem.childNodes[0]);
-    // console.log("foundItem.offsetTop : ", foundItem.offsetTop);
-    currentRef.current = foundItem.childNodes[0];
     indicatorRef.current.style.top = foundItem.offsetTop + "px";
+    // const currentItem = currentRef.current;
+    // const list = currentItem.parentNode.parentNode;
+    // childNodes.find((v: any) => console.log(v.className));
+    // console.log("foundItem.childNode : ", foundItem.childNodes[0]);
+    // console.log("foundItem : ", foundItem);
+    // console.log("foundItem.offsetTop : ", foundItem.offsetTop);
+    // console.log("currentRef.current : ", currentRef.current);
+    // console.log("currentRef.current.offsetTop : ", currentRef.current.offsetTop);
+  };
+  const setUrl = (section: any) => {
+    history.pushState("", "", `/#${section.className}`);
   };
   const handleKeydown = (e: any) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      const currentSection = currentSectionRef.current;
-      const nextSection = currentSection.nextSibling;
+      const nextSection = currentSectionRef.current.nextSibling;
       if (nextSection) {
-        // console.log(nextSection);
         currentSectionRef.current = nextSection;
-        window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        setSection(currentSectionRef.current);
+        setNavigation(currentSectionRef.current.className);
+        setUrl(currentSectionRef.current);
         // currentSectionRef.current.scrollIntoView({});
         // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
-
-        // console.log("currentSectionRef.current.className : ", currentSectionRef.current.className);
-        // const currentSection = currentSectionRef.current;
-        // console.log(currentSectionRef.current);
-        // console.log(currentSectionRef.current.className);
-        setCurrentMenuRef(currentSectionRef.current.className);
-        history.pushState("", "", `/#${currentSectionRef.current.className}`);
       }
     }
   };
   const handleKeyup = (e: any) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      const currentSection = currentSectionRef.current;
-      const previousSection = currentSection.previousSibling;
+      const previousSection = currentSectionRef.current.previousSibling;
       if (previousSection) {
-        // console.log(previousSection);
         currentSectionRef.current = previousSection;
-        window.scrollBy(0, currentSectionRef.current.getBoundingClientRect().y);
+        setSection(currentSectionRef.current);
+        setNavigation(currentSectionRef.current.className);
+        setUrl(currentSectionRef.current);
         // currentSectionRef.current.scrollIntoView({});
         // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
-        setCurrentMenuRef(currentSectionRef.current.className);
-        history.pushState("", "", `/#${currentSectionRef.current.className}`);
       }
     }
   };
@@ -139,7 +136,9 @@ export default function Page() {
   // initialize the side navigator menu
   const router = useRouter();
   useEffect(() => {
-    setCurrentMenuRef(router.asPath.split("/#")[1]);
+    // console.log(router.asPath.split("/#")[1]);
+    // setNavigation(router.asPath.split("/#")[1]);
+    router.replace("/");
   }, []);
   return (
     <>
@@ -214,7 +213,7 @@ export default function Page() {
                   // window.scrollBy(0, 0);
                   window.scrollTo(0, 0);
                   history.pushState("", "", `/#home`);
-                  setCurrentMenuRef("home");
+                  setNavigation("home");
                 }}
               >
                 Top

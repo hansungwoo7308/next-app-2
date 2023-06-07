@@ -203,7 +203,9 @@ export default function Page() {
               </div>
             </section>
             <h3>
-              <a href="/#home">Top</a>
+              <Link href="/#home" onClick={() => (indicatorRef.current.style.top = 0 + "px")}>
+                Top
+              </Link>
             </h3>
           </div>
         </section>

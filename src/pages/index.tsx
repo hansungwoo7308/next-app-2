@@ -210,10 +210,14 @@ export default function Page() {
             <h3>
               <Link
                 href="/#home"
-                onClick={(e) => {
-                  indicatorRef.current.style.top = 0 + "px";
+                onClick={() => {
                   const homeSection = sectionRef.current.parentNode.childNodes[0];
+                  const homeAnchor =
+                    anchorRef.current.parentNode.parentNode.childNodes[1].childNodes[0];
                   sectionRef.current = homeSection;
+                  anchorRef.current = homeAnchor;
+                  indicatorRef.current.style.top = 0 + "px";
+                  // console.log(homeAnchor);
                   router.replace("/");
                 }}
               >

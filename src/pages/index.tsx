@@ -219,7 +219,6 @@ export default function Page() {
               >
                 Top
               </a>
-              {/* <a href={"#home"}>Go to Top</a> */}
             </h3>
           </div>
         </section>

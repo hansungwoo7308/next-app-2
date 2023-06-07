@@ -55,8 +55,8 @@ export default function Page() {
     setAnchor(e);
     setIndicator(e);
     // 현재 앵커를 통해서 현재 섹션을 설정
-    console.log(anchorRef.current);
-    console.log(sectionRef.current);
+    // console.log(anchorRef.current);
+    // console.log(sectionRef.current);
     // const currentAnchor = anchorRef.current;
     // const currentListItem = currentAnchor.parentNode;
     // const currentSection = sectionRef.current;
@@ -66,26 +66,28 @@ export default function Page() {
     const sections = sectionRef.current.parentNode.childNodes;
     const sectionsArray = Array.from(sectionRef.current.parentNode.childNodes);
     const foundSection = sectionsArray.find((v: any) => v.className === listItem.className);
-    console.log("foundSection : ", foundSection);
     sectionRef.current = foundSection;
+    // console.log("foundSection : ", foundSection);
 
     // console.log("sections : ", sectionsArray);
     // console.log("sections : ", sections[0]);
   };
   const handleMouseOver = (e: any) => {
+    // console.log("current section : ", sectionRef.current);
     setIndicator(e);
   };
   const handleMouseOut = (e: any) => {
+    // console.log("current section : ", sectionRef.current);
     revertIndicator();
   };
   // handle the sections event
-  const setSection = (section: any) => {
-    window.scrollBy(0, section.getBoundingClientRect().y);
+  const setSection = (currentSection: any) => {
+    window.scrollBy(0, currentSection.getBoundingClientRect().y);
   };
-  const setNavigation = (className: any) => {
+  const setNavigation = (currentSection: any) => {
     const list = navRef.current;
     const childNodes: any = Array.from(list.childNodes);
-    const foundItem: any = childNodes.find((v: any) => v.className === className);
+    const foundItem: any = childNodes.find((v: any) => v.className === currentSection.className);
     indicatorRef.current.style.top = foundItem.offsetTop + "px";
   };
   const setUrl = (section: any) => {
@@ -95,14 +97,15 @@ export default function Page() {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       const nextSection = sectionRef.current.nextSibling;
-      const nextListItem = anchorRef.current.parentNode.nextSibling;
-      // console.log("nextListItem : ", nextListItem);
       if (nextSection) {
+        const nextAnchor = anchorRef.current.parentNode.nextSibling.childNodes[0];
+        console.log("nextAnchor : ", nextAnchor);
+        // 현재 인덱스를 다음 인데스로 변경
         sectionRef.current = nextSection;
-        setSection(sectionRef.current);
-        setNavigation(sectionRef.current.className);
+        anchorRef.current = nextAnchor;
+        setSection(sectionRef.current); // 다음 섹션으로 스크롤 이동
+        setNavigation(sectionRef.current); // 네비게이션의 현재 앵커로 이동
         setUrl(sectionRef.current);
-        // console.log("sectionRef.current : ", sectionRef.current);
         // sectionRef.current.scrollIntoView({});
         // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);
       }
@@ -113,16 +116,18 @@ export default function Page() {
       e.preventDefault();
       const previousSection = sectionRef.current.previousSibling;
       if (previousSection) {
+        const previousAnchor = anchorRef.current.parentNode.previousSibling.childNodes[0];
         sectionRef.current = previousSection;
+        anchorRef.current = previousAnchor;
         setSection(sectionRef.current);
-        setNavigation(sectionRef.current.className);
+        setNavigation(sectionRef.current);
         setUrl(sectionRef.current);
         // sectionRef.current.scrollIntoView({});
         // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);
       }
     }
   };
-  // set the key event
+  // add the event
   useEffect(() => {
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("keyup", handleKeyup);
@@ -131,11 +136,11 @@ export default function Page() {
       window.removeEventListener("keyup", handleKeyup);
     };
   }, []);
-  // initialize the side navigation menu
+  // initialize
   const router = useRouter();
   useEffect(() => {
-    // console.log(router.asPath.split("/#")[1]);
     router.push("/");
+    // console.log(router.asPath.split("/#")[1]);
     // router.replace("/");
   }, []);
   return (

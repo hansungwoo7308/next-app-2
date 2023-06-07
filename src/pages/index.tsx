@@ -32,7 +32,7 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  // sider
+  // define the side navigator section event handler
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
   const setCurrentRef = (e: any) => {
@@ -66,8 +66,7 @@ export default function Page() {
   const handleMouseOut = (e: any) => {
     revertIndicator();
   };
-
-  // home~works
+  // define the home~works section event handler
   const navListRef: any = useRef();
   const currentSectionRef: any = useRef();
   const setCurrentMenuRef = (className: any) => {
@@ -122,6 +121,7 @@ export default function Page() {
       }
     }
   };
+  // set the key event
   useEffect(() => {
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("keyup", handleKeyup);
@@ -130,18 +130,10 @@ export default function Page() {
       window.removeEventListener("keyup", handleKeyup);
     };
   }, []);
+  // initialize the side navigator menu
   const router = useRouter();
   useEffect(() => {
-    // history.pushState("", "", `${router.asPath}`);
-    // if(router.as)
-    // console.log(router.asPath==='');
-    // const list = navListRef.current;
-    // const childNodes = Array.from(list.childNodes);
-    // const foundItem: any = childNodes.find((v: any) => v.className === router.asPath.split("/#")[1]);
     setCurrentMenuRef(router.asPath.split("/#")[1]);
-
-    // console.log(router.asPath.split("/#")[1]);
-    // if(router.asPath==='/#about')
   }, []);
   return (
     <>

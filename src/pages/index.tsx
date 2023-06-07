@@ -43,11 +43,16 @@ export default function Page() {
     const anchor = e.target;
     const listItem = anchor.parentNode;
     indicatorRef.current.style.top = listItem.offsetTop + "px";
+    // console.log("anchor : ", anchor);
+    // indicatorRef.current.style.top = anchor.offsetTop + "px";
   };
   const revertIndicator = () => {
     const currentAnchor = currentRef.current;
     const currentListItem = currentAnchor.parentNode;
     indicatorRef.current.style.top = currentListItem.offsetTop + "px";
+    // console.log("currentAnchor : ", currentAnchor);
+    // console.log("currentAnchor : ", currentAnchor.offsetTop);
+    // console.log("currentListItem : ", currentListItem.offsetTop);
   };
   const handleClick = (e: any) => {
     setCurrentRef(e);
@@ -79,9 +84,10 @@ export default function Page() {
     // console.log(childNodes);
     // childNodes.find((v: any) => console.log(v.className));
     const foundItem: any = childNodes.find((v: any) => v.className === className);
-    console.log("foundItem : ", foundItem);
+    // console.log("foundItem : ", foundItem);
+    console.log("foundItem.childNode : ", foundItem.childNodes[0]);
     // console.log("foundItem.offsetTop : ", foundItem.offsetTop);
-    currentRef.current = foundItem;
+    currentRef.current = foundItem.childNodes[0];
     indicatorRef.current.style.top = foundItem.offsetTop + "px";
   };
   const handleKeydown = (e: any) => {
@@ -208,6 +214,7 @@ export default function Page() {
                   // window.scrollBy(0, 0);
                   window.scrollTo(0, 0);
                   history.pushState("", "", `/#home`);
+                  setCurrentMenuRef("home");
                 }}
               >
                 Top

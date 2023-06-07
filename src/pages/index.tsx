@@ -32,8 +32,6 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  const router = useRouter();
-
   // sider
   const indicatorRef: any = useRef();
   const currentRef: any = useRef();
@@ -132,6 +130,19 @@ export default function Page() {
       window.removeEventListener("keyup", handleKeyup);
     };
   }, []);
+  const router = useRouter();
+  useEffect(() => {
+    // history.pushState("", "", `${router.asPath}`);
+    // if(router.as)
+    // console.log(router.asPath==='');
+    // const list = navListRef.current;
+    // const childNodes = Array.from(list.childNodes);
+    // const foundItem: any = childNodes.find((v: any) => v.className === router.asPath.split("/#")[1]);
+    setCurrentMenuRef(router.asPath.split("/#")[1]);
+
+    // console.log(router.asPath.split("/#")[1]);
+    // if(router.asPath==='/#about')
+  }, []);
   return (
     <>
       <Head>
@@ -204,6 +215,7 @@ export default function Page() {
                   // router.push("#home");
                   // window.scrollBy(0, 0);
                   window.scrollTo(0, 0);
+                  history.pushState("", "", `/#home`);
                 }}
               >
                 Top

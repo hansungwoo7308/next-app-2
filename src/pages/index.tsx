@@ -78,7 +78,7 @@ export default function Page() {
     // const currentItem = currentRef.current;
     // const list = currentItem.parentNode.parentNode;
     const list = navListRef.current;
-    const childNodes = Array.from(list.childNodes);
+    const childNodes: any = Array.from(list.childNodes);
     // console.log(currentItem);
     // console.log(list);
     // console.log(childNodes);

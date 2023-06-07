@@ -32,42 +32,45 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  // define the side navigator section event handler
   const indicatorRef: any = useRef();
-  const currentRef: any = useRef();
-  const navListRef: any = useRef();
-  const currentSectionRef: any = useRef();
-
-  const setCurrentRef = (e: any) => {
-    const clickedAnchor = e.target;
-    currentRef.current = clickedAnchor;
+  const anchorRef: any = useRef();
+  const sectionRef: any = useRef();
+  const navRef: any = useRef();
+  // handle the navigation event
+  const setAnchor = (e: any) => {
+    const currentAnchor = e.target;
+    anchorRef.current = currentAnchor;
   };
   const setIndicator = (e: any) => {
     const anchor = e.target;
     const listItem = anchor.parentNode;
     indicatorRef.current.style.top = listItem.offsetTop + "px";
-    // console.log("anchor : ", anchor);
-    // indicatorRef.current.style.top = anchor.offsetTop + "px";
   };
   const revertIndicator = () => {
-    const currentAnchor = currentRef.current;
+    const currentAnchor = anchorRef.current;
     const currentListItem = currentAnchor.parentNode;
     indicatorRef.current.style.top = currentListItem.offsetTop + "px";
-    // console.log("currentAnchor : ", currentAnchor);
-    // console.log("currentAnchor : ", currentAnchor.offsetTop);
-    // console.log("currentListItem : ", currentListItem.offsetTop);
   };
   const handleClick = (e: any) => {
-    setCurrentRef(e);
+    setAnchor(e);
     setIndicator(e);
-    // console.log(e.target.parentNode.className);
-    // const currentSection = currentSectionRef.current;
-    // const currentSectionRect = currentSection.getBoundingClientRect();
-    // console.log("window.innerHeight : ", window.innerHeight);
-    // console.log(e.target);
-    // console.log("currentSectionRef.current : ", currentSectionRef.current);
-    // console.log(currentSection);
-    // console.log(currentSectionRect);
+    // 현재 앵커를 통해서 현재 섹션을 설정
+    console.log(anchorRef.current);
+    console.log(sectionRef.current);
+    // const currentAnchor = anchorRef.current;
+    // const currentListItem = currentAnchor.parentNode;
+    // const currentSection = sectionRef.current;
+    // 클릭한 앵커의 부모노드의 클래스네임을 통해서 섹션들 중에서 매칭...
+    const anchor = anchorRef.current;
+    const listItem = anchor.parentNode;
+    const sections = sectionRef.current.parentNode.childNodes;
+    const sectionsArray = Array.from(sectionRef.current.parentNode.childNodes);
+    const foundSection = sectionsArray.find((v: any) => v.className === listItem.className);
+    console.log("foundSection : ", foundSection);
+    sectionRef.current = foundSection;
+
+    // console.log("sections : ", sectionsArray);
+    // console.log("sections : ", sections[0]);
   };
   const handleMouseOver = (e: any) => {
     setIndicator(e);
@@ -75,23 +78,15 @@ export default function Page() {
   const handleMouseOut = (e: any) => {
     revertIndicator();
   };
-  // define the home~works section event handler
+  // handle the sections event
   const setSection = (section: any) => {
     window.scrollBy(0, section.getBoundingClientRect().y);
   };
   const setNavigation = (className: any) => {
-    const list = navListRef.current;
+    const list = navRef.current;
     const childNodes: any = Array.from(list.childNodes);
     const foundItem: any = childNodes.find((v: any) => v.className === className);
     indicatorRef.current.style.top = foundItem.offsetTop + "px";
-    // const currentItem = currentRef.current;
-    // const list = currentItem.parentNode.parentNode;
-    // childNodes.find((v: any) => console.log(v.className));
-    // console.log("foundItem.childNode : ", foundItem.childNodes[0]);
-    // console.log("foundItem : ", foundItem);
-    // console.log("foundItem.offsetTop : ", foundItem.offsetTop);
-    // console.log("currentRef.current : ", currentRef.current);
-    // console.log("currentRef.current.offsetTop : ", currentRef.current.offsetTop);
   };
   const setUrl = (section: any) => {
     history.pushState("", "", `/#${section.className}`);
@@ -99,28 +94,31 @@ export default function Page() {
   const handleKeydown = (e: any) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      const nextSection = currentSectionRef.current.nextSibling;
+      const nextSection = sectionRef.current.nextSibling;
+      const nextListItem = anchorRef.current.parentNode.nextSibling;
+      // console.log("nextListItem : ", nextListItem);
       if (nextSection) {
-        currentSectionRef.current = nextSection;
-        setSection(currentSectionRef.current);
-        setNavigation(currentSectionRef.current.className);
-        setUrl(currentSectionRef.current);
-        // currentSectionRef.current.scrollIntoView({});
-        // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
+        sectionRef.current = nextSection;
+        setSection(sectionRef.current);
+        setNavigation(sectionRef.current.className);
+        setUrl(sectionRef.current);
+        // console.log("sectionRef.current : ", sectionRef.current);
+        // sectionRef.current.scrollIntoView({});
+        // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);
       }
     }
   };
   const handleKeyup = (e: any) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      const previousSection = currentSectionRef.current.previousSibling;
+      const previousSection = sectionRef.current.previousSibling;
       if (previousSection) {
-        currentSectionRef.current = previousSection;
-        setSection(currentSectionRef.current);
-        setNavigation(currentSectionRef.current.className);
-        setUrl(currentSectionRef.current);
-        // currentSectionRef.current.scrollIntoView({});
-        // window.scrollTo(0, currentSectionRef.current.getBoundingClientRect().y);
+        sectionRef.current = previousSection;
+        setSection(sectionRef.current);
+        setNavigation(sectionRef.current.className);
+        setUrl(sectionRef.current);
+        // sectionRef.current.scrollIntoView({});
+        // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);
       }
     }
   };
@@ -133,12 +131,12 @@ export default function Page() {
       window.removeEventListener("keyup", handleKeyup);
     };
   }, []);
-  // initialize the side navigator menu
+  // initialize the side navigation menu
   const router = useRouter();
   useEffect(() => {
     // console.log(router.asPath.split("/#")[1]);
-    // setNavigation(router.asPath.split("/#")[1]);
-    router.replace("/");
+    router.push("/");
+    // router.replace("/");
   }, []);
   return (
     <>
@@ -149,7 +147,7 @@ export default function Page() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
-        <section className="home" id="home" ref={currentSectionRef}>
+        <section className="home" id="home" ref={sectionRef}>
           <div className="description">
             <h1>Front-End Developer</h1>
             <p>{sentence}</p>
@@ -158,12 +156,12 @@ export default function Page() {
           <div className="temp">
             <section className="sider">
               <div className="nav">
-                <ul ref={navListRef}>
+                <ul ref={navRef}>
                   <div className="indicator" ref={indicatorRef}></div>
                   <li className="home">
                     <a
                       href={"#home"}
-                      ref={currentRef}
+                      ref={anchorRef}
                       onClick={handleClick}
                       onMouseOver={handleMouseOver}
                       onMouseOut={handleMouseOut}
@@ -205,19 +203,7 @@ export default function Page() {
               </div>
             </section>
             <h3>
-              <a
-                onClick={(e: any) => {
-                  // e.preventDefault();
-                  // console.log(e);
-                  // router.push("#home");
-                  // window.scrollBy(0, 0);
-                  window.scrollTo(0, 0);
-                  history.pushState("", "", `/#home`);
-                  setNavigation("home");
-                }}
-              >
-                Top
-              </a>
+              <a href="/#home">Top</a>
             </h3>
           </div>
         </section>

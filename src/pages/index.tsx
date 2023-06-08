@@ -32,19 +32,19 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  const indicatorRef: any = useRef();
-  const anchorRef: any = useRef();
   const sectionRef: any = useRef();
+  const anchorRef: any = useRef();
+  const indicatorRef: any = useRef();
   const navRef: any = useRef();
-  // handle the navigation event
+  // handle the anchor[click,mouseover,mouseout], indicator (element event)
   const setAnchor = (e: any) => {
     const currentAnchor = e.target;
     anchorRef.current = currentAnchor;
   };
   const setIndicator = (e: any) => {
-    const anchor = e.target;
-    const listItem = anchor.parentNode;
-    indicatorRef.current.style.top = listItem.offsetTop + "px";
+    const currentAnchor = e.target;
+    const currentListItem = currentAnchor.parentNode;
+    indicatorRef.current.style.top = currentListItem.offsetTop + "px";
   };
   const revertIndicator = () => {
     const currentAnchor = anchorRef.current;
@@ -64,13 +64,9 @@ export default function Page() {
     const anchor = anchorRef.current;
     const listItem = anchor.parentNode;
     const sections = sectionRef.current.parentNode.childNodes;
-    const sectionsArray = Array.from(sectionRef.current.parentNode.childNodes);
+    const sectionsArray = Array.from(sections);
     const foundSection = sectionsArray.find((v: any) => v.className === listItem.className);
     sectionRef.current = foundSection;
-    // console.log("foundSection : ", foundSection);
-
-    // console.log("sections : ", sectionsArray);
-    // console.log("sections : ", sections[0]);
   };
   const handleMouseOver = (e: any) => {
     // console.log("current section : ", sectionRef.current);
@@ -80,14 +76,17 @@ export default function Page() {
     // console.log("current section : ", sectionRef.current);
     revertIndicator();
   };
-  // handle the sections event
-  const setSection = (currentSection: any) => {
+  // handle the sections[scroll] (window event)
+  const setScroll = (currentSection: any) => {
     window.scrollBy(0, currentSection.getBoundingClientRect().y);
   };
-  const setNavigation = (currentSection: any) => {
-    const list = navRef.current;
-    const childNodes: any = Array.from(list.childNodes);
-    const foundItem: any = childNodes.find((v: any) => v.className === currentSection.className);
+  const setIndicatorByKey = (currentSection: any) => {
+    const nav = navRef.current;
+    const listItems = nav.childNodes;
+    const listItemsArray: any = Array.from(listItems);
+    const foundItem: any = listItemsArray.find(
+      (v: any) => v.className === currentSection.className
+    );
     indicatorRef.current.style.top = foundItem.offsetTop + "px";
   };
   const setUrl = (section: any) => {
@@ -99,12 +98,10 @@ export default function Page() {
       const nextSection = sectionRef.current.nextSibling;
       if (nextSection) {
         const nextAnchor = anchorRef.current.parentNode.nextSibling.childNodes[0];
-        console.log("nextAnchor : ", nextAnchor);
-        // 현재 인덱스를 다음 인데스로 변경
         sectionRef.current = nextSection;
         anchorRef.current = nextAnchor;
-        setSection(sectionRef.current); // 다음 섹션으로 스크롤 이동
-        setNavigation(sectionRef.current); // 네비게이션의 현재 앵커로 이동
+        setScroll(sectionRef.current); // 다음 섹션으로 스크롤 이동
+        setIndicatorByKey(sectionRef.current); // 네비게이션의 현재 앵커로 이동
         setUrl(sectionRef.current);
         // sectionRef.current.scrollIntoView({});
         // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);
@@ -119,8 +116,8 @@ export default function Page() {
         const previousAnchor = anchorRef.current.parentNode.previousSibling.childNodes[0];
         sectionRef.current = previousSection;
         anchorRef.current = previousAnchor;
-        setSection(sectionRef.current);
-        setNavigation(sectionRef.current);
+        setScroll(sectionRef.current);
+        setIndicatorByKey(sectionRef.current);
         setUrl(sectionRef.current);
         // sectionRef.current.scrollIntoView({});
         // window.scrollTo(0, sectionRef.current.getBoundingClientRect().y);

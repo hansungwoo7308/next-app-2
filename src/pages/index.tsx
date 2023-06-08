@@ -92,7 +92,7 @@ export default function Page() {
   const setUrl = (section: any) => {
     history.pushState("", "", `/#${section.className}`);
   };
-  const handleKeydown = (e: any) => {
+  const handleKeyDown = (e: any) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
       const nextSection = sectionRef.current.nextSibling;
@@ -108,7 +108,7 @@ export default function Page() {
       }
     }
   };
-  const handleKeyup = (e: any) => {
+  const handleKeyUp = (e: any) => {
     if (e.key === "ArrowUp") {
       e.preventDefault();
       const previousSection = sectionRef.current.previousSibling;
@@ -126,11 +126,11 @@ export default function Page() {
   };
   // add the event
   useEffect(() => {
-    window.addEventListener("keydown", handleKeydown);
-    window.addEventListener("keyup", handleKeyup);
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("keyup", handleKeyup);
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
     };
   }, []);
   // initialize

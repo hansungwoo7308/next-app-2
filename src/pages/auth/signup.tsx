@@ -1,9 +1,9 @@
 import { useRef, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import axios from "axios";
+import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import logError from "lib/client/log/logError";
@@ -84,7 +84,7 @@ export default function Page() {
     }
   };
   useEffect(() => {
-    setFocus("name");
+    setFocus("username");
   }, []);
   // useEffect(() => {
   //   setFocus("name", { shouldSelect: true });
@@ -179,14 +179,12 @@ export default function Page() {
                   type="password"
                   placeholder="Password Confirm"
                 />
-                {errors.passwordConfirm &&
-                  errors.passwordConfirm.type === "required" && (
-                    <small>This field is required.</small>
-                  )}
-                {errors.passwordConfirm &&
-                  errors.passwordConfirm.type === "validate" && (
-                    <small>The password is not matched.</small>
-                  )}
+                {errors.passwordConfirm && errors.passwordConfirm.type === "required" && (
+                  <small>This field is required.</small>
+                )}
+                {errors.passwordConfirm && errors.passwordConfirm.type === "validate" && (
+                  <small>The password is not matched.</small>
+                )}
               </div>
               <button type="submit">Sign Up</button>
             </form>

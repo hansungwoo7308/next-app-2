@@ -2,6 +2,7 @@ import Link from "next/link";
 import Nav from "../Nav";
 import AuthButton from "../AuthButton";
 import styled from "styled-components";
+import Cart from "../commerce/Cart";
 export default function Header() {
   return (
     <HeaderStyle>
@@ -10,7 +11,8 @@ export default function Header() {
           <Link href={"/"}>LOGO</Link>
         </div>
         <Nav />
-        <AuthButton />
+        {/* <AuthButton /> */}
+        <Cart />
       </section>
     </HeaderStyle>
   );
@@ -49,10 +51,11 @@ const HeaderStyle = styled.header`
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   button {
-    all: unset;
-    cursor: pointer;
+    background-color: #000;
+    color: #ccc;
   }
   a:hover,
   li:hover,

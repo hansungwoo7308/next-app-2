@@ -37,21 +37,19 @@ const OPTION = {
 
 // global mongoose.promise
 // console.log("global.mongoose.promise : ", global.mongoose.promise);
-
 let globalWithMongoose = global as typeof globalThis & {
   mongoose: any;
 };
 let cached = globalWithMongoose.mongoose;
 // console.log("\x1b[33mcached : ", cached);
-
 if (!cached) {
   cached = globalWithMongoose.mongoose = { conn: null, promise: null };
 }
-
 export default async function connectDB() {
   // console.log("\x1b[32m\n[DB]:connectDB");
   // cached connection
   if (cached.conn) {
+    console.log("cached connection");
     const connections = cached.conn.connections;
     // console.log("cached connections : ", cached.conn.connections);
     // console.log("connections[0].$dbName : ", connections[0].$dbName);
@@ -65,10 +63,11 @@ export default async function connectDB() {
     // console.log("$dbName : ", connections["bananaDB"]);
     // console.log("collections : ", connections.collections);
     // console.log("models : ", connections.models);
-    // return cached.conn;
+    return cached.conn;
   }
   // new connection
   if (!cached.promise) {
+    console.log("new conncection");
     cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
       // console.log("new connections : ", mongoose);
       return mongoose;
@@ -78,9 +77,7 @@ export default async function connectDB() {
   // console.log("cached.conn : ", cached.conn);
   return cached.conn;
 }
-
 // import mongoose from "mongoose";
-
 // const connectDB = async () => {
 //   // if (mongoose.connection.readyState >= 1) {
 //   //   // console.log(
@@ -89,13 +86,11 @@ export default async function connectDB() {
 //   //   // );
 //   //   // return mongoose.connection.db;
 //   // }
-
 //   try {
 //     // const db = await mongoose.createConnection(process.env.DATABASE_URI, {
 //     //   useUnifiedTopology: true,
 //     //   useNewUrlParser: true,
 //     // });
-
 //     // db.on("error", function () {
 //     //   console.log("failed to mongoDB.");
 //     //   // console.log("mongoDB connection failed.");
@@ -120,20 +115,16 @@ export default async function connectDB() {
 // };
 
 // module.exports = connectDB;
-
 // // // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
 // // import mongoose, { ConnectOptions, Mongoose } from "mongoose";
-
 // // // Check URI
 // // const uri = process.env.MONGODB_URI || "";
 // // if (!process.env.MONGODB_URI) {
 // //   throw new Error("Please add your Mongo URI to .env.local");
 // // }
-
 // // // Create Connection
 // // let dbConnection: Promise<Mongoose>;
 // // const options: ConnectOptions = {};
-
 // // if (process.env.NODE_ENV === "development") {
 // //   // In development mode, use a global variable so that the value
 // //   // is preserved across module reloads caused by HMR (Hot Module Replacement).
@@ -145,7 +136,6 @@ export default async function connectDB() {
 // //   // In production mode, it's best to not use a global variable.
 // //   dbConnection = mongoose.connect(uri, options);
 // // }
-
 // // // Export a module-scoped MongoClient promise. By doing this in a
 // // // separate module, the client can be shared across functions.
 // // export default dbConnection;

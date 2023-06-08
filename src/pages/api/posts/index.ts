@@ -1,14 +1,15 @@
 import connectDB from "../../../../lib/client/config/connectDB";
 import Post from "../../../../lib/client/model/Post";
+connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m");
   console.log("api/posts/");
-  // connect to database
-  try {
-    await connectDB();
-  } catch (error) {
-    console.log("connection error : ", error);
-  }
+  // // connect to database
+  // try {
+  //   // await connectDB();
+  // } catch (error) {
+  //   console.log("connection error : ", error);
+  // }
   // get posts
   if (req.method === "GET") {
     // console.log("api/posts/");
@@ -49,9 +50,7 @@ export default async function handler(req: any, res: any) {
     } catch (error) {
       console.log("delete error : ", error);
     }
-    res
-      .status(200)
-      .json({ message: "Successfully deleted.", deletedData: title });
+    res.status(200).json({ message: "Successfully deleted.", deletedData: title });
   }
   console.log("");
 }

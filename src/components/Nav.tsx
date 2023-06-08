@@ -28,6 +28,7 @@ export default function Nav() {
   const restrictedRef: any = useRef();
   const aboutRef: any = useRef();
   const worksRef: any = useRef();
+  const commerceRef: any = useRef();
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -91,6 +92,9 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/about")) {
       setColor(aboutRef.current);
       setUnderline(focusRef.current, aboutRef.current);
+    } else if (router.pathname.startsWith("/commerce")) {
+      setColor(commerceRef.current);
+      setUnderline(focusRef.current, commerceRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -152,9 +156,12 @@ export default function Nav() {
             </li>
           </ul>
         </li>
-        <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/about"}>About</Link>
+        <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/commerce"}>Commerce</Link>
         </li>
+        {/* <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/about"}>About</Link>
+        </li> */}
         {/* <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"}>Works</Link>
         </li> */}

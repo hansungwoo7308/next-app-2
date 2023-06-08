@@ -1,9 +1,10 @@
+import Link from "next/link";
 import styled from "styled-components";
 
 export default function Cart() {
   return (
     <Box>
-      <a href="/commerce/cart">Cart</a>
+      <Link href={"/commerce/cart"}>Cart</Link>
     </Box>
   );
 }

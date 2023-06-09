@@ -1,4 +1,3 @@
-// modules
 import {
   createSlice,
   createAsyncThunk,
@@ -7,11 +6,8 @@ import {
 } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import axios from "axios";
-
-// set the constant variables
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_limit=10";
 const POSTS_URL2 = "https://jsonplaceholder.typicode.com/posts";
-// set the interfaces
 interface Post {
   id: String;
   title: String;
@@ -32,15 +28,12 @@ const postsAdapter = createEntityAdapter({
   // b.date가 a.date보다 이전이라면 return -1
   // b.date가 a.date와 같다면 return 0
 });
-
-// state
 const initialState: any = postsAdapter.getInitialState({
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
   count: 0,
 });
-// slice
-const postsSlice: any = createSlice({
+export const postsSlice: any = createSlice({
   name: "posts",
   initialState,
   // sync process
@@ -162,49 +155,40 @@ export const fetchPosts: any = createAsyncThunk(
     return response.data;
   }
 );
-export const addNewPost: any = createAsyncThunk(
-  "posts/addNewPost",
-  async (initialPost) => {
-    // initialPost : 스토어의 포스트 어레이에 추가할 새로운 포스트, 초기화할 데이터
-    // console.log("initialPost : ", initialPost);
+export const addNewPost: any = createAsyncThunk("posts/addNewPost", async (initialPost) => {
+  // initialPost : 스토어의 포스트 어레이에 추가할 새로운 포스트, 초기화할 데이터
+  // console.log("initialPost : ", initialPost);
 
-    // fake api에 데이터를 생성하는 post요청을 보낸다.
-    const response = await axios.post(POSTS_URL, initialPost);
-    // console.log("response.data : ", response.data);
+  // fake api에 데이터를 생성하는 post요청을 보낸다.
+  const response = await axios.post(POSTS_URL, initialPost);
+  // console.log("response.data : ", response.data);
+  return response.data;
+});
+export const updatePost: any = createAsyncThunk("posts/updatePost", async (initialPost) => {
+  console.log("initialPost : ", initialPost);
+  const { id }: any = initialPost;
+  try {
+    const response = await axios.put(`${POSTS_URL2}/${id}`, initialPost);
     return response.data;
+  } catch (err) {
+    //return err.message;
+    return initialPost; // only for testing Redux!
   }
-);
-export const updatePost: any = createAsyncThunk(
-  "posts/updatePost",
-  async (initialPost) => {
-    console.log("initialPost : ", initialPost);
-    const { id }: any = initialPost;
-    try {
-      const response = await axios.put(`${POSTS_URL2}/${id}`, initialPost);
-      return response.data;
-    } catch (err) {
-      //return err.message;
-      return initialPost; // only for testing Redux!
-    }
+});
+export const deletePost: any = createAsyncThunk("posts/deletePost", async (initialPost) => {
+  console.log("initialPost : ", initialPost);
+  const { id }: any = initialPost;
+  try {
+    // just return an empty object from jsonplaceholder's fake api
+    // response.data = {}
+    const response = await axios.delete(`${POSTS_URL2}/${id}`);
+    console.log("response in deletePost : ", response);
+    if (response?.status === 200) return initialPost;
+    return `${response?.status}: ${response?.statusText}`;
+  } catch (err: any) {
+    return err.message;
   }
-);
-export const deletePost: any = createAsyncThunk(
-  "posts/deletePost",
-  async (initialPost) => {
-    console.log("initialPost : ", initialPost);
-    const { id }: any = initialPost;
-    try {
-      // just return an empty object from jsonplaceholder's fake api
-      // response.data = {}
-      const response = await axios.delete(`${POSTS_URL2}/${id}`);
-      console.log("response in deletePost : ", response);
-      if (response?.status === 200) return initialPost;
-      return `${response?.status}: ${response?.statusText}`;
-    } catch (err: any) {
-      return err.message;
-    }
-  }
-);
+});
 // selectors
 // getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
@@ -228,5 +212,3 @@ export const selectPostsByUser = createSelector(
 );
 // actions
 export const { increaseCount, reactionAdded } = postsSlice.actions;
-// reducer
-export default postsSlice.reducer;

@@ -3,6 +3,7 @@ import Nav from "../Nav";
 import AuthButton from "../AuthButton";
 import styled from "styled-components";
 import Cart from "../commerce/Cart";
+import Notify from "../Notify";
 export default function Header() {
   return (
     <HeaderStyle>
@@ -11,8 +12,9 @@ export default function Header() {
           <Link href={"/"}>LOGO</Link>
         </div>
         <Nav />
-        {/* <AuthButton /> */}
+        <AuthButton />
         <Cart />
+        <Notify />
       </section>
     </HeaderStyle>
   );
@@ -54,7 +56,7 @@ const HeaderStyle = styled.header`
     justify-content: center;
   }
   button {
-    background-color: #000;
+    /* background-color: #000; */
     color: #ccc;
   }
   a:hover,

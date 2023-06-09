@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 export const notifySlice = createSlice({
   name: "notify",
-  initialState: { message: "message test" },
+  initialState: { message: "" },
   reducers: {
     setMessage: (state, action) => {
       const { message } = action.payload;
@@ -9,4 +9,5 @@ export const notifySlice = createSlice({
     },
   },
 });
+export const { setMessage } = notifySlice.actions;
 export const selectMessage = (state: any) => state.notify.message;

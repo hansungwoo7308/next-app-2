@@ -5,10 +5,14 @@ import { useEffect, useState } from "react";
 export default function Notify() {
   const message = useSelector(selectMessage);
   const [status, setStatus]: any = useState("hidden");
-  console.log("message : ", message);
+  //   console.log("message : ", message);
   useEffect(() => {
-    if (message) setStatus("visible");
-    else setStatus("hidden");
+    if (message) {
+      setStatus("visible");
+      setTimeout(() => {
+        setStatus("hidden");
+      }, 3000);
+    } else setStatus("hidden");
   }, [message]);
   return (
     <Box status={status} isMessage={message}>
@@ -31,8 +35,11 @@ const Box = styled.div<Props>`
   position: fixed;
   top: 50px;
   right: ${({ status }) => {
+    // method 1
     if (status === "hidden") return "-15rem";
     else if (status === "visible") return "0";
+    // method 2
+    // return status === "hidden" ? "-15rem" : status === "visible" ? "0" : "";
   }};
   margin: 2rem;
   padding: 0.5rem 0.8rem;
@@ -40,7 +47,7 @@ const Box = styled.div<Props>`
   transition: all 0.5s;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   /* background-color: #3778aa; */
   > button {
     height: 100%;

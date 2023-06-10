@@ -10,6 +10,7 @@ import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
 import { setMessage } from "lib/client/store/notifySlice";
+import { postData } from "lib/client/utils/fetchData";
 const Main = styled(PublicMain)`
   section {
     position: relative;
@@ -76,21 +77,24 @@ export default function Page() {
   password.current = watch("password");
   // passwordRef.current = watch("name");
   const handleSignup = async (data: any) => {
-    console.log("data : ", data);
-    dispatch(setMessage({ message: "yep" }));
-    // setTimeout(() => {
-    //   dispatch(setMessage({ message: "" }));
-    // }, 5000);
-
-    // try {
-    //   const response = await axios.post("/api/authentication/signup", data);
-    //   // .post("/api/auth/signup", data)
-    //   // .then((res) => res.data);
-    //   logResponse(response);
-    //   // if (response.success === true) router.push("/auth/signin");
-    // } catch (error) {
-    //   logError(error);
-    // }
+    // console.log("data : ", data);
+    try {
+      // const response = await axios.post("/api/authentication/signup", data);
+      const response = await postData("authentication/signup", data);
+      // .post("/api/auth/signup", data)
+      // .then((res) => res.data);
+      // console.log(response);
+      logResponse(response);
+      // if (response.success === true) router.push("/auth/signin");
+      dispatch(setMessage({ message: "Login Success" }));
+      // setTimeout(() => {
+      //   dispatch(setMessage({ message: "" }));
+      // }, 5000);
+    } catch (error) {
+      logError(error);
+      dispatch(setMessage({ message: "Login Error" }));
+      // console.log(error);
+    }
   };
   useEffect(() => {
     setFocus("username");

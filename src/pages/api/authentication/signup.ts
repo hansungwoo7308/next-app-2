@@ -21,7 +21,7 @@ export default async function handler(req: any, res: any) {
     return res.status(409).json({ message: "duplicatedUser" });
   }
   // create a new User
-  console.log("\x1b[33mCreating a new User...\x1b[0m");
+  // console.log("\x1b[33mCreating a new User...\x1b[0m");
   try {
     const newUser = await User.create({
       username,

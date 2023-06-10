@@ -11,57 +11,7 @@ import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
 import { setMessage } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
-const Main = styled(PublicMain)`
-  section {
-    position: relative;
-    form {
-      width: 70%;
-      height: 50vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      outline: 3px solid green;
-      padding: 20px;
-      div {
-        width: 50%;
-        max-width: 300px;
-      }
-      input {
-        width: 100%;
-        padding: 8px;
-        outline: none;
-        border: 3px solid royalblue;
-        /* border: 3px solid steelblue; */
-        /* border: 3px solid dodgerblue; */
-        border-radius: 5px;
-        :hover,
-        :focus {
-          border: 3px solid var(--color-focus);
-        }
-      }
-      small {
-        color: red;
-      }
-      button {
-        /* all: unset; */
-        width: 50%;
-        background-color: darkgray;
-        color: white;
-        /* outline: none; */
-        border: none;
-        border-radius: 5px;
-        padding: 10px;
-        margin-top: 30px;
-        cursor: pointer;
-        :hover {
-          background-color: #000;
-        }
-      }
-    }
-  }
-`;
+import Loading from "@/components/Loading";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -80,19 +30,16 @@ export default function Page() {
     // console.log("data : ", data);
     try {
       // const response = await axios.post("/api/authentication/signup", data);
-      const response = await postData("authentication/signup", data);
-      // .post("/api/auth/signup", data)
-      // .then((res) => res.data);
-      // console.log(response);
+      const response: any = await postData("authentication/signup", data);
       logResponse(response);
-      // if (response.success === true) router.push("/auth/signin");
-      dispatch(setMessage({ message: "Login Success" }));
+      dispatch(setMessage({ message: response.data.message }));
       // setTimeout(() => {
       //   dispatch(setMessage({ message: "" }));
       // }, 5000);
-    } catch (error) {
+    } catch (error: any) {
       logError(error);
-      dispatch(setMessage({ message: "Login Error" }));
+      dispatch(setMessage({ message: error.message }));
+      // dispatch(setMessage({ message: "Login Error" }));
       // console.log(error);
     }
   };
@@ -136,10 +83,10 @@ export default function Page() {
                   type="text"
                   placeholder="Name"
                 />
-                {errors.name && errors.name.type === "required" && (
+                {errors.username && errors.username.type === "required" && (
                   <small>This field is required.</small>
                 )}
-                {errors.name && errors.name.type === "maxLength" && (
+                {errors.username && errors.username.type === "maxLength" && (
                   <small>Max Length is 8 character.</small>
                 )}
               </div>
@@ -201,8 +148,70 @@ export default function Page() {
               </div>
               <button type="submit">Sign Up</button>
             </form>
+            <Loading />
           </section>
+          {/* <section>
+            <Loading />
+          </section> */}
         </Main>
       </>
     );
 }
+const Main = styled(PublicMain)`
+  display: flex;
+  flex-direction: column;
+  section {
+    position: relative;
+    form {
+      width: 70%;
+      height: 50vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      outline: 3px solid green;
+      padding: 20px;
+      div {
+        width: 50%;
+        max-width: 300px;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        outline: none;
+        border: 3px solid royalblue;
+        /* border: 3px solid steelblue; */
+        /* border: 3px solid dodgerblue; */
+        border-radius: 5px;
+        :hover,
+        :focus {
+          border: 3px solid var(--color-focus);
+        }
+      }
+      small {
+        color: red;
+      }
+      button {
+        /* all: unset; */
+        width: 50%;
+        background-color: darkgray;
+        color: white;
+        /* outline: none; */
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 30px;
+        cursor: pointer;
+        :hover {
+          background-color: #000;
+        }
+      }
+    }
+  }
+  /* > section:nth-of-type(1) {
+    > div {
+      outline: none;
+    }
+  } */
+`;

@@ -10,14 +10,13 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
-    /* outline: 1px solid; */
   }
   html, body {
     max-width: 100vw;
+    /* min-width: 100vw; */
     /* height: 100%; */
     /* overflow: hidden; */
     /* background-color: gray; */
-    /* outline: 10px solid green; */
     /* overflow-x: hidden; */
   }
   a {
@@ -26,7 +25,6 @@ export const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
-  
   textarea {
     resize: none;
   }
@@ -44,9 +42,6 @@ export const GlobalStyle = createGlobalStyle`
     padding: 10px;
 
   }
-  
-  
-  
   // components
   .slider {
     width: 300px;
@@ -147,6 +142,4 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-  
-  
 `;

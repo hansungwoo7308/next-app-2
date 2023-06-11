@@ -93,7 +93,6 @@ export default function Page() {
   //   }
   // };
   useEffect(() => {
-    // emailRef.current.focus();
     setFocus("email");
   }, []);
   return (
@@ -112,7 +111,6 @@ export default function Page() {
               type="password"
               placeholder="password"
             />
-            {/* <button type="submit">Sign in genernally</button> */}
             <button onClick={handleSubmit(handleSigninGenerally)}>Sign in genernally</button>
             <button onClick={handleSubmit(handleSigninWithNextauth)}>Sign in with next-auth</button>
             {/* <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button> */}
@@ -136,14 +134,14 @@ const Main = styled(PublicMain)`
     flex-direction: column;
     > form {
       width: 50%;
-      min-width: 500px;
       height: 50vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 15px;
-      border: 3px solid green;
+      border: 2px solid green;
+      border-radius: 1rem;
       padding: 20px;
       > input {
         width: 50%;
@@ -177,6 +175,13 @@ const Main = styled(PublicMain)`
         :hover {
           background-color: #000;
         }
+      }
+      @media (width<1000px) {
+        width: 70%;
+        max-width: 500px;
+      }
+      @media (width<500px) {
+        width: 90%;
       }
     }
   }

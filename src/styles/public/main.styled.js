@@ -15,7 +15,6 @@ export const Main = styled.main`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* gap: 20px; */
     border: 2px solid coral;
     /* outline: 2px solid coral; */
     > h1 {
@@ -31,7 +30,7 @@ export const Main = styled.main`
   }
   @media (width < 1000px) {
     width: 100%;
-    background-color: lightgreen;
+    background-color: darkgreen;
     > section {
       width: 100%;
       padding-left: 0;
@@ -43,7 +42,7 @@ export const Main = styled.main`
   }
   @media (width<500px) {
     width: 100%;
-    background-color: gray;
+    background-color: darkgray;
     > section {
       width: 100%;
       padding-left: 0;

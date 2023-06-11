@@ -53,6 +53,16 @@ export const Main = styled.main`
       }
     }
   }
+  button {
+    border: none;
+    background-color: lightgray;
+    padding: 10px;
+    cursor: pointer;
+    :hover {
+      background-color: black;
+      color: white;
+    }
+  }
 `;
 
 // const test = styled.div`

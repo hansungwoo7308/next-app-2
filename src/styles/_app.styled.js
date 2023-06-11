@@ -26,16 +26,7 @@ export const GlobalStyle = createGlobalStyle`
     color: inherit;
     text-decoration: none;
   }
-  button {
-    border: none;
-    background-color: lightgray;
-    padding: 10px;
-    cursor: pointer;
-    :hover {
-      background-color: black;
-      color: white;
-    }
-  }
+  
   textarea {
     resize: none;
   }

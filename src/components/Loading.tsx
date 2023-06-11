@@ -8,7 +8,6 @@ export default function Loading() {
   );
 }
 const Box = styled.div`
-  /* width: 100%; */
   position: fixed;
   top: 0;
   left: 0;
@@ -25,7 +24,7 @@ const Box = styled.div`
     border: 5px solid #ccc;
     border-top-color: coral;
     border-radius: 50%;
-    animation: spin 0.5s linear infinite;
+    /* animation: spin 0.5s linear infinite; */
     @keyframes spin {
       0% {
         transform: rotate(0deg);

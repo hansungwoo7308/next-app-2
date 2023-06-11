@@ -8,18 +8,6 @@ import styled from "styled-components";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
-const Box = styled.div`
-  display: flex;
-  > button,
-  div {
-    min-width: 70px;
-    /* outline: 2px solid red; */
-    > a {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-  }
-`;
 export default function AuthButton(props: any) {
   // console.log("\x1b[33m\n[AuthButton]");
   const router = useRouter();
@@ -115,20 +103,25 @@ export default function AuthButton(props: any) {
       {auth ? (
         <>
           <button onClick={logoutAuth}>Sign out</button>
-          <div>
-            <Link href={"/auth/admin"}>Admin</Link>
-          </div>
+          <Link href={"/auth/admin"}>Admin</Link>
+          {/* <div></div> */}
         </>
       ) : (
         <>
-          <div>
-            <Link href={"/auth/signin"}>Sign in</Link>
-          </div>
-          <div>
-            <Link href={"/auth/signup"}>Sign up</Link>
-          </div>
+          <Link href={"/auth/signin"}>Sign in</Link>
+          {/* <div></div>
+          <div></div> */}
+          <Link href={"/auth/signup"}>Sign up</Link>
         </>
       )}
     </Box>
   );
 }
+const Box = styled.div`
+  display: flex;
+  > a,
+  > button {
+    width: 5rem;
+    /* outline: 2px solid red; */
+  }
+`;

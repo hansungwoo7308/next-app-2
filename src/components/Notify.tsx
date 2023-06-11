@@ -30,8 +30,9 @@ type Props = {
 const Box = styled.div<Props>`
   width: 15rem;
   height: 8rem;
-  outline: 2px solid green;
+  border: 2px solid green;
   border-radius: 0 0.5rem 0.5rem 0;
+  /* outline: 2px solid green; */
   position: fixed;
   top: 50px;
   right: ${({ status }) => {
@@ -48,7 +49,6 @@ const Box = styled.div<Props>`
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  /* background-color: #3778aa; */
   > button {
     height: 100%;
     position: absolute;
@@ -56,8 +56,9 @@ const Box = styled.div<Props>`
     right: 100%;
     display: flex;
     align-items: center;
-    outline: 2px solid cyan;
+    border: 2px solid cyan;
     border-radius: 0.5rem 0 0 0.5rem;
+    outline: 2px solid cyan;
     padding: 0.5rem;
     background-color: darkcyan;
     cursor: pointer;

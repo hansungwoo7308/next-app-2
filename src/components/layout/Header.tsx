@@ -26,7 +26,7 @@ const HeaderStyle = styled.header`
   justify-content: center;
   align-items: center;
   position: fixed;
-  background-color: black;
+  background-color: #000;
   color: #ccc;
   z-index: 100;
   section {
@@ -56,12 +56,16 @@ const HeaderStyle = styled.header`
     justify-content: center;
   }
   button {
-    /* background-color: #000; */
+    background-color: initial;
     color: #ccc;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
   }
   a:hover,
   li:hover,
   button:hover {
     color: #fff;
   }
+  font-size: 1rem;
 `;

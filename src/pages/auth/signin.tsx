@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -10,40 +10,62 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { setCredentials } from "lib/client/store/authSlice";
 import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import Loading from "@/components/Loading";
+import { postData } from "lib/client/utils/fetchData";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const emailRef: any = useRef();
-  const passwordRef: any = useRef();
-  useEffect(() => {
-    emailRef.current.focus();
-  }, []);
+  const [loading, setLoading]: any = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setFocus,
+    formState: { errors },
+  } = useForm();
   const handleSigninWithNextauth = async (e: any) => {
     e.preventDefault();
-    await signIn("credentials", {
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      callbackUrl: "/auth/admin",
-      // redirect: false,
-    });
+    // await signIn("credentials", {
+    //   email: emailRef.current.value,
+    //   password: passwordRef.current.value,
+    //   callbackUrl: "/auth/admin",
+    //   // redirect: false,
+    // });
   };
-  const handleSigninGenerally = async (e: any) => {
-    e.preventDefault();
+  const handleSigninGenerally = async (data: any) => {
     try {
-      const response = await axios.post("/api/authentication/login", {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      });
+      setLoading(true);
+      const response = await postData("/authentication/login", data);
       const username = response.data.username;
       const accessToken = response.data.accessToken;
       logResponse(response);
       setHeader(accessToken);
       dispatch(setCredentials({ username, accessToken }));
+      setLoading(false);
       router.push("/auth/admin");
     } catch (error) {
       logError(error);
+      setLoading(false);
     }
   };
+  // const handleSigninGenerally = async (e: any) => {
+  //   // e.preventDefault();
+  //   try {
+  //     const response = await axios.post("/api/authentication/login", {
+  //       email: emailRef.current.value,
+  //       password: passwordRef.current.value,
+  //     });
+  //     const username = response.data.username;
+  //     const accessToken = response.data.accessToken;
+  //     logResponse(response);
+  //     setHeader(accessToken);
+  //     dispatch(setCredentials({ username, accessToken }));
+  //     router.push("/auth/admin");
+  //   } catch (error) {
+  //     logError(error);
+  //   }
+  // };
   const setHeader = (accessToken: any) => {
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
@@ -61,6 +83,10 @@ export default function Page() {
   //     logError(error);
   //   }
   // };
+  useEffect(() => {
+    // emailRef.current.focus();
+    setFocus("email");
+  }, []);
   return (
     <>
       <Head>
@@ -68,20 +94,26 @@ export default function Page() {
       </Head>
       <Main>
         <section>
+          {loading && <Loading />}
           <form>
             <h1>Signin</h1>
-            <input name="email" type="text" placeholder="email" ref={emailRef} />
-            <input name="password" type="password" placeholder="password" ref={passwordRef} />
-            <button onClick={handleSigninGenerally}>Sign in genernally</button>
-            <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button>
-            <button
+            <input {...register("email", { required: true })} type="text" placeholder="email" />
+            <input
+              {...register("password", { required: true })}
+              type="password"
+              placeholder="password"
+            />
+            {/* <button type="submit">Sign in genernally</button> */}
+            <button onClick={handleSubmit(handleSigninGenerally)}>Sign in genernally</button>
+            {/* <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button> */}
+            {/* <button
               onClick={(e) => {
                 e.preventDefault();
                 router.push("/auth/signup");
               }}
             >
               Create new account
-            </button>
+            </button> */}
           </form>
         </section>
       </Main>

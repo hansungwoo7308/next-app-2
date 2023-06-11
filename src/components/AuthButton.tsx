@@ -16,9 +16,9 @@ type Auth = {
 export default function AuthButton(props: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const auth = useSelector(selectAcessToken);
   const [auth, setAuth]: any = useState<Auth>({ status: false });
-  const { data, status } = useSession();
+  const generalAuth = useSelector(selectAcessToken);
+  const { data: nextAuth, status } = useSession();
   const checkAuth = async (accessToken: any) => {
     try {
       // const response = await axios({
@@ -46,11 +46,13 @@ export default function AuthButton(props: any) {
         url: "/api/authentication/refresh",
       });
       const accessToken = response.data.accessToken;
-      logResponse(response);
-      setXmlHttpRequestHeader(accessToken);
-      localStorage.setItem("accessToken", accessToken);
-      dispatch(setCredentials({ username: response.data.username, accessToken }));
-      setAuth({ method: "general", status: true });
+      if (accessToken) {
+        logResponse(response);
+        setXmlHttpRequestHeader(accessToken);
+        localStorage.setItem("accessToken", accessToken);
+        dispatch(setCredentials({ username: response.data.username, accessToken }));
+        setAuth({ method: "general", status: true });
+      }
     } catch (error) {
       logError(error);
       dispatch(logOut());
@@ -83,11 +85,17 @@ export default function AuthButton(props: any) {
   };
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    if (accessToken) checkAuth(accessToken); // general login
-    else if (status === "authenticated")
-      setAuth({ method: "nextauth", status: true }); // next-auth login
-    else setAuth({ status: false });
-  }, []);
+    if (generalAuth) {
+      // general login
+      checkAuth(accessToken);
+    } else if (nextAuth) {
+      // next-auth login
+      if (status === "authenticated") setAuth({ method: "nextauth", status: true });
+      else setAuth({ status: false });
+    }
+  }, [generalAuth, nextAuth]);
+  // console.log(auth.method);
+  // console.log(data);
   return (
     <Box>
       {auth.status ? (

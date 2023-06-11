@@ -8,29 +8,34 @@ import styled from "styled-components";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
+import { getData } from "lib/client/utils/fetchData";
+type Auth = {
+  method?: "general" | "nextauth";
+  status?: false;
+};
 export default function AuthButton(props: any) {
-  // console.log("\x1b[33m\n[AuthButton]");
   const router = useRouter();
   const dispatch = useDispatch();
-  const auth = useSelector(selectAcessToken);
-  // next-auth
+  // const auth = useSelector(selectAcessToken);
+  const [auth, setAuth]: any = useState<Auth>({ status: false });
   const { data, status } = useSession();
-  // console.log("status : ", status);
-  // console.log("data : ", data);
   const checkAuth = async (accessToken: any) => {
     try {
-      const response = await axios({
-        method: "get",
-        url: "/api/authentication/check",
-        headers: {
-          Authorization: `Bearer ${accessToken ? accessToken : ""}`,
-        },
-      });
+      // const response = await axios({
+      //   method: "get",
+      //   url: "/api/authentication/check",
+      //   headers: {
+      //     Authorization: `Bearer ${accessToken ? accessToken : ""}`,
+      //   },
+      // });
+      const response = await getData("authentication/check", accessToken);
       logResponse(response);
       dispatch(setCredentials({ username: response.data.username, accessToken }));
+      setAuth({ method: "general", status: true });
     } catch (error) {
       logError(error);
       refreshAuth();
+      setAuth({ method: "general", status: false });
     }
   };
   const refreshAuth = async () => {
@@ -45,9 +50,11 @@ export default function AuthButton(props: any) {
       setXmlHttpRequestHeader(accessToken);
       localStorage.setItem("accessToken", accessToken);
       dispatch(setCredentials({ username: response.data.username, accessToken }));
+      setAuth({ method: "general", status: true });
     } catch (error) {
       logError(error);
       dispatch(logOut());
+      setAuth({ method: "general", status: false });
     }
   };
   const setXmlHttpRequestHeader = (accessToken: any) => {
@@ -67,50 +74,33 @@ export default function AuthButton(props: any) {
       logResponse(response);
       localStorage.removeItem("accessToken");
       dispatch(logOut());
+      setAuth(false);
+      setAuth({ method: "general", status: false });
       router.push("/");
     } catch (error) {
       logError(error);
     }
   };
   useEffect(() => {
-    // console.log("checking auth...");
     const accessToken = localStorage.getItem("accessToken");
-    checkAuth(accessToken);
+    if (accessToken) checkAuth(accessToken); // general login
+    else if (status === "authenticated")
+      setAuth({ method: "nextauth", status: true }); // next-auth login
+    else setAuth({ status: false });
   }, []);
-  // });
   return (
     <Box>
-      {/* {status === "authenticated" ? (
+      {auth.status ? (
         <>
-          <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out</button>
-          <div>
-            <Link href={"/auth/admin"}>Admin</Link>
-          </div>
-        </>
-      ) : (
-        <>
-          <div>
-            <a href="">Auth({auth ? "true" : "false"})</a>
-          </div>
-          <div>
-            <Link href={"/auth/signin"}>Sign in</Link>
-          </div>
-          <div>
-            <Link href={"/auth/signup"}>Sign up</Link>
-          </div>
-        </>
-      )} */}
-      {auth ? (
-        <>
-          <button onClick={logoutAuth}>Sign out</button>
+          {auth.method === "general" && <button onClick={logoutAuth}>Sign out1</button>}
+          {auth.method === "nextauth" && (
+            <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
+          )}
           <Link href={"/auth/admin"}>Admin</Link>
-          {/* <div></div> */}
         </>
       ) : (
         <>
           <Link href={"/auth/signin"}>Sign in</Link>
-          {/* <div></div>
-          <div></div> */}
           <Link href={"/auth/signup"}>Sign up</Link>
         </>
       )}
@@ -122,6 +112,5 @@ const Box = styled.div`
   > a,
   > button {
     width: 5rem;
-    /* outline: 2px solid red; */
   }
 `;

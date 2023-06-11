@@ -13,13 +13,10 @@ export const authOptions = {
       id: "credentials",
       name: "Credentials",
       async authorize(credentials, req) {
-        // authentication(matched) and authorization(permision and role)
-        console.log("\x1b[32m");
-        console.log("[api/auth/[...nextauth]]");
+        console.log("\x1b[32m\n[api/auth/[...nextauth]]");
         console.log("providers : credentials");
         // get the user data
         const { email, password } = credentials;
-        // console.log("credentials : ", credentials);
         // connect to database
         await connectDB();
         // find the user in database

@@ -24,14 +24,23 @@ export default function Page() {
     setFocus,
     formState: { errors },
   } = useForm();
-  const handleSigninWithNextauth = async (e: any) => {
-    e.preventDefault();
+  const handleSigninWithNextauth = async (data: any) => {
+    // e.preventDefault();
     // await signIn("credentials", {
     //   email: emailRef.current.value,
     //   password: passwordRef.current.value,
     //   callbackUrl: "/auth/admin",
     //   // redirect: false,
     // });
+    try {
+      setLoading(true);
+      const response = await signIn("credentials", { ...data, callbackUrl: "/auth/admin" });
+      logResponse(response);
+      setLoading(false);
+    } catch (error) {
+      logError(error);
+      setLoading(false);
+    }
   };
   const handleSigninGenerally = async (data: any) => {
     try {
@@ -105,6 +114,7 @@ export default function Page() {
             />
             {/* <button type="submit">Sign in genernally</button> */}
             <button onClick={handleSubmit(handleSigninGenerally)}>Sign in genernally</button>
+            <button onClick={handleSubmit(handleSigninWithNextauth)}>Sign in with next-auth</button>
             {/* <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button> */}
             {/* <button
               onClick={(e) => {

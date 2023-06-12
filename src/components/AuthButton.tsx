@@ -76,7 +76,6 @@ export default function AuthButton(props: any) {
       logResponse(response);
       localStorage.removeItem("accessToken");
       dispatch(logOut());
-      setAuth(false);
       setAuth({ method: "general", status: false });
       router.push("/");
     } catch (error) {

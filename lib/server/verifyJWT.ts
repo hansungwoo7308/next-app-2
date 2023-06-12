@@ -22,7 +22,7 @@ export default function verifyJWT(req: any, res: any) {
     console.log("decoded : ", decoded);
     console.log("\x1b[34mThe accessToken was verified\x1b[0m");
 
-    return decoded;
+    return { ...decoded, accessToken };
   });
   return result;
   // if (verifiedAccessToken) return console.log("verifiedAccessToken");

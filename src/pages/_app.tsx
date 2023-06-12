@@ -12,7 +12,6 @@ import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import SessionLoader from "@/components/SessionLoader";
 import axios from "axios";
-import { useEffect } from "react";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 var cookie = require("cookie");
@@ -50,6 +49,7 @@ const MyApp = ({ Component, pageProps, auth }: MyAppProps) => {
   //   // setReduxAuth(accessToken);
   //   // setHeader();
   // }, []);
+
   return (
     <>
       <Provider store={store}>

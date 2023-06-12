@@ -5,7 +5,7 @@ export const getData = async (url: string, token: string) => {
     method: "get",
     url: `http://localhost:3000/api/${url}`,
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;
@@ -16,7 +16,7 @@ export const postData = async (url: string, post: any, token?: string | any) => 
     url: `http://localhost:3000/api/${url}`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
     data: post,
   });

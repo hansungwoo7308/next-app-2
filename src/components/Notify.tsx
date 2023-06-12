@@ -42,7 +42,8 @@ const Box = styled.div<Props>`
     // method 2
     // return status === "hidden" ? "-15rem" : status === "visible" ? "0" : "";
   }};
-  margin: 2rem;
+  /* margin: 2rem; */
+  margin-top: 2rem;
   padding: 0.5rem 0.8rem;
   background-color: darkgreen;
   transition: all 0.5s;

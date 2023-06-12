@@ -133,7 +133,8 @@ const Main = styled(PublicMain)`
     display: flex;
     flex-direction: column;
     > form {
-      width: 50%;
+      width: 70%;
+      max-width: 500px;
       height: 50vh;
       display: flex;
       flex-direction: column;

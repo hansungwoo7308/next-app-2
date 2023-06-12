@@ -4,6 +4,8 @@ const nextConfig = {
   env: {
     BASE_URL: process.env.BASE_URL,
     MONGODB_URL: process.env.MONGODB_URI,
+    // ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    pop: "ttt",
   },
 
   images: {

@@ -70,7 +70,7 @@ export default async function handler(req: any, res: any) {
       `refreshToken=${newRefreshToken};path=/`,
     ]);
     res.status(200).json({
-      message: { message: "The accessToken and refreshToken was refreshed" },
+      message: { message: "The accessToken and refreshToken were refreshed" },
       username: foundUser.name,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
@@ -79,7 +79,7 @@ export default async function handler(req: any, res: any) {
         refreshToken: newRefreshToken?.slice(-5),
       },
     });
-    console.log("\x1b[34mThe accessToken and refreshToken was refreshed.\x1b[0m");
+    console.log("\x1b[34mThe accessToken and refreshToken were refreshed.\x1b[0m");
     console.log("\x1b[33mnewAccessToken : ", newAccessToken?.slice(-5));
     console.log("\x1b[33mnewRefreshToken : ", newRefreshToken?.slice(-5));
   });

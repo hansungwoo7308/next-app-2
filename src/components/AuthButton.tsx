@@ -87,7 +87,8 @@ export default function AuthButton(props: any) {
     const accessToken = localStorage.getItem("accessToken");
     if (generalAuth) {
       // general login
-      checkAuth(accessToken);
+      // checkAuth(accessToken);
+      setAuth({ method: "general", status: true });
     } else if (nextAuth) {
       // next-auth login
       if (status === "authenticated") setAuth({ method: "nextauth", status: true });

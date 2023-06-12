@@ -1,11 +1,11 @@
 import User from "lib/client/model/User";
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
+import connectDB from "lib/client/config/connectDB";
+import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
+// connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/login]");
   // get the request (추출)
-  const cookies = req.cookies;
-  // console.log("refreshToken : ", cookies.refreshToken);
   const { email, password } = req.body;
   if (!email || !password)
     return res.status(400).json({ message: "Email and Password are required." });
@@ -26,26 +26,10 @@ export default async function handler(req: any, res: any) {
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
   // issue the tokens (발급)
-  const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
-  const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
-  const accessToken = jwt.sign(
-    {
-      username: foundUser.username,
-      email: foundUser.email,
-    },
-    ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" }
-  );
-  const refreshToken = jwt.sign(
-    {
-      username: foundUser.username,
-      email: foundUser.email,
-    },
-    REFRESH_TOKEN_SECRET,
-    { expiresIn: "1d" }
-  );
+  const payload = { username: foundUser.username, email: foundUser.email };
+  const accessToken = createAccessToken(payload);
+  const refreshToken = createRefreshToken(payload);
   // save the issued tokens to DB (저장:database)
-  // foundUser.accessToken = accessToken;
   foundUser.refreshToken = refreshToken;
   const savedUser = await foundUser.save();
   // console.log("savedUser : ", savedUser);
@@ -65,7 +49,8 @@ export default async function handler(req: any, res: any) {
       refreshToken: refreshToken.slice(-5),
     },
   });
-  console.log("\x1b[34mLogged In\x1b[0m");
+  console.group("\x1b[34mLogged In\x1b[0m");
   console.log(`\x1b[33maccessToken : ${accessToken.slice(-5)}\x1b[0m`);
   console.log(`\x1b[33mrefreshToken : ${refreshToken.slice(-5)}\x1b[0m`);
+  console.groupEnd();
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = process.env.BASE_URL;
-export const getData = async (url: string, token: string) => {
+export const getData = async (url: string, token?: string) => {
   const response = await axios({
     method: "get",
     url: `http://localhost:3000/api/${url}`,

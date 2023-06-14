@@ -5,7 +5,6 @@ const nextConfig = {
     BASE_URL: process.env.BASE_URL,
     MONGODB_URL: process.env.MONGODB_URI,
     // ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
-    pop: "ttt",
   },
 
   images: {
@@ -13,6 +12,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "upload.wikimedia.org",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**",
       },

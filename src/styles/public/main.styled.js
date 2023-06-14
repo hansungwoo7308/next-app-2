@@ -10,7 +10,7 @@ export const Main = styled.main`
     max-width: 1000px;
     min-height: 100vh;
     position: relative;
-    padding: 20px;
+    padding: 1rem;
     padding-top: 70px;
     display: flex;
     justify-content: center;
@@ -25,7 +25,7 @@ export const Main = styled.main`
     > div {
       width: 100%;
       padding: 1rem;
-      outline: 3px solid green;
+      border: 2px solid green;
     }
   }
   @media (width < 1000px) {

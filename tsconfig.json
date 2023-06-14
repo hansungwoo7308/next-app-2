@@ -25,9 +25,9 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/api/auth/[...nextauth].js",
-    "lib/client/config/*.ts",
-    "lib/client/config/connectDB.ts",
-    "lib/client/config/mongodb.ts", // "src/middleware.ts"
+    "lib/server/config/*.ts",
+    "lib/server/config/connectDB.ts",
+    "lib/server/config/mongodb.ts", // "src/middleware.ts"
     "types/*",
     "src/styles/login.styled.js",
     "src/styles/components/JWT.styled.ts",

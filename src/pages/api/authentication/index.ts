@@ -1,4 +1,4 @@
-import User from "lib/client/model/User";
+import User from "lib/server/model/User";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {
@@ -9,9 +9,7 @@ export default async function handler(req: any, res: any) {
   console.log("refreshToken : ", cookies.refreshToken);
   const { username, password } = req.body;
   if (!username || !password)
-    return res
-      .status(400)
-      .json({ message: "Username and Password are required." });
+    return res.status(400).json({ message: "Username and Password are required." });
   // console.log("username : ", username);
   // console.log("password : ", password);
   // connect to db
@@ -25,27 +23,20 @@ export default async function handler(req: any, res: any) {
   // find the username
   const foundUser = await User.findOne({ username }).exec();
   // console.log("foundUser : ", foundUser);
-  if (!foundUser)
-    return res
-      .status(401)
-      .json({ message: "Your name was not found in database." });
+  if (!foundUser) return res.status(401).json({ message: "Your name was not found in database." });
   // evaluate the password
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
   // issue the tokens
   const ACCESS_TOKEN_SECRET: any = process.env.ACCESS_TOKEN_SECRET;
-  const accessToken = jwt.sign(
-    { username: foundUser.username },
-    ACCESS_TOKEN_SECRET,
-    { expiresIn: "1m" }
-  );
+  const accessToken = jwt.sign({ username: foundUser.username }, ACCESS_TOKEN_SECRET, {
+    expiresIn: "1m",
+  });
 
   const REFRESH_TOKEN_SECRET: any = process.env.REFRESH_TOKEN_SECRET;
-  const newRefreshToken = jwt.sign(
-    { username: foundUser.username },
-    REFRESH_TOKEN_SECRET,
-    { expiresIn: "10m" }
-  );
+  const newRefreshToken = jwt.sign({ username: foundUser.username }, REFRESH_TOKEN_SECRET, {
+    expiresIn: "10m",
+  });
   // save the issued tokens
   foundUser.accessToken = accessToken;
   foundUser.refreshToken = newRefreshToken;

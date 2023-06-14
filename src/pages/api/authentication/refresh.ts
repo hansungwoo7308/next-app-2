@@ -1,4 +1,4 @@
-import User from "lib/client/model/User";
+import User from "lib/server/model/User";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 export default async function handler(req: any, res: any) {

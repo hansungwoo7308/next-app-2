@@ -1,4 +1,4 @@
-import User from "../../../lib/client/model/User";
+import User from "../../../lib/server/model/User";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {
@@ -25,9 +25,7 @@ export default async function handler(req, res) {
   // );
   if (!foundUser) {
     console.log("\x1b[31mfoundUser does not exist.");
-    return res
-      .status(404)
-      .json({ message: "foundUser does not exist in bananaDB" });
+    return res.status(404).json({ message: "foundUser does not exist in bananaDB" });
   }
   console.log("\x1b[33mfoundUser : ", foundUser);
 

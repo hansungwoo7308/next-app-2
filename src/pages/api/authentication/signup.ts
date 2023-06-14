@@ -1,5 +1,5 @@
-import User from "../../../../lib/client/model/User";
-import connectDB from "../../../../lib/client/config/connectDB";
+import User from "../../../../lib/server/model/User";
+import connectDB from "../../../../lib/server/config/connectDB";
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/signup]");
   // get the payload

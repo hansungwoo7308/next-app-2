@@ -1,4 +1,4 @@
-import Todo from "lib/client/model/Todo";
+import Todo from "lib/server/model/Todo";
 import { MongoClient } from "mongodb";
 export default async function handler(req: any, res: any) {
   console.log("");

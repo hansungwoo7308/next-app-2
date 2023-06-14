@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User from "lib/client/model/User";
+import User from "lib/server/model/User";
 // import db from "../../../data/db.json";
 
 const URI: any = process.env.MONGODB_URI;

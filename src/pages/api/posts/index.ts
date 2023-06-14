@@ -1,5 +1,5 @@
-import connectDB from "../../../../lib/client/config/connectDB";
-import Post from "../../../../lib/client/model/Post";
+import connectDB from "../../../../lib/server/config/connectDB";
+import Post from "../../../../lib/server/model/Post";
 connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m");

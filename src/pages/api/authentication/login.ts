@@ -1,6 +1,6 @@
-import User from "lib/client/model/User";
+import User from "lib/server/model/User";
 import mongoose from "mongoose";
-import connectDB from "lib/client/config/connectDB";
+import connectDB from "lib/server/config/connectDB";
 import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
 // connectDB();
 export default async function handler(req: any, res: any) {

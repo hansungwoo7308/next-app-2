@@ -29,6 +29,7 @@ export default function Nav() {
   const aboutRef: any = useRef();
   const worksRef: any = useRef();
   const commerceRef: any = useRef();
+  const productRef: any = useRef();
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -158,6 +159,11 @@ export default function Nav() {
         </li>
         <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/commerce"}>Commerce</Link>
+          <ul>
+            <li ref={productRef} onClick={(e) => handleFocus(e)}>
+              <Link href={"/commerce/product"}>Product</Link>
+            </li>
+          </ul>
         </li>
         {/* <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/about"}>About</Link>

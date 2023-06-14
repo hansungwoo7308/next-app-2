@@ -42,7 +42,9 @@ const Main = styled(PublicMain)`
     > div {
       height: 90vh;
       > ul {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(20rem, 1fr));
         gap: 1rem;
       }
     }

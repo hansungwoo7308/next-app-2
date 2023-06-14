@@ -44,7 +44,7 @@ export default function ProductItem({ product }: any) {
   );
 }
 const Item = styled.li`
-  width: 10rem;
+  /* width: 10rem; */
   border: 2px solid;
   /* padding: 1rem; */
   display: flex;

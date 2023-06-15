@@ -9,17 +9,13 @@ export default function ProductItem({ product }: any) {
   const auth = useSelector(selectAcessToken) || useSession().data;
   const userLink = (
     <>
-      <button>
-        <Link href={`commerce/product/${_id}`}>View</Link>
-      </button>
+      <Link href={`/commerce/product/${_id}`}>View</Link>
       <button>Buy</button>
     </>
   );
   const adminLink = (
     <>
-      <button>
-        <Link href={`commerce/product/${_id}`}>Edit</Link>
-      </button>
+      <Link href={`/commerce/product/${_id}`}>Edit</Link>
       <button>Delete</button>
     </>
   );
@@ -35,7 +31,7 @@ export default function ProductItem({ product }: any) {
           {inStock > 0 ? <h6>In Stock : {inStock}</h6> : <h6>Out Stock</h6>}
         </div>
         <p>{description}</p>
-        <div>
+        <div className="action-tags">
           {auth && adminLink}
           {!auth && userLink}
         </div>
@@ -53,14 +49,37 @@ const Item = styled.li`
   > .image {
     height: 7rem;
     > img {
-      object-fit: cover;
-      object-position: top;
+      object-position: 0 20%;
+      /* object-position: top; */
     }
   }
   > div {
     > div {
       display: flex;
       justify-content: space-between;
+      align-items: center;
+    }
+    > .action-tags {
+      height: 3rem;
+      > a {
+        background-color: lightgray;
+        color: black;
+        width: initial;
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        :hover {
+          background-color: #000;
+          color: #fff;
+        }
+      }
+      > button {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        padding: 1rem;
+      }
     }
   }
 `;

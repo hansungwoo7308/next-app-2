@@ -66,32 +66,32 @@ const nextConfig = {
     ];
   },
 
-  // async headers() {
-  //   return [
-  //     {
-  //       source: "/:path*",
-  //       // source: "/api/:path*",
-  //       headers: [
-  //         {
-  //           key: "Access-Control-Allow-Origin",
-  //           value: "*",
-  //         },
-  //         {
-  //           key: "Access-Control-Allow-Methods",
-  //           value: "GET, POST, PUT, DELETE, OPTIONS",
-  //         },
-  //         {
-  //           key: "Access-Control-Allow-Headers",
-  //           value: "Content-Type, Authorization",
-  //         },
-  //         {
-  //           key: "Access-Control-Allow-Credentials",
-  //           value: "true",
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        // source: "/api/:path*",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+          {
+            key: "Access-Control-Allow-Methods",
+            value: "GET, POST, PUT, DELETE, OPTIONS",
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "Content-Type, Authorization",
+          },
+          {
+            key: "Access-Control-Allow-Credentials",
+            value: "true",
+          },
+        ],
+      },
+    ];
+  },
 
   // 서버 측 라우팅을 지원하는 기능
   // source에 설정된 경로로 요청이 들어오면, destination에 설정된 경로로 응답한다.

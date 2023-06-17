@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import { getSession, useSession } from "next-auth/react";
 import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
@@ -51,10 +50,8 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  const dispatch = useDispatch();
   const auth = useSelector(selectAuth);
   const [users, setUsers]: any = useState();
-  const { data: session, status }: any = useSession();
   // console.log("\x1b[34m");
   // console.log("[pages/admin]");
   // // console.log("session : ", session);
@@ -74,7 +71,6 @@ export default function Page() {
     } catch (error) {
       logError(error);
       // console.log(error);
-
       // await refreshAuth();
     }
   };
@@ -106,7 +102,6 @@ export default function Page() {
   useEffect(() => {
     getData();
   }, [auth]);
-  // console.log("auhhhhhh:", auth);
   return (
     <>
       <Head>

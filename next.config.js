@@ -6,7 +6,6 @@ const nextConfig = {
     MONGODB_URL: process.env.MONGODB_URI,
     // ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
   },
-
   images: {
     remotePatterns: [
       {
@@ -23,49 +22,9 @@ const nextConfig = {
       },
     ],
   },
-
   // compiler: {
   //   styledComponents:
   // }
-
-  async headers() {
-    // headers: async () => {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          // {
-          //   key: "x-custom-header",
-          //   value: "custom value",
-          // },
-          // {
-          //   key: "Authorization",
-          //   value: "bearer test",
-          // },
-
-          // access-control
-          {
-            key: "Access-Control-Allow-Origin",
-            value: "*",
-            // value: "http://localhost:3000",
-          },
-          {
-            key: "Access-Control-Allow-Methods",
-            value: "GET, POST, PUT, DELETE, OPTIONS",
-          },
-          {
-            key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
-          },
-          {
-            key: "Access-Control-Allow-Credentials",
-            value: "true",
-          },
-        ],
-      },
-    ];
-  },
-
   async headers() {
     return [
       {

@@ -11,6 +11,7 @@ import usersReducer from "./usersSlice";
 import { authApiSlice } from "lib/utils/authApiSlice";
 import { usersApiSlice } from "lib/utils/usersApiSlice";
 import { todosApiSlice } from "lib/utils/todosApiSlice";
+import { cartSlice } from "./cartSlice";
 // const combineReducer = combineReducers({ counter: counterSlice });
 const store: any = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store: any = configureStore({
     // users: usersReducer,
     auth: authSlice.reducer,
     notify: notifySlice.reducer,
+    cart: cartSlice.reducer,
     posts: postsSlice.reducer,
     posts2: posts2Slice.reducer,
     users: usersReducer,

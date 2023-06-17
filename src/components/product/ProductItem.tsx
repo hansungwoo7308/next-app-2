@@ -1,16 +1,56 @@
 import { selectAcessToken } from "lib/client/store/authSlice";
+import { addToCart, selectCart } from "lib/client/store/cartSlice";
+import { setMessage } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function ProductItem({ product }: any) {
   const { _id, images, title, price, inStock, description } = product;
   const auth = useSelector(selectAcessToken) || useSession().data;
+  const cart = useSelector(selectCart);
+  const dispatch = useDispatch();
   const userLink = (
     <>
       <Link href={`/commerce/product/${_id}`}>View</Link>
-      <button>Buy</button>
+      <button
+        disabled={inStock ? false : true}
+        onClick={() => {
+          const duplicate = cart.find((v: any) => v._id === product._id);
+          console.log("duplicate:", duplicate);
+          if (duplicate) return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
+          else return dispatch(addToCart(product));
+          // console.log("product:", product);
+          // console.log("cart:", cart);
+          // cart.map((v: any) => console.log(v));
+          // if (!cart.length) dispatch(addToCart(product));
+          // else {
+          //   const duplicate = cart.filter((v: any) => v._id === product._id);
+          //   if (duplicate) return;
+          //   else dispatch(addToCart(product));
+          // }
+          // dispatch(addToCart(product));
+          // console.log("product._id : ", product._id);
+          // console.log("cart : ", cart);
+          // if (!cart.length) return dispatch(addToCart(product));
+          // const test = cart.every((v: any) => v._id !== product._id);
+          // const result = cart.filter((v: any) => v._id === product._id);
+          // if (result) console.log(result);
+          // cart.map((v: any) => {
+          //   if (v._id === product._id) {
+          //     return dispatch(setMessage({ message: "duplicate" }));
+          //   } else {
+          //     console.log("asdkhadsi");
+          //     return dispatch(addToCart(product));
+          //   }
+          // });
+          // cart.find((v: any) => console.log("v:", v));
+          // console.log(test);
+        }}
+      >
+        Buy
+      </button>
     </>
   );
   const adminLink = (

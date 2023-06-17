@@ -13,12 +13,12 @@ export async function getServerSideProps({ params: { id } }: any) {
 }
 export default function Page({ product }: any) {
   //   console.log(product);
-  const { images } = product;
+  const { images, title, price, inStock, sold, description, content } = product;
   const [tabIndex, setTabIndex]: any = useState(0);
   //   console.log("images : ", images);
   const handleClick = (index: any) => {
     // tabIndex으로부터 변경될 사항
-    setTabIndex(index);
+    // setTabIndex(index);
     // event로부터 변경될 사항
     //   const image = e.target;
     //   const images = image.parentNode.childNodes;
@@ -31,15 +31,29 @@ export default function Page({ product }: any) {
       <section>
         <div>
           <h1>Product Page</h1>
-          <div className="thumbnail">
-            <Image
-              src={images[tabIndex].url}
-              alt={images[tabIndex].url}
-              width={1000}
-              height={1000}
-            />
+          <div className="top">
+            <div className="selected-image">
+              <Image
+                src={images[tabIndex].url}
+                alt={images[tabIndex].url}
+                width={1000}
+                height={1000}
+              />
+            </div>
+            <div className="description">
+              <h3>{title}</h3>
+              <h5>${price}</h5>
+              <div>
+                {inStock && <h5>InStock : {inStock}</h5>}
+                {!inStock && <h5>OutStock</h5>}
+                <h5>Sold : {sold}</h5>
+              </div>
+              <p>{description}</p>
+              <p>{content}</p>
+              <button>Buy</button>
+            </div>
           </div>
-          <div className="detail">
+          <div className="images">
             {images.map((image: any, index: any) => (
               <Image
                 className={`${tabIndex === index && "active"}`}
@@ -62,19 +76,26 @@ const Main = styled(PublicMain)`
     display: flex;
     align-items: flex-start;
     > div {
-      img {
-        cursor: pointer;
-      }
-      .active {
-        outline: 2px solid coral;
-      }
-      .thumbnail {
-        width: 50%;
-        @media (width<500px) {
-          width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      .top {
+        display: flex;
+        gap: 1rem;
+        .selected-image {
+          width: 50%;
+          @media (width<500px) {
+            width: 100%;
+          }
+        }
+        .description {
+          div {
+            display: flex;
+            justify-content: space-between;
+          }
         }
       }
-      .detail {
+      .images {
         width: 15%;
         display: flex;
         gap: 5%;
@@ -82,7 +103,13 @@ const Main = styled(PublicMain)`
           /* width: 10rem; */
           height: 7rem;
         }
+        .active {
+          outline: 2px solid coral;
+        }
       }
+    }
+    img {
+      cursor: pointer;
     }
   }
 `;

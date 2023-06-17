@@ -41,7 +41,8 @@ const nextConfig = {
           },
           {
             key: "Access-Control-Allow-Headers",
-            value: "Content-Type, Authorization",
+            value:
+              "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
           },
           {
             key: "Access-Control-Allow-Credentials",
@@ -76,5 +77,4 @@ const nextConfig = {
   //   ];
   // },
 };
-
 module.exports = nextConfig;

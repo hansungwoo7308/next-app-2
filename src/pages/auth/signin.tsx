@@ -47,7 +47,7 @@ export default function Page() {
   const handleSigninGenerally = async (data: any) => {
     try {
       setLoading(true);
-      const response = await postData("/authentication/login", data);
+      const response = await postData("authentication/login", data);
       const username = response.data.username;
       const accessToken = response.data.accessToken;
       logResponse(response);

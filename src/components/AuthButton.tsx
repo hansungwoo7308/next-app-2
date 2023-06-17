@@ -1,23 +1,22 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
-type Auth = {
-  method?: "general" | "nextauth" | "none";
-  status?: false;
-};
+// type Auth = {
+//   method?: "general" | "nextauth" | "none";
+//   status?: false;
+// };
 export default function AuthButton(props: any) {
+  const auth = useSelector(selectAuth);
   const router = useRouter();
   const dispatch = useDispatch();
   // const [auth, setAuth]: any = useState<Auth>({ method: undefined, status: false });
-  const auth = useSelector(selectAuth);
   const checkAuth = async (accessToken: any) => {
     try {
       // const response = await axios({
@@ -76,7 +75,7 @@ export default function AuthButton(props: any) {
       logError(error);
     }
   };
-  console.log("auth : ", auth);
+  // console.log("auth : ", auth);
   return (
     <Box>
       {auth.status ? (

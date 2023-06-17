@@ -5,7 +5,7 @@ import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, selectAcessToken, setCredentials } from "lib/client/store/authSlice";
+import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 // import { getServerSession } from "next-auth";
@@ -52,7 +52,7 @@ export function getServerSideProps(context: any) {
 }
 export default function Page() {
   const dispatch = useDispatch();
-  const auth = useSelector(selectAcessToken);
+  const auth = useSelector(selectAuth);
   const [users, setUsers]: any = useState();
   const { data: session, status }: any = useSession();
   // console.log("\x1b[34m");

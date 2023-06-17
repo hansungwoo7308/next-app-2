@@ -22,7 +22,7 @@ export default function Page({ products }: any) {
             <h1>Product Page</h1>
             <ul>
               {products.map((product: any) => (
-                <ProductItem product={product} />
+                <ProductItem key={product._id} product={product} />
               ))}
             </ul>
           </div>

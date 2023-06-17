@@ -1,4 +1,4 @@
-import { selectAcessToken } from "lib/client/store/authSlice";
+import { selectAuth } from "lib/client/store/authSlice";
 import { addToCart, selectCart } from "lib/client/store/cartSlice";
 import { setMessage } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function ProductItem({ product }: any) {
   const { _id, images, title, price, inStock, description } = product;
-  const auth = useSelector(selectAcessToken) || useSession().data;
+  const auth = useSelector(selectAuth);
   const cart = useSelector(selectCart);
   const dispatch = useDispatch();
   const userLink = (
@@ -60,7 +60,7 @@ export default function ProductItem({ product }: any) {
     </>
   );
   return (
-    <Item key={_id}>
+    <Item>
       <div className="image">
         <Image src={images[0].url} alt={images[0].url} width={200} height={200} />
       </div>

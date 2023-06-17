@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, selectAcessToken, setCredentials } from "lib/client/store/authSlice";
+import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -10,15 +10,14 @@ import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 type Auth = {
-  method?: "general" | "nextauth";
+  method?: "general" | "nextauth" | "none";
   status?: false;
 };
 export default function AuthButton(props: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [auth, setAuth]: any = useState<Auth>({ status: false });
-  const generalAuth = useSelector(selectAcessToken);
-  const { data: nextAuth, status } = useSession();
+  // const [auth, setAuth]: any = useState<Auth>({ method: undefined, status: false });
+  const auth = useSelector(selectAuth);
   const checkAuth = async (accessToken: any) => {
     try {
       // const response = await axios({
@@ -31,11 +30,9 @@ export default function AuthButton(props: any) {
       const response = await getData("authentication/check", accessToken);
       logResponse(response);
       dispatch(setCredentials({ username: response.data.username, accessToken }));
-      setAuth({ method: "general", status: true });
     } catch (error) {
       logError(error);
       refreshAuth();
-      setAuth({ method: "general", status: false });
     }
   };
   const refreshAuth = async () => {
@@ -51,12 +48,10 @@ export default function AuthButton(props: any) {
         setXmlHttpRequestHeader(accessToken);
         localStorage.setItem("accessToken", accessToken);
         dispatch(setCredentials({ username: response.data.username, accessToken }));
-        setAuth({ method: "general", status: true });
       }
     } catch (error) {
       logError(error);
       dispatch(logOut());
-      setAuth({ method: "general", status: false });
     }
   };
   const setXmlHttpRequestHeader = (accessToken: any) => {
@@ -76,32 +71,18 @@ export default function AuthButton(props: any) {
       logResponse(response);
       localStorage.removeItem("accessToken");
       dispatch(logOut());
-      setAuth({ method: "general", status: false });
       router.push("/");
     } catch (error) {
       logError(error);
     }
   };
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
-    if (generalAuth) {
-      // general login
-      // checkAuth(accessToken);
-      setAuth({ method: "general", status: true });
-    } else if (nextAuth) {
-      // next-auth login
-      if (status === "authenticated") setAuth({ method: "nextauth", status: true });
-      else setAuth({ status: false });
-    }
-  }, [generalAuth, nextAuth]);
-  // console.log(auth.method);
-  // console.log(data);
+  console.log("auth : ", auth);
   return (
     <Box>
       {auth.status ? (
         <>
-          {auth.method === "general" && <button onClick={logoutAuth}>Sign out1</button>}
-          {auth.method === "nextauth" && (
+          {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}
+          {auth.mode === "nextauth" && (
             <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
           )}
           <Link href={"/auth/admin"}>Admin</Link>

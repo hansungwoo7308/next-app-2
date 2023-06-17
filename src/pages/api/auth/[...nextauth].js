@@ -74,22 +74,18 @@ export const authOptions = {
     },
     async session({ session, token }) {
       // server session
-      console.log("\x1b[32m");
-      console.log("[api/auth/callbacks/session]");
+      // console.log("\x1b[32m\n[api/auth/callbacks/session]");
       // console.log("token : ", token);
       // if (session.user) {
       //   session.user.role = token.role;
       // }
       // session.user = { test: "test" };
-      // console.log("session : ", session);
       if (session.user) {
         session.user.name = token.authorizedUser.name;
         session.user.email = token.authorizedUser.email;
         session.user.role = token.authorizedUser.role;
       }
-      // console.log("session.user : ", session.user);
-      console.log("session : ", session);
-      console.log("");
+      // console.log("session : ", session);
       return session;
     },
   },

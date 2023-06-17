@@ -25,7 +25,7 @@ export default function Page() {
     formState: { errors },
   } = useForm();
   const handleSigninWithNextauth = async (data: any) => {
-    // e.preventDefault();
+    console.log("data: ", data);
     // await signIn("credentials", {
     //   email: emailRef.current.value,
     //   password: passwordRef.current.value,
@@ -35,10 +35,12 @@ export default function Page() {
     try {
       setLoading(true);
       const response = await signIn("credentials", { ...data, callbackUrl: "/auth/admin" });
-      logResponse(response);
+      // logResponse(response);
+      console.log(response);
+      dispatch(setCredentials({ mode: "nextauth", username: "nextauth", accessToken: "nextauth" }));
       setLoading(false);
     } catch (error) {
-      logError(error);
+      // logError(error);
       setLoading(false);
     }
   };
@@ -50,7 +52,7 @@ export default function Page() {
       const accessToken = response.data.accessToken;
       logResponse(response);
       setHeader(accessToken);
-      dispatch(setCredentials({ username, accessToken }));
+      dispatch(setCredentials({ mode: "general", username, accessToken }));
       setLoading(false);
       router.push("/auth/admin");
     } catch (error) {

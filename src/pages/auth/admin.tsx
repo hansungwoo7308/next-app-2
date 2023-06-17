@@ -64,7 +64,7 @@ export default function Page() {
       const accessToken = localStorage.getItem("accessToken");
       const response = await axios({
         method: "get",
-        url: "/api/users",
+        url: `/api/users?mode=${auth?.mode}`,
         headers: {
           Authorization: `Bearer ${accessToken ? accessToken : ""}`,
         },
@@ -73,6 +73,7 @@ export default function Page() {
       setUsers(response.data.users);
     } catch (error) {
       logError(error);
+      // console.log(error);
 
       // await refreshAuth();
     }
@@ -105,6 +106,7 @@ export default function Page() {
   useEffect(() => {
     getData();
   }, [auth]);
+  // console.log("auhhhhhh:", auth);
   return (
     <>
       <Head>

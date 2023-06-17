@@ -18,7 +18,7 @@ export default function ProductItem({ product }: any) {
         disabled={inStock ? false : true}
         onClick={() => {
           const duplicate = cart.find((v: any) => v._id === product._id);
-          console.log("duplicate:", duplicate);
+          // console.log("duplicate:", duplicate);
           if (duplicate) return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
           else return dispatch(addToCart(product));
           // console.log("product:", product);

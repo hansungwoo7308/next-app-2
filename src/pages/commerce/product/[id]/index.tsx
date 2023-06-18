@@ -3,6 +3,9 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, selectCart } from "lib/client/store/cartSlice";
+import { setMessage } from "lib/client/store/notifySlice";
 export async function getServerSideProps({ params: { id } }: any) {
   //   console.log("id : ", id);
   const response = await getData(`product/${id}`);
@@ -15,6 +18,8 @@ export default function Page({ product }: any) {
   //   console.log(product);
   const { images, title, price, inStock, sold, description, content } = product;
   const [tabIndex, setTabIndex]: any = useState(0);
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCart);
   //   console.log("images : ", images);
   const handleClick = (index: any) => {
     // tabIndex으로부터 변경될 사항
@@ -50,7 +55,19 @@ export default function Page({ product }: any) {
               </div>
               <p>{description}</p>
               <p>{content}</p>
-              <button>Buy</button>
+              <button
+                onClick={() => {
+                  const duplicate = cart.find((v: any) => v._id === product._id);
+                  // console.log("duplicate:", duplicate);
+                  if (duplicate) {
+                    return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
+                  } else {
+                    return dispatch(addToCart({ ...product, quantity: 1 }));
+                  }
+                }}
+              >
+                Buy
+              </button>
             </div>
           </div>
           <div className="images">

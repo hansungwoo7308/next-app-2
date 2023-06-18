@@ -4,8 +4,8 @@ const nextConfig = {
   env: {
     BASE_URL: "https://next-app-2-taupe.vercel.app",
     MONGODB_URL: process.env.MONGODB_URI,
-    // basePath: process.env.BASE_URL,
-    // testabc: "sdfhsldfhsdfs333",
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+    REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
   },
   images: {
     remotePatterns: [

@@ -29,7 +29,7 @@ export function GlobalState({ children }: any) {
     // console.log("cart:", cart);
     if (!cart) return;
     const deserializedCart = JSON.parse(cart);
-    console.log("deserializedCart : ", deserializedCart);
+    // console.log("deserializedCart : ", deserializedCart);
     if (deserializedCart.length) {
       deserializedCart.map((v: any) => {
         dispatch(addToCart(v));

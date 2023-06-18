@@ -23,7 +23,7 @@ export default function ProductItem({ product }: any) {
           if (duplicate) {
             return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
           } else {
-            return dispatch(addToCart(product));
+            return dispatch(addToCart({ ...product, quantity: 1 }));
           }
           // console.log("product:", product);
           // console.log("cart:", cart);
@@ -68,7 +68,7 @@ export default function ProductItem({ product }: any) {
       <div className="image">
         <Image src={images[0].url} alt={images[0].url} width={200} height={200} />
       </div>
-      <div>
+      <div className="description">
         <h5>{title}</h5>
         <div className="price">
           <h6>${price}</h6>
@@ -87,7 +87,6 @@ export default function ProductItem({ product }: any) {
 const Item = styled.li`
   /* width: 10rem; */
   border: 2px solid;
-  /* padding: 1rem; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -96,6 +95,13 @@ const Item = styled.li`
     > img {
       object-position: 0 20%;
       /* object-position: top; */
+    }
+  }
+  > .description {
+    padding: 1rem;
+
+    .price {
+      color: #d25d5d;
     }
   }
   > div {

@@ -30,7 +30,7 @@ export const Main = styled.main`
   }
   @media (width < 1000px) {
     width: 100%;
-    background-color: darkgreen;
+    background-color: black;
     > section {
       width: 100%;
       padding-left: 0;

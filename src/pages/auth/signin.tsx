@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loading";
 import { postData } from "lib/client/utils/fetchData";
+
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();

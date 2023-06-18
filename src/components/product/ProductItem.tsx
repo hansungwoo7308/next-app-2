@@ -4,6 +4,7 @@ import { setMessage } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function ProductItem({ product }: any) {
@@ -19,8 +20,11 @@ export default function ProductItem({ product }: any) {
         onClick={() => {
           const duplicate = cart.find((v: any) => v._id === product._id);
           // console.log("duplicate:", duplicate);
-          if (duplicate) return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
-          else return dispatch(addToCart(product));
+          if (duplicate) {
+            return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
+          } else {
+            return dispatch(addToCart(product));
+          }
           // console.log("product:", product);
           // console.log("cart:", cart);
           // cart.map((v: any) => console.log(v));
@@ -72,8 +76,9 @@ export default function ProductItem({ product }: any) {
         </div>
         <p>{description}</p>
         <div className="action-tags">
-          {auth && adminLink}
-          {!auth && userLink}
+          {userLink}
+          {/* {auth && adminLink} */}
+          {/* {!auth && userLink} */}
         </div>
       </div>
     </Item>

@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+// console.log("redux localstorage : ", localStorage?.getItem("cart"));
+const initialState: any = [];
 export const cartSlice = createSlice({
   name: "cart",
-  initialState: [] as any,
+  initialState,
   reducers: {
     addToCart: (state, action) => {
       //   const { product, cart }:any = action.payload;
@@ -12,6 +14,7 @@ export const cartSlice = createSlice({
       //   const data:any = {type:'',data:action.payload}
 
       state.push(action.payload);
+      localStorage.setItem("cart", JSON.stringify(state));
     },
   },
 });

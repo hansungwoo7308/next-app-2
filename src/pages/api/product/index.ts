@@ -1,8 +1,8 @@
 import connectDB from "lib/server/config/connectDB";
 import Product from "lib/server/model/Product";
-connectDB();
 export default function index(req: any, res: any) {
   console.log(`\x1b[32m\n[api/product]`);
+  connectDB();
   if (req.method === "GET") getProducts(req, res);
 }
 const getProducts = async (req: any, res: any) => {

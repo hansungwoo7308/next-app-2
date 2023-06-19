@@ -16,24 +16,25 @@ export default function Page() {
     setTotal(total);
   }, [cart]);
   useEffect(() => {
-    // localStorage의 캐시된 카트 데이터로,
-    // 데이터베이스에서 실시간 데이터를 받아오고,
-    // 리덕스스토어에 데이터를 업데이트한다.
     const stringfiedCart: any = localStorage.getItem("cart");
     const cart: any = JSON.parse(stringfiedCart);
-    if (!cart) return;
-    const test = async () => {
+    if (!cart.length) return;
+    // 리로드(리프레시)를 하게 되면,
+    // 현재 클라이언트 스토어의 데이터를 서버로부터 최신 데이터를 받아온다.
+    // 그러고나서 클라이언트의 스토어(웹스토어,리덕스스토어)를 업데이트해준다.
+    // 스토어에 업데이트 시, 클라인언트의 수량정보를 추가해준다.
+    const setCart = async () => {
       let newCart: any = [];
       for (const item of cart) {
         const response = await getData(`product/${item._id}`);
         const { product } = response.data;
-        const { quantity } = item;
-        newCart.push({ ...product, quantity });
+        const { inStock, quantity } = item;
+        if (inStock) newCart.push({ ...product, quantity });
       }
       // console.log("newCart : ", newCart);
       dispatch(updateCart(newCart));
     };
-    test();
+    setCart();
   }, []);
   return (
     <Main>

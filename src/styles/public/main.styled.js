@@ -3,7 +3,7 @@ export const Main = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #222;
+  background-color: #333;
   color: #fff;
   > section {
     width: 80%;
@@ -30,7 +30,7 @@ export const Main = styled.main`
   }
   @media (width < 1000px) {
     width: 100%;
-    background-color: black;
+    background-color: #222;
     > section {
       width: 100%;
       padding-left: 0;
@@ -42,7 +42,7 @@ export const Main = styled.main`
   }
   @media (width<500px) {
     width: 100%;
-    background-color: darkgray;
+    background-color: #111;
     > section {
       width: 100%;
       padding-left: 0;

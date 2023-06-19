@@ -1,4 +1,4 @@
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "lib/client/store/store";
 import { fetchPosts } from "lib/client/store/postsSlice";
 import { fetchUsers } from "lib/client/store/usersSlice";
@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
-import { addToCart } from "lib/client/store/cartSlice";
+import { addToCart, updateCart } from "lib/client/store/cartSlice";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ test123, children, session }: any) {
@@ -23,19 +23,24 @@ export function GlobalState({ children }: any) {
   // console.log("children : ", children);
   const dispatch = useDispatch();
   const session = useSession();
+  const store = useSelector((state) => state);
+  const { cart }: any = store;
   useEffect(() => {
     // if refreshed and cart exist, load the items in redux store
-    const cart: any = localStorage.getItem("cart");
-    // console.log("cart:", cart);
-    if (!cart) return;
-    const deserializedCart = JSON.parse(cart);
-    // console.log("deserializedCart : ", deserializedCart);
-    if (deserializedCart.length) {
-      deserializedCart.map((v: any) => {
-        dispatch(addToCart(v));
-      });
-    }
+    const serializedCart: any = localStorage.getItem("cart");
+    if (!serializedCart) return;
+    const parseCart = JSON.parse(serializedCart);
+    // dispatch(updateCart(parseCart));
+    parseCart.map((v: any) => {
+      dispatch(addToCart(v));
+    });
   }, []);
+  useEffect(() => {
+    // if cart is changed, load the cart
+    if (!cart.length) return;
+    const stringfiedCart = JSON.stringify(cart);
+    localStorage.setItem("cart", stringfiedCart);
+  }, [cart]);
   useEffect(() => {
     // if refreshed and accessToken exist,
     // load the credentials in redux store

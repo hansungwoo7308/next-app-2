@@ -6,17 +6,26 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      //   const { product, cart }:any = action.payload;
-      // 재고가 없는 경우
-      //   if(product.inStock===0) return {message:'This product is out of stock.'}
-      //   state.cart = action.payload;
-      // state.cart = [...state.cart,product]
-      //   const data:any = {type:'',data:action.payload}
-
       state.push(action.payload);
       localStorage.setItem("cart", JSON.stringify(state));
     },
+    updateCart: (state, action) => {
+      // console.log("action.payload : ", action.payload);
+      state = action.payload;
+      localStorage.setItem("cart", JSON.stringify(state));
+    },
+    increaseQuantity: (state, action) => {
+      const { _id } = action.payload;
+      const foundItem = state.find((v: any) => v._id === _id);
+      // console.log("foundItem:", foundItem);
+      foundItem.quantity += 1;
+    },
+    decreaseQuantity: (state, action) => {
+      const { _id } = action.payload;
+      const foundItem = state.find((v: any) => v._id === _id);
+      foundItem.quantity -= 1;
+    },
   },
 });
-export const { addToCart }: any = cartSlice.actions;
+export const { addToCart, updateCart, increaseQuantity, decreaseQuantity }: any = cartSlice.actions;
 export const selectCart = (state: any) => state.cart;

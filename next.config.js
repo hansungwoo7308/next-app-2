@@ -3,6 +3,7 @@ const nextConfig = {
   // reactStrictMode: true,
   env: {
     BASE_URL: "https://next-app-2-taupe.vercel.app",
+    // BASE_URL: "https://next-app-2-zup2.vercel.app/",
     MONGODB_URL: process.env.MONGODB_URI,
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,

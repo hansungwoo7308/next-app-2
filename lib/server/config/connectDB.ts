@@ -13,7 +13,7 @@ const OPTION = {
   dbName: "bananaDB",
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  bufferCommands: false,
+  // bufferCommands: false,
 };
 /**
  * Global is used here to maintain a cached connection across hot reloads

@@ -8,7 +8,7 @@ export default async function index(req: any, res: any) {
 const getProducts = async (req: any, res: any) => {
   try {
     const products = await Product.find();
-    // console.log("products : ", products);
+    console.log("products : ", products);
     return res.status(200).json({ products, message: "GET success" });
   } catch (error) {
     console.log(error);

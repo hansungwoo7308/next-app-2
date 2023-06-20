@@ -16,16 +16,24 @@ export const cartSlice = createSlice({
     },
     increaseQuantity: (state, action) => {
       const { _id } = action.payload;
-      const foundItem = state.find((v: any) => v._id === _id);
-      // console.log("foundItem:", foundItem);
-      foundItem.quantity += 1;
+      state.find((v: any) => v._id === _id).quantity++;
+      // const foundItem = state.find((v: any) => v._id === _id);
+      // foundItem.quantity += 1;
     },
     decreaseQuantity: (state, action) => {
       const { _id } = action.payload;
-      const foundItem = state.find((v: any) => v._id === _id);
-      foundItem.quantity -= 1;
+      state.find((v: any) => v._id === _id).quantity--;
+      // const foundItem = state.find((v: any) => v._id === _id);
+      // foundItem.quantity -= 1;
+    },
+    deleteItem: (state, action) => {
+      const { _id } = action.payload;
+      const newState = state.filter((v: any) => v._id !== _id);
+      localStorage.setItem("cart", JSON.stringify(newState));
+      return newState;
     },
   },
 });
-export const { addToCart, updateCart, increaseQuantity, decreaseQuantity }: any = cartSlice.actions;
+export const { addToCart, updateCart, increaseQuantity, decreaseQuantity, deleteItem }: any =
+  cartSlice.actions;
 export const selectCart = (state: any) => state.cart;

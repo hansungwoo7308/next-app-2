@@ -36,6 +36,7 @@ export default function Page() {
     };
     setCart();
   }, []);
+  // console.log("cart : ", cart);
   return (
     <Main>
       <section>

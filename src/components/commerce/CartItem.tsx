@@ -1,4 +1,4 @@
-import { decreaseQuantity, increaseQuantity } from "lib/client/store/cartSlice";
+import { decreaseQuantity, deleteItem, increaseQuantity } from "lib/client/store/cartSlice";
 import Image from "next/image";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ export default function CartItem({ item }: any) {
               +
             </button>
           </div>
-          <button>Delete</button>
+          <button onClick={() => dispatch(deleteItem({ _id }))}>Delete</button>
         </div>
         <div className="price">
           <h5>price : ${price * quantity}</h5>

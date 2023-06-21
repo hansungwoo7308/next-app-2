@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
-export default function index() {
+export default function Page() {
   const { order }: any = useSelector((store) => store);
   return (
     <Main>

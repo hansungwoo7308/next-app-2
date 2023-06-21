@@ -3,19 +3,18 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useSelector } from "react-redux";
 export default function index() {
-  const store = useSelector((state) => state);
-  const { order }: any = store;
-  console.log();
+  const { order }: any = useSelector((store) => store);
   return (
     <Main>
       <section>
         <div>
-          <h1>Order Page</h1>
-          <h3>Total : ${order.total}</h3>
-          <div className="paypal">
+          <div className="description">
+            <h1>Order Page</h1>
+            <h3>Total : ${order.total}</h3>
+          </div>
+          <div className="payment">
             <PayPalButtons
               createOrder={(data, actions) => {
-                console.log("tatal : ", order.total);
                 return actions.order.create({
                   purchase_units: [
                     {
@@ -44,7 +43,12 @@ export default function index() {
 const Main = styled(PublicMain)`
   > section {
     > div {
-      .paypal {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      .description {
+      }
+      .payment {
         display: flex;
         justify-content: center;
       }

@@ -22,7 +22,9 @@ import { NextRequest, NextResponse } from "next/server";
 const cookie = require("cookie");
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  // console.log(`\x1b[33m\n[${pathname}]:middleware`);
+  console.log(`\x1b[33m\n[${pathname}]:middleware`);
+  const token = req.headers.get("authorization");
+  console.log("token : ", token);
 
   // next-auth
   // get the next-auth jwt token
@@ -42,17 +44,14 @@ export async function middleware(req: NextRequest) {
   // console.log("parsedCookie : ", parsedCookie);
   // console.log("refreshToken : ", refreshToken);
 
-  // if(pathname==='/auth/admin') {
-
+  // protect the routes
+  // const refreshToken = req.cookies.get("refreshToken")?.value;
+  // if (pathname === "/restricted" && !refreshToken) {
+  //   console.log("No refreshToken");
+  //   console.log("Redirecting to page [/auth/signin]...");
+  //   return NextResponse.rewrite(new URL("/auth/signin", req.nextUrl));
   // }
 
-  // protect the routes
-  const refreshToken = req.cookies.get("refreshToken")?.value;
-  if (pathname === "/restricted" && !refreshToken) {
-    console.log("No refreshToken");
-    console.log("Redirecting to page [/auth/signin]...");
-    return NextResponse.rewrite(new URL("/auth/signin", req.nextUrl));
-  }
   // if (pathname === "/api/restricted") {
   //   // const body = req.body;
   //   // const credentials = req.credentials;
@@ -79,7 +78,6 @@ export async function middleware(req: NextRequest) {
   // console.log("req.url : ", req.url);
   // console.log("req.cookies : ", req.cookies);
   // console.log("req.cookies.getAll() : ", req.cookies.getAll());
-
   // const origin = request.headers.get("origin");
   // const regex = new RegExp("/post-list-2");
   // const regexTest = regex.test(request.url);
@@ -104,7 +102,6 @@ export async function middleware(req: NextRequest) {
   //   },
   // });
   // response.headers.set("test", "test");
-  // console.log("");
   return NextResponse.next();
   // return response;
   // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
@@ -142,9 +139,10 @@ export async function middleware(req: NextRequest) {
 }
 export const config = {
   matcher: [
+    "/api/authentication/:path*",
     // "/",
     // "/api/restricted/:path*",
-    "/restricted/:path*",
+    // "/restricted/:path*",
   ],
   // matcher: ["/api/users"],
   // matcher: ["/auth/admin"],

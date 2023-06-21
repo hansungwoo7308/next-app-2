@@ -9,9 +9,12 @@ export const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    setOrderTotal: (state, action) => {
+    setCart: (state, action) => {
+      state.cart = action.payload;
+    },
+    setTotal: (state, action) => {
       state.total = action.payload;
     },
   },
 });
-export const { setOrderTotal } = orderSlice.actions;
+export const { setCart, setTotal } = orderSlice.actions;

@@ -27,7 +27,7 @@ export default function MyApp({ Component, pageProps, auth }: MyAppProps) {
       const response = await axios.post("/api/authentication/refresh");
       const accessToken = response.data.accessToken;
       logResponse(response);
-      setHeader(accessToken);
+      // setHeader(accessToken);
     } catch (error) {
       logError(error);
     }

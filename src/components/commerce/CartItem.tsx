@@ -5,14 +5,14 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 export default function CartItem({ item }: any) {
   const { _id, images, title, quantity, inStock, price } = item;
-  //   console.log("item : ", item);
   const dispatch = useDispatch();
-  //   console.log("quantity : ", item.quantity);
   return (
     <Box>
-      <Link href={`/commerce/product/${_id}`}>
-        <Image src={images[0].url} alt={images[0].url} width={1000} height={1000} />
-      </Link>
+      <div className="image">
+        <Link href={`/commerce/product/${_id}`}>
+          <Image src={images[0].url} alt={images[0].url} width={1000} height={1000} />
+        </Link>
+      </div>
       <div className="detail">
         <Link href={`/commerce/product/${_id}`}>
           <h3>{title}</h3>
@@ -43,15 +43,13 @@ export default function CartItem({ item }: any) {
 const Box = styled.li`
   height: 10rem;
   display: flex;
-  border: 2px solid;
-  > a {
-    width: 10rem;
-    /* height: 10rem; */
+  .image {
+    height: 100%;
+    padding: 0;
+    display: flex;
   }
-  > div {
+  .detail {
     padding: 1rem;
-  }
-  > .detail {
     flex: 1;
     .quantity {
       display: flex;

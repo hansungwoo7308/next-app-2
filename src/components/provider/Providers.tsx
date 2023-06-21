@@ -8,6 +8,9 @@ import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
 import { addToCart, updateCart } from "lib/client/store/cartSlice";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import axios from "axios";
+import logResponse from "lib/client/log/logResponse";
+import logError from "lib/client/log/logError";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ test123, children, session }: any) {
@@ -33,8 +36,20 @@ export function GlobalState({ children }: any) {
   // console.log("children : ", children);
   const dispatch = useDispatch();
   const session = useSession();
-  const store = useSelector((state) => state);
+  const store = useSelector((store) => store);
   const { cart }: any = store;
+  const refreshAuth = async () => {
+    try {
+      const response = await axios.post("/api/authentication/refresh");
+      const accessToken = response.data.accessToken;
+      logResponse(response);
+      // setHeader(accessToken);
+      localStorage.setItem("accessToken", accessToken);
+    } catch (error) {
+      logError(error);
+    }
+  };
+  // 로드 시 : 스토어에 카트 캐싱
   useEffect(() => {
     // if refreshed and cart exist, load the items in redux store
     const serializedCart: any = localStorage.getItem("cart");
@@ -45,12 +60,14 @@ export function GlobalState({ children }: any) {
       dispatch(addToCart(v));
     });
   }, []);
+  // 카트 변경 시 : 로컬 스토리지에 캐싱
   useEffect(() => {
     // if cart is changed, load the cart
     if (!cart.length) return;
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]);
+  // 로드 시 : 로컬 스토리지에서 엑세스 토큰을 체킹
   useEffect(() => {
     // if refreshed and accessToken exist,
     // load the credentials in redux store
@@ -59,13 +76,16 @@ export function GlobalState({ children }: any) {
       getData("authentication/check", accessToken)
         .then((response) => {
           const { username, accessToken } = response.data;
-          dispatch(setCredentials({ username, accessToken }));
+          dispatch(setCredentials({ mode: "general", username, accessToken }));
         })
         .catch((error) => {
-          localStorage.removeItem("accessToken");
+          refreshAuth();
+          // 만약 리프레시 토큰도 만료되면 다시 로그인해야함.
+          // localStorage.removeItem("accessToken");
         });
     }
   }, []);
+  // 로드 시 : 스토어에 크레덴셜을 캐싱 (next-auth의 세션으로부터)
   useEffect(() => {
     // if refreshed by nextauth session status,
     // load the auth status in redux store

@@ -6,6 +6,7 @@ import * as StyleComponent from "../styles/_app.styled";
 import axios from "axios";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
+import Script from "next/script";
 // var cookie = require("cookie");
 // import { NextPage } from "next";
 interface MyAppProps extends AppProps {
@@ -43,6 +44,11 @@ export default function MyApp({ Component, pageProps, auth }: MyAppProps) {
       <Providers session={pageProps.session}>
         <Layout>
           <StyleComponent.GlobalStyle />
+          {/* <script
+            src="https://www.paypal.com/sdk/js?client-id=Ab2uPl_Wo2-UDJ569Byt3xFloItf-fgdla5iQwfryndLbQFASTbwSr23GUJXj7B9lyybjL44iKADN1ZH
+&currency=USD"
+            defer
+          ></script> */}
           <Component {...pageProps} auth />
         </Layout>
       </Providers>

@@ -1,21 +1,25 @@
 import CartItem from "@/components/commerce/CartItem";
 import { Main as PublicMain } from "@/styles/public/main.styled";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import { addToCart, updateCart } from "lib/client/store/cartSlice";
+import { setOrderTotal } from "lib/client/store/orderSlice";
 import { getData } from "lib/client/utils/fetchData";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Page() {
-  // const cart = useSelector(selectCart);
-  const store = useSelector((state) => state);
-  const { auth, cart }: any = store;
-  const [total, setTotal] = useState(0);
+  const { auth, cart, order }: any = useSelector((store) => store);
   const dispatch = useDispatch();
+  const router = useRouter();
   useEffect(() => {
+    // set the tatal state of products
     const total = cart.reduce((a: any, v: any) => a + v.price * v.quantity, 0);
-    setTotal(total);
+    dispatch(setOrderTotal(total));
   }, [cart]);
   useEffect(() => {
+    // get the current database data of products
     const stringfiedCart: any = localStorage.getItem("cart");
     const cart: any = JSON.parse(stringfiedCart);
     if (!cart.length) return;
@@ -36,7 +40,58 @@ export default function Page() {
     };
     setCart();
   }, []);
-  // console.log("cart : ", cart);
+  // useEffect(() => {
+  //   // paypal
+  //   //   .Buttons({
+  //   //     // Order is created on the server and the order id is returned
+  //   //     createOrder() {
+  //   //       return fetch("/my-server/create-paypal-order", {
+  //   //         method: "POST",
+  //   //         headers: {
+  //   //           "Content-Type": "application/json",
+  //   //         },
+  //   //         // use the "body" param to optionally pass additional order information
+  //   //         // like product skus and quantities
+  //   //         body: JSON.stringify({
+  //   //           cart: [
+  //   //             {
+  //   //               sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
+  //   //               quantity: "YOUR_PRODUCT_QUANTITY",
+  //   //             },
+  //   //           ],
+  //   //         }),
+  //   //       })
+  //   //         .then((response) => response.json())
+  //   //         .then((order) => order.id);
+  //   //     },
+  //   //     // Finalize the transaction on the server after payer approval
+  //   //     onApprove(data: any) {
+  //   //       return fetch("/my-server/capture-paypal-order", {
+  //   //         method: "POST",
+  //   //         headers: {
+  //   //           "Content-Type": "application/json",
+  //   //         },
+  //   //         body: JSON.stringify({
+  //   //           orderID: data.orderID,
+  //   //         }),
+  //   //       })
+  //   //         .then((response) => response.json())
+  //   //         .then((orderData) => {
+  //   //           // Successful capture! For dev/demo purposes:
+  //   //           console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
+  //   //           const transaction = orderData.purchase_units[0].payments.captures[0];
+  //   //           alert(
+  //   //             `Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`
+  //   //           );
+  //   //           // When ready to go live, remove the alert and show a success message within this page. For example:
+  //   //           // const element = document.getElementById('paypal-button-container');
+  //   //           // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+  //   //           // Or go to another URL:  window.location.href = 'thank_you.html';
+  //   //         });
+  //   //     },
+  //   //   })
+  //   //   .render(paypalRef);
+  // }, []);
   return (
     <Main>
       <section>
@@ -50,7 +105,34 @@ export default function Page() {
                   <CartItem key={item._id} item={item} />
                 ))}
               </ul>
-              <h3>Total : ${total}</h3>
+              <h3>Total : ${order.total}</h3>
+              {/* <div>
+                <PayPalButtons
+                  createOrder={(data, actions) => {
+                    console.log("tatal : ", total);
+                    return actions.order.create({
+                      purchase_units: [
+                        {
+                          amount: {
+                            value: total,
+                          },
+                        },
+                      ],
+                    });
+                  }}
+                  onApprove={(data, actions: any) => {
+                    return actions.order.capture().then((details: any) => {
+                      // console.log("data : ", data);
+                      // console.log("details : ", details);
+                      const name = details.payer.name.given_name;
+                      alert(`Transaction completed by ${name}`);
+                    });
+                  }}
+                />
+              </div> */}
+              <div>
+                <Link href={"/commerce/order"}>Order</Link>
+              </div>
             </>
           )}
         </div>
@@ -71,6 +153,16 @@ const Main = styled(PublicMain)`
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
+        border: 2px solid;
+      }
+      > div {
+        display: flex;
+        justify-content: center;
+        padding-top: 3rem;
+        > button {
+          width: 40%;
+          height: 3rem;
+        }
       }
     }
   }

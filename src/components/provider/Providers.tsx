@@ -7,6 +7,7 @@ import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
 import { addToCart, updateCart } from "lib/client/store/cartSlice";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ test123, children, session }: any) {
@@ -14,7 +15,16 @@ export default function Providers({ test123, children, session }: any) {
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
-        <GlobalState>{children}</GlobalState>
+        <PayPalScriptProvider
+          options={{
+            clientId:
+              // "Ab2uPl_Wo2-UDJ569Byt3xFloItf-fgdla5iQwfryndLbQFASTbwSr23GUJXj7B9lyybjL44iKADN1ZH",
+              "ARL6BSMyqeQMRB31JuDJqvSeOryXUsFjLWyWOR8cG7oLi7peAw6LM3KDE37fUFEZawTeKyuESe5d4BbD",
+            currency: "USD",
+          }}
+        >
+          <GlobalState>{children}</GlobalState>
+        </PayPalScriptProvider>
       </SessionProvider>
     </Provider>
   );

@@ -14,15 +14,11 @@ export default async function (req: any, res: any) {
     accessToken,
     process.env.ACCESS_TOKEN_SECRET,
     (error: any, decoded: any) => {
-      if (error) {
-        // console.log("error : ", error);
-        // console.log("error.message : ", error.message);
-        res.status(403).json({ error });
-        return error;
-      }
-      console.log("decoded : ", decoded);
-      console.log("\x1b[34mThe accessToken was verified\x1b[0m");
-      return decoded;
+      if (error) return { error: error.message };
+      return { success: true, decoded };
+      // console.log("decoded : ", decoded);
+      // console.log("\x1b[34mThe accessToken was verified\x1b[0m");
+      // return decoded;
       // return { ...decoded, accessToken };
     }
   );

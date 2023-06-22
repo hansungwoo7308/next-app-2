@@ -71,26 +71,36 @@ export function GlobalState({ children }: any) {
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]);
-  // 로드 시 : 로컬 스토리지에서 엑세스 토큰을 체킹
+  // 로드 시 : 스토어에서 엑세스 토큰을 체킹
   useEffect(() => {
     // if refreshed and accessToken exist,
     // load the credentials in redux store
-    console.log("로드 시 : 로컬 스토리지에서...");
+    // console.log("로드 시 : 로컬 스토리지에서...");
     // const accessToken = localStorage.getItem("accessToken");
     const { accessToken } = auth;
     if (accessToken) {
       getData("authentication/check", accessToken)
         .then((response) => {
-          const { username } = response.data;
-          dispatch(setCredentials({ mode: "general", username, accessToken }));
+          // const { username } = response.data;
+          // dispatch(setCredentials({ mode: "general", status: true, username, accessToken }));
+          logResponse(response);
+          // console.log("response.data : ", response.data);
         })
         .catch((error) => {
+          logError(error);
           refreshAuth();
           // 만약 리프레시 토큰도 만료되면 다시 로그인해야함.
           // localStorage.removeItem("accessToken");
         });
     }
   });
+  // 로드 시 : 스토어에 엑세스 토큰이 없으면 레프레시 요청
+  useEffect(() => {
+    const { accessToken } = auth;
+    if (!accessToken) {
+      refreshAuth();
+    }
+  }, []);
   // 로드 시 : 스토어에 크레덴셜을 캐싱 (next-auth의 세션으로부터)
   useEffect(() => {
     // if refreshed by nextauth session status,

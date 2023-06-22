@@ -8,8 +8,9 @@ export default function logResponse(response: any) {
   const refreshToken = data.slicedTokens?.refreshToken;
 
   console.group(`${url} : `, status, statusText);
+  console.log(data);
   // console.log({ payload: data });
-  console.log(data.message);
+  // console.log(data.message);
   if (url === "/api/restricted") {
     console.log(data.decoded);
     console.groupEnd();

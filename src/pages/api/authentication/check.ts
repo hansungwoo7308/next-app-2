@@ -4,7 +4,12 @@ export default async function (req: any, res: any) {
   switch (req.method) {
     case "GET":
       const verified = await verifyJWT(req, res);
-      if (verified) res.status(200).json({ verified });
+      console.log("\x1b[33mverified : ", verified);
+      // console.log("verified.success : ", verified.success);
+      // console.log("verified.error : ", verified.error);
+      // if (verified.error) console.log("verified.error : ", verified.error);
+      if (verified.success) return res.status(200).json({ verified });
+      if (verified.error) return res.status(403).json({ error: verified.error });
       break;
     default:
       break;

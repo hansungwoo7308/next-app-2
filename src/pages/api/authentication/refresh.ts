@@ -15,16 +15,6 @@ export default async function (req: any, res: any) {
     console.log(`\x1b[31mNo refreshToken.\x1b[0m`);
     return res.status(401).json({ message: "Unauthorized" });
   }
-  // connect to db (연결)
-  // try {
-  //   const URI: any = process.env.MONGODB_URI;
-  //   const OPTIONS = { dbName: "bananaDB" };
-  //   // const OPTIONS = { dbName: "animalDB" };
-  //   await mongoose.connect(URI, OPTIONS);
-  // } catch (error) {
-  //   // console.log("connection error : ", error);
-  //   console.log(`\x1b[31mConnection error : ${error}\x1b[0m`);
-  // }
   // find the user
   const foundUser = await User.findOne({ refreshToken }).exec();
   // console.log("foundUser : ", foundUser);
@@ -64,10 +54,7 @@ export default async function (req: any, res: any) {
     // set the payload
     res.setHeader("Set-Cookie", [`refreshToken=${newRefreshToken};path=/`]);
     res.status(200).json({
-      message: { message: "The accessToken and refreshToken were refreshed" },
-      username: foundUser.name,
       accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
       slicedTokens: {
         accessToken: newAccessToken?.slice(-5),
         refreshToken: newRefreshToken?.slice(-5),

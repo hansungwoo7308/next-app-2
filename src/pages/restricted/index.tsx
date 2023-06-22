@@ -72,7 +72,7 @@ export default function Page() {
   const setHeader = (accessTokenPassed?: any) => {
     const accessTokenFromLocalStorage = localStorage.getItem("accessToken");
     const accessToken = accessTokenPassed || accessTokenFromLocalStorage;
-    localStorage.setItem("accessToken", accessToken);
+    // localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     // console.log("accessTokenFromLocalStorage : ", accessTokenFromLocalStorage);
     // console.log("accessToken : ", accessToken);

@@ -9,7 +9,7 @@ export default async function (req: any, res: any) {
       // console.log("verified.error : ", verified.error);
       // if (verified.error) console.log("verified.error : ", verified.error);
       if (verified.success) return res.status(200).json({ verified });
-      if (verified.error) return res.status(403).json({ error: verified.error });
+      else if (verified.error) return res.status(403).json({ error: verified.error });
       break;
     default:
       break;

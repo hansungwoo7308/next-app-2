@@ -51,6 +51,7 @@ export function getServerSideProps(context: any) {
 }
 export default function Page() {
   const auth = useSelector(selectAuth);
+  const { accessToken } = auth;
   const [users, setUsers]: any = useState();
   // console.log("\x1b[34m");
   // console.log("[pages/admin]");
@@ -58,7 +59,7 @@ export default function Page() {
   // console.log("");
   const getData = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      // const accessToken = localStorage.getItem("accessToken");
       const response = await axios({
         method: "get",
         url: `/api/users?mode=${auth?.mode}`,

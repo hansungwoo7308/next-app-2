@@ -17,49 +17,49 @@ export default function AuthButton(props: any) {
   const router = useRouter();
   const dispatch = useDispatch();
   // const [auth, setAuth]: any = useState<Auth>({ method: undefined, status: false });
-  const checkAuth = async (accessToken: any) => {
-    try {
-      // const response = await axios({
-      //   method: "get",
-      //   url: "/api/authentication/check",
-      //   headers: {
-      //     Authorization: `Bearer ${accessToken ? accessToken : ""}`,
-      //   },
-      // });
-      const response = await getData("authentication/check", accessToken);
-      logResponse(response);
-      dispatch(setCredentials({ username: response.data.username, accessToken }));
-    } catch (error) {
-      logError(error);
-      refreshAuth();
-    }
-  };
-  const refreshAuth = async () => {
-    try {
-      // const token = localStorage.getItem("accessToken");
-      const response = await axios({
-        method: "get",
-        url: "/api/authentication/refresh",
-      });
-      const accessToken = response.data.accessToken;
-      if (accessToken) {
-        logResponse(response);
-        setXmlHttpRequestHeader(accessToken);
-        localStorage.setItem("accessToken", accessToken);
-        dispatch(setCredentials({ username: response.data.username, accessToken }));
-      }
-    } catch (error) {
-      logError(error);
-      dispatch(logOut());
-    }
-  };
-  const setXmlHttpRequestHeader = (accessToken: any) => {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    // console.log("refreshAuth timeout...(60 seconds)");
-    // setTimeout(() => {
-    //   refreshAuth();
-    // }, 1000 * 60);
-  };
+  // const checkAuth = async (accessToken: any) => {
+  //   try {
+  //     // const response = await axios({
+  //     //   method: "get",
+  //     //   url: "/api/authentication/check",
+  //     //   headers: {
+  //     //     Authorization: `Bearer ${accessToken ? accessToken : ""}`,
+  //     //   },
+  //     // });
+  //     const response = await getData("authentication/check", accessToken);
+  //     logResponse(response);
+  //     dispatch(setCredentials({ username: response.data.username, accessToken }));
+  //   } catch (error) {
+  //     logError(error);
+  //     refreshAuth();
+  //   }
+  // };
+  // const refreshAuth = async () => {
+  //   try {
+  //     // const token = localStorage.getItem("accessToken");
+  //     const response = await axios({
+  //       method: "get",
+  //       url: "/api/authentication/refresh",
+  //     });
+  //     const accessToken = response.data.accessToken;
+  //     if (accessToken) {
+  //       logResponse(response);
+  //       setXmlHttpRequestHeader(accessToken);
+  //       localStorage.setItem("accessToken", accessToken);
+  //       dispatch(setCredentials({ username: response.data.username, accessToken }));
+  //     }
+  //   } catch (error) {
+  //     logError(error);
+  //     dispatch(logOut());
+  //   }
+  // };
+  // const setXmlHttpRequestHeader = (accessToken: any) => {
+  //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+  //   // console.log("refreshAuth timeout...(60 seconds)");
+  //   // setTimeout(() => {
+  //   //   refreshAuth();
+  //   // }, 1000 * 60);
+  // };
   const logoutAuth = async (e: any) => {
     e.preventDefault();
     try {

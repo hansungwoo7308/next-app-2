@@ -7,7 +7,7 @@ export default async function (req: any, res: any) {
   // console.log("req.url", req.url);
   if (req.query.mode === "general") {
     // console.log("general...");
-    const verified = await verifyJWT(req, res);
+    const verified: any = await verifyJWT(req, res);
     if (verified.success) {
       const users = ["cat", "dog"];
       console.log(`\x1b[33musers : ${users}`);

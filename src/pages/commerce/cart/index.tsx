@@ -26,8 +26,8 @@ export default function Page() {
     // 그러고나서 클라이언트의 스토어(웹스토어,리덕스스토어)를 업데이트해준다.
     // 스토어에 업데이트 시, 클라인언트의 수량정보를 추가해준다.
     const stringfiedCart: any = localStorage.getItem("cart");
+    if (!stringfiedCart) return;
     const cart: any = JSON.parse(stringfiedCart);
-    if (!cart.length) return;
     const setCart = async () => {
       let newCart: any = [];
       for (const item of cart) {

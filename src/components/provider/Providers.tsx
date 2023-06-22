@@ -43,65 +43,47 @@ export function GlobalState({ children }: any) {
   const refreshAuth = async () => {
     try {
       const response = await axios.post("/api/authentication/refresh");
-      const accessToken = response.data.accessToken;
+      const newAccessToken = response.data.accessToken;
       logResponse(response);
       // setHeader(accessToken);
-      localStorage.setItem("accessToken", accessToken);
-      dispatch(setCredentials({ mode: "general", status: true, accessToken }));
+      // localStorage.setItem("accessToken", newAccessToken);
+      dispatch(setCredentials({ mode: "general", status: true, accessToken: newAccessToken }));
     } catch (error) {
       logError(error);
       router.push("/");
     }
   };
-  // 로드 시 : 스토어에 카트 캐싱
-  useEffect(() => {
-    // if refreshed and cart exist, load the items in redux store
-    const serializedCart: any = localStorage.getItem("cart");
-    if (!serializedCart) return;
-    const parseCart = JSON.parse(serializedCart);
-    // dispatch(updateCart(parseCart));
-    parseCart.map((v: any) => {
-      dispatch(addToCart(v));
-    });
-  }, []);
-  // 카트 변경 시 : 로컬 스토리지에 캐싱
-  useEffect(() => {
-    // if cart is changed, load the cart
-    if (!cart.length) return;
-    const stringfiedCart = JSON.stringify(cart);
-    localStorage.setItem("cart", stringfiedCart);
-  }, [cart]);
-  // 로드 시 : 스토어에서 엑세스 토큰을 체킹
+
+  /* Auth */
+  // if loaded, accessToken 항시 검증 (store)
   useEffect(() => {
     // if refreshed and accessToken exist,
-    // load the credentials in redux store
+    // load the credentials in store
     // console.log("로드 시 : 로컬 스토리지에서...");
     // const accessToken = localStorage.getItem("accessToken");
     const { accessToken } = auth;
     if (accessToken) {
       getData("authentication/check", accessToken)
         .then((response) => {
-          // const { username } = response.data;
-          // dispatch(setCredentials({ mode: "general", status: true, username, accessToken }));
           logResponse(response);
-          // console.log("response.data : ", response.data);
+          const { username } = response.data;
+          dispatch(setCredentials({ mode: "general", status: true, username, accessToken }));
         })
         .catch((error) => {
           logError(error);
           refreshAuth();
-          // 만약 리프레시 토큰도 만료되면 다시 로그인해야함.
           // localStorage.removeItem("accessToken");
         });
     }
   });
-  // 로드 시 : 스토어에 엑세스 토큰이 없으면 레프레시 요청
+  // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
   useEffect(() => {
     const { accessToken } = auth;
     if (!accessToken) {
       refreshAuth();
     }
   }, []);
-  // 로드 시 : 스토어에 크레덴셜을 캐싱 (next-auth의 세션으로부터)
+  // 로드 시 : next-auth.session (store)
   useEffect(() => {
     // if refreshed by nextauth session status,
     // load the auth status in redux store
@@ -117,5 +99,26 @@ export function GlobalState({ children }: any) {
       );
     }
   }, []);
+
+  /* Cart */
+  // if first loaded, 캐싱 (store)
+  useEffect(() => {
+    // if refreshed and cart exist, load the items in store
+    const serializedCart: any = localStorage.getItem("cart");
+    if (!serializedCart) return;
+    const parseCart = JSON.parse(serializedCart);
+    // dispatch(updateCart(parseCart));
+    parseCart.map((v: any) => {
+      dispatch(addToCart(v));
+    });
+  }, []);
+  // if cart changed, : 캐싱 (storage)
+  useEffect(() => {
+    // if cart is changed, load the cart
+    if (!cart.length) return;
+    const stringfiedCart = JSON.stringify(cart);
+    localStorage.setItem("cart", stringfiedCart);
+  }, [cart]);
+
   return <>{children}</>;
 }

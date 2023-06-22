@@ -22,9 +22,9 @@ import { NextRequest, NextResponse } from "next/server";
 const cookie = require("cookie");
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  console.log(`\x1b[33m\n[${pathname}]:middleware`);
+  // console.log(`\x1b[33m\n[${pathname}]:middleware`);
   const token = req.headers.get("authorization");
-  console.log("token : ", token);
+  // console.log("token : ", token);
 
   // next-auth
   // get the next-auth jwt token

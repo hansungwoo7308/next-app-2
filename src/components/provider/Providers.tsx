@@ -11,6 +11,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
+import { useRouter } from "next/router";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ test123, children, session }: any) {
@@ -35,9 +36,10 @@ export default function Providers({ test123, children, session }: any) {
 export function GlobalState({ children }: any) {
   // console.log("children : ", children);
   const dispatch = useDispatch();
+  const router = useRouter();
   const session = useSession();
   const store = useSelector((store) => store);
-  const { cart }: any = store;
+  const { auth, cart }: any = store;
   const refreshAuth = async () => {
     try {
       const response = await axios.post("/api/authentication/refresh");
@@ -45,8 +47,10 @@ export function GlobalState({ children }: any) {
       logResponse(response);
       // setHeader(accessToken);
       localStorage.setItem("accessToken", accessToken);
+      dispatch(setCredentials({ mode: "general", status: true, accessToken }));
     } catch (error) {
       logError(error);
+      router.push("/");
     }
   };
   // 로드 시 : 스토어에 카트 캐싱
@@ -71,11 +75,13 @@ export function GlobalState({ children }: any) {
   useEffect(() => {
     // if refreshed and accessToken exist,
     // load the credentials in redux store
-    const accessToken = localStorage.getItem("accessToken");
+    console.log("로드 시 : 로컬 스토리지에서...");
+    // const accessToken = localStorage.getItem("accessToken");
+    const { accessToken } = auth;
     if (accessToken) {
       getData("authentication/check", accessToken)
         .then((response) => {
-          const { username, accessToken } = response.data;
+          const { username } = response.data;
           dispatch(setCredentials({ mode: "general", username, accessToken }));
         })
         .catch((error) => {
@@ -84,7 +90,7 @@ export function GlobalState({ children }: any) {
           // localStorage.removeItem("accessToken");
         });
     }
-  }, []);
+  });
   // 로드 시 : 스토어에 크레덴셜을 캐싱 (next-auth의 세션으로부터)
   useEffect(() => {
     // if refreshed by nextauth session status,

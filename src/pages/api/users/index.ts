@@ -7,14 +7,11 @@ export default async function handler(req: any, res: any) {
   // console.log("req.url", req.url);
   if (req.query.mode === "general") {
     console.log("general...");
-    const decoded = verifyJWT(req, res);
-    if (decoded) {
+    const verified = await verifyJWT(req, res);
+    if (verified) {
       const users = ["cat", "dog"];
       console.log(`\x1b[33musers : ${users}`);
-      return res.status(200).json({
-        message: { message: "The accessToken was verified" },
-        users,
-      });
+      return res.status(200).json({ users });
     }
   }
   if (req.query.mode === "nextauth") {

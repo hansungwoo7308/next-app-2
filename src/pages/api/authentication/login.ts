@@ -2,7 +2,7 @@ import User from "lib/server/model/User";
 import mongoose from "mongoose";
 import connectDB from "lib/server/config/connectDB";
 import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
-// connectDB();
+connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/login]");
   // get the request (추출)
@@ -10,14 +10,14 @@ export default async function handler(req: any, res: any) {
   if (!email || !password)
     return res.status(400).json({ message: "Email and Password are required." });
   // connect to db (연결)
-  try {
-    const URI: any = process.env.MONGODB_URI;
-    const OPTIONS = { dbName: "bananaDB" };
-    // const OPTIONS = { dbName: "animalDB" };
-    await mongoose.connect(URI, OPTIONS);
-  } catch (error) {
-    console.log("connection error : ", error);
-  }
+  // try {
+  //   const URI: any = process.env.MONGODB_URI;
+  //   const OPTIONS = { dbName: "bananaDB" };
+  //   // const OPTIONS = { dbName: "animalDB" };
+  //   await mongoose.connect(URI, OPTIONS);
+  // } catch (error) {
+  //   console.log("connection error : ", error);
+  // }
   // find(search) the email (탐색)
   const foundUser = await User.findOne({ email }).exec();
   // console.log("foundUser : ", foundUser);
@@ -26,7 +26,7 @@ export default async function handler(req: any, res: any) {
   if (foundUser.password !== password)
     return res.status(401).json({ message: "Your password did not match" });
   // issue the tokens (발급)
-  const payload = { username: foundUser.username, email: foundUser.email };
+  const payload = { id: foundUser._id, username: foundUser.username, email: foundUser.email };
   const accessToken = createAccessToken(payload);
   const refreshToken = createRefreshToken(payload);
   // save the issued tokens to DB (저장:database)

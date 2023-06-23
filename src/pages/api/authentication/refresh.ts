@@ -2,9 +2,10 @@ import User from "lib/server/model/User";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import connectDB from "lib/server/config/connectDB";
+import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
+connectDB();
 export default async function (req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/refresh]");
-  await connectDB();
   // get the tokens
   // const authorization = req.headers.authorization;
   // const accessToken = authorization?.split(" ")[1];
@@ -33,20 +34,23 @@ export default async function (req: any, res: any) {
     }
     // if (error || foundUser.username !== decoded.username) return res.status(403);
     // issue the new tokens
-    const newAccessToken = jwt.sign(
-      { username: foundUser.username, email: foundUser.email },
-      process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "1m",
-      }
-    );
-    const newRefreshToken = jwt.sign(
-      { username: foundUser.username, email: foundUser.email },
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "1d",
-      }
-    );
+    const payload = { id: foundUser._id, username: foundUser.username, email: foundUser.email };
+    const newAccessToken = createAccessToken(payload);
+    const newRefreshToken = createRefreshToken(payload);
+    // const newAccessToken = jwt.sign(
+    //   { username: foundUser.username, email: foundUser.email },
+    //   process.env.ACCESS_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "1m",
+    //   }
+    // );
+    // const newRefreshToken = jwt.sign(
+    //   { username: foundUser.username, email: foundUser.email },
+    //   process.env.REFRESH_TOKEN_SECRET,
+    //   {
+    //     expiresIn: "1d",
+    //   }
+    // );
     // save the issued tokens
     foundUser.refreshToken = newRefreshToken;
     const savedUser = await foundUser.save();

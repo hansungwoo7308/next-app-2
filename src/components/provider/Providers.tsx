@@ -45,16 +45,14 @@ export function GlobalState({ children }: any) {
       const response = await axios.post("/api/authentication/refresh");
       const newAccessToken = response.data.accessToken;
       logResponse(response);
-      // setHeader(accessToken);
-      // localStorage.setItem("accessToken", newAccessToken);
       dispatch(setCredentials({ mode: "general", status: true, accessToken: newAccessToken }));
     } catch (error) {
       logError(error);
       router.push("/");
     }
   };
-
   /* Auth */
+
   // if loaded, accessToken 항시 검증 (store)
   useEffect(() => {
     // if refreshed and accessToken exist,
@@ -72,7 +70,6 @@ export function GlobalState({ children }: any) {
         .catch((error) => {
           logError(error);
           refreshAuth();
-          // localStorage.removeItem("accessToken");
         });
     }
   });
@@ -83,6 +80,12 @@ export function GlobalState({ children }: any) {
       refreshAuth();
     }
   }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     refreshAuth();
+  //   }, 1000 * 10);
+  // }, []);
+
   // 로드 시 : next-auth.session (store)
   useEffect(() => {
     // if refreshed by nextauth session status,

@@ -8,13 +8,12 @@ export default async function (req: any, res: any) {
   if (req.query.mode === "general") {
     // console.log("general...");
     const verified: any = await verifyJWT(req, res);
-    if (verified.success) {
-      const users = ["cat", "dog"];
-      console.log(`\x1b[33musers : ${users}`);
-      return res.status(200).json({ users });
-    } else if (verified.error) {
-      return res.status(401).json({ error: verified.error });
+    if (!verified) {
+      return res.status(401).json({ error: "verified.error" });
     }
+    const users = ["cat", "dog"];
+    console.log(`\x1b[33musers : ${users}`);
+    return res.status(200).json({ users });
   }
   if (req.query.mode === "nextauth") {
     // console.log("nextauth...");

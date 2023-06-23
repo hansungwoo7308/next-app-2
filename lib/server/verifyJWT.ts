@@ -10,19 +10,23 @@ export default async function (req: any, res: any) {
   }
   console.log("accessToken : ", accessToken?.slice(-5));
   // verify the tokens
-  const verified = jwt.verify(
-    accessToken,
-    process.env.ACCESS_TOKEN_SECRET,
-    (error: any, decoded: any) => {
-      if (error) return { error: error.message };
-      return { success: true, decoded };
-      // console.log("decoded : ", decoded);
-      // console.log("\x1b[34mThe accessToken was verified\x1b[0m");
-      // return decoded;
-      // return { ...decoded, accessToken };
-    }
-  );
-  return verified;
+  try {
+    const verified = jwt.verify(
+      accessToken,
+      process.env.ACCESS_TOKEN_SECRET
+      // (error: any, decoded: any) => {
+      //   if (error) return { error };
+      //   return { success: true, decoded };
+      // }
+    );
+    console.log("\x1b[33mverified : ", verified);
+    return verified;
+  } catch (error: any) {
+    console.log("\x1b[31mverified : ", error.message);
+    // return error;
+    return res.status(403).json({ error });
+  }
+  // return verified;
   // if (verifiedAccessToken) return console.log("verifiedAccessToken");
   // const refreshSecret: any = process.env.REFRESH_TOKEN_SECRET;
   // const verifiedRefreshToken: any = jwt.verify(

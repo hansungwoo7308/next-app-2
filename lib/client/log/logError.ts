@@ -1,12 +1,11 @@
 export default function logError(error: any, props?: string) {
-  const data = error.response.data;
   const url = error.config.url;
   const status = error.response.status;
   const statusText = error.response.statusText;
   const message = error.response.data.message;
   const Authorization = error.response.config.headers.Authorization;
   console.group(`${url} : `, status, statusText);
-  console.log(data);
+  console.log(error.response.data);
   // console.log({ message });
   // if (props) {
   //   const foundProps = Object.fromEntries(

@@ -49,7 +49,7 @@ export default async function connectDB() {
   // console.log("\x1b[32m\n[DB]:connectDB");
   // cached connection
   if (cached.conn) {
-    console.log("\x1b[34mcached connection");
+    console.log("\x1b[34m\ncached connection");
     const connections = cached.conn.connections;
     // console.log("cached connections : ", cached.conn.connections);
     // console.log("connections[0].$dbName : ", connections[0].$dbName);
@@ -67,7 +67,7 @@ export default async function connectDB() {
   }
   // new connection
   if (!cached.promise) {
-    console.log("\x1b[34mnew conncection");
+    console.log("\x1b[34m\nnew conncection");
     cached.promise = mongoose.connect(MONGODB_URI, OPTION).then((mongoose) => {
       // console.log("new connections : ", mongoose);
       return mongoose;

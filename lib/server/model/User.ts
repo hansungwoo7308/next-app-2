@@ -1,48 +1,48 @@
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema({
-  // client로부터 채워지는 데이터
-  username: {
-    type: String,
-    // required: true,
-    // unique: true,
+const userSchema = new mongoose.Schema(
+  {
+    // client로부터 채워지는 데이터
+    username: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      // minlength: 5,
+    },
+    role: {
+      type: String,
+      default: "user",
+    },
+    refreshToken: {
+      type: String,
+    },
+    // server로부터 채워지는 데이터
+    // id: {
+    //   type: Number,
+    //   required: true,
+    //   unique: true,
+    // },
+    // hashedPassword: {
+    //   type: String,
+    //   required: true,
+    //   minlength: 5,
+    // },
+    // accessToken: {
+    //   type: String,
+    // },
+    // image: {
+    //   type: String,
+    // },
   },
-  password: {
-    type: String,
-    required: true,
-    // minlength: 5,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-
-  // server로부터 채워지는 데이터
-  // id: {
-  //   type: Number,
-  //   required: true,
-  //   unique: true,
-  // },
-  refreshToken: {
-    type: String,
-  },
-  role: {
-    type: String,
-    default: "user",
-    // required: true,
-  },
-  // hashedPassword: {
-  //   type: String,
-  //   required: true,
-  //   minlength: 5,
-  // },
-  // accessToken: {
-  //   type: String,
-  // },
-  // image: {
-  //   type: String,
-  // },
-});
+  { timestamps: true }
+);
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;
 // import mongoose from "mongoose";

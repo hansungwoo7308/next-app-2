@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 export default async function (req: any, res: any) {
-  console.log("[lib/server/verifyJWT]");
+  console.log("\x1b[32m[lib/server/verifyJWT]");
   // get the tokens
   const authorization = req.headers.authorization || req.headers.Authorization;
   const accessToken = authorization?.split(" ")[1];
@@ -11,20 +11,15 @@ export default async function (req: any, res: any) {
   console.log("accessToken : ", accessToken?.slice(-5));
   // verify the tokens
   try {
-    const verified = jwt.verify(
-      accessToken,
-      process.env.ACCESS_TOKEN_SECRET
-      // (error: any, decoded: any) => {
-      //   if (error) return { error };
-      //   return { success: true, decoded };
-      // }
-    );
-    console.log("\x1b[33mverified : ", verified);
+    const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    console.log("verified");
+    // console.log("\x1b[32mverified : ", verified);
     return verified;
   } catch (error: any) {
-    console.log("\x1b[31mverified : ", error.message);
+    console.log(`\x1b[31merror : ${error}`);
+    res.status(403).json({ error });
+    return false;
     // return error;
-    return res.status(403).json({ error });
   }
   // return verified;
   // if (verifiedAccessToken) return console.log("verifiedAccessToken");

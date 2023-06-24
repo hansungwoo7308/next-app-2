@@ -12,7 +12,7 @@ export const getData = async (url: string, token?: string) => {
   });
   return response;
 };
-export const postData = async (url: string, post: any, token?: string | any) => {
+export const postData = async (url: string, payload: any, token?: string | any) => {
   const response = await axios({
     method: "post",
     url: `${baseUrl}/api/${url}`,
@@ -20,11 +20,11 @@ export const postData = async (url: string, post: any, token?: string | any) => 
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    data: post,
+    data: payload,
   });
   return response;
 };
-export const putData = async (url: string, post: any, token: string) => {
+export const putData = async (url: string, payload: any, token: string) => {
   const response = await axios({
     method: "put",
     url: `${baseUrl}/api/${url}`,
@@ -32,11 +32,11 @@ export const putData = async (url: string, post: any, token: string) => {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    data: post,
+    data: payload,
   });
   return response;
 };
-export const patchData = async (url: string, post: any, token: string) => {
+export const patchData = async (url: string, payload: any, token: string) => {
   const response = await axios({
     method: "patch",
     url: `${baseUrl}/api/${url}`,
@@ -44,7 +44,7 @@ export const patchData = async (url: string, post: any, token: string) => {
       "Content-Type": "application/json",
       Authorization: token,
     },
-    data: post,
+    data: payload,
   });
   return response;
 };

@@ -1,25 +1,27 @@
 import CartItem from "@/components/commerce/CartItem";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { updateCart } from "lib/client/store/cartSlice";
-import { setCart, setTotal } from "lib/client/store/orderSlice";
+import { addOrder } from "lib/client/store/orderSlice";
 import { getData } from "lib/client/utils/fetchData";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Page() {
-  const { auth, cart, order }: any = useSelector((store) => store);
+  const { cart }: any = useSelector((store) => store);
+  const [total, setToal]: any = useState(0);
   const dispatch = useDispatch();
   const router = useRouter();
+  const { register, handleSubmit } = useForm();
+  // set the tatal
   useEffect(() => {
-    // set the tatal of order
     // 주문금액을 스토어에 저장한다.
     const total = cart.reduce((a: any, v: any) => a + v.price * v.quantity, 0);
-    dispatch(setTotal(total));
+    setToal(total);
   }, [cart]);
+  // get the up-to-date cart
   useEffect(() => {
-    // get the up-to-date data of products
     // 카트의 재고가 없을 수도 있기 때문에, 최신 데이터를 다시 받아온다.
     // 리로드(리프레시)를 하게 되면,
     // 현재 클라이언트 스토어의 데이터를 서버로부터 최신 데이터를 받아온다.
@@ -41,71 +43,21 @@ export default function Page() {
     };
     setCart();
   }, []);
-  // useEffect(() => {
-  //   // paypal
-  //   //   .Buttons({
-  //   //     // Order is created on the server and the order id is returned
-  //   //     createOrder() {
-  //   //       return fetch("/my-server/create-paypal-order", {
-  //   //         method: "POST",
-  //   //         headers: {
-  //   //           "Content-Type": "application/json",
-  //   //         },
-  //   //         // use the "body" param to optionally pass additional order information
-  //   //         // like product skus and quantities
-  //   //         body: JSON.stringify({
-  //   //           cart: [
-  //   //             {
-  //   //               sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
-  //   //               quantity: "YOUR_PRODUCT_QUANTITY",
-  //   //             },
-  //   //           ],
-  //   //         }),
-  //   //       })
-  //   //         .then((response) => response.json())
-  //   //         .then((order) => order.id);
-  //   //     },
-  //   //     // Finalize the transaction on the server after payer approval
-  //   //     onApprove(data: any) {
-  //   //       return fetch("/my-server/capture-paypal-order", {
-  //   //         method: "POST",
-  //   //         headers: {
-  //   //           "Content-Type": "application/json",
-  //   //         },
-  //   //         body: JSON.stringify({
-  //   //           orderID: data.orderID,
-  //   //         }),
-  //   //       })
-  //   //         .then((response) => response.json())
-  //   //         .then((orderData) => {
-  //   //           // Successful capture! For dev/demo purposes:
-  //   //           console.log("Capture result", orderData, JSON.stringify(orderData, null, 2));
-  //   //           const transaction = orderData.purchase_units[0].payments.captures[0];
-  //   //           alert(
-  //   //             `Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`
-  //   //           );
-  //   //           // When ready to go live, remove the alert and show a success message within this page. For example:
-  //   //           // const element = document.getElementById('paypal-button-container');
-  //   //           // element.innerHTML = '<h3>Thank you for your payment!</h3>';
-  //   //           // Or go to another URL:  window.location.href = 'thank_you.html';
-  //   //         });
-  //   //     },
-  //   //   })
-  //   //   .render(paypalRef);
-  // }, []);
-  const handleOrder = (e: any) => {
-    // 실제는 아래와 같지 않을까?
-    // 주문하게되면,
-    // 카트에 담아둔 주문(항목,개수)으로부터 서버의 제품재고를 주문갯수로부터 감소시켜준다.
-    // 오더페이지에서 주소와 결제방식을 선택하고 주문을 진행한다.
-    e.preventDefault();
-    dispatch(setCart(cart));
+  const handleOrder = (data: any) => {
+    const { address, mobile } = data;
+    const payload = {
+      address,
+      mobile,
+      cart,
+      total,
+    };
+    dispatch(addOrder(payload));
     router.push("/commerce/order");
   };
   return (
     <Main>
       <section>
-        <div>
+        <div className="cart">
           {!cart.length && <h1>No items</h1>}
           {cart.length && (
             <>
@@ -115,13 +67,23 @@ export default function Page() {
                   <CartItem key={item._id} item={item} />
                 ))}
               </ul>
-              <h3>Total : ${order.total}</h3>
-              <div className="order">
-                {/* <Link href={"/commerce/order"}>Order</Link> */}
-                <button onClick={handleOrder}>Order</button>
-              </div>
+              <h3>Total : ${total}</h3>
             </>
           )}
+        </div>
+        <div className="order">
+          <form action="">
+            <div>
+              <h3>Shipping</h3>
+              <input
+                {...register("address", { required: true })}
+                type="text"
+                placeholder="Address"
+              />
+              <input {...register("mobile", { required: true })} type="text" placeholder="Mobile" />
+            </div>
+            <button onClick={handleSubmit(handleOrder)}>Pay to Order</button>
+          </form>
         </div>
       </section>
     </Main>
@@ -129,39 +91,41 @@ export default function Page() {
 }
 const Main = styled(PublicMain)`
   > section {
-    > div {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 3rem;
+    .cart {
       ul {
         display: flex;
         flex-direction: column;
         gap: 1rem;
       }
-      h3 {
+      > h3 {
         height: 3rem;
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
-        /* border: 2px solid; */
+        border: 2px solid;
       }
-      .order {
+    }
+    .order {
+      form {
         display: flex;
-        justify-content: center;
-        /* border: 2px solid blue; */
-        a {
-          width: 5rem;
+        justify-content: space-between;
+        gap: 2rem;
+        div {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: #333;
+          flex-direction: column;
+          gap: 1rem;
+          border: 2px solid;
           padding: 1rem;
-          margin-top: 3rem;
-          :hover {
-            background-color: #ddd;
-            color: #111;
+          input {
+            width: 20rem;
           }
         }
         button {
-          width: 10rem;
-          padding: 2rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
       }
     }

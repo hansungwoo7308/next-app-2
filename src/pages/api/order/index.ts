@@ -1,5 +1,6 @@
 import connectDB from "lib/server/config/connectDB";
 import Order from "lib/server/model/Order";
+import Product from "lib/server/model/Product";
 import User from "lib/server/model/User";
 import verifyJWT from "lib/server/verifyJWT";
 connectDB();
@@ -20,19 +21,22 @@ const createOrder = async (req: any, res: any) => {
   try {
     // verify
     const verified = await verifyJWT(req, res);
-    if (!verified) return res.status(403).json({ verified });
+    if (!verified) return;
     // find
-    const { email } = verified;
-    const foundUser = await User.findOne({ email }).exec();
-    console.log("foundUser : ", foundUser);
-    // make an order
+    const { id } = verified;
+    const foundUser = await User.findOne({ _id: id }).exec();
+    // console.log("foundUser : ", foundUser);
+    // update the product in database
     const { address, mobile, cart, total } = req.body;
+    cart.map((item: any) => {
+      const { _id, quantity, inStock, sold } = item;
+      updateProduct({ _id, quantity, inStock, sold });
+    });
+    // make an order
     const order = await Order.create({ user: foundUser.id, address, mobile, cart, total });
+    console.log("order : ", order);
     // set
     return res.status(200).json({ order });
-    // if (verified.error) return res.status(403).json({ verified });
-    // return res.status(200).json({ verified });
-    // const { address, mobile, cart, total } = req.body;
     // const newOrder = new Orders({
     //   user: result.id,
     //   address,
@@ -51,5 +55,19 @@ const createOrder = async (req: any, res: any) => {
   } catch (error: any) {
     console.log("error : ", error);
     return res.status(500).json({ error: error.message });
+  }
+};
+const updateProduct = async (payload: any) => {
+  const { _id, quantity, inStock, sold } = payload;
+  try {
+    await Product.findOneAndUpdate(
+      { _id },
+      {
+        inStock: inStock - quantity,
+        sold: sold + quantity,
+      }
+    );
+  } catch (error) {
+    console.log("error : ", error);
   }
 };

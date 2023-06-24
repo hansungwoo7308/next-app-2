@@ -43,6 +43,7 @@ export default function CartItem({ item }: any) {
 const Box = styled.li`
   height: 10rem;
   display: flex;
+  border: 2px solid;
   .image {
     height: 100%;
     padding: 0;

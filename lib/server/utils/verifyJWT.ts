@@ -12,8 +12,7 @@ export default async function (req: any, res: any) {
   // verify the tokens
   try {
     const verified = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-    console.log("verified");
-    // console.log("\x1b[32mverified : ", verified);
+    console.log("\x1b[32mverified : ", verified);
     return verified;
   } catch (error: any) {
     console.log(`\x1b[31merror : ${error}`);

@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 import jwt from "jsonwebtoken";
-import verifyJWT from "lib/server/verifyJWT";
+import verifyJWT from "lib/server/utils/verifyJWT";
 export default async function index(req: any, res: any) {
   // const session = await getServerSession(req, res, authOptions);
   // if (session) {

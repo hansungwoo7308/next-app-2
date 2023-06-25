@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Head from "next/head";
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
@@ -13,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Loading from "@/components/Loading";
 import { postData } from "lib/client/utils/fetchData";
-
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -49,11 +47,12 @@ export default function Page() {
     try {
       setLoading(true);
       const response = await postData("authentication/login", data);
-      const username = response.data.username;
-      const accessToken = response.data.accessToken;
+      const { username, role, image, accessToken } = response.data;
       logResponse(response);
-      setHeader(accessToken);
-      dispatch(setCredentials({ mode: "general", username, accessToken }));
+      // setHeader(accessToken);
+      dispatch(
+        setCredentials({ mode: "general", status: true, username, role, image, accessToken })
+      );
       setLoading(false);
       router.push("/auth/admin");
     } catch (error) {
@@ -61,40 +60,9 @@ export default function Page() {
       setLoading(false);
     }
   };
-  // const handleSigninGenerally = async (e: any) => {
-  //   // e.preventDefault();
-  //   try {
-  //     const response = await axios.post("/api/authentication/login", {
-  //       email: emailRef.current.value,
-  //       password: passwordRef.current.value,
-  //     });
-  //     const username = response.data.username;
-  //     const accessToken = response.data.accessToken;
-  //     logResponse(response);
-  //     setHeader(accessToken);
-  //     dispatch(setCredentials({ username, accessToken }));
-  //     router.push("/auth/admin");
-  //   } catch (error) {
-  //     logError(error);
-  //   }
-  // };
   const setHeader = (accessToken: any) => {
-    // localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    // console.log("Slient Refresh in 60 seconds");
-    // setTimeout(() => {
-    //   refreshAuth();
-    // }, 1000 * 60);
   };
-  // const refreshAuth = async () => {
-  //   try {
-  //     const response = await axios.post("/api/authentication/refresh");
-  //     logResponse(response);
-  //     setHeader(response.data.accessToken);
-  //   } catch (error) {
-  //     logError(error);
-  //   }
-  // };
   useEffect(() => {
     setFocus("email");
   }, []);

@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  mode: null,
   status: false,
+  mode: null,
   username: null,
+  role: null,
+  image: null,
   accessToken: null,
 };
 export const authSlice = createSlice({
@@ -10,16 +12,20 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { mode, username, accessToken } = action.payload;
-      state.mode = mode;
+      const { mode, username, role, accessToken, image } = action.payload;
       state.status = true;
+      state.mode = mode;
       state.username = username;
+      state.role = role;
+      state.image = image;
       state.accessToken = accessToken;
     },
     logOut: (state, action) => {
-      state.mode = null;
       state.status = false;
+      state.mode = null;
       state.username = null;
+      state.role = null;
+      state.image = null;
       state.accessToken = null;
     },
   },

@@ -16,7 +16,7 @@
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
-import verifyJWT from "lib/server/verifyJWT";
+import verifyJWT from "lib/server/utils/verifyJWT";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 const cookie = require("cookie");

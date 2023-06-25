@@ -42,17 +42,18 @@ export function GlobalState({ children }: any) {
   const { auth, cart }: any = store;
   const refreshAuth = async () => {
     try {
-      const response = await axios.post("/api/authentication/refresh");
-      const newAccessToken = response.data.accessToken;
+      const response = await getData("authentication/refresh");
+      const { username, role, image, accessToken } = response.data;
       logResponse(response);
-      dispatch(setCredentials({ mode: "general", status: true, accessToken: newAccessToken }));
+      dispatch(
+        setCredentials({ status: true, mode: "general", username, role, image, accessToken })
+      );
     } catch (error) {
       logError(error);
       router.push("/");
     }
   };
   /* Auth */
-
   // if loaded, accessToken 항시 검증 (store)
   useEffect(() => {
     // if refreshed and accessToken exist,
@@ -64,8 +65,10 @@ export function GlobalState({ children }: any) {
       getData("authentication/check", accessToken)
         .then((response) => {
           logResponse(response);
-          const { username } = response.data;
-          dispatch(setCredentials({ mode: "general", status: true, username, accessToken }));
+          const { username, role, image } = response.data.verified;
+          dispatch(
+            setCredentials({ status: true, mode: "general", username, role, image, accessToken })
+          );
         })
         .catch((error) => {
           logError(error);
@@ -102,7 +105,6 @@ export function GlobalState({ children }: any) {
       );
     }
   }, []);
-
   /* Cart */
   // if first loaded, 캐싱 (store)
   useEffect(() => {
@@ -122,6 +124,5 @@ export function GlobalState({ children }: any) {
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]);
-
   return <>{children}</>;
 }

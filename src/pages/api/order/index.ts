@@ -2,7 +2,7 @@ import connectDB from "lib/server/config/connectDB";
 import Order from "lib/server/model/Order";
 import Product from "lib/server/model/Product";
 import User from "lib/server/model/User";
-import verifyJWT from "lib/server/verifyJWT";
+import verifyJWT from "lib/server/utils/verifyJWT";
 connectDB();
 export default async function (req: any, res: any) {
   console.log("\x1b[32m\n[api/order]");

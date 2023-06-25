@@ -1,15 +1,10 @@
 import User from "../../../../lib/server/model/User";
 import connectDB from "../../../../lib/server/config/connectDB";
+connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/signup]");
   // get the payload
   const { username, email, password, passwordConfirm }: any = req.body;
-  // connect to database
-  try {
-    await connectDB();
-  } catch (error) {
-    console.error(`\x1b[31mConnection Error : \x1b[0m`, error);
-  }
   // check the method
   if (req.method !== "POST")
     return res.status(400).json({ message: "Your request is not POST method." });
@@ -27,14 +22,11 @@ export default async function handler(req: any, res: any) {
       username,
       email,
       password,
-      role: "admin",
     });
     console.log("\x1b[33mnewUser : ", newUser);
-    // set the response
-    res.status(201).json({ message: "New user created.", newUser: newUser, success: true });
+    res.status(201).json({ newUser });
   } catch (error: any) {
     console.error(`\x1b[31mCreation Error : \x1b[0m`, error);
-    // set the response
     res.status(500).json(error);
   }
 }

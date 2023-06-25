@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema(
   {
-    // client로부터 채워지는 데이터
     username: {
       type: String,
       required: true,
@@ -14,7 +13,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      // minlength: 5,
     },
     role: {
       type: String,
@@ -23,56 +21,29 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
     },
+    image: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+    },
     // server로부터 채워지는 데이터
-    // id: {
-    //   type: Number,
-    //   required: true,
-    //   unique: true,
-    // },
     // hashedPassword: {
     //   type: String,
     //   required: true,
     //   minlength: 5,
-    // },
-    // accessToken: {
-    //   type: String,
-    // },
-    // image: {
-    //   type: String,
     // },
   },
   { timestamps: true }
 );
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;
-// import mongoose from "mongoose";
-// const userSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     required: true,
+
+//   roles: {
+//     User: {
+//       type: Number,
+//       default: 2001,
+//     },
+//     Editor: Number,
+//     Admin: Number,
 //   },
-//   email: {
-//     type: String,
-//     required: true,
-//   },
-//   password: {
-//     type: String,
-//     required: true,
-//   },
-//   role: {
-//     type: String,
-//     default: "user",
-//     required: true,
-//   },
-//   //   roles: {
-//   //     User: {
-//   //       type: Number,
-//   //       default: 2001,
-//   //     },
-//   //     Editor: Number,
-//   //     Admin: Number,
-//   //   },
-//   // refreshToken: [String],
-// });
-// // module.exports = mongoose.models?.User || mongoose.model("User", userSchema);
-// export default mongoose.models?.User || mongoose.model("User", userSchema);
+// refreshToken: [String],

@@ -6,26 +6,9 @@ import { setCredentials } from "lib/client/store/authSlice";
 import { useLoginMutation } from "lib/utils/authApiSlice";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
+import { postData } from "lib/client/utils/fetchData";
 // import { signIn, signOut, useSession } from "next-auth/react";
 // import { customAxios } from "lib/utils/customAxios";
-const Main = styled(PublicMain)`
-  > section {
-    height: 100vh;
-    > div {
-      width: 50%;
-      height: 50%;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      padding: 20px;
-      > form {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-    }
-  }
-`;
 export default function Page() {
   const userRef: any = useRef();
   const [username, setUsername] = useState("");
@@ -44,16 +27,21 @@ export default function Page() {
     try {
       // login by rtk query
       // unwrap : payload를 추출한다.
-      const loggedInUser = await login({ username, password }).unwrap();
-      // login by customAxios
-      // const result = await customAxios.post("/api/authentication", {
-      //   username,
-      //   password,
-      // });
+      // const loggedInUser = await login({ username, password }).unwrap();
+      const payload = { username, password };
+      const response: any = await postData("authentication/login", payload);
+      const credentials = {
+        status: true,
+        mode: "general",
+        username: response.data.username,
+        role: response.data.role,
+        image: response.data.image,
+        accessToken: response.data.accessToken,
+      };
       // const loggedInUser = await result.data;
       // console.log("loggedInUser : ", loggedInUser);
       // set the store
-      await dispatch(setCredentials({ ...loggedInUser, username }));
+      await dispatch(setCredentials(credentials));
       setUsername("");
       setPassword("");
       router.push("/");
@@ -137,3 +125,21 @@ export default function Page() {
     </>
   );
 }
+const Main = styled(PublicMain)`
+  > section {
+    height: 100vh;
+    > div {
+      width: 50%;
+      height: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 20px;
+      > form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  }
+`;

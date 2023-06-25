@@ -34,30 +34,26 @@ export default async function (req: any, res: any) {
     }
     // if (error || foundUser.username !== decoded.username) return res.status(403);
     // issue the new tokens
-    const payload = { id: foundUser._id, username: foundUser.username, email: foundUser.email };
+    const payload = {
+      id: decoded.id,
+      username: decoded.username,
+      email: decoded.email,
+      role: decoded.role,
+      image: decoded.image,
+    };
     const newAccessToken = createAccessToken(payload);
     const newRefreshToken = createRefreshToken(payload);
-    // const newAccessToken = jwt.sign(
-    //   { username: foundUser.username, email: foundUser.email },
-    //   process.env.ACCESS_TOKEN_SECRET,
-    //   {
-    //     expiresIn: "1m",
-    //   }
-    // );
-    // const newRefreshToken = jwt.sign(
-    //   { username: foundUser.username, email: foundUser.email },
-    //   process.env.REFRESH_TOKEN_SECRET,
-    //   {
-    //     expiresIn: "1d",
-    //   }
-    // );
     // save the issued tokens
     foundUser.refreshToken = newRefreshToken;
     const savedUser = await foundUser.save();
     // console.log("savedUser : ", savedUser);
     // set the payload
+    console.log("decodedUser : ", decoded);
     res.setHeader("Set-Cookie", [`refreshToken=${newRefreshToken};path=/`]);
     res.status(200).json({
+      username: decoded.username,
+      role: decoded.role,
+      image: decoded.image,
       accessToken: newAccessToken,
       slicedTokens: {
         accessToken: newAccessToken?.slice(-5),

@@ -1,4 +1,4 @@
-import verifyJWT from "lib/server/verifyJWT";
+import verifyJWT from "lib/server/utils/verifyJWT";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 export default async function (req: any, res: any) {

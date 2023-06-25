@@ -1,4 +1,4 @@
-import verifyJWT from "lib/server/verifyJWT";
+import verifyJWT from "lib/server/utils/verifyJWT";
 export default async function (req: any, res: any) {
   console.log("\x1b[32m\n[api/authentication/check]");
   switch (req.method) {

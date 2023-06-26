@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 export default async function (req: any, res: any) {
   console.log("\x1b[32m[lib/server/verifyJWT]");
-  // get the tokens
+  // get the accessToken
   const authorization = req.headers.authorization || req.headers.Authorization;
   const accessToken = authorization?.split(" ")[1];
   if (!accessToken) {

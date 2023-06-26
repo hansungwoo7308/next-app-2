@@ -55,27 +55,23 @@ export function GlobalState({ children }: any) {
   };
   /* Auth */
   // if loaded, accessToken 항시 검증 (store)
-  useEffect(() => {
-    // if refreshed and accessToken exist,
-    // load the credentials in store
-    // console.log("로드 시 : 로컬 스토리지에서...");
-    // const accessToken = localStorage.getItem("accessToken");
-    const { accessToken } = auth;
-    if (accessToken) {
-      getData("authentication/check", accessToken)
-        .then((response) => {
-          logResponse(response);
-          const { username, role, image } = response.data.verified;
-          dispatch(
-            setCredentials({ status: true, mode: "general", username, role, image, accessToken })
-          );
-        })
-        .catch((error) => {
-          logError(error);
-          refreshAuth();
-        });
-    }
-  });
+  // useEffect(() => {
+  //   const { accessToken } = auth;
+  //   if (accessToken) {
+  //     getData("authentication/check", accessToken)
+  //       .then((response) => {
+  //         logResponse(response);
+  //         const { username, role, image } = response.data.verified;
+  //         dispatch(
+  //           setCredentials({ status: true, mode: "general", username, role, image, accessToken })
+  //         );
+  //       })
+  //       .catch((error) => {
+  //         logError(error);
+  //         refreshAuth();
+  //       });
+  //   }
+  // });
   // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
   useEffect(() => {
     const { accessToken } = auth;

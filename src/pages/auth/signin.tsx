@@ -54,7 +54,7 @@ export default function Page() {
         setCredentials({ mode: "general", status: true, username, role, image, accessToken })
       );
       setLoading(false);
-      router.push("/auth/admin");
+      router.push("/auth/profile");
     } catch (error) {
       logError(error);
       setLoading(false);

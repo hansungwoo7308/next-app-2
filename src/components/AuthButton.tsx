@@ -17,30 +17,18 @@ export default function AuthButton(props: any) {
   const router = useRouter();
   const dispatch = useDispatch();
   // const [auth, setAuth]: any = useState<Auth>({ method: undefined, status: false });
-
-  // const setXmlHttpRequestHeader = (accessToken: any) => {
-  //   axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-  //   // console.log("refreshAuth timeout...(60 seconds)");
-  //   // setTimeout(() => {
-  //   //   refreshAuth();
-  //   // }, 1000 * 60);
-  // };
   const logoutAuth = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await axios({
-        method: "get",
-        url: "/api/authentication/logout",
-      });
+      const response = await getData("authentication/logout");
       logResponse(response);
-      localStorage.removeItem("accessToken");
+      // localStorage.removeItem("accessToken");
       dispatch(logOut());
       router.push("/");
     } catch (error) {
       logError(error);
     }
   };
-  // console.log("auth : ", auth);
   return (
     <Box>
       {auth.status ? (
@@ -49,7 +37,7 @@ export default function AuthButton(props: any) {
           {auth.mode === "nextauth" && (
             <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
           )}
-          <Link href={"/auth/admin"}>Admin</Link>
+          <Link href={"/auth/profile"}>Profile</Link>
         </>
       ) : (
         <>

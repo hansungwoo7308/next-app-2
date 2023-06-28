@@ -30,7 +30,7 @@ export const putData = async (url: string, payload: any, token: string) => {
     url: `${baseUrl}/api/${url}`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
     data: payload,
   });
@@ -42,7 +42,7 @@ export const patchData = async (url: string, payload: any, token: string) => {
     url: `${baseUrl}/api/${url}`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
     data: payload,
   });
@@ -54,7 +54,7 @@ export const deleteData = async (url: string, token: string) => {
     url: `${baseUrl}/api/${url}`,
     headers: {
       "Content-Type": "application/json",
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   });
   return response;

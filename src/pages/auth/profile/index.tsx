@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
-import { useRouter } from "next/router";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { patchData } from "lib/client/utils/fetchData";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -39,9 +38,25 @@ import Image from "next/image";
 // }
 export default function Page() {
   const { auth }: any = useSelector((store) => store);
-  const [mode, setMode]: any = useState("view");
-  const initialState = {};
-  //   const { accessToken } = auth;
+  //   const initialState = {
+  //     name: "",
+  //     image: "",
+  //     password: "",
+  //     passwordConfirm: "",
+  //   };
+  //   const [profile, setProfile]: any = useState(initialState);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const passwordRef = useRef();
+  passwordRef.current = watch("password");
+  //   useEffect(() => {
+  //     setProfile({ ...profile, name: auth.username });
+  //     console.log("profile : ", profile);
+  //   }, [auth.status]);
   //   const [users, setUsers]: any = useState();
   //   const getData = async () => {
   //     try {
@@ -63,6 +78,16 @@ export default function Page() {
   // useEffect(() => {
   //   getData();
   // }, [auth]);
+  const handleUpdate = async (data: any) => {
+    // console.log("data : ", data);
+    try {
+      const response = await patchData("user/updatePassword", data, auth.accessToken);
+      logResponse(response);
+    } catch (error) {
+      logError(error);
+    }
+    // console.log("auth.accessToken : ", auth.accessToken);
+  };
   if (!auth.status) return null;
   return (
     <>
@@ -73,39 +98,54 @@ export default function Page() {
         <section>
           <div className="profile">
             <div className="image">
-              {auth.image && <Image src={auth.image} alt={"auth.image"} width={200} height={200} />}
+              {auth.image && (
+                <Image src={auth.image} alt={"auth.image"} width={200} height={200}></Image>
+              )}
+              <div>
+                <input
+                  type="file"
+                  name="file"
+                  id="file_up"
+                  accept="image/*"
+                  // onChange={changeAvatar}
+                />
+              </div>
             </div>
             <div className="description">
-              {mode === "view" && (
-                <>
+              <form onSubmit={handleSubmit(handleUpdate)}>
+                <div>
+                  <h1>Profile</h1>
                   <div>
-                    <h1>Profile</h1>
-                    <div>
-                      <h3>Name : {auth.username}</h3>
-                    </div>
-                    <div>
-                      <h3>Role : {auth.role}</h3>
-                    </div>
+                    <label htmlFor="username">Name</label>
+                    <input
+                      {...register("username", { required: true })}
+                      type="text"
+                      defaultValue={auth.username}
+                    />
                   </div>
-                  <button onClick={() => setMode("edit")}>Edit</button>
-                </>
-              )}
-              {mode === "edit" && (
-                <>
                   <div>
-                    <h1>Profile</h1>
-                    <div>
-                      <span>Name :</span>
-                      <input type="text" defaultValue={auth.username} />
-                    </div>
-                    <div>
-                      <span>Image :</span>
-                      <input type="text" defaultValue={auth.username} />
-                    </div>
+                    <label htmlFor="email">Email</label>
+                    <input type="email" defaultValue={auth.email} disabled={true} />
                   </div>
-                  <button onClick={() => setMode("view")}>Update</button>
-                </>
-              )}
+                  <div>
+                    <label htmlFor="password">New Password</label>
+                    <input {...register("password", { required: true })} type="password" />
+                  </div>
+                  <div>
+                    <label htmlFor="passwordConfirm">New Password Confirm</label>
+                    <input
+                      {...register("passwordConfirm", {
+                        required: true,
+                        validate: (passwordConfirm) => passwordConfirm === passwordRef.current,
+                      })}
+                      type="password"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <button type="submit">Update</button>
+                </div>
+              </form>
             </div>
           </div>
         </section>
@@ -123,29 +163,49 @@ const Main = styled(PublicMain)`
       > div {
         border: 2px solid;
       }
+      .image {
+        width: 15rem;
+        height: fit-content;
+        position: relative;
+        overflow: hidden;
+        img {
+          height: initial;
+          border-radius: 50%;
+        }
+        div {
+          position: absolute;
+          bottom: -50%;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background-color: rgba(0, 0, 0, 0.5);
+          color: coral;
+          opacity: 0;
+          transition: all 0.5s;
+        }
+        :hover div {
+          bottom: 0;
+          opacity: 1;
+        }
+      }
       .description {
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         padding: 1rem;
-        div {
-          /* * {
-            border: 2px solid;
-          } */
-          h1 {
-            margin-bottom: 20px;
+        > form {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          > div > div {
+            display: flex;
+            flex-direction: column;
           }
-        }
-        button {
-          width: 5rem;
-          align-self: flex-end;
-        }
-      }
-      .image {
-        width: 10rem;
-        img {
-          height: initial;
+          > div:last-of-type {
+            align-self: flex-end;
+          }
         }
       }
     }

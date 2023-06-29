@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -9,7 +8,7 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
-import { setMessage } from "lib/client/store/notifySlice";
+import { setNotify } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
 import Loading from "@/components/Loading";
 export default function Page() {
@@ -27,19 +26,18 @@ export default function Page() {
   const password = useRef();
   password.current = watch("password");
   const handleSignup = async (data: any) => {
-    // console.log("data : ", data);
     try {
       setLoading(true);
       const response: any = await postData("authentication/signup", data);
       logResponse(response);
-      dispatch(setMessage({ message: response.data.message }));
+      dispatch(setNotify({ status: "success", response }));
+      // dispatch(setMessage({ message: response.data.message }));
       setLoading(false);
     } catch (error: any) {
       logError(error);
-      dispatch(setMessage({ message: error.message }));
+      dispatch(setNotify({ status: "error", response: error }));
       setLoading(false);
-      // dispatch(setMessage({ message: "Login Error" }));
-      // console.log(error);
+      // dispatch(setMessage({ message: error.message }));
     }
   };
   useEffect(() => {

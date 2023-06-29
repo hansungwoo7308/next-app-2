@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, selectCart } from "lib/client/store/cartSlice";
-import { setMessage } from "lib/client/store/notifySlice";
+import { setNotify } from "lib/client/store/notifySlice";
 export async function getServerSideProps({ params: { id } }: any) {
   //   console.log("id : ", id);
   const response = await getData(`product/${id}`);
@@ -60,7 +60,7 @@ export default function Page({ product }: any) {
                   const duplicate = cart.find((v: any) => v._id === product._id);
                   // console.log("duplicate:", duplicate);
                   if (duplicate) {
-                    return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
+                    return dispatch(setNotify({ status: "error", response: duplicate }));
                   } else {
                     return dispatch(addToCart({ ...product, quantity: 1 }));
                   }

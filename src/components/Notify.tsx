@@ -1,50 +1,73 @@
-import { useSelector } from "react-redux";
-import { selectMessage } from "lib/client/store/notifySlice";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import Loading from "./Loading";
+import { setVisible } from "lib/client/store/notifySlice";
 export default function Notify() {
-  const message = useSelector(selectMessage);
-  const [status, setStatus]: any = useState("hidden");
-  //   console.log("message : ", message);
-  useEffect(() => {
-    if (message) {
-      setStatus("visible");
-      setTimeout(() => {
-        setStatus("hidden");
-      }, 3000);
-    } else setStatus("hidden");
-  }, [message]);
+  const { notify }: any = useSelector((store) => store);
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   if (notify.visible) {
+  //     // dispatch(setVisible(true));
+  //     setTimeout(() => {
+  //       dispatch(setVisible(false));
+  //     }, 3000);
+  //   }
+  // });
   return (
-    <Box status={status} isMessage={message}>
-      <h1>Notification</h1>
-      <h3>{message}</h3>
-      {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
-      {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
-    </Box>
+    <>
+      {notify.loading && <Loading />}
+      <Box status={notify.visible}>
+        <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
+          <h3>Notification</h3>
+          <p>{notify.message.slice(0, 10)}...</p>
+        </div>
+        {notify.visible && <button onClick={() => dispatch(setVisible(false))}>{">"}</button>}
+        {!notify.visible && <button onClick={() => dispatch(setVisible(true))}>{"<"}</button>}
+      </Box>
+      {/* <Box status={status}>
+        {notify.success && (
+          <>
+            <h1>success</h1>
+            {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
+            {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
+          </>
+        )}
+        {notify.error && (
+          <>
+            <h1>error</h1>
+            {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
+            {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
+          </>
+        )}
+      </Box> */}
+    </>
   );
+  // return (
+  //   <Box status={status} isMessage={message}>
+  //     <h1>Notification</h1>
+  //     <h3>{message}</h3>
+  // {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
+  // {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
+  //   </Box>
+  // );
 }
 type Props = {
-  status?: "hidden" | "visible";
-  isMessage?: boolean;
+  status?: boolean;
+  // isMessage?: boolean;
+  // status: "loading" | "success" | "error" | null;
+  // response: any;
 };
 const Box = styled.div<Props>`
   width: 15rem;
   height: 8rem;
-  border: 2px solid green;
+  /* border: 2px solid green; */
   border-radius: 0 0.5rem 0.5rem 0;
-  /* outline: 2px solid green; */
   position: fixed;
   top: 50px;
-  right: ${({ status }) => {
-    // method 1
-    if (status === "hidden") return "-15rem";
-    else if (status === "visible") return "0";
-    // method 2
-    // return status === "hidden" ? "-15rem" : status === "visible" ? "0" : "";
-  }};
-  /* margin: 2rem; */
+  right: ${({ status }) => (status ? "0" : "-15rem")};
   margin-top: 2rem;
-  padding: 0.5rem 0.8rem;
+  /* padding: 0.5rem 0.8rem; */
   background-color: darkgreen;
   transition: all 0.5s;
   display: flex;
@@ -63,5 +86,10 @@ const Box = styled.div<Props>`
     padding: 0.5rem;
     background-color: darkcyan;
     cursor: pointer;
+  }
+  > div {
+    height: 100%;
+    padding: 1rem;
+    /* border: 2px solid red; */
   }
 `;

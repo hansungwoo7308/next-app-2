@@ -1,6 +1,6 @@
 import { selectAuth } from "lib/client/store/authSlice";
 import { addToCart, selectCart } from "lib/client/store/cartSlice";
-import { setMessage } from "lib/client/store/notifySlice";
+import { setTimeoutId, setNotify, setVisible } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +21,12 @@ export default function ProductItem({ product }: any) {
           const duplicate = cart.find((v: any) => v._id === product._id);
           // console.log("duplicate:", duplicate);
           if (duplicate) {
-            return dispatch(setMessage({ message: `duplicate ${duplicate._id}` }));
+            dispatch(setNotify({ message: duplicate._id, visible: true }));
+            const timeout = setTimeout(() => {
+              dispatch(setVisible(false));
+            }, 3000);
+            dispatch(setTimeoutId(timeout));
+            return;
           } else {
             return dispatch(addToCart({ ...product, quantity: 1 }));
           }
@@ -43,7 +48,7 @@ export default function ProductItem({ product }: any) {
           // if (result) console.log(result);
           // cart.map((v: any) => {
           //   if (v._id === product._id) {
-          //     return dispatch(setMessage({ message: "duplicate" }));
+          //     return dispatch(setNotify());
           //   } else {
           //     console.log("asdkhadsi");
           //     return dispatch(addToCart(product));

@@ -1,4 +1,3 @@
-// import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { selectAuth } from "lib/client/store/authSlice";
 import { customAxios } from "lib/utils/customAxios";
@@ -17,7 +16,6 @@ const RequireAuth = ({ children }: any) => {
       console.log("error : ", error);
     }
   };
-
   return auth.accessToken ? children : <h1>Forbidden</h1>;
   // return accessToken ? children : router.push("/login");
   // <Navigate to="/login" state={{ from: location }} replace />

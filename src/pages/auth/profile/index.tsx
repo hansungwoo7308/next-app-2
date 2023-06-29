@@ -38,13 +38,6 @@ import { patchData } from "lib/client/utils/fetchData";
 // }
 export default function Page() {
   const { auth }: any = useSelector((store) => store);
-  //   const initialState = {
-  //     name: "",
-  //     image: "",
-  //     password: "",
-  //     passwordConfirm: "",
-  //   };
-  //   const [profile, setProfile]: any = useState(initialState);
   const {
     register,
     handleSubmit,
@@ -53,10 +46,6 @@ export default function Page() {
   } = useForm();
   const passwordRef = useRef();
   passwordRef.current = watch("password");
-  //   useEffect(() => {
-  //     setProfile({ ...profile, name: auth.username });
-  //     console.log("profile : ", profile);
-  //   }, [auth.status]);
   //   const [users, setUsers]: any = useState();
   //   const getData = async () => {
   //     try {
@@ -79,14 +68,12 @@ export default function Page() {
   //   getData();
   // }, [auth]);
   const handleUpdate = async (data: any) => {
-    // console.log("data : ", data);
     try {
       const response = await patchData("user/updatePassword", data, auth.accessToken);
       logResponse(response);
     } catch (error) {
       logError(error);
     }
-    // console.log("auth.accessToken : ", auth.accessToken);
   };
   if (!auth.status) return null;
   return (

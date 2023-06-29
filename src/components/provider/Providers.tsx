@@ -50,7 +50,7 @@ export function GlobalState({ children }: any) {
       );
     } catch (error) {
       logError(error);
-      router.push("/");
+      // router.push("/");
     }
   };
   /* Auth */

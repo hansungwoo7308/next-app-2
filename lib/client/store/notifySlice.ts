@@ -4,6 +4,7 @@ type notify = {
   visible: boolean;
   message: string;
   timeoutId?: any;
+  count?: any;
   // messages: string[];
 };
 const initialState: notify = {
@@ -11,6 +12,7 @@ const initialState: notify = {
   loading: false,
   visible: false,
   timeoutId: null,
+  count: 0,
   // messages: [],
   // success: false,
   // error: false,
@@ -25,6 +27,7 @@ export const notifySlice = createSlice({
       const { message, visible } = action.payload;
       state.message = message;
       state.visible = visible;
+      state.count++;
     },
     setLoading: (state, action) => {
       state.loading = action.payload;

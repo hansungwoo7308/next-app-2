@@ -2,18 +2,16 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Loading from "./Loading";
-import { setVisible } from "lib/client/store/notifySlice";
+import { setTimeoutId, setVisible } from "lib/client/store/notifySlice";
 export default function Notify() {
   const { notify }: any = useSelector((store) => store);
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   if (notify.visible) {
-  //     // dispatch(setVisible(true));
-  //     setTimeout(() => {
-  //       dispatch(setVisible(false));
-  //     }, 3000);
-  //   }
-  // });
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(setVisible(false));
+    }, 3000);
+    dispatch(setTimeoutId(timeoutId));
+  }, [notify.count]);
   return (
     <>
       {notify.loading && <Loading />}

@@ -21,12 +21,9 @@ export default function ProductItem({ product }: any) {
           const duplicate = cart.find((v: any) => v._id === product._id);
           // console.log("duplicate:", duplicate);
           if (duplicate) {
-            dispatch(setNotify({ message: duplicate._id, visible: true }));
-            const timeout = setTimeout(() => {
-              dispatch(setVisible(false));
-            }, 3000);
-            dispatch(setTimeoutId(timeout));
-            return;
+            return dispatch(
+              setNotify({ message: `duplicated id : ${duplicate._id}`, visible: true })
+            );
           } else {
             return dispatch(addToCart({ ...product, quantity: 1 }));
           }

@@ -10,12 +10,12 @@ import logError from "lib/client/log/logError";
 import { setCredentials } from "lib/client/store/authSlice";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
-import Loading from "@/components/Loading";
 import { postData } from "lib/client/utils/fetchData";
+import { setLoading, setNotify } from "lib/client/store/notifySlice";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [loading, setLoading]: any = useState(false);
+  // const [loading, setLoading]: any = useState(false);
   const {
     register,
     handleSubmit,
@@ -32,32 +32,32 @@ export default function Page() {
     //   // redirect: false,
     // });
     try {
-      setLoading(true);
+      // setLoading(true);
       const response = await signIn("credentials", { ...data, callbackUrl: "/auth/admin" });
       // logResponse(response);
       console.log(response);
       dispatch(setCredentials({ mode: "nextauth", username: "nextauth", accessToken: "nextauth" }));
-      setLoading(false);
+      // setLoading(false);
     } catch (error) {
       // logError(error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
   const handleSigninGenerally = async (data: any) => {
     try {
-      setLoading(true);
+      dispatch(setLoading(true));
       const response = await postData("authentication/login", data);
       const { username, role, image, accessToken } = response.data;
       logResponse(response);
-      // setHeader(accessToken);
       dispatch(
         setCredentials({ mode: "general", status: true, username, role, image, accessToken })
       );
-      setLoading(false);
+      dispatch(setLoading(false));
+      dispatch(setNotify({ message: "Login Success", visible: true }));
       router.push("/auth/profile");
     } catch (error) {
       logError(error);
-      setLoading(false);
+      dispatch(setLoading(false));
     }
   };
   const setHeader = (accessToken: any) => {
@@ -73,7 +73,6 @@ export default function Page() {
       </Head>
       <Main>
         <section>
-          {loading && <Loading />}
           <form>
             <h1>Signin</h1>
             <input {...register("email", { required: true })} type="text" placeholder="email" />
@@ -91,7 +90,7 @@ export default function Page() {
                 router.push("/auth/signup");
               }}
             >
-              Create new account
+              Sign Up
             </button> */}
           </form>
         </section>

@@ -8,14 +8,13 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
-import { setNotify } from "lib/client/store/notifySlice";
+import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
-import Loading from "@/components/Loading";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { status } = useSession();
-  const [loading, setLoading]: any = useState(false);
+  // const [loading, setLoading]: any = useState(false);
   const {
     register,
     handleSubmit,
@@ -26,18 +25,17 @@ export default function Page() {
   const password = useRef();
   password.current = watch("password");
   const handleSignup = async (data: any) => {
+    console.log("data : ", data);
     try {
-      setLoading(true);
+      dispatch(setLoading(true));
       const response: any = await postData("authentication/signup", data);
       logResponse(response);
-      dispatch(setNotify({ status: "success", response }));
-      // dispatch(setMessage({ message: response.data.message }));
-      setLoading(false);
+      dispatch(setNotify({ message: "signed up", visible: true }));
+      dispatch(setLoading(false));
     } catch (error: any) {
       logError(error);
-      dispatch(setNotify({ status: "error", response: error }));
-      setLoading(false);
-      // dispatch(setMessage({ message: error.message }));
+      dispatch(setNotify({ message: "failed to sign up", visible: true }));
+      dispatch(setLoading(false));
     }
   };
   useEffect(() => {
@@ -54,7 +52,6 @@ export default function Page() {
       </Head>
       <Main>
         <section>
-          {loading && <Loading />}
           <form onSubmit={handleSubmit(handleSignup)}>
             <div>
               <input

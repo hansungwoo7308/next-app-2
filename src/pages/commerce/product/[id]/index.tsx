@@ -60,7 +60,7 @@ export default function Page({ product }: any) {
                   const duplicate = cart.find((v: any) => v._id === product._id);
                   // console.log("duplicate:", duplicate);
                   if (duplicate) {
-                    dispatch(setNotify({ message: duplicate._id, visible: true }));
+                    dispatch(setNotify({ status: "error", message: duplicate._id, visible: true }));
                     const timeout = setTimeout(() => {
                       dispatch(setVisible(false));
                     }, 3000);

@@ -53,11 +53,12 @@ export default function Page() {
         setCredentials({ mode: "general", status: true, username, role, image, accessToken })
       );
       dispatch(setLoading(false));
-      dispatch(setNotify({ message: "Login Success", visible: true }));
+      dispatch(setNotify({ status: "success", message: "Login Success", visible: true }));
       router.push("/auth/profile");
     } catch (error) {
       logError(error);
       dispatch(setLoading(false));
+      dispatch(setNotify({ status: "error", message: "Login Error", visible: true }));
     }
   };
   const setHeader = (accessToken: any) => {

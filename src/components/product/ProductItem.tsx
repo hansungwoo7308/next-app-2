@@ -22,7 +22,11 @@ export default function ProductItem({ product }: any) {
           // console.log("duplicate:", duplicate);
           if (duplicate) {
             return dispatch(
-              setNotify({ message: `duplicated id : ${duplicate._id}`, visible: true })
+              setNotify({
+                status: "error",
+                message: `duplicated id : ${duplicate._id}`,
+                visible: true,
+              })
             );
           } else {
             return dispatch(addToCart({ ...product, quantity: 1 }));

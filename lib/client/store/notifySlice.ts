@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 type notify = {
-  loading: boolean;
-  visible: boolean;
-  message: string;
-  timeoutId?: any;
+  // spinner
+  loading?: boolean;
+  // notifiy
+  visible?: boolean;
+  status?: "success" | "error" | null;
+  message?: string | null;
+  //
+  timeoutId?: number | null;
   count?: any;
   // messages: string[];
 };
 const initialState: notify = {
-  message: "",
   loading: false,
   visible: false,
+  status: null,
+  message: "",
   timeoutId: null,
   count: 0,
   // messages: [],
@@ -24,7 +29,8 @@ export const notifySlice = createSlice({
   initialState,
   reducers: {
     setNotify: (state, action) => {
-      const { message, visible } = action.payload;
+      const { status, message, visible } = action.payload;
+      state.status = status;
       state.message = message;
       state.visible = visible;
       state.count++;

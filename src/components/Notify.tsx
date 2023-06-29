@@ -15,7 +15,7 @@ export default function Notify() {
   return (
     <>
       {notify.loading && <Loading />}
-      <Box status={notify.visible}>
+      <Box visible={notify.visible} status={notify.status}>
         <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
           <h3>Notification</h3>
           <p>{notify.message.slice(0, 10)}...</p>
@@ -51,10 +51,8 @@ export default function Notify() {
   // );
 }
 type Props = {
-  status?: boolean;
-  // isMessage?: boolean;
-  // status: "loading" | "success" | "error" | null;
-  // response: any;
+  visible?: boolean;
+  status?: "success" | "error" | null;
 };
 const Box = styled.div<Props>`
   width: 15rem;
@@ -63,10 +61,11 @@ const Box = styled.div<Props>`
   border-radius: 0 0.5rem 0.5rem 0;
   position: fixed;
   top: 50px;
-  right: ${({ status }) => (status ? "0" : "-15rem")};
+  right: ${({ visible }) => (visible ? "0" : "-15rem")};
   margin-top: 2rem;
   /* padding: 0.5rem 0.8rem; */
-  background-color: darkgreen;
+  background-color: ${({ status }) =>
+    status === "success" ? "darkgreen" : status === "error" ? "darkred" : "black"};
   transition: all 0.5s;
   display: flex;
   flex-direction: column;
@@ -80,7 +79,7 @@ const Box = styled.div<Props>`
     align-items: center;
     border: 2px solid cyan;
     border-radius: 0.5rem 0 0 0.5rem;
-    outline: 2px solid cyan;
+    /* outline: 2px solid cyan; */
     padding: 0.5rem;
     background-color: darkcyan;
     cursor: pointer;

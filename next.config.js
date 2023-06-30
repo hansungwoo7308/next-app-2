@@ -7,6 +7,10 @@ const nextConfig = {
     MONGODB_URL: process.env.MONGODB_URI,
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
+    // cloudinary env
+    CLOUD_UPDATE_PRESET: "nextjs_store",
+    CLOUD_NAME: "dzktdrw7o",
+    CLOUD_API_BASE_URL: "https://api.cloudinary.com/v1_1/dzktdrw7o/upload",
   },
   images: {
     remotePatterns: [

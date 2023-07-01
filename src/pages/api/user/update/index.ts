@@ -18,17 +18,36 @@ const updateUser = async (req: any, res: any) => {
     // verify
     const verified = await verifyJWT(req, res);
     // update
-    const { password, file } = req.body;
-    console.log("req.body : ", req.body);
+    const { password, image } = req.body;
+    // console.log("req.body : ", req.body);
     // console.log("file : ", file);
     // const hashedPassword = await bcrypt.hash(password, 12);
-    const updatedUser = await User.findOneAndUpdate(
-      { _id: verified.id },
-      // { password: hashedPassword }
-      { password: password, image: file[0] }
-    );
+    let updatedUser;
+    if (password && image) {
+      console.log("password : ", password);
+      console.log("image : ", image);
+      updatedUser = await User.findOneAndUpdate(
+        { _id: verified.id },
+        // { password: hashedPassword }
+        { password: password, image: image }
+      );
+    } else if (password) {
+      console.log("password : ", password);
+      updatedUser = await User.findOneAndUpdate(
+        { _id: verified.id },
+        // { password: hashedPassword }
+        { password: password }
+      );
+    } else if (image) {
+      console.log("image : ", image);
+      updatedUser = await User.findOneAndUpdate(
+        { _id: verified.id },
+        // { password: hashedPassword }
+        { image: image }
+      );
+    }
     // output
-    console.log("\x1b[32mupdatedPassword : ", updatedUser);
+    console.log("\x1b[32mupdatedUser : ", updatedUser);
     return res.status(200).json({ updatedUser });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

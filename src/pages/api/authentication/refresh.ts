@@ -23,9 +23,9 @@ export default async function (req: any, res: any) {
     return res.status(401).json({ message: "The foundUser do not exist." });
   }
   // verify the refreshToken
-  let verified: any;
+  // let verified: any;
   try {
-    verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
   } catch (error) {
     if (error) {
       console.log(`\x1b[31mThe refreshToken was expired.\x1b[0m`);
@@ -37,11 +37,11 @@ export default async function (req: any, res: any) {
   }
   // issue the new tokens
   const payload = {
-    id: verified.id,
-    username: verified.username,
-    email: verified.email,
-    role: verified.role,
-    image: verified.image,
+    id: foundUser._id,
+    username: foundUser.username,
+    email: foundUser.email,
+    role: foundUser.role,
+    image: foundUser.image,
   };
   const newAccessToken = createAccessToken(payload);
   const newRefreshToken = createRefreshToken(payload);
@@ -55,9 +55,9 @@ export default async function (req: any, res: any) {
   // console.log("decodedUser : ", decoded);
   res.setHeader("Set-Cookie", [`refreshToken=${newRefreshToken};path=/`]);
   res.status(200).json({
-    username: verified.username,
-    role: verified.role,
-    image: verified.image,
+    username: foundUser.username,
+    role: foundUser.role,
+    image: foundUser.image,
     accessToken: newAccessToken,
     slicedTokens: {
       accessToken: newAccessToken?.slice(-5),

@@ -51,8 +51,6 @@ export default function Page() {
   passwordRef.current = watch("password");
   const dispatch = useDispatch();
   const handleChangeImage = (e: any) => {
-    // console.log("e.target : ", e.target);
-    console.log("e.target.value : ", e.target.value);
     const file = e.target.files[0];
     if (!file) return dispatch(setNotify({ status: "error", message: "No file", visible: true }));
     if (file.size > 1024 * 1024)
@@ -84,28 +82,34 @@ export default function Page() {
   // useEffect(() => {
   //   getData();
   // }, [auth]);
-  const handleUpdate = async (data: any) => {
-    const files = Array.from(data.file);
-    uploadImage(files);
-    // try {
-    //   dispatch(setLoading(true));
-    //   const response = await patchData("user/update", data, auth.accessToken);
-    //   logResponse(response);
-    //   dispatch(setLoading(false));
-    // } catch (error) {
-    //   logError(error);
-    //   dispatch(setLoading(false));
-    // }
+  const handleUpdateUser = async (data: any) => {
+    // input
+    const { password, image } = data;
+    // upload image to cloud
+    let uploaded: any;
+    if (image) {
+      uploaded = await uploadImageToCloudinary(image);
+    }
+    // update the user
+    try {
+      dispatch(setLoading(true));
+      const payload = { password, image: uploaded[0].secure_url };
+      const response = await patchData("user/update", payload, auth.accessToken);
+      logResponse(response);
+      dispatch(setLoading(false));
+    } catch (error) {
+      logError(error);
+      dispatch(setLoading(false));
+    }
   };
-  const uploadImage = async (images: any) => {
+  const uploadImageToCloudinary = async (images: any) => {
     // let media;
-    let temp = [];
+    let array = [];
     for (const v of images) {
       const formData: any = new FormData();
       formData.append("file", v);
       formData.append("upload_preset", process.env.CLOUD_UPDATE_PRESET);
       formData.append("cloud_name", process.env.CLOUD_NAME);
-      const CLOUD_API_BASE_URL: any = process.env.CLOUD_API_BASE_URL;
       // fetch
       //   const response = await fetch("https://api.cloudinary.com/v1_1/dzktdrw7o/upload", {
       //     method: "POST",
@@ -119,16 +123,16 @@ export default function Page() {
       //   const test = "https://api.cloudinary.com/v1_1/dzktdrw7o/upload";
       const response = await axios({
         url: process.env.CLOUD_API_BASE_URL,
-        // url: "https://api.cloudinary.com/v1_1/dzktdrw7o/upload",
         method: "POST",
         data: formData,
       });
-      console.log("response.data : ", response.data);
+      const { public_id, secure_url } = response.data;
+      //   console.log("data : ", response.data);
+      array.push({ public_id, secure_url });
     }
+    // console.log("array : ", array);
+    return array;
   };
-  useEffect(() => {
-    console.log("image : ", image);
-  }, [image]);
   if (!auth.status) return null;
   return (
     <>
@@ -138,7 +142,7 @@ export default function Page() {
       <Main>
         <section>
           <div className="profile">
-            <form onSubmit={handleSubmit(handleUpdate)}>
+            <form onSubmit={handleSubmit(handleUpdateUser)}>
               <div className="image">
                 {auth.image && (
                   <Image
@@ -150,16 +154,17 @@ export default function Page() {
                 )}
                 <div>
                   <input
-                    {...register("file", {
+                    {...register("image", {
                       required: true,
                       //   onChange: (e) => {
                       //     handleChangeImage(e);
                       //   },
                     })}
                     type="file"
-                    name="file"
-                    id="file_up"
+                    // name="file"
+                    // id="file_up"
                     accept="image/*"
+                    // multiple
                     onChange={handleChangeImage}
                   />
                 </div>

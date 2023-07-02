@@ -11,7 +11,8 @@ export default async function (req: any, res: any) {
       await createOrder(req, res);
       break;
     case "GET":
-      res.status(200).json({ message: "..." });
+      // res.status(200).json({ message: "..." });
+      await getOrders(req, res);
       break;
     default:
       break;
@@ -25,14 +26,19 @@ const createOrder = async (req: any, res: any) => {
     // find
     const { id } = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
-    // console.log("foundUser : ", foundUser);
+    console.log("foundUser : ", {
+      _id: foundUser._id,
+      username: foundUser.username,
+    });
     // update the product in database
     const { address, mobile, cart, total } = req.body;
     let flag = 0;
+    let updatedProducts = [];
     for (const item of cart) {
       const { _id, quantity, inStock, sold } = item;
       const updated = await updateProduct({ _id, quantity, inStock, sold });
       if (!updated) flag++;
+      updatedProducts.push(updated);
     }
     if (flag > 0) {
       // console.log("flag : ", flag);
@@ -41,7 +47,15 @@ const createOrder = async (req: any, res: any) => {
     }
     // make an order
     const order = await Order.create({ user: foundUser.id, address, mobile, cart, total });
-    console.log("order : ", order);
+    console.log("order : ", {
+      user: order.user,
+      _id: order._id,
+      cart: updatedProducts.map((v: any) => ({
+        _id: v._id,
+        title: v.title,
+        inStock: v.inStock,
+      })),
+    });
     // set
     return res.status(200).json({ order });
     // const newOrder = new Orders({
@@ -72,7 +86,12 @@ const updateProduct = async (payload: any) => {
     foundProduct.inStock -= quantity;
     foundProduct.sold += quantity;
     const savedProduct = await foundProduct.save();
-    console.log("savedProduct : ", savedProduct);
+    console.log("savedProduct : ", {
+      _id: savedProduct._id,
+      title: savedProduct.title,
+      inStock: savedProduct.inStock,
+    });
+    return savedProduct;
     // await Product.findOneAndUpdate(
     //   { _id },
     //   {
@@ -83,5 +102,20 @@ const updateProduct = async (payload: any) => {
   } catch (error) {
     console.log("error : ", error);
     return false;
+  }
+};
+const getOrders = async (req: any, res: any) => {
+  try {
+    // verify
+    const verified = await verifyJWT(req, res);
+    if (!verified) return res.status(401).json({ message: "Unauthorized" });
+    // find
+    const { id } = verified;
+    const foundUser = await User.findOne({ _id: id }).exec();
+    //
+    console.log("foundUser : ", foundUser);
+  } catch (error: any) {
+    console.log("error : ", error);
+    return res.status(500).json({ error: error.message });
   }
 };

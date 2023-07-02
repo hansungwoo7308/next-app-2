@@ -9,7 +9,7 @@ import logError from "lib/client/log/logError";
 export default function Page() {
   const { order, auth }: any = useSelector((store) => store);
   const router = useRouter();
-  const recentOder = order[order.length - 1];
+  const recentOrder = order[order.length - 1];
   if (!order[0]) {
     return (
       <Main>
@@ -27,7 +27,7 @@ export default function Page() {
         <div>
           <div className="description">
             <h1>Order Page</h1>
-            <h3>Total : ${recentOder.total}</h3>
+            <h3>Total : ${recentOrder.total}</h3>
           </div>
           <div className="payment">
             <PayPalButtons
@@ -36,7 +36,7 @@ export default function Page() {
                   purchase_units: [
                     {
                       amount: {
-                        value: recentOder.total,
+                        value: recentOrder.total,
                       },
                     },
                   ],
@@ -48,7 +48,7 @@ export default function Page() {
                   // console.log("details : ", details);
                   // alert(`Transaction completed by ${name}`);
                   // const name = details.payer.name.given_name;
-                  postData("order", recentOder, auth.accessToken)
+                  postData("order", recentOrder, auth.accessToken)
                     .then((response) => logResponse(response))
                     .catch((error) => logError(error));
                 });

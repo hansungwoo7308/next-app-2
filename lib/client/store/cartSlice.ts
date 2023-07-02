@@ -11,17 +11,9 @@ export const cartSlice = createSlice({
     },
     updateCart: (state, action) => {
       const cart: any = action.payload;
-      // const newCart: any = [];
-      // for (const v of state) {
-      //   state.pop(v);
-      // }
-
-      cart.map((v: any) => {
-        state.push(v);
+      cart.map((product: any) => {
+        state.push(product);
       });
-      // console.log("newCart : ", newCart);
-      // state = cart;
-      // localStorage.setItem("cart", JSON.stringify(state));
     },
     clearCart: (state, action) => {
       return [];

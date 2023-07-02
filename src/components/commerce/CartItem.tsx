@@ -1,6 +1,14 @@
-import { decreaseQuantity, deleteItem, increaseQuantity } from "lib/client/store/cartSlice";
+import {
+  clearCart,
+  decreaseQuantity,
+  deleteItem,
+  increaseQuantity,
+  updateCart,
+} from "lib/client/store/cartSlice";
+import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 export default function CartItem({ item }: any) {
@@ -52,6 +60,9 @@ const Box = styled.li`
   .detail {
     padding: 1rem;
     flex: 1;
+    > h3 {
+      color: #d25d5d;
+    }
     .quantity {
       display: flex;
       gap: 2rem;

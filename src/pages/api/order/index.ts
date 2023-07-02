@@ -109,11 +109,14 @@ const getOrders = async (req: any, res: any) => {
     // verify
     const verified = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
-    // find
+    // find the User
     const { id } = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
-    //
-    console.log("foundUser : ", foundUser);
+    // console.log("foundUser : ", foundUser);
+    // find the Order
+    const foundOrder = await Order.findOne({ user: foundUser._id });
+    // console.log("foundOrder : ", foundOrder);
+    return res.status(200).json({ foundOrder });
   } catch (error: any) {
     console.log("error : ", error);
     return res.status(500).json({ error: error.message });

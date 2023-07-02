@@ -8,6 +8,7 @@ import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
+import Image from "next/image";
 // type Auth = {
 //   method?: "general" | "nextauth" | "none";
 //   status?: false;
@@ -37,7 +38,11 @@ export default function AuthButton(props: any) {
           {auth.mode === "nextauth" && (
             <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
           )}
-          <Link href={"/auth/profile"}>Profile</Link>
+          {/* <Link href={"/auth/profile"}>Profile</Link> */}
+          <Link className="profile" href={"/auth/profile"}>
+            <Image src={auth.image} alt={auth.image} width={50} height={50} />
+            {auth.username}
+          </Link>
         </>
       ) : (
         <>
@@ -53,5 +58,19 @@ const Box = styled.div`
   > a,
   > button {
     width: 5rem;
+  }
+  .profile {
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    > img {
+      height: 30px;
+      width: 30px;
+      /* border: 2px solid red; */
+      /* width: 30px;
+      height: 30px; */
+      border-radius: 50%;
+    }
   }
 `;

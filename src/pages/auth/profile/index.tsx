@@ -83,7 +83,7 @@ export default function Page() {
   //   getData();
   // }, [auth]);
   const handleUpdateUser = async (data: any) => {
-    // input
+    // get
     const { password, image } = data;
     // upload image to cloud
     let uploaded: any;
@@ -95,10 +95,26 @@ export default function Page() {
       dispatch(setLoading(true));
       const payload = { password, image: uploaded[0].secure_url };
       const response = await patchData("user/update", payload, auth.accessToken);
+      // set
       logResponse(response);
+      dispatch(
+        setNotify({
+          status: "success",
+          message: "The User Data has been updated.",
+          visible: true,
+        })
+      );
       dispatch(setLoading(false));
     } catch (error) {
+      // set
       logError(error);
+      dispatch(
+        setNotify({
+          status: "error",
+          message: "The User Data has not been updated.",
+          visible: true,
+        })
+      );
       dispatch(setLoading(false));
     }
   };

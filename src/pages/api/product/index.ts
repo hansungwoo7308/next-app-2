@@ -8,7 +8,9 @@ export default async function (req: any, res: any) {
 const getProducts = async (req: any, res: any) => {
   try {
     const products = await Product.find();
-    console.log("products : ", products);
+    // console.log("products : ", products);
+    const productsTitles = products.map((v: any) => ({ title: v.title, inStock: v.inStock }));
+    console.log("productsTitles : ", productsTitles);
     return res.status(200).json({ products, message: "GET success" });
   } catch (error) {
     console.log(error);

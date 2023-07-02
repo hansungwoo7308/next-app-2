@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
-import { addToCart, updateCart } from "lib/client/store/cartSlice";
+import { addToCart, clearCart, updateCart } from "lib/client/store/cartSlice";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
@@ -108,10 +108,14 @@ export function GlobalState({ children }: any) {
     const serializedCart: any = localStorage.getItem("cart");
     if (!serializedCart) return;
     const parseCart = JSON.parse(serializedCart);
-    // dispatch(updateCart(parseCart));
-    parseCart.map((v: any) => {
-      dispatch(addToCart(v));
-    });
+    // console.log("parseCart : ", parseCart);
+    dispatch(clearCart());
+    dispatch(updateCart(parseCart));
+    //
+    // sdhfslfhlishf
+    // parseCart.map((v: any) => {
+    //   dispatch(addToCart(v));
+    // });
   }, []);
   // if cart changed, : 캐싱 (storage)
   useEffect(() => {

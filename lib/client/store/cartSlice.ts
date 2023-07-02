@@ -10,9 +10,21 @@ export const cartSlice = createSlice({
       localStorage.setItem("cart", JSON.stringify(state));
     },
     updateCart: (state, action) => {
-      // console.log("action.payload : ", action.payload);
-      state = action.payload;
-      localStorage.setItem("cart", JSON.stringify(state));
+      const cart: any = action.payload;
+      // const newCart: any = [];
+      // for (const v of state) {
+      //   state.pop(v);
+      // }
+
+      cart.map((v: any) => {
+        state.push(v);
+      });
+      // console.log("newCart : ", newCart);
+      // state = cart;
+      // localStorage.setItem("cart", JSON.stringify(state));
+    },
+    clearCart: (state, action) => {
+      return [];
     },
     increaseQuantity: (state, action) => {
       const { _id } = action.payload;
@@ -34,6 +46,12 @@ export const cartSlice = createSlice({
     },
   },
 });
-export const { addToCart, updateCart, increaseQuantity, decreaseQuantity, deleteItem }: any =
-  cartSlice.actions;
+export const {
+  addToCart,
+  updateCart,
+  clearCart,
+  increaseQuantity,
+  decreaseQuantity,
+  deleteItem,
+}: any = cartSlice.actions;
 export const selectCart = (state: any) => state.cart;

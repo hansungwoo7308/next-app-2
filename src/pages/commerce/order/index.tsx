@@ -5,9 +5,11 @@ import { useSelector } from "react-redux";
 import { postData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
+import logError from "lib/client/log/logError";
 export default function Page() {
   const { order, auth }: any = useSelector((store) => store);
   const router = useRouter();
+  const recentOder = order[order.length - 1];
   if (!order[0]) {
     return (
       <Main>
@@ -25,7 +27,7 @@ export default function Page() {
         <div>
           <div className="description">
             <h1>Order Page</h1>
-            <h3>Total : ${order[0].total}</h3>
+            <h3>Total : ${recentOder.total}</h3>
           </div>
           <div className="payment">
             <PayPalButtons
@@ -34,22 +36,21 @@ export default function Page() {
                   purchase_units: [
                     {
                       amount: {
-                        value: order[0].total,
+                        value: recentOder.total,
                       },
                     },
                   ],
                 });
               }}
               onApprove={(data, actions: any) => {
+                // console.log("data : ", data);
                 return actions.order.capture().then((details: any) => {
-                  // console.log("data : ", data);
+                  // console.log("details : ", details);
                   // alert(`Transaction completed by ${name}`);
                   // const name = details.payer.name.given_name;
-                  console.log("details : ", details);
-                  postData("order", order[0], auth.accessToken).then((response) => {
-                    if (response.data.error) console.log("error : ", response.data.error);
-                    logResponse(response);
-                  });
+                  postData("order", recentOder, auth.accessToken)
+                    .then((response) => logResponse(response))
+                    .catch((error) => logError(error));
                 });
               }}
             />

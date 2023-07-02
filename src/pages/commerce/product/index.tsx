@@ -5,11 +5,8 @@ import Image from "next/image";
 import styled from "styled-components";
 export async function getServerSideProps(context: any) {
   const response = await getData("product");
-  const data = await response.data;
-  const products = await data.products;
-  // console.log(response);
-  // console.log(data);
-  console.log(products);
+  const data = response.data;
+  const products = data.products;
   return { props: { products } };
 }
 export default function Page({ products }: any) {

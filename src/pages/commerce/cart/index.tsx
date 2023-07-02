@@ -22,26 +22,42 @@ export default function Page() {
   }, [cart]);
   // get the up-to-date cart
   useEffect(() => {
+    // console.log("run??");
     // 카트의 재고가 없을 수도 있기 때문에, 최신 데이터를 다시 받아온다.
     // 리로드(리프레시)를 하게 되면,
     // 현재 클라이언트 스토어의 데이터를 서버로부터 최신 데이터를 받아온다.
     // 그러고나서 클라이언트의 스토어(웹스토어,리덕스스토어)를 업데이트해준다.
     // 스토어에 업데이트 시, 클라인언트의 수량정보를 추가해준다.
-    const stringfiedCart: any = localStorage.getItem("cart");
-    if (!stringfiedCart) return;
-    const cart: any = JSON.parse(stringfiedCart);
-    const setCart = async () => {
-      let newCart: any = [];
-      for (const item of cart) {
-        const response = await getData(`product/${item._id}`);
-        const { product } = response.data;
-        const { inStock, quantity } = item;
-        if (inStock) newCart.push({ ...product, quantity });
-      }
-      // console.log("newCart : ", newCart);
-      dispatch(updateCart(newCart));
-    };
-    setCart();
+    // const stringfiedCart: any = localStorage.getItem("cart");
+    // if (!stringfiedCart) return;
+    // const cart: any = JSON.parse(stringfiedCart);
+    // const setCart = async () => {
+    //   let newCart: any = [];
+    //   for (const item of cart) {
+    //     const response = await getData(`product/${item._id}`);
+    //     const { product } = response.data;
+    //     const { inStock, quantity } = item;
+    //     if (inStock) newCart.push({ ...product, quantity });
+    //   }
+    //   // console.log("newCart : ", newCart);
+    //   dispatch(updateCart(newCart));
+    // };
+    // setCart();
+    // const stringfiedCart: any = localStorage.getItem("cart");
+    // if (!stringfiedCart) return;
+    // const cart: any = JSON.parse(stringfiedCart);
+    // const setCart = async () => {
+    //   let newCart: any = [];
+    //   for (const item of cart) {
+    //     const response = await getData(`product/${item._id}`);
+    //     const { product } = response.data;
+    //     const { inStock, quantity } = item;
+    //     if (inStock) newCart.push({ ...product, quantity });
+    //   }
+    //   // console.log("newCart : ", newCart);
+    //   dispatch(updateCart(newCart));
+    // };
+    // setCart();
   }, []);
   const handleOrder = (data: any) => {
     const { address, mobile } = data;

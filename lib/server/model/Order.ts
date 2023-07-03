@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 const orderSchema = new mongoose.Schema(
   {
-    user: {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
+    User: {
+      // type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
     address: String,
     mobile: String,

@@ -44,16 +44,12 @@ const createOrder = async (req: any, res: any) => {
       console.log("\x1b[31mOut Stock");
       return res.status(444).json({ message: "Out Stock" });
     }
-    // make an order
-    const order = await Order.create({ user: foundUser.id, address, mobile, cart, total });
+    // create an order
+    const order = await Order.create({ User: foundUser.id, address, mobile, cart, total });
     console.log("order : ", {
-      user: order.user,
+      User: order.User,
       _id: order._id,
-      cart: updatedProducts.map((v: any) => ({
-        _id: v._id,
-        title: v.title,
-        inStock: v.inStock,
-      })),
+      cart: order.cart,
     });
     // set
     return res.status(200).json({ order });
@@ -111,10 +107,17 @@ const getOrders = async (req: any, res: any) => {
     // find the User
     const { id } = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
-    console.log("foundUser : ", foundUser);
+    // console.log("foundUser : ", foundUser);
     // find the Order
-    const foundOrder = await Order.findOne({ user: foundUser._id });
+    // const foundOrder = await Order.findOne({ user: foundUser._id });
+    const foundOrder = await Order.findOne({ User: foundUser._id }).populate("User");
     console.log("foundOrder : ", foundOrder);
+    // console.log("foundOrder : ", {
+    //   _id: foundOrder._id,
+    //   user: foundOrder.user,
+    //   cart: foundOrder.cart,
+    //   total: foundOrder.total,
+    // });
     return res.status(200).json({ foundOrder });
   } catch (error: any) {
     console.log("error : ", error);

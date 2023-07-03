@@ -249,21 +249,14 @@ export default function Page() {
               </thead>
               <tbody>
                 {orders.map((order: any) => (
-                  <tr>
+                  <tr key={order._id}>
                     <td>
-                      <Link href={`commerce/order/${order._id}`}>{order._id}</Link>
+                      <Link href={`/commerce/order/${order._id}`}>{order._id}</Link>
                     </td>
                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td>${order.total}</td>
                     <td>{order.delivered ? "delivered" : "Not delivered"}</td>
-                    <td>
-                      {order.paid ? "paid" : "Not paid"}
-                      {/* {order.paid ? (
-                        <i className="fas fa-check text-success"></i>
-                      ) : (
-                        <i className="fas fa-times text-danger"></i>
-                      )} */}
-                    </td>
+                    <td>{order.paid ? "paid" : "Not paid"}</td>
                   </tr>
                 ))}
               </tbody>

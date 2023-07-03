@@ -13,6 +13,12 @@ export const ordersSlice = createSlice({
     addOrder: (state, action) => {
       state.push(action.payload);
     },
+    setOrders: (state, action) => {
+      const orders = action.payload;
+      const newState: any = [];
+      orders.map((order: any) => newState.push(order));
+      return newState;
+    },
   },
 });
-export const { addOrder } = ordersSlice.actions;
+export const { addOrder, setOrders } = ordersSlice.actions;

@@ -13,7 +13,7 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { useRouter } from "next/router";
 import { setNotify } from "lib/client/store/notifySlice";
-import { addOrder } from "lib/client/store/ordersSlice";
+import { addOrder, setOrders } from "lib/client/store/ordersSlice";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ test123, children, session }: any) {
@@ -130,10 +130,11 @@ export function GlobalState({ children }: any) {
     if (!auth.accessToken) return;
     const getOrder = async () => {
       const response = await getData("order", auth.accessToken);
-      const { order } = response.data;
+      const { orders } = response.data;
       // console.log("data : ", response.data);
       logResponse(response);
-      dispatch(addOrder(order));
+      dispatch(setOrders(orders));
+      // dispatch(addOrder(order));
     };
     try {
       getOrder();

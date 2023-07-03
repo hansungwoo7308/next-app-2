@@ -150,19 +150,19 @@ export default function Page() {
     // console.log("array : ", array);
     return array;
   };
-  useEffect(() => {
-    if (!auth.accessToken) return;
-    const getOrder = async () => {
-      const response = await getData("order", auth.accessToken);
-      // console.log("data : ", response.data);
-      logResponse(response);
-    };
-    try {
-      getOrder();
-    } catch (error) {
-      logError(error);
-    }
-  }, []); // get the order
+  // useEffect(() => {
+  //   if (!auth.accessToken) return;
+  //   const getOrder = async () => {
+  //     const response = await getData("order", auth.accessToken);
+  //     // console.log("data : ", response.data);
+  //     logResponse(response);
+  //   };
+  //   try {
+  //     getOrder();
+  //   } catch (error) {
+  //     logError(error);
+  //   }
+  // }, []); // get the order
   if (!auth.status) return null;
   return (
     <>
@@ -251,7 +251,7 @@ export default function Page() {
                 {orders.map((order: any) => (
                   <tr>
                     <td>
-                      <Link href={`order/${order._id}`}>{order._id}</Link>
+                      <Link href={`commerce/order/${order._id}`}>{order._id}</Link>
                     </td>
                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td>${order.total}</td>

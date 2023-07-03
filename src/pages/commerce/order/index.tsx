@@ -61,7 +61,7 @@ export default function Page() {
                       const { order } = response.data;
                       logResponse(response);
                       dispatch(clearCart());
-                      dispatch(addOrder(order));
+                      // dispatch(addOrder(order));
                       dispatch(
                         setNotify({
                           status: "success",

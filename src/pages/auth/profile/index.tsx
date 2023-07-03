@@ -7,7 +7,7 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { patchData } from "lib/client/utils/fetchData";
+import { getData, patchData } from "lib/client/utils/fetchData";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import axios from "axios";
 // import { getServerSession } from "next-auth";
@@ -149,6 +149,19 @@ export default function Page() {
     // console.log("array : ", array);
     return array;
   };
+  useEffect(() => {
+    if (!auth.accessToken) return;
+    const getOrder = async () => {
+      const response = await getData("order", auth.accessToken);
+      // console.log("data : ", response.data);
+      logResponse(response);
+    };
+    try {
+      getOrder();
+    } catch (error) {
+      logError(error);
+    }
+  }, []); // get the order
   if (!auth.status) return null;
   return (
     <>
@@ -221,6 +234,9 @@ export default function Page() {
               </div>
             </form>
           </div>
+          <div className="order">
+            <h1>Order List</h1>
+          </div>
         </section>
       </Main>
     </>
@@ -230,13 +246,13 @@ const Main = styled(PublicMain)`
   > section {
     .profile {
       height: 70vh;
-      padding: 20px;
+      padding: 1rem;
+      flex: 1;
+      display: flex;
       > form {
+        width: 100%;
         height: 100%;
-        display: flex;
-        > div {
-          border: 2px solid;
-        }
+        border: 2px solid;
         .image {
           width: 15rem;
           height: fit-content;
@@ -278,6 +294,10 @@ const Main = styled(PublicMain)`
           }
         }
       }
+    }
+    .order {
+      height: 70vh;
+      flex: 2;
     }
   }
 `;

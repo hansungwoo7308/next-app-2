@@ -124,5 +124,18 @@ export function GlobalState({ children }: any) {
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]);
+  useEffect(() => {
+    if (!auth.accessToken) return;
+    const getOrder = async () => {
+      const response = await getData("order", auth.accessToken);
+      // console.log("data : ", response.data);
+      logResponse(response);
+    };
+    try {
+      getOrder();
+    } catch (error) {
+      logError(error);
+    }
+  }, [auth.accessToken]);
   return <>{children}</>;
 }

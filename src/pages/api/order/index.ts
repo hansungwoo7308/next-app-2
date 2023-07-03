@@ -11,7 +11,6 @@ export default async function (req: any, res: any) {
       await createOrder(req, res);
       break;
     case "GET":
-      // res.status(200).json({ message: "..." });
       await getOrders(req, res);
       break;
     default:
@@ -112,10 +111,10 @@ const getOrders = async (req: any, res: any) => {
     // find the User
     const { id } = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
-    // console.log("foundUser : ", foundUser);
+    console.log("foundUser : ", foundUser);
     // find the Order
     const foundOrder = await Order.findOne({ user: foundUser._id });
-    // console.log("foundOrder : ", foundOrder);
+    console.log("foundOrder : ", foundOrder);
     return res.status(200).json({ foundOrder });
   } catch (error: any) {
     console.log("error : ", error);

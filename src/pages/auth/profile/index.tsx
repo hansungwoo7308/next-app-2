@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { getData, patchData } from "lib/client/utils/fetchData";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import axios from "axios";
+import Link from "next/link";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -39,7 +40,7 @@ import axios from "axios";
 //   };
 // }
 export default function Page() {
-  const { auth }: any = useSelector((store) => store);
+  const { auth, orders }: any = useSelector((store) => store);
   const [image, setImage]: any = useState("");
   const {
     register,
@@ -236,6 +237,37 @@ export default function Page() {
           </div>
           <div className="order">
             <h1>Order List</h1>
+            <table>
+              <thead>
+                <tr>
+                  <td>id</td>
+                  <td>data</td>
+                  <td>total</td>
+                  <td>delivered</td>
+                  <td>action</td>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order: any) => (
+                  <tr>
+                    <td>
+                      <Link href={`order/${order._id}`}>{order._id}</Link>
+                    </td>
+                    <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td>${order.total}</td>
+                    <td>{order.delivered ? "delivered" : "Not delivered"}</td>
+                    <td>
+                      {order.paid ? "paid" : "Not paid"}
+                      {/* {order.paid ? (
+                        <i className="fas fa-check text-success"></i>
+                      ) : (
+                        <i className="fas fa-times text-danger"></i>
+                      )} */}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
       </Main>
@@ -298,6 +330,16 @@ const Main = styled(PublicMain)`
     .order {
       height: 70vh;
       flex: 2;
+      > table {
+        width: 100%;
+        border: 2px solid;
+        td {
+          border: 2px solid yellowgreen;
+        }
+        thead {
+          text-transform: uppercase;
+        }
+      }
     }
   }
 `;

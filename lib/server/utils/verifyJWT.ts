@@ -6,7 +6,8 @@ export default async function (req: any, res: any) {
   const accessToken = authorization?.split(" ")[1];
   if (!accessToken) {
     console.log("\x1b[31mNo accessToken");
-    return res.status(401).json({ message: "Unauthorized" });
+    // return res.status(401).json({ message: "Unauthorized" });
+    return false;
   }
   // console.log("accessToken : ", accessToken?.slice(-5));
   // verify the tokens
@@ -16,7 +17,7 @@ export default async function (req: any, res: any) {
     return verified;
   } catch (error: any) {
     console.log(`\x1b[31merror : ${error}`);
-    res.status(403).json({ error });
+    // res.status(403).json({ error });
     return false;
     // return error;
   }

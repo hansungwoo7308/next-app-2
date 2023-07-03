@@ -23,7 +23,7 @@ const createOrder = async (req: any, res: any) => {
     const verified = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
     // find
-    const { id } = verified;
+    const { id }: any = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
     console.log("foundUser : ", {
       _id: foundUser._id,
@@ -105,12 +105,16 @@ const getOrders = async (req: any, res: any) => {
     const verified = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
     // find the User
-    const { id } = verified;
+    const { id }: any = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
+    if (foundUser.role !== "user") return res.status(403).json({ message: "Forbidden" });
     // console.log("foundUser : ", foundUser);
     // find the Order
     // const foundOrder = await Order.findOne({ user: foundUser._id });
-    const foundOrder = await Order.findOne({ User: foundUser._id }).populate("User");
+    const foundOrder = await Order.findOne({ User: foundUser._id }).populate(
+      "User",
+      "-password -refreshToken"
+    );
     console.log("foundOrder : ", foundOrder);
     // console.log("foundOrder : ", {
     //   _id: foundOrder._id,
@@ -118,7 +122,7 @@ const getOrders = async (req: any, res: any) => {
     //   cart: foundOrder.cart,
     //   total: foundOrder.total,
     // });
-    return res.status(200).json({ foundOrder });
+    return res.status(200).json({ order: foundOrder });
   } catch (error: any) {
     console.log("error : ", error);
     return res.status(500).json({ error: error.message });

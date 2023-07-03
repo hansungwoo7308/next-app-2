@@ -1,14 +1,18 @@
 import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { PayPalButtons } from "@paypal/react-paypal-js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { postData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import logError from "lib/client/log/logError";
+import { clearCart } from "lib/client/store/cartSlice";
+import { addOrder } from "lib/client/store/ordersSlice";
+import { setNotify } from "lib/client/store/notifySlice";
 export default function Page() {
   const { order, auth }: any = useSelector((store) => store);
   const router = useRouter();
+  const dispatch = useDispatch();
   const recentOrder = order[order.length - 1];
   if (!order[0]) {
     return (
@@ -48,9 +52,35 @@ export default function Page() {
                   // console.log("details : ", details);
                   // alert(`Transaction completed by ${name}`);
                   // const name = details.payer.name.given_name;
-                  postData("order", recentOrder, auth.accessToken)
-                    .then((response) => logResponse(response))
-                    .catch((error) => logError(error));
+                  // postData("order", recentOrder, auth.accessToken)
+                  // .then((response) => logResponse(response))
+                  // .catch((error) => logError(error));
+                  const createOrder = async () => {
+                    try {
+                      const response = await postData("order", recentOrder, auth.accessToken);
+                      const { order } = response.data;
+                      logResponse(response);
+                      dispatch(clearCart());
+                      dispatch(addOrder(order));
+                      dispatch(
+                        setNotify({
+                          status: "success",
+                          message: "The Order was created.",
+                          visible: "true",
+                        })
+                      );
+                    } catch (error) {
+                      logError(error);
+                      dispatch(
+                        setNotify({
+                          status: "error",
+                          message: "The Order was failed.",
+                          visible: "true",
+                        })
+                      );
+                    }
+                  };
+                  createOrder();
                 });
               }}
             />

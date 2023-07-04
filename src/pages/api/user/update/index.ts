@@ -16,7 +16,7 @@ export default async function (req: any, res: any) {
 const updateUser = async (req: any, res: any) => {
   try {
     // verify
-    const verified = await verifyJWT(req, res);
+    const verified: any = await verifyJWT(req, res);
     // update
     const { password, image } = req.body;
     // console.log("req.body : ", req.body);

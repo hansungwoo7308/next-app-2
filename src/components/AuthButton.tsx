@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
 import { signIn, signOut } from "next-auth/react";
@@ -9,15 +8,10 @@ import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
-// type Auth = {
-//   method?: "general" | "nextauth" | "none";
-//   status?: false;
-// };
 export default function AuthButton(props: any) {
   const auth = useSelector(selectAuth);
   const router = useRouter();
   const dispatch = useDispatch();
-  // const [auth, setAuth]: any = useState<Auth>({ method: undefined, status: false });
   const logoutAuth = async (e: any) => {
     e.preventDefault();
     try {
@@ -38,7 +32,6 @@ export default function AuthButton(props: any) {
           {auth.mode === "nextauth" && (
             <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
           )}
-          {/* <Link href={"/auth/profile"}>Profile</Link> */}
           <Link className="profile" href={"/auth/profile"}>
             <Image src={auth.image} alt={auth.image} width={50} height={50} />
             {auth.username}
@@ -55,9 +48,10 @@ export default function AuthButton(props: any) {
 }
 const Box = styled.div`
   display: flex;
-  > a,
-  > button {
+  gap: 1rem;
+  > * {
     /* width: 5rem; */
+    white-space: nowrap;
   }
   .profile {
     border: 2px solid;
@@ -79,7 +73,6 @@ const Box = styled.div`
     border: none;
     cursor: pointer;
     font-size: 1rem;
-    white-space: nowrap;
     /* word-break: break-all; */
     /* overflow-wrap: break-word; */
   }

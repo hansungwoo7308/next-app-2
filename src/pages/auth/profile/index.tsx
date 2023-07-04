@@ -342,8 +342,11 @@ const Main = styled(PublicMain)`
       > table {
         width: 100%;
         border: 2px solid;
+        * {
+          padding: 0.5rem;
+        }
         td {
-          border: 2px solid yellowgreen;
+          border: 1px solid;
         }
         thead {
           text-transform: uppercase;

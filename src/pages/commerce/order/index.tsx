@@ -78,6 +78,7 @@ export default function Page() {
                           visible: "true",
                         })
                       );
+                      router.push("/commerce/cart");
                     }
                   };
                   createOrder();

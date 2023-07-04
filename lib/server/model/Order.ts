@@ -6,11 +6,12 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    // shipping
     address: String,
     mobile: String,
     cart: Array,
+    // payment
     total: Number,
-
     paymentId: String,
     method: String,
     delivered: {

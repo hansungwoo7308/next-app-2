@@ -1,6 +1,7 @@
 import CartItem from "@/components/commerce/CartItem";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { clearCart, updateCart } from "lib/client/store/cartSlice";
+import { setNotify } from "lib/client/store/notifySlice";
 import { addOrder } from "lib/client/store/orderSlice";
 import { getData } from "lib/client/utils/fetchData";
 import { useRouter } from "next/router";
@@ -9,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Page() {
-  const { cart }: any = useSelector((store) => store);
+  const { cart, auth }: any = useSelector((store) => store);
   const [total, setToal]: any = useState(0);
   const { register, handleSubmit } = useForm();
   const dispatch = useDispatch();
@@ -40,6 +41,10 @@ export default function Page() {
     setCart();
   }, []);
   const handleOrder = (data: any) => {
+    if (!auth.accessToken) {
+      dispatch(setNotify({ status: "error", message: "You have to log in.", visible: true }));
+      return router.push("/auth/signin");
+    }
     const { address, mobile } = data;
     const payload = {
       address,

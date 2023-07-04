@@ -126,22 +126,6 @@ export function GlobalState({ children }: any) {
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]);
-  useEffect(() => {
-    if (!auth.accessToken) return;
-    const getOrder = async () => {
-      const response = await getData("order", auth.accessToken);
-      const { orders } = response.data;
-      // console.log("data : ", response.data);
-      logResponse(response);
-      dispatch(setOrders(orders));
-      // dispatch(addOrder(order));
-    };
-    try {
-      getOrder();
-    } catch (error: any) {
-      dispatch(setNotify({ status: "error", message: error.message, visible: true }));
-      logError(error);
-    }
-  }, [auth.accessToken]);
+
   return <>{children}</>;
 }

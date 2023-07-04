@@ -57,7 +57,7 @@ const Box = styled.div`
   display: flex;
   > a,
   > button {
-    width: 5rem;
+    /* width: 5rem; */
   }
   .profile {
     border: 2px solid;
@@ -72,5 +72,15 @@ const Box = styled.div`
       height: 30px; */
       border-radius: 50%;
     }
+  }
+  button {
+    background-color: initial;
+    color: #ccc;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    white-space: nowrap;
+    /* word-break: break-all; */
+    /* overflow-wrap: break-word; */
   }
 `;

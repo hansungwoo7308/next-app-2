@@ -11,6 +11,7 @@ import { getData, patchData } from "lib/client/utils/fetchData";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import axios from "axios";
 import Link from "next/link";
+import { setOrders } from "lib/client/store/ordersSlice";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -163,6 +164,21 @@ export default function Page() {
   //     logError(error);
   //   }
   // }, []); // get the order
+  useEffect(() => {
+    if (!auth.accessToken) return;
+    const getOrder = async () => {
+      const response = await getData("order", auth.accessToken);
+      const { orders } = response.data;
+      logResponse(response);
+      dispatch(setOrders(orders));
+    };
+    try {
+      getOrder();
+    } catch (error: any) {
+      dispatch(setNotify({ status: "error", message: error.message, visible: true }));
+      logError(error);
+    }
+  }, [auth.accessToken]);
   if (!auth.status) return null;
   return (
     <>

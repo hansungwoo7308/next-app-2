@@ -18,7 +18,7 @@ export default function Notify() {
       <Box visible={notify.visible} status={notify.status}>
         <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
           <h3>Notification</h3>
-          <p>{notify.message.slice(0, 10)}...</p>
+          <p>{notify.message}...</p>
         </div>
         {notify.visible && <button onClick={() => dispatch(setVisible(false))}>{">"}</button>}
         {!notify.visible && <button onClick={() => dispatch(setVisible(true))}>{"<"}</button>}

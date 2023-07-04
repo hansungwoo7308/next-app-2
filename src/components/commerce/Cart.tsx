@@ -1,10 +1,8 @@
-import { selectCart } from "lib/client/store/cartSlice";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Cart() {
-  const cart = useSelector(selectCart);
-  // console.log("cart : ", cart);
+  const { cart }: any = useSelector((store) => store);
   return (
     <Box>
       <Link href={"/commerce/cart"}>Cart : {cart.length}</Link>
@@ -13,12 +11,8 @@ export default function Cart() {
 }
 const Box = styled.div`
   width: 4rem;
-  border: 2px solid blue;
   display: flex;
   justify-content: center;
   align-items: center;
-  > button {
-    width: 100%;
-    height: 100%;
-  }
+  /* border: 2px solid blue; */
 `;

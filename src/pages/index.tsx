@@ -284,7 +284,6 @@ const Main = styled(PublicMain)`
   > .home {
     max-width: 100%;
     width: 100%;
-
     > div {
       width: 50%;
     }
@@ -293,7 +292,7 @@ const Main = styled(PublicMain)`
       height: 100vh;
       max-width: 1000px;
       position: fixed;
-      border: 2px solid yellowgreen;
+      border: 2px solid purple;
       outline: none;
       pointer-events: none;
       > .sider {
@@ -398,6 +397,9 @@ const Main = styled(PublicMain)`
         cursor: pointer;
         /* width: 100px;
         height: 100px; */
+      }
+      @media (width <1000px) {
+        display: none;
       }
     }
   }

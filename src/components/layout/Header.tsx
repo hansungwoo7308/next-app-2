@@ -8,14 +8,14 @@ export default function Header() {
   return (
     <HeaderStyle>
       <section>
-        <div>
-          <Link href={"/"}>LOGO</Link>
-        </div>
+        <Link href={"/"}>LOGO</Link>
         <Nav />
-        <AuthButton />
-        <Cart />
-        <Notify />
+        <div>
+          <Cart />
+          <AuthButton />
+        </div>
       </section>
+      <Notify />
     </HeaderStyle>
   );
 }
@@ -35,16 +35,14 @@ const HeaderStyle = styled.header`
     height: 100%;
     display: flex;
     justify-content: space-between;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    > form {
+    > a {
+      width: initial;
+      /* padding: 0 1rem; */
+      /* border: 2px solid; */
+    }
+    > div {
       display: flex;
-      gap: 15px;
-      align-items: center;
-      > input {
-        height: 50%;
-        padding: 10px;
-      }
+      gap: 1rem;
     }
   }
   ul,
@@ -55,17 +53,17 @@ const HeaderStyle = styled.header`
     align-items: center;
     justify-content: center;
   }
-  button {
-    background-color: initial;
-    color: #ccc;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-  }
+
   a:hover,
   li:hover,
   button:hover {
     color: #fff;
   }
-  font-size: 1rem;
+  /* font-size: 1rem; */
+  @media (width<1000px) {
+    justify-content: space-between;
+    > section {
+      width: 100%;
+    }
+  }
 `;

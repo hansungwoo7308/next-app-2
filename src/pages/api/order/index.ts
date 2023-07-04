@@ -8,9 +8,11 @@ export default async function (req: any, res: any) {
   console.log("\x1b[32m\n[api/order]");
   switch (req.method) {
     case "POST":
+      console.log("POST");
       await createOrder(req, res);
       break;
     case "GET":
+      console.log("GET");
       await getOrders(req, res);
       break;
     default:
@@ -29,20 +31,24 @@ const createOrder = async (req: any, res: any) => {
       _id: foundUser._id,
       username: foundUser.username,
     });
-    // update the product in database
+    // check the product stock
     const { address, mobile, cart, total } = req.body;
-    let flag = 0;
+    let flagForChecking = 0;
+    for (const item of cart) {
+      const { _id, quantity }: any = item;
+      const checked = await checkStock({ _id, quantity });
+      if (!checked) flagForChecking++;
+    }
+    if (flagForChecking > 0) {
+      console.log("\x1b[31mcheckStock error");
+      return res.status(400).json({ message: "checkStock error" });
+    }
+    // update the product in database
     let updatedProducts = [];
     for (const item of cart) {
-      const { _id, quantity, inStock, sold } = item;
-      const updated = await updateProduct({ _id, quantity, inStock, sold });
-      if (!updated) flag++;
+      const { _id, quantity } = item;
+      const updated = await updateProduct({ _id, quantity });
       updatedProducts.push(updated);
-    }
-    if (flag > 0) {
-      // console.log("flag : ", flag);
-      console.log("\x1b[31mOut Stock");
-      return res.status(444).json({ message: "Out Stock" });
     }
     // create an order
     const order = await Order.create({ User: foundUser.id, address, mobile, cart, total });
@@ -73,11 +79,20 @@ const createOrder = async (req: any, res: any) => {
     return res.status(500).json({ error: error.message });
   }
 };
+const checkStock = async ({ _id, quantity }: any) => {
+  try {
+    const foundProduct = await Product.findOne({ _id }).exec();
+    if (!foundProduct.inStock || foundProduct.inStock < quantity) return false;
+    return true;
+  } catch (error) {
+    console.log("checkStock error : ", error);
+    return false;
+  }
+};
 const updateProduct = async (payload: any) => {
-  const { _id, quantity, inStock, sold } = payload;
+  const { _id, quantity } = payload;
   try {
     const foundProduct = await Product.findOne({ _id });
-    if (!foundProduct.inStock || foundProduct.inStock < quantity) return false;
     foundProduct.inStock -= quantity;
     foundProduct.sold += quantity;
     const savedProduct = await foundProduct.save();
@@ -115,13 +130,14 @@ const getOrders = async (req: any, res: any) => {
       "User",
       "-password -refreshToken"
     );
+    // set
     const filteredOrders = foundOrders.map((order) => ({
       _id: order._id,
       user: order.user,
       cart: order.cart,
       total: order.total,
     }));
-    console.log("filteredOrders : ", filteredOrders);
+    console.log("orders : ", filteredOrders);
     // console.log("foundOrders : ", foundOrders);
     // console.log("foundOrders : ", {
     //   _id: foundOrders._id,

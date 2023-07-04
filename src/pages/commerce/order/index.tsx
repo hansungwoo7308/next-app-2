@@ -47,9 +47,9 @@ export default function Page() {
                 });
               }}
               onApprove={(data, actions: any) => {
-                // console.log("data : ", data);
+                // console.log("onApprove data : ", data);
                 return actions.order.capture().then((details: any) => {
-                  // console.log("details : ", details);
+                  // console.log("onApprove action.order.capture:resolved.details : ", details);
                   // alert(`Transaction completed by ${name}`);
                   // const name = details.payer.name.given_name;
                   // postData("order", recentOrder, auth.accessToken)
@@ -61,7 +61,6 @@ export default function Page() {
                       const { order } = response.data;
                       logResponse(response);
                       dispatch(clearCart());
-                      // dispatch(addOrder(order));
                       dispatch(
                         setNotify({
                           status: "success",
@@ -69,6 +68,7 @@ export default function Page() {
                           visible: "true",
                         })
                       );
+                      router.push("/auth/profile");
                     } catch (error) {
                       logError(error);
                       dispatch(

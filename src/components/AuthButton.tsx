@@ -8,10 +8,12 @@ import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
+import { useState } from "react";
 export default function AuthButton(props: any) {
   const auth = useSelector(selectAuth);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [dropdown, setDropdown] = useState(false);
   const logoutAuth = async (e: any) => {
     e.preventDefault();
     try {
@@ -25,17 +27,33 @@ export default function AuthButton(props: any) {
     }
   };
   return (
-    <Box>
+    <Box dropdown={dropdown}>
       {auth.status ? (
         <>
           {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}
           {auth.mode === "nextauth" && (
             <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
           )}
-          <Link className="profile" href={"/auth/profile"}>
-            <Image src={auth.image} alt={auth.image} width={50} height={50} />
-            {auth.username}
-          </Link>
+          <div className="profile">
+            <div className="image" onClick={() => setDropdown(!dropdown)}>
+              <Image src={auth.image} alt={auth.image} width={50} height={50} />
+              {auth.username}
+            </div>
+            {/* <Link href={"/auth/profile"}>
+            </Link> */}
+            <div className="dropdown">
+              <Link href={"/auth/profile"}>Profile</Link>
+              {auth.role === "user" && (
+                <>
+                  <Link href={"/users"}>Users</Link>
+                  <Link href={"/users"}>Users</Link>
+                  <Link href={"/users"}>Users</Link>
+                  {/* <Link href={"/products"}>Users</Link>
+                  <Link href={"/users"}>Users</Link> */}
+                </>
+              )}
+            </div>
+          </div>
         </>
       ) : (
         <>
@@ -46,7 +64,10 @@ export default function AuthButton(props: any) {
     </Box>
   );
 }
-const Box = styled.div`
+type Props = {
+  dropdown: boolean;
+};
+const Box = styled.div<Props>`
   display: flex;
   gap: 1rem;
   > * {
@@ -55,16 +76,33 @@ const Box = styled.div`
   }
   .profile {
     border: 2px solid;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    > img {
-      height: 30px;
-      width: 30px;
-      /* border: 2px solid red; */
-      /* width: 30px;
-      height: 30px; */
-      border-radius: 50%;
+    width: 7rem;
+
+    a {
+      padding: 1rem 2rem;
+      background-color: #333;
+    }
+    .image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1rem;
+      cursor: pointer;
+      color: #ccc;
+      :hover {
+        color: #fff;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+    }
+    .dropdown {
+      display: ${({ dropdown }: any) => (dropdown ? "block" : "none")};
     }
   }
   button {

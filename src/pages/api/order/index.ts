@@ -51,7 +51,18 @@ const createOrder = async (req: any, res: any) => {
       updatedProducts.push(updated);
     }
     // create an order
-    const order = await Order.create({ User: foundUser.id, address, mobile, cart, total });
+    const { details } = req.body;
+    const order = await Order.create({
+      User: foundUser.id,
+      address,
+      mobile,
+      cart,
+      total,
+      paid: true,
+      dateOfPayment: details.create_time,
+      paymentId: details.paymentId,
+      method: "paypal",
+    });
     console.log("order : ", {
       User: order.User,
       _id: order._id,

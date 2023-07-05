@@ -23,15 +23,18 @@ export default function Page() {
             <div className="order">
               <div className="shipping">
                 <h1>Shipping</h1>
-                <h4>Order Number : {order._id}</h4>
-                <p>Name : {order.User.username}</p>
-                <p>Address : {order.address}</p>
-                <p>Mobile : {order.mobile}</p>
+                <p>Order Number : {order._id}</p>
+                <p>User Name : {order.User.username}</p>
+                <p>User Address : {order.address}</p>
+                <p>User Mobile : {order.mobile}</p>
               </div>
               <div className="products">
                 {order.cart.map((product: any) => (
                   <div key={product._id}>
-                    <h5>Product Number : {product._id}</h5>
+                    <h1>Payment</h1>
+                    <p>Product Number : {product._id}</p>
+                    <p>Payment Method : {order.method}</p>
+                    <p>Payment ID : {order.paymentId}</p>
                     <Link href={`/commerce/product/${product._id}`}>
                       <Image
                         src={product.images[0].url}

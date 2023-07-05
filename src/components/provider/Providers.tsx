@@ -2,7 +2,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "lib/client/store/store";
 import { fetchPosts } from "lib/client/store/postsSlice";
 import { fetchUsers } from "lib/client/store/usersSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
@@ -12,11 +12,11 @@ import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { useRouter } from "next/router";
-import { setNotify } from "lib/client/store/notifySlice";
+import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { addOrder, setOrders } from "lib/client/store/ordersSlice";
 store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
-export default function Providers({ test123, children, session }: any) {
+export default function Providers({ children, session }: any) {
   // console.log("session : ", session);
   return (
     <Provider store={store}>
@@ -44,36 +44,51 @@ export function GlobalState({ children }: any) {
   const { auth, cart }: any = store;
   const refreshAuth = async () => {
     try {
+      dispatch(setLoading(true));
       const response = await getData("authentication/refresh");
       const { username, role, image, accessToken } = response.data;
       logResponse(response);
       dispatch(
         setCredentials({ status: true, mode: "general", username, role, image, accessToken })
       );
+      dispatch(setLoading(false));
     } catch (error) {
       logError(error);
+      dispatch(setLoading(false));
       // router.push("/");
     }
   };
+  const checkAuth = async () => {
+    console.log("asdkfhsl");
+    try {
+      dispatch(setLoading(true));
+      const response = await getData("authentication/check", auth.accessToken);
+      const { username, role, image, accessToken } = response.data.verified;
+      logResponse(response);
+      dispatch(
+        setCredentials({ status: true, mode: "general", username, role, image, accessToken })
+      );
+      dispatch(setLoading(false));
+    } catch (error) {
+      logError(error);
+      refreshAuth();
+      dispatch(setLoading(false));
+    }
+  };
   /* Auth */
-  // if loaded, accessToken 항시 검증 (store)
+  // if router.pathname exchanged, check the auth
   // useEffect(() => {
-  //   const { accessToken } = auth;
-  //   if (accessToken) {
-  //     getData("authentication/check", accessToken)
-  //       .then((response) => {
-  //         logResponse(response);
-  //         const { username, role, image } = response.data.verified;
-  //         dispatch(
-  //           setCredentials({ status: true, mode: "general", username, role, image, accessToken })
-  //         );
-  //       })
-  //       .catch((error) => {
-  //         logError(error);
-  //         refreshAuth();
-  //       });
-  //   }
-  // });
+  //   const handleRouteChange = (url: any) => {
+  //     // console.log("url : ", url);
+  //     if (!auth.accessToken) return;
+  //     checkAuth();
+  //   };
+  //   router.events.on("routeChangeComplete", handleRouteChange);
+  //   return () => {
+  //     router.events.off("routeChangeComplete", handleRouteChange);
+  //   };
+  // }, [router.pathname]);
+
   // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
   useEffect(() => {
     const { accessToken } = auth;

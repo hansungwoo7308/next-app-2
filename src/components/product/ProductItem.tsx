@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function ProductItem({ product }: any) {
   const { _id, images, title, price, inStock, description } = product;
-  const auth = useSelector(selectAuth);
-  const cart = useSelector(selectCart);
+  const { auth, cart }: any = useSelector((store) => store);
+  // const auth = useSelector(selectAuth);
+  // const cart = useSelector(selectCart);
   const dispatch = useDispatch();
   const userLink = (
     <>

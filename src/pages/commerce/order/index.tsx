@@ -14,6 +14,7 @@ export default function Page() {
   const router = useRouter();
   const dispatch = useDispatch();
   const recentOrder = order[order.length - 1];
+  // console.log("recentOrder : ", recentOrder);
   if (!order[0]) {
     return (
       <Main>
@@ -47,17 +48,18 @@ export default function Page() {
                 });
               }}
               onApprove={(data, actions: any) => {
-                // console.log("onApprove data : ", data);
+                console.log("onApprove data : ", data);
                 return actions.order.capture().then((details: any) => {
-                  // console.log("onApprove action.order.capture:resolved.details : ", details);
+                  console.log("onApprove action.order.capture:resolved.details : ", details);
                   // alert(`Transaction completed by ${name}`);
                   // const name = details.payer.name.given_name;
                   // postData("order", recentOrder, auth.accessToken)
                   // .then((response) => logResponse(response))
                   // .catch((error) => logError(error));
+                  const paylaod = { ...recentOrder, details };
                   const createOrder = async () => {
                     try {
-                      const response = await postData("order", recentOrder, auth.accessToken);
+                      const response = await postData("order", paylaod, auth.accessToken);
                       const { order } = response.data;
                       logResponse(response);
                       dispatch(clearCart());

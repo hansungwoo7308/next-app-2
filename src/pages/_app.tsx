@@ -11,34 +11,18 @@ import Script from "next/script";
 // import { NextPage } from "next";
 interface MyAppProps extends AppProps {
   auth?: Object;
+  pathname?: string;
 }
-export default function MyApp({ Component, pageProps, auth }: MyAppProps) {
+export default function MyApp({ Component, pageProps, pathname }: MyAppProps) {
   // console.log("\x1b[32m\n[_app]");
   // console.log("pageProps:", pageProps);
+  // console.log("Component:", Component);
   const setHeader = (accessToken: any) => {
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    // console.log("refreshAuth timeout...(60 seconds)");
     // setTimeout(() => {
     //   refreshAuth();
     // }, 1000 * 60);
   };
-  const refreshAuth = async () => {
-    try {
-      const response = await axios.post("/api/authentication/refresh");
-      const accessToken = response.data.accessToken;
-      logResponse(response);
-      // setHeader(accessToken);
-    } catch (error) {
-      logError(error);
-    }
-  };
-  // useEffect(() => {
-  //   // console.log("\x1b[31m\nClient Effect");
-  //   // refreshAuth();
-  //   // const accessToken = localStorage.getItem("accessToken");
-  //   // setReduxAuth(accessToken);
-  //   // setHeader();
-  // }, []);
   return (
     <>
       <Providers session={pageProps.session}>
@@ -66,11 +50,12 @@ export default function MyApp({ Component, pageProps, auth }: MyAppProps) {
 MyApp.getInitialProps = async (AppContext: AppContext) => {
   const appProps = await App.getInitialProps(AppContext);
   // console.log("\x1b[32m\n[_app]");
-  // const auth = { accessToken: "test..." };
+  // console.log("pathname : ", AppContext.router.pathname);
+  // console.log("AppContext : ", AppContext);
+  // console.log("appProps : ", appProps);
   // const serializedCooke = AppContext.ctx.req?.headers.cookie;
   // const parsedCookie = cookie.parse(serializedCooke || '');
   // console.log("refreshToken : ", parsedCookie.refreshToken);
-  // console.log("");
 
   // console.log("AppTree : ", AppContext.AppTree);
   // console.log("Component : ", AppContext.Component);
@@ -84,5 +69,6 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   return {
     ...appProps,
     // auth,
+    // pathname: AppContext.router.pathname,
   };
 };

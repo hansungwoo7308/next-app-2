@@ -28,7 +28,11 @@ export const authSlice = createSlice({
       state.image = null;
       state.accessToken = null;
     },
+    setAuthImage: (state, action) => {
+      const { image } = action.payload;
+      state.image = image;
+    },
   },
 });
-export const { setCredentials, logOut }: any = authSlice.actions;
+export const { setCredentials, logOut, setAuthImage }: any = authSlice.actions;
 export const selectAuth = (state: any) => state.auth;

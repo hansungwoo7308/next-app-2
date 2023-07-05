@@ -19,36 +19,38 @@ const updateUser = async (req: any, res: any) => {
     const verified: any = await verifyJWT(req, res);
     // update
     const { password, image } = req.body;
-    // console.log("req.body : ", req.body);
-    // console.log("file : ", file);
     // const hashedPassword = await bcrypt.hash(password, 12);
-    let updatedUser;
-    if (password && image) {
-      console.log("password : ", password);
-      console.log("image : ", image);
-      updatedUser = await User.findOneAndUpdate(
-        { _id: verified.id },
-        // { password: hashedPassword }
-        { password: password, image: image }
-      );
-    } else if (password) {
-      console.log("password : ", password);
-      updatedUser = await User.findOneAndUpdate(
-        { _id: verified.id },
-        // { password: hashedPassword }
-        { password: password }
-      );
-    } else if (image) {
-      console.log("image : ", image);
-      updatedUser = await User.findOneAndUpdate(
-        { _id: verified.id },
-        // { password: hashedPassword }
-        { image: image }
-      );
-    }
+    const foundUser = await User.findOne({ _id: verified.id });
+    if (!foundUser) return res.status(404).json({ message: "Not found" });
+    console.log("\x1b[32mfoundUser : ", foundUser);
+    foundUser.password = password;
+    foundUser.image = image;
+    console.log("\x1b[32mupdatedUser : ", foundUser);
+
+    // if (password && image) {
+    //   // updatedUser = await User.findOneAndUpdate(
+    //   //   { _id: verified.id },
+    //   //   // { password: hashedPassword }
+    //   //   { password: password, image: image }
+    //   // );
+    // }
+    // else if (password) {
+    //   console.log("password : ", password);
+    //   updatedUser = await User.findOneAndUpdate(
+    //     { _id: verified.id },
+    //     // { password: hashedPassword }
+    //     { password: password }
+    //   );
+    // } else if (image) {
+    //   console.log("image : ", image);
+    //   updatedUser = await User.findOneAndUpdate(
+    //     { _id: verified.id },
+    //     // { password: hashedPassword }
+    //     { image: image }
+    //   );
+    // }
     // output
-    console.log("\x1b[32mupdatedUser : ", updatedUser);
-    return res.status(200).json({ updatedUser });
+    return res.status(200).json({ updatedUser: foundUser });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

@@ -12,6 +12,7 @@ import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import axios from "axios";
 import Link from "next/link";
 import { setOrders } from "lib/client/store/ordersSlice";
+import { setAuthImage, setCredentials } from "lib/client/store/authSlice";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -42,7 +43,7 @@ import { setOrders } from "lib/client/store/ordersSlice";
 // }
 export default function Page() {
   const { auth, orders }: any = useSelector((store) => store);
-  const [image, setImage]: any = useState("");
+  const [image, setImage]: any = useState();
   const {
     register,
     handleSubmit,
@@ -92,13 +93,16 @@ export default function Page() {
     if (image) {
       uploaded = await uploadImageToCloudinary(image);
     }
+    // console.log("uploaded : ", uploaded);
     // update the user
     try {
       dispatch(setLoading(true));
       const payload = { password, image: uploaded[0].secure_url };
       const response = await patchData("user/update", payload, auth.accessToken);
+      const { image } = response.data.updatedUser;
       // set
       logResponse(response);
+      dispatch(setAuthImage({ image }));
       dispatch(
         setNotify({
           status: "success",

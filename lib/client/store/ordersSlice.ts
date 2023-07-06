@@ -1,11 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState: any = [];
-// {
-//   cart: [],
-//   address: "",
-//   mobile: "",
-//   total: 0,
-// };
 export const ordersSlice = createSlice({
   name: "orders",
   initialState,

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
 import { SessionProvider, useSession } from "next-auth/react";
-import { addToCart, clearCart, updateCart } from "lib/client/store/cartSlice";
+import { reloadCart } from "lib/client/store/cartSlice";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
@@ -25,7 +25,9 @@ export default function Providers({ children, session }: any) {
           options={{
             clientId:
               // "Ab2uPl_Wo2-UDJ569Byt3xFloItf-fgdla5iQwfryndLbQFASTbwSr23GUJXj7B9lyybjL44iKADN1ZH",
-              "ARL6BSMyqeQMRB31JuDJqvSeOryXUsFjLWyWOR8cG7oLi7peAw6LM3KDE37fUFEZawTeKyuESe5d4BbD",
+              // "AebB-qLz2QRa3l02i9y8SLFAZudUsX09K53hp8lMxfo1i29Ogv45n2Ldv4gCEH7-xok18myEaJtsc24f",
+              // "ARL6BSMyqeQMRB31JuDJqvSeOryXUsFjLWyWOR8cG7oLi7peAw6LM3KDE37fUFEZawTeKyuESe5d4BbD",
+              "AShEuT2KH5QzaB4DH66inHArChvuaM6k6LW7twtxB7bbCJvHnesxT1fPCq5nx5JwZ6QnD6kAAT5y5Qfv",
             currency: "USD",
           }}
         >
@@ -126,8 +128,7 @@ export function GlobalState({ children }: any) {
     if (!serializedCart) return;
     const parseCart = JSON.parse(serializedCart);
     // console.log("parseCart : ", parseCart);
-    dispatch(clearCart());
-    dispatch(updateCart(parseCart));
+    dispatch(reloadCart(parseCart));
     //
     // sdhfslfhlishf
     // parseCart.map((v: any) => {

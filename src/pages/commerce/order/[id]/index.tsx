@@ -6,14 +6,13 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Page() {
-  // get the store
-  const { orders }: any = useSelector((store) => store);
-  // get the query
+  const { auth, orders }: any = useSelector((store) => store);
   const router = useRouter();
   const { id } = router.query;
   // find the order
   const order = orders.find((order: any) => order._id === id);
-  //   console.log("order : ", order);
+  console.log("order : ", order);
+  if (!auth.accessToken) return null;
   return (
     <Main>
       <section>
@@ -27,6 +26,7 @@ export default function Page() {
                 <p>User Name : {order.User.username}</p>
                 <p>User Address : {order.address}</p>
                 <p>User Mobile : {order.mobile}</p>
+                {auth.role === "user" && <button>Change to Delivered</button>}
               </div>
               <div className="products">
                 {order.cart.map((product: any) => (
@@ -63,9 +63,11 @@ const Main = styled(PublicMain)`
         width: 5rem;
       }
       .order {
-        /* display: flex; */
+        display: flex;
         > * {
           border: 2px solid;
+          padding: 1rem;
+          flex: 1;
         }
         .shipping {
           /* flex: 1; */

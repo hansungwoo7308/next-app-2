@@ -1,10 +1,4 @@
-import {
-  clearCart,
-  decreaseQuantity,
-  deleteItem,
-  increaseQuantity,
-  updateCart,
-} from "lib/client/store/cartSlice";
+import { decreaseQuantity, deleteItem, increaseQuantity } from "lib/client/store/cartSlice";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import Link from "next/link";

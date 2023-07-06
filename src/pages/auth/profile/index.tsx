@@ -86,17 +86,14 @@ export default function Page() {
   //   getData();
   // }, [auth]);
   const handleUpdateUser = async (data: any) => {
+    dispatch(setLoading(true));
     // get
     const { password, image } = data;
-    // upload image to cloud
-    let uploaded: any;
-    if (image) {
-      uploaded = await uploadImageToCloudinary(image);
-    }
+    // upload image to cloud (and create an image url)
+    const uploaded = await uploadImageToCloudinary(image);
     // console.log("uploaded : ", uploaded);
     // update the user
     try {
-      dispatch(setLoading(true));
       const payload = { password, image: uploaded[0].secure_url };
       const response = await patchData("user/update", payload, auth.accessToken);
       const { image } = response.data.updatedUser;
@@ -275,8 +272,16 @@ export default function Page() {
                     </td>
                     <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                     <td>${order.total}</td>
-                    <td>{order.delivered ? "delivered" : "Not delivered"}</td>
-                    <td>{order.paid ? "paid" : "Not paid"}</td>
+                    {order.delivered ? (
+                      <td className="delivered">delivered</td>
+                    ) : (
+                      <td className="not-delivered">Not delivered</td>
+                    )}
+                    {order.paid ? (
+                      <td className="paid">paid</td>
+                    ) : (
+                      <td className="not-paid">Not paid</td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -355,6 +360,14 @@ const Main = styled(PublicMain)`
         thead {
           text-transform: uppercase;
         }
+      }
+      .delivered,
+      .paid {
+        color: green;
+      }
+      .not-delivered,
+      .not-paid {
+        color: red;
       }
     }
   }

@@ -9,15 +9,15 @@ export const cartSlice = createSlice({
       state.push(action.payload);
       localStorage.setItem("cart", JSON.stringify(state));
     },
-    updateCart: (state, action) => {
-      const cart: any = action.payload;
-      cart.map((product: any) => {
-        state.push(product);
-      });
+    reloadCart: (state, action) => {
+      const cart = action.payload;
+      return cart;
+      // const cart: any = action.payload;
+      // cart.map((product: any) => {
+      //   state.push(product);
+      // });
     },
-    clearCart: (state, action) => {
-      return [];
-    },
+    clearCart: (state, action) => [],
     increaseQuantity: (state, action) => {
       const { _id } = action.payload;
       state.find((v: any) => v._id === _id).quantity++;
@@ -40,7 +40,7 @@ export const cartSlice = createSlice({
 });
 export const {
   addToCart,
-  updateCart,
+  reloadCart,
   clearCart,
   increaseQuantity,
   decreaseQuantity,

@@ -22,15 +22,15 @@ export default async function (req: any, res: any) {
 const createOrder = async (req: any, res: any) => {
   try {
     // verify
-    const verified = await verifyJWT(req, res);
+    const verified: any = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
-    // find
-    const { id }: any = verified;
-    const foundUser = await User.findOne({ _id: id }).exec();
-    console.log("foundUser : ", {
-      _id: foundUser._id,
-      username: foundUser.username,
-    });
+    // // find
+    // const { id }: any = verified;
+    // const foundUser = await User.findOne({ _id: id }).exec();
+    // console.log("foundUser : ", {
+    //   _id: foundUser._id,
+    //   username: foundUser.username,
+    // });
     // check the product stock
     const { address, mobile, cart, total } = req.body;
     let flagForChecking = 0;
@@ -51,17 +51,17 @@ const createOrder = async (req: any, res: any) => {
       updatedProducts.push(updated);
     }
     // create an order
-    const { details } = req.body;
+    // const { details } = req.body;
     const order = await Order.create({
-      User: foundUser.id,
+      User: verified.id,
       address,
       mobile,
       cart,
       total,
-      paid: true,
-      dateOfPayment: details.create_time,
-      paymentId: details.paymentId,
-      method: "paypal",
+      // paid: true,
+      // dateOfPayment: details.create_time,
+      // paymentId: details.paymentId,
+      // method: "paypal",
     });
     console.log("order : ", {
       User: order.User,

@@ -1,3 +1,4 @@
+import Paypal from "@/components/commerce/Paypal";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,15 +27,15 @@ export default function Page() {
                 <p>User Name : {order.User.username}</p>
                 <p>User Address : {order.address}</p>
                 <p>User Mobile : {order.mobile}</p>
-                {auth.role === "user" && <button>Change to Delivered</button>}
+                <p>
+                  Delivered Status : {order.delivered ? "delivered" : "Not delivered"}
+                  {auth.role === "user" && <button>Change to Delivered</button>}
+                </p>
               </div>
               <div className="products">
+                <h1>Products</h1>
                 {order.cart.map((product: any) => (
-                  <div key={product._id}>
-                    <h1>Payment</h1>
-                    <p>Product Number : {product._id}</p>
-                    <p>Payment Method : {order.method}</p>
-                    <p>Payment ID : {order.paymentId}</p>
+                  <div className="product" key={product._id}>
                     <Link href={`/commerce/product/${product._id}`}>
                       <Image
                         src={product.images[0].url}
@@ -43,8 +44,30 @@ export default function Page() {
                         height={300}
                       />
                     </Link>
+                    <div>
+                      <p>Product Number : {product._id}</p>
+                      <p>
+                        {product.quantity} X ${product.price} = ${product.quantity * product.price}
+                      </p>
+                    </div>
                   </div>
                 ))}
+              </div>
+              <div className="payment">
+                <h1>Payment</h1>
+                <p>Payment Status : {order.paid ? "Paid" : "Not paid"}</p>
+                {!order.paid && order.User.role === "user" && (
+                  <>
+                    <p>Total : ${order.total}</p>
+                    <Paypal order={order} />
+                  </>
+                )}
+                {order.paid && (
+                  <>
+                    <p>Payment Method : {order.method}</p>
+                    <p>Payment ID : {order.paymentId}</p>
+                  </>
+                )}
               </div>
             </div>
           )}
@@ -63,20 +86,35 @@ const Main = styled(PublicMain)`
         width: 5rem;
       }
       .order {
-        display: flex;
+        display: grid;
+        grid-template-areas:
+          "shipping payment"
+          "products payment";
+        grid-template-columns: 2fr 1fr;
         > * {
           border: 2px solid;
           padding: 1rem;
-          flex: 1;
+          /* flex: 1; */
         }
         .shipping {
-          /* flex: 1; */
         }
         .products {
           /* flex: 1; */
-          img {
-            width: 10rem;
+          .product {
+            border: 2px solid;
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            a {
+              width: initial;
+              img {
+                width: 5rem;
+              }
+            }
           }
+        }
+        .payment {
+          grid-area: payment;
         }
       }
     }

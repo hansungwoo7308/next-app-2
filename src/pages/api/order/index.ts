@@ -33,6 +33,7 @@ const createOrder = async (req: any, res: any) => {
     // });
     // check the product stock
     const { address, mobile, cart, total } = req.body;
+    console.log("check the product stock... address : ", address);
     let flagForChecking = 0;
     for (const item of cart) {
       const { _id, quantity }: any = item;
@@ -63,11 +64,12 @@ const createOrder = async (req: any, res: any) => {
       // paymentId: details.paymentId,
       // method: "paypal",
     });
-    console.log("order : ", {
-      User: order.User,
-      _id: order._id,
-      cart: order.cart,
-    });
+    // console.log("order : ", {
+    //   User: order.User,
+    //   _id: order._id,
+    //   cart: order.cart,
+    // });
+    console.log("order : ", order);
     // set
     return res.status(200).json({ order });
     // const newOrder = new Orders({

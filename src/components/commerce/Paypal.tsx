@@ -12,7 +12,6 @@ export default function Paypal({ order }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   console.log("order : ", order);
-
   return (
     <Box>
       <PayPalButtons
@@ -33,8 +32,8 @@ export default function Paypal({ order }: any) {
                 };
                 const response = await postData("order", payload, auth.accessToken);
                 // const { order } = response.data;
+                // const {savedOrder}=response.data
                 logResponse(response);
-                dispatch(clearCart());
                 dispatch(
                   setNotify({
                     status: "success",

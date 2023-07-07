@@ -15,21 +15,21 @@ export default async function (req: any, res: any) {
 }
 const payForOrder = async (req: any, res: any) => {
   try {
-    // verify
+    // verify the User
     const verified: any = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
     // else if (verified.role !== "user") return res.status(403).json({ message: "Forbidden" });
-    // find
+    // find the Order
     const { _id, paymentId } = req.body;
     const foundOrder = await Order.findOne({ _id }).populate("User");
     if (foundOrder.User.role !== "user") return res.status(403).json({ message: "Forbidden" });
-    console.log("foundOrder : ", foundOrder);
+    // console.log("foundOrder : ", foundOrder);
+    // set the Order
     foundOrder.paid = true;
     foundOrder.paymentId = paymentId;
     foundOrder.method = "Paypal";
-    const savedOrder = await foundOrder.save();
-    console.log("savedOrder : ", savedOrder);
-
+    const savedOrder: any = await foundOrder.save();
+    // console.log("savedOrder : ", savedOrder);
     return res.status(200).json({ savedOrder });
   } catch (error) {
     console.log(error);

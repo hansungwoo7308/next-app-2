@@ -13,6 +13,7 @@ import axios from "axios";
 import Link from "next/link";
 import { setOrders } from "lib/client/store/ordersSlice";
 import { setAuthImage, setCredentials } from "lib/client/store/authSlice";
+import { setUsers } from "lib/client/store/usersSlice";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -95,7 +96,7 @@ export default function Page() {
     // update the user
     try {
       const payload = { password, image: uploaded[0].secure_url };
-      const response = await patchData("user/update", payload, auth.accessToken);
+      const response = await patchData("user", payload, auth.accessToken);
       const { image } = response.data.updatedUser;
       // set
       logResponse(response);
@@ -173,13 +174,20 @@ export default function Page() {
       logResponse(response);
       dispatch(setOrders(orders));
     };
+    const getUsers = async () => {
+      const response = await getData("user", auth.accessToken);
+      const { foundUsers } = response.data;
+      logResponse(response);
+      dispatch(setUsers(foundUsers));
+    };
     try {
       getOrder();
+      getUsers();
     } catch (error: any) {
       dispatch(setNotify({ status: "error", message: error.message, visible: true }));
       logError(error);
     }
-  }, [auth.accessToken]);
+  }, []);
   if (!auth.status) return null;
   return (
     <>

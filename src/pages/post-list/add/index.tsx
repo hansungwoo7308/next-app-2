@@ -8,7 +8,6 @@ import styled from "styled-components";
 export default function Page() {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
-  // console.log("users : ", users);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");

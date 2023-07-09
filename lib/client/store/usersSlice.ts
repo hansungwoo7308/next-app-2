@@ -11,13 +11,20 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
 const usersSlice = createSlice({
   name: "users",
   initialState,
-  reducers: {},
+  reducers: {
+    setUsers: (state, action) => {
+      const newState = action.payload;
+      return newState;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      // 리턴된 값으로 상태 변경
       return action.payload;
     });
   },
 });
+export const { setUsers } = usersSlice.actions;
 // selectors
 export const selectAllUsers = (state: any) => state.users;
 export const selectUserById = (state: any, userId: any) =>

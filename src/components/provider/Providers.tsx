@@ -14,7 +14,7 @@ import logError from "lib/client/log/logError";
 import { useRouter } from "next/router";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { addOrder, setOrders } from "lib/client/store/ordersSlice";
-store.dispatch(fetchUsers());
+// store.dispatch(fetchUsers());
 store.dispatch(fetchPosts());
 export default function Providers({ children, session }: any) {
   // console.log("session : ", session);
@@ -90,21 +90,17 @@ export function GlobalState({ children }: any) {
   //     router.events.off("routeChangeComplete", handleRouteChange);
   //   };
   // }, [router.pathname]);
-
-  // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
   useEffect(() => {
     const { accessToken } = auth;
     if (!accessToken) {
       refreshAuth();
     }
-  }, []);
+  }, []); // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     refreshAuth();
   //   }, 1000 * 10);
   // }, []);
-
-  // 로드 시 : next-auth.session (store)
   useEffect(() => {
     // if refreshed by nextauth session status,
     // load the auth status in redux store
@@ -119,9 +115,8 @@ export function GlobalState({ children }: any) {
         })
       );
     }
-  }, []);
+  }, []); // 로드 시 : next-auth.session (store)
   /* Cart */
-  // if first loaded, 캐싱 (store)
   useEffect(() => {
     // if refreshed and cart exist, load the items in store
     const serializedCart: any = localStorage.getItem("cart");
@@ -134,14 +129,11 @@ export function GlobalState({ children }: any) {
     // parseCart.map((v: any) => {
     //   dispatch(addToCart(v));
     // });
-  }, []);
-  // if cart changed, : 캐싱 (storage)
+  }, []); // if first loaded, 캐싱 (store)
   useEffect(() => {
-    // if cart is changed, load the cart
     if (!cart.length) return;
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
-  }, [cart]);
-
+  }, [cart]); // if cart is changed, load the cart // if cart changed, : 캐싱 (storage)
   return <>{children}</>;
 }

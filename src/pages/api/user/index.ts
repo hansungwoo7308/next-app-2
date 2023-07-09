@@ -4,15 +4,37 @@ import verifyJWT from "lib/server/utils/verifyJWT";
 const bcrypt = require("bcrypt");
 connectDB();
 export default async function (req: any, res: any) {
-  console.log("\x1b[32m[api/user/updatePassword]");
+  console.log("\x1b[32m[api/user]");
   switch (req.method) {
     case "PATCH":
+      console.log("PATCH");
       await updateUser(req, res);
+      break;
+    case "GET":
+      console.log("GET");
+      await getUsers(req, res);
       break;
     default:
       break;
   }
 }
+const getUsers = async (req: any, res: any) => {
+  try {
+    // verify
+    const verified: any = await verifyJWT(req, res);
+    // console.log("verified.role : ", verified.role);
+    if (verified.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+    // find
+    // const hashedPassword = await bcrypt.hash(password, 12);
+    const foundUsers = await User.find().select("-password").exec();
+    if (!foundUsers) return res.status(404).json({ message: "Not found" });
+    console.log("foundUsers : ", foundUsers);
+    // output
+    return res.status(200).json({ foundUsers });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 const updateUser = async (req: any, res: any) => {
   try {
     // verify

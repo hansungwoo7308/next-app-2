@@ -130,11 +130,14 @@ const updateProduct = async (payload: any) => {
 const getOrders = async (req: any, res: any) => {
   try {
     // verify
-    const verified = await verifyJWT(req, res);
+    const verified: any = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
+    // console.log("verified.role : ", verified.role);
+
     // find the User
     const { id }: any = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
+
     if (foundUser.role !== "user") return res.status(403).json({ message: "Forbidden" });
     // console.log("foundUser : ", foundUser);
     // find the Orders

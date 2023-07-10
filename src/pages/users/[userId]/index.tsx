@@ -8,28 +8,17 @@ import { patchData } from "lib/client/utils/fetchData";
 import logError from "lib/client/log/logError";
 import { setLoading } from "lib/client/store/notifySlice";
 import logResponse from "lib/client/log/logResponse";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { updateUser } from "lib/client/store/usersSlice";
 export default function Page() {
   const router = useRouter();
   const dispatch = useDispatch();
+  // get the user
   const { userId } = router.query;
   const { auth, users }: any = useSelector((store) => store);
   const user = users.find((user: any) => user._id === userId);
-  const [role, setRole] = useState("user");
-  const handleTest = async () => {
-    try {
-      dispatch(setLoading(true));
-      const response = await patchData(`user/${userId}`, { role: "" }, auth.accessToken);
-      logResponse(response);
-      dispatch(setLoading(false));
-    } catch (error) {
-      logError(error);
-      dispatch(setLoading(false));
-    }
-  };
-  // console.log("users : ", users);
-  // console.log("user : ", user);
-  // console.log("userId : ", userId);
+  // set the user's role
+  const [role, setRole]: any = useState();
   // user > posts
   const postsForUser = useSelector((state) => selectPostsByUser(state, Number(userId)));
   const postTitles = postsForUser.map((post: any) => (
@@ -45,31 +34,36 @@ export default function Page() {
   //   return allPosts.filter((post: any) => post.userId === Number(userId));
   // });
   // console.log("postsForUser : ", postsForUser);
-  const handleRole = (e: any) => {
+  const handleChange = (e: any) => {
     if (role === "admin") setRole("user");
     else setRole("admin");
   };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // console.log("payload : ", e.target.role.value);
     const role = e.target.role.value;
     try {
       dispatch(setLoading(true));
-      const response = await patchData(`user/${userId}`, { role }, auth.accessToken);
+      const response: any = await patchData(`user/${userId}`, { role }, auth.accessToken);
+      const { savedUser } = response.data;
       logResponse(response);
+      dispatch(updateUser({ _id: savedUser._id, role }));
       dispatch(setLoading(false));
     } catch (error) {
       logError(error);
+      // console.log(error);
       dispatch(setLoading(false));
     }
   };
+  useEffect(() => {
+    if (user) setRole(user.role);
+  }, [user]);
   return (
     <>
       <Main>
         <section>
           {user && (
             <div>
-              <h1>User Page</h1>
+              <h1>User Page (Managed by Administrator)</h1>
               <p>Username : {user.username}</p>
               <form onSubmit={handleSubmit}>
                 <div>
@@ -78,7 +72,7 @@ export default function Page() {
                     name="role"
                     id="role"
                     value={role}
-                    onClick={handleRole}
+                    onChange={handleChange}
                     checked={role === "admin"}
                   />
                   <label htmlFor="role">{role}</label>

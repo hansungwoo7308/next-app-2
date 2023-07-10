@@ -16,6 +16,10 @@ const usersSlice = createSlice({
       const newState = action.payload;
       return newState;
     },
+    updateUser: (state, action) => {
+      const { _id, role } = action.payload;
+      state.find((user: any) => user._id === _id).role = role;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
@@ -24,7 +28,7 @@ const usersSlice = createSlice({
     });
   },
 });
-export const { setUsers } = usersSlice.actions;
+export const { setUsers, updateUser } = usersSlice.actions;
 // selectors
 export const selectAllUsers = (state: any) => state.users;
 // reducer

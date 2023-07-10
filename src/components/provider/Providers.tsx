@@ -1,7 +1,7 @@
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "lib/client/store/store";
 import { fetchPosts } from "lib/client/store/postsSlice";
-import { fetchUsers } from "lib/client/store/usersSlice";
+import { fetchUsers, setUsers } from "lib/client/store/usersSlice";
 import { useEffect, useState } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
@@ -135,5 +135,27 @@ export function GlobalState({ children }: any) {
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
   }, [cart]); // if cart is changed, load the cart // if cart changed, : 캐싱 (storage)
+  useEffect(() => {
+    if (!auth.accessToken) return;
+    const getOrder = async () => {
+      const response = await getData("order", auth.accessToken);
+      const { orders } = response.data;
+      logResponse(response);
+      dispatch(setOrders(orders));
+    };
+    const getUsers = async () => {
+      const response = await getData("user", auth.accessToken);
+      const { foundUsers } = response.data;
+      logResponse(response);
+      dispatch(setUsers(foundUsers));
+    };
+    try {
+      getOrder();
+      getUsers();
+    } catch (error: any) {
+      dispatch(setNotify({ status: "error", message: error.message, visible: true }));
+      logError(error);
+    }
+  }, [auth.accessToken]);
   return <>{children}</>;
 }

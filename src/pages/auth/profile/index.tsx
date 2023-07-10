@@ -166,28 +166,7 @@ export default function Page() {
   //     logError(error);
   //   }
   // }, []); // get the order
-  useEffect(() => {
-    if (!auth.accessToken) return;
-    const getOrder = async () => {
-      const response = await getData("order", auth.accessToken);
-      const { orders } = response.data;
-      logResponse(response);
-      dispatch(setOrders(orders));
-    };
-    const getUsers = async () => {
-      const response = await getData("user", auth.accessToken);
-      const { foundUsers } = response.data;
-      logResponse(response);
-      dispatch(setUsers(foundUsers));
-    };
-    try {
-      getOrder();
-      getUsers();
-    } catch (error: any) {
-      dispatch(setNotify({ status: "error", message: error.message, visible: true }));
-      logError(error);
-    }
-  }, []);
+
   if (!auth.status) return null;
   return (
     <>

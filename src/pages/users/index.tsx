@@ -6,9 +6,15 @@ import Image from "next/image";
 // let renderCount = 0;
 export default function Page() {
   const { users }: any = useSelector((store) => store);
+  // const list = users.map((user: any) => (
+  //   <li key={user.id}>
+  //     <Link href={`/users/${user.id}`}>{user.name}</Link>
+  //   </li>
+  // ));
   const list = users.map((user: any) => (
     <li key={user.id}>
-      <Link href={`/users/${user.id}`}>{user.name}</Link>
+      <Link href={`/users/${user._id}`}>{user.username}</Link>
+      {/* <Link href={`/users/${user.id}`}>{user.name}</Link> */}
     </li>
   ));
   // console.log("users : ", users);
@@ -22,10 +28,10 @@ export default function Page() {
             <h1>Users List</h1>
             <p>Reference : CDN (jsonplaceholder)</p>
             <ul>{list}</ul>
-            <table>
+            {/* <table>
               <thead>
                 <tr>
-                  <th>---</th>
+                  <th></th>
                   <th>ID</th>
                   <th>Image</th>
                   <th>Name</th>
@@ -39,20 +45,20 @@ export default function Page() {
                   <tr key={user._id}>
                     <td>{index + 1}</td>
                     <td>{user._id}</td>
-                    <td>
-                      <Image src={user.image} alt={user.image} width={100} height={100} />
+                    <td className="image">
+                      <Image src={user.image} alt={user.image} width={50} height={50} />
                     </td>
                     <td>{user.username}</td>
                     <td>{user.email}</td>
                     <td>{user.role}</td>
-                    <td>
+                    <td className="action">
                       <button>Edit</button>
                       <button>Delete</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table> */}
           </div>
         </section>
       </Main>
@@ -62,25 +68,39 @@ export default function Page() {
 const Main = styled(PublicMain)`
   > section {
     > div {
-      width: 70%;
       height: 70%;
-      max-width: 700px;
       table {
+        width: 100%;
         height: 100%;
         border: 2px solid;
-        * {
+        text-align: center;
+        th,
+        td {
           border: 1px solid;
+          padding: 0.5rem;
         }
-        img {
-          display: block;
+        .image {
+          padding: 0 !important;
+          img {
+            display: block;
+            padding: 0;
+          }
         }
-        > tbody > tr > td:last-of-type {
+        .action {
           height: 100%;
-          /* border: 2px solid red; */
           display: flex;
-          /* flex-direction: column; */
+          padding: 0;
           button {
             flex: 1;
+            :hover {
+              background-color: #333 !important;
+            }
+          }
+          button:first-of-type {
+            background-color: darkcyan;
+          }
+          button:last-of-type {
+            background-color: darksalmon;
           }
         }
       }

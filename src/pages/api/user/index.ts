@@ -28,7 +28,7 @@ const getUsers = async (req: any, res: any) => {
     // const hashedPassword = await bcrypt.hash(password, 12);
     const foundUsers = await User.find().select("-password").exec();
     if (!foundUsers) return res.status(404).json({ message: "Not found" });
-    console.log("foundUsers : ", foundUsers);
+    console.log("foundUsers.length : ", foundUsers.length);
     // output
     return res.status(200).json({ foundUsers });
   } catch (error: any) {

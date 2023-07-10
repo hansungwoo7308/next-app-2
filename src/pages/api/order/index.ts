@@ -133,11 +133,9 @@ const getOrders = async (req: any, res: any) => {
     const verified: any = await verifyJWT(req, res);
     if (!verified) return res.status(401).json({ message: "Unauthorized" });
     // console.log("verified.role : ", verified.role);
-
     // find the User
     const { id }: any = verified;
     const foundUser = await User.findOne({ _id: id }).exec();
-
     if (foundUser.role !== "user") return res.status(403).json({ message: "Forbidden" });
     // console.log("foundUser : ", foundUser);
     // find the Orders
@@ -153,7 +151,7 @@ const getOrders = async (req: any, res: any) => {
       cart: order.cart,
       total: order.total,
     }));
-    console.log("orders : ", filteredOrders);
+    console.log("foundOrders.length : ", foundOrders.length);
     // console.log("foundOrders : ", foundOrders);
     // console.log("foundOrders : ", {
     //   _id: foundOrders._id,

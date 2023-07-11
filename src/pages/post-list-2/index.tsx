@@ -12,15 +12,11 @@ import styled from "styled-components";
 // // import { PostMetaData } from "types/postMetaData";
 // import { PostMetaData } from "../../../types/PostMetaData";
 export function getStaticProps(context: GetStaticPropsContext) {
-  console.log("\x1b[32m");
-  console.log("[Server:getStaticProps]/pages/post-list-2");
+  console.log("\x1b[32m\n[Server:getStaticProps]/pages/post-list-2");
   const list = getMarkdown("data/posts");
-  console.log("");
   return { props: { list } };
 }
-let renderCount = 0;
 export default function Page({ list }: any) {
-  // Related to PostList
   const [posts, setPosts]: any = useState([]);
   // console.log("posts : ", posts);
   const getPosts = async () => {
@@ -45,13 +41,12 @@ export default function Page({ list }: any) {
   useEffect(() => {
     getPosts();
   }, []);
-  // Related to Modal
-  const [isOpen, setIsOpen] = useState(false);
+  const [modal, setModal] = useState(false);
   const handleOpen = () => {
-    setIsOpen(true);
+    setModal(true);
   };
   const handleClose = () => {
-    setIsOpen(false);
+    setModal(false);
   };
   const handleCreate = async ({ title, content }: any) => {
     try {
@@ -61,7 +56,6 @@ export default function Page({ list }: any) {
     }
     getPosts();
   };
-  renderCount++;
   return (
     <>
       <Head>
@@ -69,14 +63,13 @@ export default function Page({ list }: any) {
       </Head>
       <Main>
         <section>
-          <h1>renderCount : {renderCount}</h1>
           <PostList
             list={posts}
             path={"post-list-2"}
             openModal={handleOpen}
             deleteItem={handleDelete}
           />
-          {isOpen && <Modal closeModal={handleClose} createItem={handleCreate} />}
+          {modal && <Modal close={handleClose} action={handleCreate} />}
         </section>
       </Main>
     </>
@@ -88,11 +81,6 @@ const Main = styled(PublicMain)`
       width: 70%;
       height: 70vh;
       max-width: 1000px;
-    }
-    // set the size of Modal Component
-    > div:last-of-type {
-      width: 100%;
-      height: 100%;
     }
   }
 `;

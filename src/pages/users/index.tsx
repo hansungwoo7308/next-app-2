@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import Image from "next/image";
-// let renderCount = 0;
 export default function Page() {
   const { users }: any = useSelector((store) => store);
   // const list = users.map((user: any) => (
@@ -13,22 +12,20 @@ export default function Page() {
   // ));
   const list = users.map((user: any) => (
     <li key={user.id}>
-      <Link href={`/users/${user._id}`}>{user.username}</Link>
+      <Link href={`/users/${user._id}`}>
+        {user.username}:(role:{user.role})
+      </Link>
       {/* <Link href={`/users/${user.id}`}>{user.name}</Link> */}
     </li>
   ));
-  // console.log("users : ", users);
-  // renderCount++;
   return (
     <>
       <Main>
         <section>
-          {/* <h1>renderCount : {renderCount}</h1> */}
           <div>
             <h1>Users List</h1>
             <p>Reference : CDN (jsonplaceholder)</p>
-            <ul>{list}</ul>
-            {/* <table>
+            <table>
               <thead>
                 <tr>
                   <th></th>
@@ -52,13 +49,13 @@ export default function Page() {
                     <td>{user.email}</td>
                     <td>{user.role}</td>
                     <td className="action">
-                      <button>Edit</button>
+                      <Link href={`/users/${user._id}`}>Edit</Link>
                       <button>Delete</button>
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </table> */}
+            </table>
           </div>
         </section>
       </Main>
@@ -90,13 +87,18 @@ const Main = styled(PublicMain)`
           height: 100%;
           display: flex;
           padding: 0;
+          a,
           button {
             flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
             :hover {
               background-color: #333 !important;
             }
           }
-          button:first-of-type {
+          a:first-of-type {
             background-color: darkcyan;
           }
           button:last-of-type {

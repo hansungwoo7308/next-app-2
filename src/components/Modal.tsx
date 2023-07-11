@@ -1,45 +1,95 @@
 import { useState } from "react";
-import { Background, Box } from "@/styles/components/Modal.styled";
-export default function Modal({ closeModal, createItem }: any) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+import { useForm } from "react-hook-form";
+import styled from "styled-components";
+export default function Modal({ close, action }: any) {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   return (
-    <Background onClick={closeModal}>
+    <Background onClick={close}>
       <Box onClick={(e) => e.stopPropagation()}>
-        <form>
+        <form
+          onSubmit={handleSubmit((data) => {
+            const { title, content } = data;
+            action({ title, content });
+            close();
+          })}
+        >
           <div>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Title"
-              value={title}
-              onChange={(e: any) => setTitle(e.target.value)}
-            />
+            <input {...register("title", { required: true })} type="text" placeholder="Title" />
             <textarea
-              name="content"
-              id="content"
+              {...register("content", { required: true })}
               cols={30}
               rows={10}
               placeholder="Content"
-              value={content}
-              onChange={(e: any) => setContent(e.target.value)}
             ></textarea>
           </div>
           <div>
-            <button
-              onClick={(e: any) => {
-                e.preventDefault();
-                createItem({ title, content });
-                closeModal();
-              }}
-            >
-              Create a post
-            </button>
-            <button onClick={closeModal}>Close</button>
+            <button>Create a post</button>
+            <button onClick={close}>Close</button>
           </div>
         </form>
       </Box>
     </Background>
   );
 }
+const Background = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: 5px solid purple;
+  background-color: rgba(0, 0, 0, 0.5);
+  :focus {
+    /* border: 3px solid red; */
+    display: none;
+  }
+`;
+const Box = styled.div`
+  width: 40%;
+  height: 40%;
+  position: absolute;
+  background-color: white;
+  outline: 5px solid black;
+  padding: 20px;
+  /* display: none; */
+  > form {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    > div:nth-of-type(1) {
+      width: 100%;
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      > input {
+        width: 100%;
+        height: 30px;
+        padding: 10px;
+      }
+      > textarea {
+        width: 100%;
+        height: 80%;
+        padding: 10px;
+      }
+    }
+    > div:nth-of-type(2) {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      /* outline: 1px solid blue; */
+      > button {
+        width: 50%;
+        padding: 10px;
+      }
+    }
+  }
+`;

@@ -6,14 +6,15 @@ import { notifySlice } from "./notifySlice";
 import { postsSlice } from "./postsSlice";
 import { posts2Slice } from "./posts2Slice";
 import usersReducer from "./usersSlice";
+import { cartSlice } from "./cartSlice";
+import { orderSlice } from "./orderSlice";
+import { ordersSlice } from "./ordersSlice";
+import { modalSlice } from "./modalSlice";
 // (with Backend)
 // import { apiSlice as usersApi } from "lib/utility/usersApiSlice";
 import { authApiSlice } from "lib/utils/authApiSlice";
 import { usersApiSlice } from "lib/utils/usersApiSlice";
 import { todosApiSlice } from "lib/utils/todosApiSlice";
-import { cartSlice } from "./cartSlice";
-import { orderSlice } from "./orderSlice";
-import { ordersSlice } from "./ordersSlice";
 // const combineReducer = combineReducers({ counter: counterSlice });
 const store: any = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store: any = configureStore({
     cart: cartSlice.reducer,
     order: orderSlice.reducer,
     orders: ordersSlice.reducer,
+    modal: modalSlice.reducer,
 
     posts: postsSlice.reducer,
     posts2: posts2Slice.reducer,

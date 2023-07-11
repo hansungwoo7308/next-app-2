@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import Image from "next/image";
+import { openModal } from "lib/client/store/modalSlice";
 export default function Page() {
   const { users }: any = useSelector((store) => store);
+  const dispatch = useDispatch();
   // const list = users.map((user: any) => (
   //   <li key={user.id}>
   //     <Link href={`/users/${user.id}`}>{user.name}</Link>
@@ -50,7 +52,20 @@ export default function Page() {
                     <td>{user.role}</td>
                     <td className="action">
                       <Link href={`/users/${user._id}`}>Edit</Link>
-                      <button>Delete</button>
+                      <button
+                        onClick={() => {
+                          const payload = {
+                            data: users,
+                            id: user._id,
+                            name: user.username,
+                            visible: true,
+                          };
+                          // dispatch(addModal(payload));
+                          dispatch(openModal({ message: "Do you want to delete?" }));
+                        }}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}

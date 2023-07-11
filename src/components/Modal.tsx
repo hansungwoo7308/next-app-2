@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-export default function Modal({ close, action }: any) {
+export default function Modal({ action, close }: any) {
   const {
     register,
     handleSubmit,
@@ -28,7 +28,7 @@ export default function Modal({ close, action }: any) {
             ></textarea>
           </div>
           <div>
-            <button>Create a post</button>
+            <button>Submit</button>
             <button onClick={close}>Close</button>
           </div>
         </form>

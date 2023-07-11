@@ -15,7 +15,6 @@ export default function Header() {
           <AuthButton />
         </div>
       </section>
-      <Notify />
     </HeaderStyle>
   );
 }

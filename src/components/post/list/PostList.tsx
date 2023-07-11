@@ -22,14 +22,8 @@ export default function PostList({ list, openModal, deleteItem }: any) {
             </button>
           </li>
         ))}
-        <li>asdad</li>
-        <li>asdad</li>
-        <li>asdad</li>
-        <li>asdad</li>
-        <li>asdad</li>
-        <li>asdad</li>
       </ul>
-      <button onClick={openModal}>Create a item</button>
+      <button onClick={openModal}>Create a Post Item</button>
     </Box>
   );
 }

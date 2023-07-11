@@ -28,7 +28,7 @@ export default function Page({ list }: any) {
       console.log("getPosts error : ", error);
     }
   };
-  const handleDelete = async (title: any) => {
+  const deleteItem = async (title: any) => {
     // console.log("title : ", title);
     try {
       const result = await axios.delete("/api/posts", { data: { title } });
@@ -42,17 +42,13 @@ export default function Page({ list }: any) {
     getPosts();
   }, []);
   const [modal, setModal] = useState(false);
-  const handleOpen = () => {
-    setModal(true);
-  };
-  const handleClose = () => {
-    setModal(false);
-  };
-  const handleCreate = async ({ title, content }: any) => {
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
+  const createItem = async ({ title, content }: any) => {
     try {
       await axios.post("/api/posts", { title, content });
     } catch (error) {
-      console.log("createPost error : ", error);
+      console.log("createItem error : ", error);
     }
     getPosts();
   };
@@ -65,11 +61,11 @@ export default function Page({ list }: any) {
         <section>
           <PostList
             list={posts}
-            path={"post-list-2"}
-            openModal={handleOpen}
-            deleteItem={handleDelete}
+            // path={"post-list-2"}
+            openModal={openModal}
+            deleteItem={deleteItem}
           />
-          {modal && <Modal close={handleClose} action={handleCreate} />}
+          {modal && <Modal action={createItem} close={closeModal} />}
         </section>
       </Main>
     </>

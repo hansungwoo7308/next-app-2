@@ -8,7 +8,7 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   return response.data;
 });
 // slice
-const usersSlice = createSlice({
+export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
@@ -20,6 +20,11 @@ const usersSlice = createSlice({
       const { _id, role } = action.payload;
       state.find((user: any) => user._id === _id).role = role;
     },
+    deleteUser: (state, action) => {
+      const { _id } = action.payload;
+      const newState = state.filter((v: any) => v._id !== _id);
+      return newState;
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
@@ -28,8 +33,7 @@ const usersSlice = createSlice({
     });
   },
 });
-export const { setUsers, updateUser } = usersSlice.actions;
+export const { setUsers, updateUser, deleteUser } = usersSlice.actions;
 // selectors
 export const selectAllUsers = (state: any) => state.users;
 // reducer
-export default usersSlice.reducer;

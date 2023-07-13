@@ -21,6 +21,7 @@ export default function Page() {
     watch,
     setFocus,
     formState: { errors },
+    reset,
   } = useForm();
   const password = useRef();
   password.current = watch("password");
@@ -32,6 +33,9 @@ export default function Page() {
       logResponse(response);
       dispatch(setNotify({ message: "signed up", visible: true }));
       dispatch(setLoading(false));
+      reset();
+      setFocus("username");
+      // router.push('/auth/signin')
     } catch (error: any) {
       logError(error);
       dispatch(setNotify({ message: "failed to sign up", visible: true }));

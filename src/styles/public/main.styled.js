@@ -1,6 +1,7 @@
 import styled from "styled-components";
 export const Main = styled.main`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #333;
@@ -13,15 +14,12 @@ export const Main = styled.main`
     padding: 1rem;
     padding-top: 70px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border: 2px solid coral;
     /* outline: 2px solid coral; */
-    > h1 {
-      position: absolute;
-      top: 70px;
-      right: 20px;
-    }
+
     > div {
       width: 100%;
       padding: 1rem;

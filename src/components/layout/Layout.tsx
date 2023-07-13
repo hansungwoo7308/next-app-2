@@ -3,7 +3,7 @@ import { getData } from "lib/client/utils/fetchData";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Modal from "../modal/Modal";
+import Modal from "./Modal";
 import Notify from "../Notify";
 import Footer from "./Footer";
 import Header from "./Header";

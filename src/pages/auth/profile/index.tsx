@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Head from "next/head";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
@@ -14,6 +14,8 @@ import Link from "next/link";
 import { setOrders } from "lib/client/store/ordersSlice";
 import { setAuthImage, setCredentials } from "lib/client/store/authSlice";
 import { setUsers } from "lib/client/store/usersSlice";
+import OrderList from "@/components/order/list/OrderList";
+import UserList from "@/components/user/list/UserList";
 // import { getServerSession } from "next-auth";
 // import { getServerSession } from "next-auth/next";
 // import { authOptions } from "../api/auth/[...nextauth]";
@@ -166,7 +168,6 @@ export default function Page() {
   //     logError(error);
   //   }
   // }, []); // get the order
-
   if (!auth.status) return null;
   return (
     <>
@@ -175,6 +176,10 @@ export default function Page() {
       </Head>
       <Main>
         <section>
+          <h1 className="role">
+            {auth.role === "admin" && "Admin"}
+            {auth.role === "user" && "User"}
+          </h1>
           <div className="profile">
             <form onSubmit={handleSubmit(handleUpdateUser)}>
               <div className="image">
@@ -239,42 +244,8 @@ export default function Page() {
               </div>
             </form>
           </div>
-          <div className="order">
-            <h1>Order List</h1>
-            <table>
-              <thead>
-                <tr>
-                  <td>id</td>
-                  <td>data</td>
-                  <td>total</td>
-                  <td>delivered</td>
-                  <td>action</td>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order: any) => (
-                  <tr key={order._id}>
-                    <td>
-                      <Link href={`/commerce/order/${order._id}`}>{order._id}</Link>
-                    </td>
-                    <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td>${order.total}</td>
-                    {order.delivered ? (
-                      <td className="delivered">delivered</td>
-                    ) : (
-                      <td className="not-delivered">Not delivered</td>
-                    )}
-                    {order.paid ? (
-                      <td className="paid">paid</td>
-                    ) : (
-                      <td className="not-paid">Not paid</td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </section>
+        <section></section>
       </Main>
     </>
   );
@@ -330,31 +301,6 @@ const Main = styled(PublicMain)`
             align-self: flex-end;
           }
         }
-      }
-    }
-    .order {
-      height: 70vh;
-      flex: 2;
-      > table {
-        width: 100%;
-        border: 2px solid;
-        * {
-          padding: 0.5rem;
-        }
-        td {
-          border: 1px solid;
-        }
-        thead {
-          text-transform: uppercase;
-        }
-      }
-      .delivered,
-      .paid {
-        color: green;
-      }
-      .not-delivered,
-      .not-paid {
-        color: red;
       }
     }
   }

@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getData } from "../utils/fetchData";
 type Modal = {
   name?: string;
   data?: [];
@@ -13,10 +14,10 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
-      const { message } = action.payload;
+      const { message, id } = action.payload;
       state.visible = true;
       state.message = message;
-      //   state.data?.push()
+      state.id = id;
     },
     // addModal: (state, action) => {
     //   state.push(action.payload);
@@ -28,5 +29,16 @@ export const modalSlice = createSlice({
       state.visible = false;
     },
   },
+  extraReducers(builder) {
+    // builder.addCase(fetchTest.fulfilled, (state, action) => {
+    //   // 리턴된 값으로 상태 변경
+    //   console.log("extraReducers : ", action.payload);
+    //   return action.payload;
+    // });
+  },
 });
 export const { openModal, closeModal } = modalSlice.actions;
+// export const fetchTest = createAsyncThunk("users/fetchTest", async () => {
+//   const response = await getData("users");
+//   return response.data;
+// });

@@ -1,17 +1,35 @@
+import logError from "lib/client/log/logError";
+import logResponse from "lib/client/log/logResponse";
 import { closeModal } from "lib/client/store/modalSlice";
+import { setLoading } from "lib/client/store/notifySlice";
+import { deleteUser } from "lib/client/store/usersSlice";
+import { deleteData } from "lib/client/utils/fetchData";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
-  const { modal }: any = useSelector((store) => store);
+  const { auth, modal }: any = useSelector((store) => store);
   const dispatch = useDispatch();
-  // console.log("modal.visible : ", modal.visible);
+  const handleAction = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await deleteData(`user/${modal.id}`, auth.accessToken);
+      const { _id } = response.data.deletedUser;
+      logResponse(response);
+      dispatch(deleteUser({ _id }));
+      dispatch(closeModal());
+      dispatch(setLoading(false));
+    } catch (error) {
+      logError(error);
+      dispatch(setLoading(false));
+    }
+  };
   if (!modal.visible) return null;
   return (
     <Background onClick={() => dispatch(closeModal())}>
       <Box onClick={(e) => e.stopPropagation()}>
         <h1>{modal.message}</h1>
         <div>
-          <button onClick={() => dispatch(closeModal())}>Delete</button>
+          <button onClick={handleAction}>Action</button>
           <button onClick={() => dispatch(closeModal())}>Close</button>
         </div>
       </Box>

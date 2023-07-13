@@ -30,32 +30,29 @@ export default function AuthButton(props: any) {
     <Box dropdown={dropdown}>
       {auth.status ? (
         <>
-          {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}
-          {auth.mode === "nextauth" && (
-            <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
-          )}
           <div className="profile">
             <div className="image" onClick={() => setDropdown(!dropdown)}>
               <Image src={auth.image} alt={auth.image} width={50} height={50} />
               {auth.username}
             </div>
-            {/* <Link href={"/auth/profile"}>
-            </Link> */}
             <div className="dropdown">
               <Link href={"/auth/profile"}>Profile</Link>
-              {auth.role === "user" && (
+              {/* {auth.role === "user" && (
                 <>
                   <Link href={"/users"}>Users</Link>
                   <Link href={"/users"}>Users</Link>
                   <Link href={"/users"}>Users</Link>
-                  {/* <Link href={"/products"}>Users</Link>
-                  <Link href={"/users"}>Users</Link> */}
                 </>
-              )}
+              )} */}
               {auth.role === "admin" && (
                 <>
                   <Link href={"/users"}>Users</Link>
+                  <Link href={"/commerce/product"}>Products</Link>
                 </>
+              )}
+              {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}
+              {auth.mode === "nextauth" && (
+                <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
               )}
             </div>
           </div>
@@ -80,13 +77,7 @@ const Box = styled.div<Props>`
     white-space: nowrap;
   }
   .profile {
-    border: 2px solid;
     width: 7rem;
-
-    a {
-      padding: 1rem 2rem;
-      background-color: #333;
-    }
     .image {
       width: 100%;
       height: 100%;
@@ -108,6 +99,16 @@ const Box = styled.div<Props>`
     }
     .dropdown {
       display: ${({ dropdown }: any) => (dropdown ? "block" : "none")};
+      background-color: #111;
+      > * {
+        padding: 1rem 2rem;
+        /* text-align: center; */
+      }
+      button {
+        width: 100%;
+        border: 2px solid red;
+        padding: 1rem 0;
+      }
     }
   }
   button {

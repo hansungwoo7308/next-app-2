@@ -1,19 +1,66 @@
 import connectDB from "lib/server/config/connectDB";
 import Product from "lib/server/model/Product";
+import verifyJWT from "lib/server/utils/verifyJWT";
+connectDB();
 export default async function (req: any, res: any) {
-  await connectDB();
   console.log(`\x1b[32m\n[api/product]`);
-  if (req.method === "GET") await getProducts(req, res);
+  switch (req.method) {
+    case "GET":
+      await getProducts(req, res);
+      break;
+    case "POST":
+      await createProduct(req, res);
+      break;
+  }
 }
 const getProducts = async (req: any, res: any) => {
   try {
+    // get
     const products = await Product.find();
     // console.log("products : ", products);
-    const productsTitles = products.map((v: any) => ({ title: v.title, inStock: v.inStock }));
-    console.log("productsTitles : ", productsTitles);
-    return res.status(200).json({ products, message: "GET success" });
+    // const productsTitles = products.map((v: any) => ({ title: v.title, inStock: v.inStock }));
+    // console.log("productsTitles : ", productsTitles);
+    return res.status(200).json({ products });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error, message: "GET failed" });
+    return res.status(500).json({ error });
+  }
+};
+const createProduct = async (req: any, res: any) => {
+  try {
+    // verify
+    const verified: any = await verifyJWT(req, res);
+    if (verified.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+    // create
+    const { title, price, inStock, description, content, category, images } = req.body;
+    if (
+      !title ||
+      !price ||
+      !inStock ||
+      !description ||
+      !content ||
+      category === "all" ||
+      images.length === 0
+    )
+      return res.status(400).json({ message: "Please add all the fields." });
+    const newProduct = await Product.create({
+      title: title.toLowerCase(),
+      price,
+      inStock,
+      description,
+      content,
+      category,
+      images,
+    });
+    console.log("newProduct : ", newProduct);
+    // const newProduct = new Products({
+    //     title: title.toLowerCase(), price, inStock, description, content, category, images
+    // })
+    // await newProduct.save()
+
+    // output
+    return res.status(200).json({ newProduct });
+  } catch (error) {
+    return res.status(500).json({ error });
   }
 };

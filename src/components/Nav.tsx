@@ -138,9 +138,9 @@ export default function Nav() {
             <li ref={postListRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list"}>post-list (CDN)</Link>
             </li>
-            <li ref={usersRef} onClick={(e) => handleFocus(e)}>
+            {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/users"}>users (CDN)</Link>
-            </li>
+            </li> */}
             <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/users2"}>users2 (CDN)</Link>
             </li>

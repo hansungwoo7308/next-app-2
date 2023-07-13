@@ -11,7 +11,11 @@ import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-export default function ProductsManager() {
+import { useSelector } from "react-redux";
+import { uploadImage } from "lib/client/utils/uploadImage";
+import logResponse from "lib/client/log/logResponse";
+import logError from "lib/client/log/logError";
+export default function Page() {
   //   const initialState = {
   //     title: "",
   //     price: 0,
@@ -23,6 +27,7 @@ export default function ProductsManager() {
   //   const [product, setProduct] = useState(initialState);
   //   const { title, price, inStock, description, content, category } = product;
   const [images, setImages]: any = useState([]);
+  const { auth }: any = useSelector((store) => store);
   // const {state, dispatch} = useContext(DataContext)
   // const {categories, auth} = state
   const router = useRouter();
@@ -36,6 +41,14 @@ export default function ProductsManager() {
   } = useForm();
   const createProduct = async (data: any) => {
     console.log("data : ", data);
+    const { images } = data;
+    if (auth.role !== "admin") return;
+    try {
+      const uploadedImages = await uploadImage(images);
+      logResponse(uploadedImages);
+    } catch (error) {
+      logError(error);
+    }
   };
   // useEffect(() => {
   //     if(id){
@@ -122,6 +135,7 @@ export default function ProductsManager() {
       </Head>
       <section>
         <div>
+          <h1>Product Manager</h1>
           <form onSubmit={handleSubmit(createProduct)}>
             <div className="upload-images">
               <h1>Product Images</h1>
@@ -149,7 +163,7 @@ export default function ProductsManager() {
                 ))}
               </div>
               <input
-                {...register("product-images")}
+                {...register("images")}
                 type="file"
                 multiple
                 accept="image/*"

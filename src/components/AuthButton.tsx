@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
+import { logOut, setCredentials } from "lib/client/store/authSlice";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
 export default function AuthButton(props: any) {
-  const auth = useSelector(selectAuth);
+  const { auth }: any = useSelector((store) => store);
   const router = useRouter();
   const dispatch = useDispatch();
   const [dropdown, setDropdown] = useState(false);
@@ -48,6 +48,12 @@ export default function AuthButton(props: any) {
                 <>
                   <Link href={"/users"}>Users</Link>
                   <Link href={"/commerce/product"}>Products</Link>
+                  <Link
+                    href={"/commerce/product/create/asdasdasd"}
+                    style={{ whiteSpace: "break-spaces" }}
+                  >
+                    Create Products
+                  </Link>
                 </>
               )}
               {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}

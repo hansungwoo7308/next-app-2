@@ -35,4 +35,3 @@ export const authSlice = createSlice({
   },
 });
 export const { setCredentials, logOut, setAuthImage }: any = authSlice.actions;
-export const selectAuth = (state: any) => state.auth;

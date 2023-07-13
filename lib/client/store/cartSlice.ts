@@ -46,4 +46,3 @@ export const {
   decreaseQuantity,
   deleteItem,
 }: any = cartSlice.actions;
-export const selectCart = (state: any) => state.cart;

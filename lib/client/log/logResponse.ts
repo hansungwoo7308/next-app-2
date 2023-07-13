@@ -1,7 +1,7 @@
 export default function logResponse(response: any) {
   const status = response.status;
   const statusText = response.statusText;
-  const url = response.config.url;
+  const url = response.config?.url;
   // const Authorization = response.config.headers.Authorization;
   const data = response.data;
   const accessToken = data.slicedTokens?.accessToken;

@@ -1,5 +1,4 @@
-import { selectAuth } from "lib/client/store/authSlice";
-import { addToCart, selectCart } from "lib/client/store/cartSlice";
+import { addToCart } from "lib/client/store/cartSlice";
 import { setTimeoutId, setNotify, setVisible } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -10,8 +9,6 @@ import styled from "styled-components";
 export default function ProductItem({ product }: any) {
   const { _id, images, title, price, inStock, description } = product;
   const { auth, cart }: any = useSelector((store) => store);
-  // const auth = useSelector(selectAuth);
-  // const cart = useSelector(selectCart);
   const dispatch = useDispatch();
   const userLink = (
     <>
@@ -67,13 +64,18 @@ export default function ProductItem({ product }: any) {
   const adminLink = (
     <>
       <Link href={`/commerce/product/${_id}`}>Edit</Link>
-      <button>Delete</button>
+      <button className="delete-button">Delete</button>
     </>
   );
   return (
     <Item>
       <div className="image">
-        <Image src={images[0].url} alt={images[0].url} width={200} height={200} />
+        <Image
+          src={images[0].url || images[0].secure_url}
+          alt={images[0].url}
+          width={200}
+          height={200}
+        />
       </div>
       <div className="description">
         <h5>{title}</h5>
@@ -83,9 +85,8 @@ export default function ProductItem({ product }: any) {
         </div>
         <p>{description}</p>
         <div className="action-tags">
-          {userLink}
-          {/* {auth && adminLink} */}
-          {/* {!auth && userLink} */}
+          {auth.role === "admin" && adminLink}
+          {auth.role === "user" && userLink}
         </div>
       </div>
     </Item>
@@ -137,6 +138,9 @@ const Item = styled.li`
         align-items: center;
         padding: 1rem;
         padding: 1rem;
+      }
+      .delete-button {
+        background-color: #c15151;
       }
     }
   }

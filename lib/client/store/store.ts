@@ -21,13 +21,13 @@ const store: any = configureStore({
     // with frontend
     // counter: counterSlice.reducer,
     // users: usersReducer,
-    auth: authSlice.reducer,
-    users: usersSlice.reducer,
+    auth: authSlice.reducer, // authentication
     notify: notifySlice.reducer,
-    cart: cartSlice.reducer,
-    order: orderSlice.reducer,
-    orders: ordersSlice.reducer,
     modal: modalSlice.reducer,
+    users: usersSlice.reducer, // for Admin
+    cart: cartSlice.reducer, // commerce
+    order: orderSlice.reducer, // commerce
+    orders: ordersSlice.reducer, // commerce
 
     posts: postsSlice.reducer,
     posts2: posts2Slice.reducer,

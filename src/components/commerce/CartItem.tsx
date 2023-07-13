@@ -12,7 +12,12 @@ export default function CartItem({ item }: any) {
     <Box>
       <div className="image">
         <Link href={`/commerce/product/${_id}`}>
-          <Image src={images[0].url} alt={images[0].url} width={1000} height={1000} />
+          <Image
+            src={images[0].url || images[0].secure_url}
+            alt={images[0].url || images[0].secure_url}
+            width={1000}
+            height={1000}
+          />
         </Link>
       </div>
       <div className="detail">

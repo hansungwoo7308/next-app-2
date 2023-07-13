@@ -22,6 +22,5 @@ export const uploadImage = async (images: any) => {
     const { public_id, secure_url } = response.data;
     array.push({ public_id, secure_url });
   }
-  console.log("array : ", array);
   return array;
 };

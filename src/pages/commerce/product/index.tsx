@@ -41,7 +41,8 @@ const Main = styled(PublicMain)`
       > ul {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-        grid-template-rows: repeat(auto-fill, minmax(20rem, 1fr));
+        grid-auto-rows: minmax(20rem, auto);
+        /* grid-template-rows: repeat(2, minmax(20rem, 1fr)); */
         gap: 1rem;
       }
     }

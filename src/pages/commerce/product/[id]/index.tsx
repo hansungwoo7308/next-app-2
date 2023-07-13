@@ -4,7 +4,7 @@ import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, selectCart } from "lib/client/store/cartSlice";
+import { addToCart } from "lib/client/store/cartSlice";
 import { setNotify, setTimeoutId, setVisible } from "lib/client/store/notifySlice";
 export async function getServerSideProps({ params: { id } }: any) {
   //   console.log("id : ", id);
@@ -19,7 +19,7 @@ export default function Page({ product }: any) {
   const { images, title, price, inStock, sold, description, content } = product;
   const [tabIndex, setTabIndex]: any = useState(0);
   const dispatch = useDispatch();
-  const cart = useSelector(selectCart);
+  const { cart }: any = useSelector((store) => store);
   //   console.log("images : ", images);
   const handleClick = (index: any) => {
     // tabIndex으로부터 변경될 사항
@@ -34,59 +34,59 @@ export default function Page({ product }: any) {
   return (
     <Main>
       <section>
-        <div>
-          <h1>Product Page</h1>
-          <div className="top">
+        <div className="product">
+          <h1 className="name">Product Page</h1>
+          <div className="images">
             <div className="selected-image">
               <Image
-                src={images[tabIndex].url}
-                alt={images[tabIndex].url}
+                src={images[tabIndex].url || images[tabIndex].secure_url}
+                alt={images[tabIndex].url || images[tabIndex].secure_url}
                 width={1000}
                 height={1000}
               />
             </div>
-            <div className="description">
-              <h3>{title}</h3>
-              <h5>${price}</h5>
-              <div>
-                {inStock && <h5>InStock : {inStock}</h5>}
-                {!inStock && <h5>OutStock</h5>}
-                <h5>Sold : {sold}</h5>
-              </div>
-              <p>{description}</p>
-              <p>{content}</p>
-              <button
-                onClick={() => {
-                  const duplicate = cart.find((v: any) => v._id === product._id);
-                  // console.log("duplicate:", duplicate);
-                  if (duplicate) {
-                    dispatch(setNotify({ status: "error", message: duplicate._id, visible: true }));
-                    const timeout = setTimeout(() => {
-                      dispatch(setVisible(false));
-                    }, 3000);
-                    dispatch(setTimeoutId(timeout));
-                    return;
-                  } else {
-                    return dispatch(addToCart({ ...product, quantity: 1 }));
-                  }
-                }}
-              >
-                Buy
-              </button>
+            <div className="unselected-images">
+              {images.map((image: any, index: any) => (
+                <Image
+                  className={`${tabIndex === index && "active"}`}
+                  key={index}
+                  src={image.url || image.secure_url}
+                  alt={image.url || image.secure_url}
+                  width={500}
+                  height={500}
+                  onClick={() => setTabIndex(index)}
+                />
+              ))}
             </div>
           </div>
-          <div className="images">
-            {images.map((image: any, index: any) => (
-              <Image
-                className={`${tabIndex === index && "active"}`}
-                key={index}
-                src={image.url}
-                alt={image.url}
-                width={500}
-                height={500}
-                onClick={() => setTabIndex(index)}
-              />
-            ))}
+          <div className="description">
+            <h3>{title}</h3>
+            <h5>${price}</h5>
+            <div>
+              {inStock && <h5>InStock : {inStock}</h5>}
+              {!inStock && <h5>OutStock</h5>}
+              <h5>Sold : {sold}</h5>
+            </div>
+            <p>{description}</p>
+            <p>{content}</p>
+            <button
+              onClick={() => {
+                const duplicate = cart.find((v: any) => v._id === product._id);
+                // console.log("duplicate:", duplicate);
+                if (duplicate) {
+                  dispatch(setNotify({ status: "error", message: duplicate._id, visible: true }));
+                  const timeout = setTimeout(() => {
+                    dispatch(setVisible(false));
+                  }, 3000);
+                  dispatch(setTimeoutId(timeout));
+                  return;
+                } else {
+                  return dispatch(addToCart({ ...product, quantity: 1 }));
+                }
+              }}
+            >
+              Buy
+            </button>
           </div>
         </div>
       </section>
@@ -97,36 +97,45 @@ const Main = styled(PublicMain)`
   > section {
     display: flex;
     align-items: flex-start;
-    > div {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      .top {
+    .product {
+      display: grid;
+      grid-template-areas:
+        "name name"
+        "images description";
+      > div {
+        padding: 1rem;
+        border: 2px dashed green;
+      }
+      .name {
+        grid-area: name;
+      }
+      .images {
+        grid-area: images;
         display: flex;
+        flex-direction: column;
         gap: 1rem;
         .selected-image {
-          width: 50%;
+          /* width: 50%;
           @media (width<500px) {
             width: 100%;
-          }
+          } */
         }
-        .description {
-          div {
-            display: flex;
-            justify-content: space-between;
+        .unselected-images {
+          display: flex;
+          > img {
+            /* flex: 1; */
+            width: 4rem;
+          }
+          .active {
+            border: 2px solid coral;
           }
         }
       }
-      .images {
-        width: 15%;
-        display: flex;
-        gap: 5%;
-        img {
-          /* width: 10rem; */
-          height: 7rem;
-        }
-        .active {
-          outline: 2px solid coral;
+      .description {
+        grid-area: description;
+        div {
+          display: flex;
+          justify-content: space-between;
         }
       }
     }

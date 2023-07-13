@@ -11,10 +11,12 @@ import styled from "styled-components";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { uploadImage } from "lib/client/utils/uploadImage";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
+import { setLoading } from "lib/client/store/notifySlice";
+import { postData } from "lib/client/utils/fetchData";
 export default function Page() {
   //   const initialState = {
   //     title: "",
@@ -31,6 +33,7 @@ export default function Page() {
   // const {state, dispatch} = useContext(DataContext)
   // const {categories, auth} = state
   const router = useRouter();
+  const dispatch = useDispatch();
   const { id } = router.query;
   const [onEdit, setOnEdit] = useState(false);
   const {
@@ -41,13 +44,23 @@ export default function Page() {
   } = useForm();
   const createProduct = async (data: any) => {
     console.log("data : ", data);
-    const { images } = data;
     if (auth.role !== "admin") return;
     try {
+      dispatch(setLoading(true));
+      const { images } = data;
       const uploadedImages = await uploadImage(images);
-      logResponse(uploadedImages);
+      console.log("uploadedImages : ", uploadedImages);
+      const response = await postData(
+        "product",
+        { ...data, images: uploadedImages },
+        auth.accessToken
+      );
+      logResponse(response);
+      dispatch(setLoading(false));
     } catch (error) {
-      logError(error);
+      // logError(error);
+      console.log("createProduct error : ", error);
+      dispatch(setLoading(false));
     }
   };
   // useEffect(() => {
@@ -192,6 +205,8 @@ export default function Page() {
               <label htmlFor="category">Category</label>
               <select {...register("category", { required: true })} id="category">
                 <option value="all">All Products</option>
+                <option value="food">Food</option>
+                <option value="sports">Sports</option>
                 {
                   // categories.map(item => (
                   //     <option key={item._id} value={item._id}>

@@ -21,8 +21,8 @@ const getProduct = async (req: any, res: any) => {
     // get
     const { id } = req.query;
     const product = await Product.findById(id);
-    if (!product) return res.status(404).json({ message: "The product was not found in database" });
-    // console.log("product : ", product);
+    if (!product) return res.status(404).json({ message: "Not found" });
+    console.log("product : ", product);
     // output
     return res.status(200).json({ product });
   } catch (error) {

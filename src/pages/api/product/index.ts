@@ -17,7 +17,7 @@ const getProducts = async (req: any, res: any) => {
   try {
     // get
     const products = await Product.find();
-    // console.log("products : ", products);
+    console.log("products : ", products);
     // const productsTitles = products.map((v: any) => ({ title: v.title, inStock: v.inStock }));
     // console.log("productsTitles : ", productsTitles);
     return res.status(200).json({ products });

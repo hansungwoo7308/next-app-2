@@ -176,10 +176,6 @@ export default function Page() {
       </Head>
       <Main>
         <section>
-          <h1 className="role">
-            {auth.role === "admin" && "Admin"}
-            {auth.role === "user" && "User"}
-          </h1>
           <div className="profile">
             <form onSubmit={handleSubmit(handleUpdateUser)}>
               <div className="image">
@@ -212,6 +208,10 @@ export default function Page() {
                 <div>
                   <h1>Profile</h1>
                   <div>
+                    <label htmlFor="role">Role</label>
+                    <input type="text" id="role" value={auth.role} disabled />
+                  </div>
+                  <div>
                     <label htmlFor="username">Name</label>
                     <input
                       {...register("username", { required: true })}
@@ -221,7 +221,7 @@ export default function Page() {
                   </div>
                   <div>
                     <label htmlFor="email">Email</label>
-                    <input type="email" defaultValue={auth.email} disabled={true} />
+                    <input type="email" id="email" value={auth.email} disabled />
                   </div>
                   <div>
                     <label htmlFor="password">New Password</label>

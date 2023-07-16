@@ -48,12 +48,6 @@ export default function AuthButton(props: any) {
                 <>
                   <Link href={"/users"}>Users</Link>
                   <Link href={"/commerce/product"}>Products</Link>
-                  <Link
-                    href={"/commerce/product/create/asdasdasd"}
-                    style={{ whiteSpace: "break-spaces" }}
-                  >
-                    Create Products
-                  </Link>
                 </>
               )}
               {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}

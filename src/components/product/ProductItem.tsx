@@ -63,7 +63,7 @@ export default function ProductItem({ product }: any) {
   );
   const adminLink = (
     <>
-      <Link href={`/commerce/product/${_id}`}>Edit</Link>
+      <Link href={`/commerce/product/create/${_id}`}>Edit</Link>
       <button className="delete-button">Delete</button>
     </>
   );

@@ -102,6 +102,7 @@ const Main = styled(PublicMain)`
       grid-template-areas:
         "name name"
         "images description";
+      grid-template-columns: repeat(2, 1fr);
       > div {
         padding: 1rem;
         border: 2px dashed green;
@@ -115,15 +116,11 @@ const Main = styled(PublicMain)`
         flex-direction: column;
         gap: 1rem;
         .selected-image {
-          /* width: 50%;
-          @media (width<500px) {
-            width: 100%;
-          } */
+          height: 20rem;
         }
         .unselected-images {
           display: flex;
           > img {
-            /* flex: 1; */
             width: 4rem;
           }
           .active {

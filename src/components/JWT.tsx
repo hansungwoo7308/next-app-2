@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
+import { logOut, setCredentials } from "lib/client/store/authSlice";
 import { useLogoutMutation, useRefreshMutation } from "lib/utils/authApiSlice";
 import { customAxios } from "lib/utils/customAxios";
 import refreshTokens from "lib/utils/refreshTokens";
@@ -8,7 +8,7 @@ import { Box } from "@/styles/components/JWT.styled";
 export default function JWT({ style }: any) {
   console.log("style : ", style);
   const [users, setUsers]: any = useState();
-  const auth = useSelector(selectAuth);
+  const { auth }: any = useSelector((store) => store);
   const dispatch = useDispatch();
   // rtk fetch query
   const [refresh] = useRefreshMutation();

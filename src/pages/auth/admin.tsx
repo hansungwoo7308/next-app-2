@@ -4,7 +4,7 @@ import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { logOut, selectAuth, setCredentials } from "lib/client/store/authSlice";
+import { logOut, setCredentials } from "lib/client/store/authSlice";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { useRouter } from "next/router";

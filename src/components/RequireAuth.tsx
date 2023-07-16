@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
-import { selectAuth } from "lib/client/store/authSlice";
 import { customAxios } from "lib/utils/customAxios";
 const RequireAuth = ({ children }: any) => {
-  const auth = useSelector(selectAuth);
+  const { auth }: any = useSelector((store) => store);
   const checkAuth = async (e: any) => {
     try {
       const result = await customAxios.get("/api/users", {

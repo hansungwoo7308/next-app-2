@@ -45,7 +45,8 @@ export default function Page() {
           logResponse(response);
           setImages(product.images);
           dispatch(setLoading(false));
-          return { ...product, images: product.images };
+          return { ...product };
+          // return { ...product, images: product.images };
         } catch (error) {
           console.log("error : ", error);
           dispatch(setLoading(false));
@@ -59,7 +60,6 @@ export default function Page() {
   // const { fields, append, remove }: any = useFieldArray({ name: "images", control }); // for array field used to form
   const onSubmit = async (data: any) => {
     console.log("data : ", data);
-    return;
     if (auth.role !== "admin") return;
     if (mode === "create") {
       try {
@@ -137,9 +137,9 @@ export default function Page() {
     };
     // fetchData();
   }, [id]);
-  useEffect(() => {
-    console.log("images : ", images);
-  }, [images]);
+  // useEffect(() => {
+  //   console.log("images : ", images);
+  // }, [images]);
   // useEffect(() => {
   //   if (isSubmitSuccessful) reset();
   // }, [isSubmitSuccessful, reset]);
@@ -233,25 +233,14 @@ export default function Page() {
                 ))}
               </div>
               <input
-                // {...register("images", { required: true })}
                 type="file"
                 multiple
                 accept="image/*"
                 onChange={(e: any) => {
                   let changedImages: any = [...images, ...e.target.files];
                   setImages(changedImages);
-                  // const test = getValues();
-                  console.log(changedImages);
                   setValue("images", changedImages);
-                  // return changedImages;
                 }}
-                // onChange={(e: any) => {
-                //   // setImages([...e.target.files]);
-                //   setProduct({ ...product, images: [...product.images, ...e.target.files] });
-                //   // [...e.target.files].forEach((file) => {
-                //   //   console.log("file : ", file);
-                //   // });
-                // }}
               />
               <div>
                 {/* {images.map((img, index) => (

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@next-auth/mongodb-adapter": "^1.1.1",
     "@next/font": "13.1.6",
     "@paypal/react-paypal-js": "^8.0.0",

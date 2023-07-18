@@ -1,9 +1,3 @@
-// import Head from 'next/head'
-// import {useState, useContext, useEffect} from 'react'
-// import {useRouter} from 'next/router'
-// import {DataContext} from '../../store/GlobalState'
-// import {imageUpload} from '../../utils/imageUpload'
-// import {postData, getData, putData} from '../../utils/fetchData'
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -17,28 +11,55 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { setLoading } from "lib/client/store/notifySlice";
 import { getData, postData, putData } from "lib/client/utils/fetchData";
+import { DevTool } from "@hookform/devtools";
+type FormValue = {
+  title: string;
+  price: number;
+  inStock: number;
+  description: string;
+  content: string;
+  category: string;
+  images: [];
+};
+
 export default function Page() {
   // get the store
   const { auth }: any = useSelector((store) => store);
   const dispatch = useDispatch();
   // set the state
-  const [product, setProduct]: any = useState({});
   const [mode, setMode] = useState("");
+  const [images, setImages] = useState([]);
   // get the router query string
   const router = useRouter();
   const { id } = router.query;
   // get the react-hook-form
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-    setValue,
-    control,
-  } = useForm();
-  const { fields } = useFieldArray({ name: "images", control });
-  const createProduct = async (data: any) => {
+  const { register, handleSubmit, watch, setValue, getValues, reset, formState, control } = useForm(
+    {
+      defaultValues: async () => {
+        if (!id) setMode("create");
+        setMode("update");
+        try {
+          dispatch(setLoading(true));
+          const response = await getData(`product/${id}`);
+          const { product } = response.data;
+          logResponse(response);
+          setImages(product.images);
+          dispatch(setLoading(false));
+          return { ...product, images: product.images };
+        } catch (error) {
+          console.log("error : ", error);
+          dispatch(setLoading(false));
+        }
+      },
+    }
+  );
+  // } = useForm<FormValue>();
+  // const { errors, isSubmitSuccessful } = formState;
+  // const watchImages = watch("images");
+  // const { fields, append, remove }: any = useFieldArray({ name: "images", control }); // for array field used to form
+  const onSubmit = async (data: any) => {
     console.log("data : ", data);
+    return;
     if (auth.role !== "admin") return;
     if (mode === "create") {
       try {
@@ -55,27 +76,36 @@ export default function Page() {
         dispatch(setLoading(false));
       } catch (error) {
         // logError(error);
-        console.log("createProduct error : ", error);
+        console.log("submit error : ", error);
         dispatch(setLoading(false));
       }
     }
     if (mode === "update") {
       try {
         dispatch(setLoading(true));
+        // get the images
         const { images } = data;
-        // console.log("update images : ", images);
-        // const uploadedImages = await uploadImage(images);
+        // url를 가진 이미지와 url를 가지지 못한 이미지를 분류한다.
+        const urlImages = images.filter((image: any) => image.url || image.secure_url);
+        const pendingImages = images.filter((image: any) => !(image.url || image.secure_url));
+        console.log("pendingImages : ", pendingImages);
+        // url를 부여한 이미지를 생성한다.
+        const uploadedImages = await uploadImage(pendingImages);
         // console.log("uploadedImages : ", uploadedImages);
-        // const response = await putData(
-        //   `product/${id}`,
-        //   { ...product, images: uploadedImages },
-        //   auth.accessToken
-        // );
-        // logResponse(response);
+        // 통합(integration)
+        const payload = [...urlImages, ...uploadedImages];
+        // update the product
+        const response = await putData(
+          `product/${id}`,
+          { ...data, images: payload },
+          auth.accessToken
+        );
+        // output
+        logResponse(response);
         dispatch(setLoading(false));
       } catch (error) {
         // logError(error);
-        console.log("createProduct error : ", error);
+        console.log("submit error : ", error);
         dispatch(setLoading(false));
       }
     }
@@ -91,14 +121,12 @@ export default function Page() {
           response.data.product;
         const product: any = { title, price, inStock, description, content, category, images };
         logResponse(response);
-        // setProduct(product);
-
+        setImages(images);
         for (let key in product) {
+          setValue(`${key}`, product[key]);
           // console.log(`${key} : ${product[key]}`);
           // 객체로 된 images를 어떻게 배열로 바꾸지?...
-          // if (key === "images") setValue(`${key}`, [...value]);
           // else setValue(`${key}`, value);
-          setValue(`${key}`, product[key]);
         }
         dispatch(setLoading(false));
       } catch (error) {
@@ -107,11 +135,14 @@ export default function Page() {
         dispatch(setLoading(false));
       }
     };
-    fetchData();
+    // fetchData();
   }, [id]);
   useEffect(() => {
-    console.log("fields : ", fields);
-  }, [fields]);
+    console.log("images : ", images);
+  }, [images]);
+  // useEffect(() => {
+  //   if (isSubmitSuccessful) reset();
+  // }, [isSubmitSuccessful, reset]);
   // const handleUploadInput = (e:any) => {
   //     // dispatch({type: 'NOTIFY', payload: {}})
   //     let newImages = []
@@ -175,57 +206,25 @@ export default function Page() {
       <section>
         <div>
           <h1>Product Manager</h1>
-          <form onSubmit={handleSubmit(createProduct)}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="upload-images">
               <p>Images</p>
               <div className="images">
-                {/* {product.images &&
-                  product.images.map((image: any, index: any) => (
-                    <div key={index} className={`image ${index === 0 && "thumbnail"}`}>
-                      <Image
-                        src={
-                          image.url
-                            ? image.url
-                            : image.secure_url
-                            ? image.secure_url
-                            : URL.createObjectURL(image)
-                        }
-                        alt={image.url}
-                        width={200}
-                        height={200}
-                      />
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const filteredImages = product.images.filter(
-                            (v: any, i: any) => i !== index
-                          );
-                          setProduct({ ...product, images: filteredImages });
-                          // setImages(filteredImages);
-                          // const splicedImages = [...images].splice(index, 1);
-                          // setImages(splicedImages);
-                        }}
-                      >
-                        x
-                      </button>
-                    </div>
-                  ))} */}
-                {fields.map((field: any, index: any) => (
-                  <div key={field.id} className={`image ${index === 0 && "thumbnail"}`}>
+                {images.map((image: any, index: any) => (
+                  <div key={image.id} className={`image ${index === 0 && "thumbnail"}`}>
                     <Image
-                      src={field.url || field.secure_url}
-                      alt={field.url || field.secure_url}
+                      src={image.url || image.secure_url || URL.createObjectURL(image)}
+                      alt={image.url || image.secure_url || URL.createObjectURL(image)}
                       width={100}
                       height={100}
                     />
-                    <button
+                    <button // delete button
                       onClick={(e) => {
                         e.preventDefault();
-                        const filteredImages = fields.filter((v: any, i: any) => i !== index);
+                        const filteredImages = images.filter((v: any, i: any) => i !== index);
+                        // console.log(filteredImages);
+                        setImages(filteredImages);
                         setValue("images", filteredImages);
-                        // setImages(filteredImages);
-                        // const splicedImages = [...images].splice(index, 1);
-                        // setImages(splicedImages);
                       }}
                     >
                       x
@@ -234,12 +233,18 @@ export default function Page() {
                 ))}
               </div>
               <input
-                {...register("images", {
-                  required: true,
-                })}
+                // {...register("images", { required: true })}
                 type="file"
                 multiple
                 accept="image/*"
+                onChange={(e: any) => {
+                  let changedImages: any = [...images, ...e.target.files];
+                  setImages(changedImages);
+                  // const test = getValues();
+                  console.log(changedImages);
+                  setValue("images", changedImages);
+                  // return changedImages;
+                }}
                 // onChange={(e: any) => {
                 //   // setImages([...e.target.files]);
                 //   setProduct({ ...product, images: [...product.images, ...e.target.files] });
@@ -281,7 +286,15 @@ export default function Page() {
             <input
               {...register("title", {
                 required: true,
-                setValueAs: (value) => value,
+                // setValueAs: (value) => value,
+                // validate: {
+                //   emailAvailable: async (value): Promise<any> => {
+                //     const response = await getData(`product/${id}`);
+                //     const { title, price, inStock, description, content, category, images } =
+                //       response.data.product;
+                //     // return "aaa";
+                //   },
+                // },
               })}
               type="text"
               placeholder="Title"
@@ -317,6 +330,7 @@ export default function Page() {
           </form>
         </div>
       </section>
+      <DevTool control={control} />
     </Main>
   );
 }

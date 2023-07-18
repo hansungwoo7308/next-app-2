@@ -17,7 +17,10 @@ const getProducts = async (req: any, res: any) => {
   try {
     // get
     const products = await Product.find();
-    console.log("products : ", products);
+    console.log(
+      "products : ",
+      products.map((v: any) => v.title)
+    );
     // const productsTitles = products.map((v: any) => ({ title: v.title, inStock: v.inStock }));
     // console.log("productsTitles : ", productsTitles);
     return res.status(200).json({ products });
@@ -52,13 +55,8 @@ const createProduct = async (req: any, res: any) => {
       category,
       images,
     });
+    // out
     console.log("newProduct : ", newProduct);
-    // const newProduct = new Products({
-    //     title: title.toLowerCase(), price, inStock, description, content, category, images
-    // })
-    // await newProduct.save()
-
-    // output
     return res.status(200).json({ newProduct });
   } catch (error) {
     return res.status(500).json({ error });

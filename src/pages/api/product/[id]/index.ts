@@ -22,8 +22,8 @@ const getProduct = async (req: any, res: any) => {
     const { id } = req.query;
     const product = await Product.findById(id);
     if (!product) return res.status(404).json({ message: "Not found" });
+    // out
     console.log("product : ", product);
-    // output
     return res.status(200).json({ product });
   } catch (error) {
     console.log(error);
@@ -58,7 +58,8 @@ const updateProduct = async (req: any, res: any) => {
         content,
         category,
         images,
-      }
+      },
+      { new: true }
     );
     console.log("updatedProduct : ", updatedProduct);
     // const updatedProduct=await foundProduct.save()

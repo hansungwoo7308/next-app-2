@@ -2,6 +2,7 @@ import axios from "axios";
 export const uploadImage = async (images: any) => {
   // upload image to cloudinary
   console.log("\x1b[33m\n[client/utils/uploadImage]");
+  // console.log("images : ", images);
   let array = [];
   for (const item of images) {
     const formData: any = new FormData();
@@ -14,13 +15,19 @@ export const uploadImage = async (images: any) => {
     // })
     // const data = await response.json()
     // array.push({public_id: data.public_id, url: data.secure_url})
-    const response = await axios({
-      method: "POST",
-      url: process.env.CLOUD_API_BASE_URL,
-      data: formData,
-    });
-    const { public_id, secure_url } = response.data;
-    array.push({ public_id, secure_url });
+    try {
+      const response = await axios({
+        method: "POST",
+        url: process.env.CLOUD_API_BASE_URL,
+        data: formData,
+      });
+      const uploadedImage = response.data;
+      console.log("uploadedImage : ", uploadedImage);
+      const { public_id, secure_url } = response.data;
+      array.push({ public_id, secure_url });
+    } catch (error) {
+      console.log("uploadImage error : ", error);
+    }
   }
   return array;
 };

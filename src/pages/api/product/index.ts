@@ -11,6 +11,9 @@ export default async function (req: any, res: any) {
     case "POST":
       await createProduct(req, res);
       break;
+    case "DELETE":
+      await deleteProducts(req, res);
+      break;
   }
 }
 const getProducts = async (req: any, res: any) => {
@@ -60,5 +63,22 @@ const createProduct = async (req: any, res: any) => {
     return res.status(200).json({ newProduct });
   } catch (error) {
     return res.status(500).json({ error });
+  }
+};
+const deleteProducts = async (req: any, res: any) => {
+  try {
+    // delete
+    const { ids } = req.body;
+    console.log("ids : ", ids);
+    let deletedProducts = [];
+    for (let id of ids) {
+      const deletedProduct = await Product.findByIdAndDelete(id, { new: true }).exec();
+      console.log("deletedProduct : ", deletedProduct);
+      deletedProducts.push(deletedProduct);
+    }
+    // out
+    return res.status(200).json({ deletedProducts });
+  } catch (error) {
+    console.log("deleteProducts error : ", error);
   }
 };

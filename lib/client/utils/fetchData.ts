@@ -48,7 +48,7 @@ export const patchData = async (url: string, payload: any, token: string) => {
   });
   return response;
 };
-export const deleteData = async (url: string, token: string) => {
+export const deleteData = async (url: string, token: string, payload?: any) => {
   const response = await axios({
     method: "delete",
     url: `${baseUrl}/api/${url}`,
@@ -56,7 +56,7 @@ export const deleteData = async (url: string, token: string) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    // data: payload,
+    data: payload,
   });
   return response;
 };

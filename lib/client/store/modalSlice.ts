@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getData } from "../utils/fetchData";
 type Modal = {
-  name?: string;
-  data?: [];
-  id?: string;
-  message?: string;
   visible?: boolean;
+  name?: string;
+  message?: string;
+  id?: string;
+  ids?: string[];
+  // data?: [];
 };
 // const initialState: Modal[] = [];
 const initialState: Modal = {};
@@ -14,10 +15,12 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
-      const { message, id } = action.payload;
+      const { name, message, id, ids } = action.payload;
       state.visible = true;
+      state.name = name;
       state.message = message;
       state.id = id;
+      state.ids = ids;
     },
     // addModal: (state, action) => {
     //   state.push(action.payload);

@@ -36,14 +36,15 @@ export default function UserList() {
                 <Link href={`/users/${user._id}`}>Edit</Link>
                 <button
                   onClick={() => {
-                    const payload = {
-                      data: users,
-                      id: user._id,
-                      name: user.username,
-                      visible: true,
-                    };
+                    // const payload = {
+                    //   data: users,
+                    //   id: user._id,
+                    //   name: user.username,
+                    //   visible: true,
+                    // };
                     dispatch(
                       openModal({
+                        name: "deleteUser",
                         message: "Do you want to delete?",
                         id: user._id,
                       })

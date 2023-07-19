@@ -11,9 +11,9 @@ export default async function (req: any, res: any) {
     case "PUT":
       await updateProduct(req, res);
       break;
-    // case "DELETE":
-    //     await deleteProduct(req, res)
-    //     break;
+    case "DELETE":
+      await deleteProduct(req, res);
+      break;
   }
 }
 const getProduct = async (req: any, res: any) => {
@@ -61,10 +61,25 @@ const updateProduct = async (req: any, res: any) => {
       },
       { new: true }
     );
-    console.log("updatedProduct : ", updatedProduct);
     // const updatedProduct=await foundProduct.save()
-    // output
+    // out
+    console.log("updatedProduct : ", updatedProduct);
     return res.json({ updatedProduct });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+};
+const deleteProduct = async (req: any, res: any) => {
+  try {
+    // verify
+    const verified: any = await verifyJWT(req, res);
+    if (verified.role !== "admin") return res.status(403).json({ message: "Forbidden" });
+    // delete
+    const { id } = req.query;
+    const deletedProduct = await Product.findByIdAndDelete(id, { new: true });
+    // out
+    console.log("deletedProduct : ", deletedProduct);
+    return res.status(200).json({ deleteProduct });
   } catch (error) {
     return res.status(500).json({ error });
   }

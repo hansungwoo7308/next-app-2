@@ -151,7 +151,7 @@ export function GlobalState({ children }: any) {
     };
     try {
       auth.role === "user" && getOrder();
-      auth.role === "admin" && getUsers();
+      // auth.role === "admin" && getUsers();
     } catch (error: any) {
       dispatch(setNotify({ status: "error", message: error.message, visible: true }));
       logError(error);

@@ -112,7 +112,7 @@ export default function Page() {
   };
   useEffect(() => {
     if (!id) setMode("create");
-    setMode("update");
+    else setMode("update");
     const fetchData = async () => {
       try {
         dispatch(setLoading(true));

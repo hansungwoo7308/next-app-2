@@ -1,14 +1,16 @@
 import { addToCart } from "lib/client/store/cartSlice";
+import { openModal } from "lib/client/store/modalSlice";
 import { setTimeoutId, setNotify, setVisible } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-export default function ProductItem({ product }: any) {
+export default function ProductItem({ product, setCheckedProducts, isCheckAll }: any) {
   const { _id, images, title, price, inStock, description } = product;
   const { auth, cart }: any = useSelector((store) => store);
+  const checkRef: any = useRef();
   const dispatch = useDispatch();
   const userLink = (
     <>
@@ -64,12 +66,47 @@ export default function ProductItem({ product }: any) {
   const adminLink = (
     <>
       <Link href={`/commerce/product/create/${_id}`}>Edit</Link>
-      <button className="delete-button">Delete</button>
+      <button
+        className="delete-button"
+        onClick={() => {
+          dispatch(
+            openModal({
+              name: "deleteProduct",
+              message: "Do you want to delete",
+              id: _id,
+            })
+          );
+        }}
+      >
+        Delete
+      </button>
     </>
   );
+  useEffect(() => {
+    if (isCheckAll) {
+      checkRef.current.checked = true;
+    } else {
+      checkRef.current.checked = false;
+    }
+  }, [isCheckAll]);
   return (
     <Item>
       <div className="image">
+        <input
+          ref={checkRef}
+          className="check"
+          type="checkbox"
+          onChange={(e) => {
+            if (e.target.checked) {
+              setCheckedProducts((state: any) => [...state, _id]);
+            } else {
+              setCheckedProducts((state: any) => {
+                const filteredProducts = state.filter((productId: any) => productId !== _id);
+                return filteredProducts;
+              });
+            }
+          }}
+        />
         <Image
           src={images[0].url || images[0].secure_url}
           alt={images[0].url}
@@ -100,6 +137,12 @@ const Item = styled.li`
   justify-content: space-between;
   > .image {
     height: 7rem;
+    position: relative;
+    .check {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+    }
     > img {
       object-position: 0 20%;
       /* object-position: top; */

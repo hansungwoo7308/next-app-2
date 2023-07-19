@@ -1,26 +1,63 @@
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { closeModal } from "lib/client/store/modalSlice";
-import { setLoading } from "lib/client/store/notifySlice";
+import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { deleteUser } from "lib/client/store/usersSlice";
 import { deleteData } from "lib/client/utils/fetchData";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
   const { auth, modal }: any = useSelector((store) => store);
+  const { name, id, ids } = modal;
   const dispatch = useDispatch();
-  const handleAction = async () => {
+  const handleSubmit = async () => {
     try {
       dispatch(setLoading(true));
-      const response = await deleteData(`user/${modal.id}`, auth.accessToken);
-      const { _id } = response.data.deletedUser;
-      logResponse(response);
-      dispatch(deleteUser({ _id }));
+      // if (name === "deleteUser") handleDeleteUser();
+      // else if (name === "deleteProduct") handleDeleteProduct();
+      switch (name) {
+        case "deleteUser":
+          handleDeleteUser();
+          break;
+        case "deleteProduct":
+          handleDeleteProduct();
+          break;
+        case "deleteProducts":
+          handleDeleteProducts();
+          break;
+        default:
+          break;
+      }
       dispatch(closeModal());
       dispatch(setLoading(false));
     } catch (error) {
       logError(error);
       dispatch(setLoading(false));
+    }
+  };
+  const handleDeleteUser = async () => {
+    // delete
+    const response = await deleteData(`user/${id}`, auth.accessToken);
+    const { _id } = response.data.deletedUser;
+    // out
+    logResponse(response);
+    dispatch(deleteUser({ _id }));
+  };
+  const handleDeleteProduct = async () => {
+    // delete
+    const response = await deleteData(`product/${id}`, auth.accessToken);
+    // const { _id } = response.data.deletedProduct;
+    // out
+    logResponse(response);
+    // dispatch(deleteUser({ _id }));
+  };
+  const handleDeleteProducts = async () => {
+    try {
+      const response = await deleteData("product", auth.accessToken, { ids });
+      const { deletedProducts } = response.data;
+      logResponse(response);
+    } catch (error) {
+      logError(error);
     }
   };
   if (!modal.visible) return null;
@@ -29,7 +66,7 @@ export default function Modal() {
       <Box onClick={(e) => e.stopPropagation()}>
         <h1>{modal.message}</h1>
         <div>
-          <button onClick={handleAction}>Action</button>
+          <button onClick={handleSubmit}>Confirm</button>
           <button onClick={() => dispatch(closeModal())}>Close</button>
         </div>
       </Box>

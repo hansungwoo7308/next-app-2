@@ -34,9 +34,6 @@ export default function Page({ data }: any) {
   useEffect(() => {
     console.log(checkedProducts);
   }, [checkedProducts]);
-  const setCheckedProductsAll = () => {
-    // products.map((product: any) => setCheckedProducts((state: any) => [...state, product._id]));
-  };
   // useEffect(() => {
   //   if (isCheckAll) {
   //     const checkedProductIds = products.map((product: any) => product._id);
@@ -45,34 +42,35 @@ export default function Page({ data }: any) {
   //     setCheckedProducts([]);
   //   }
   // }, [isCheckAll]);
+  const handleCheckAll = () => {
+    if (!isCheckAll) {
+      const productIds = products.map((product: any) => product._id);
+      setCheckedProducts(productIds);
+      setIsCheckAll(true);
+    }
+    if (isCheckAll) {
+      setCheckedProducts([]);
+      setIsCheckAll(false);
+    }
+    // setIsCheckAll((state: boolean) => !state);
+  };
+  const handleOpenModal = () => {
+    const ids = checkedProducts;
+    dispatch(
+      openModal({
+        type: "DELETE_PRODUCTS",
+        message: "Do you want to delete the selected products?",
+        ids,
+      })
+    );
+  };
   return (
     <Main>
       <section>
         {products && (
           <div>
-            <button
-              onClick={() => {
-                const productIds = products.map((product: any) => product._id);
-                setCheckedProducts(productIds);
-                setIsCheckAll(true);
-              }}
-            >
-              Select All
-            </button>
-            <button
-              onClick={() => {
-                const ids = checkedProducts;
-                dispatch(
-                  openModal({
-                    name: "deleteProducts",
-                    message: "Do you want to delete the selected products?",
-                    ids,
-                  })
-                );
-              }}
-            >
-              Delete
-            </button>
+            <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
+            <button onClick={handleOpenModal}>Delete</button>
             <h1>Product Page</h1>
             <ul>
               {products.map((product: any) => (

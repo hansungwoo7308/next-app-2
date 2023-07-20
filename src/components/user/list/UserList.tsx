@@ -44,7 +44,7 @@ export default function UserList() {
                     // };
                     dispatch(
                       openModal({
-                        name: "deleteUser",
+                        type: "DELETE_USER",
                         message: "Do you want to delete?",
                         id: user._id,
                       })

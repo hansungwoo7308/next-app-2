@@ -8,21 +8,19 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
   const { auth, modal }: any = useSelector((store) => store);
-  const { name, id, ids } = modal;
+  const { type, id, ids } = modal;
   const dispatch = useDispatch();
   const handleSubmit = async () => {
     try {
       dispatch(setLoading(true));
-      // if (name === "deleteUser") handleDeleteUser();
-      // else if (name === "deleteProduct") handleDeleteProduct();
-      switch (name) {
-        case "deleteUser":
+      switch (type) {
+        case "DELETE_USER":
           handleDeleteUser();
           break;
-        case "deleteProduct":
+        case "DELETE_PRODUCT":
           handleDeleteProduct();
           break;
-        case "deleteProducts":
+        case "DELETE_PRODUCTS":
           handleDeleteProducts();
           break;
         default:

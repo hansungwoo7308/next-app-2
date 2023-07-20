@@ -71,7 +71,7 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
         onClick={() => {
           dispatch(
             openModal({
-              name: "deleteProduct",
+              type: "DELETE_PRODUCT",
               message: "Do you want to delete",
               id: _id,
             })
@@ -89,24 +89,20 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
       checkRef.current.checked = false;
     }
   }, [isCheckAll]);
+  const handleCheck = (e: any) => {
+    if (e.target.checked) {
+      setCheckedProducts((state: any) => [...state, _id]);
+    } else {
+      setCheckedProducts((state: any) => {
+        const filteredProducts = state.filter((productId: any) => productId !== _id);
+        return filteredProducts;
+      });
+    }
+  };
   return (
     <Item>
       <div className="image">
-        <input
-          ref={checkRef}
-          className="check"
-          type="checkbox"
-          onChange={(e) => {
-            if (e.target.checked) {
-              setCheckedProducts((state: any) => [...state, _id]);
-            } else {
-              setCheckedProducts((state: any) => {
-                const filteredProducts = state.filter((productId: any) => productId !== _id);
-                return filteredProducts;
-              });
-            }
-          }}
-        />
+        <input ref={checkRef} className="check" type="checkbox" onChange={handleCheck} />
         <Image
           src={images[0].url || images[0].secure_url}
           alt={images[0].url}

@@ -1,4 +1,5 @@
 import { decreaseQuantity, deleteItem, increaseQuantity } from "lib/client/store/cartSlice";
+import { openModal } from "lib/client/store/modalSlice";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import Link from "next/link";
@@ -38,7 +39,19 @@ export default function CartItem({ item }: any) {
               +
             </button>
           </div>
-          <button onClick={() => dispatch(deleteItem({ _id }))}>Delete</button>
+          <button
+            onClick={() =>
+              dispatch(
+                openModal({
+                  type: "DELETE_CART_ITEM",
+                  id: _id,
+                  message: "Do you want to delete the cart item?",
+                })
+              )
+            }
+          >
+            Delete
+          </button>
         </div>
         <div className="price">
           <h5>price : ${price * quantity}</h5>

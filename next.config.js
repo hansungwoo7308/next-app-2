@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // reactStrictMode: true,
+  // reactStrictMode: false,
   env: {
     BASE_URL: "https://next-app-2-taupe.vercel.app",
     // BASE_URL: "https://next-app-2-zup2.vercel.app/",

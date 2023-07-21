@@ -5,7 +5,6 @@ type Modal = {
   message?: string;
   id?: string;
   ids?: string[];
-  // name?: string;
   // data?: [];
 };
 // const initialState: Modal[] = [];
@@ -22,9 +21,6 @@ export const modalSlice = createSlice({
       state.id = id;
       state.ids = ids;
     },
-    // addModal: (state, action) => {
-    //   state.push(action.payload);
-    // },
     closeModal: (state) => {
       //   const modal: any = state.find((v: any) => v.name === action.payload.name);
       //   modal.visible = false;

@@ -1,12 +1,15 @@
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
+import { deleteItem } from "lib/client/store/cartSlice";
 import { closeModal } from "lib/client/store/modalSlice";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { deleteUser } from "lib/client/store/usersSlice";
 import { deleteData } from "lib/client/utils/fetchData";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
+  const router = useRouter();
   const { auth, modal }: any = useSelector((store) => store);
   const { type, id, ids } = modal;
   const dispatch = useDispatch();
@@ -23,11 +26,15 @@ export default function Modal() {
         case "DELETE_PRODUCTS":
           handleDeleteProducts();
           break;
+        case "DELETE_CART_ITEM":
+          handleDeleteCartItem();
+          break;
         default:
           break;
       }
       dispatch(closeModal());
       dispatch(setLoading(false));
+      dispatch(setNotify({ status: "success", message: "Successfully deleted" }));
     } catch (error) {
       logError(error);
       dispatch(setLoading(false));
@@ -57,6 +64,9 @@ export default function Modal() {
     } catch (error) {
       logError(error);
     }
+  };
+  const handleDeleteCartItem = async () => {
+    dispatch(deleteItem({ _id: id }));
   };
   if (!modal.visible) return null;
   return (

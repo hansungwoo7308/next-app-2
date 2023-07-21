@@ -21,7 +21,6 @@ type FormValue = {
   category: string;
   images: [];
 };
-
 export default function Page() {
   // get the store
   const { auth }: any = useSelector((store) => store);
@@ -33,27 +32,27 @@ export default function Page() {
   const router = useRouter();
   const { id } = router.query;
   // get the react-hook-form
-  const { register, handleSubmit, watch, setValue, getValues, reset, formState, control } = useForm(
-    {
-      defaultValues: async () => {
-        if (!id) setMode("create");
-        setMode("update");
-        try {
-          dispatch(setLoading(true));
-          const response = await getData(`product/${id}`);
-          const { product } = response.data;
-          logResponse(response);
-          setImages(product.images);
-          dispatch(setLoading(false));
-          return { ...product };
-          // return { ...product, images: product.images };
-        } catch (error) {
-          console.log("error : ", error);
-          dispatch(setLoading(false));
-        }
-      },
-    }
-  );
+  const { register, handleSubmit, watch, setValue, getValues, reset, formState, control } =
+    useForm();
+  // {
+  //   defaultValues: async () => {
+  //     if (!id) setMode("create");
+  //     setMode("update");
+  //     try {
+  //       dispatch(setLoading(true));
+  //       const response = await getData(`product/${id}`);
+  //       const { product } = response.data;
+  //       logResponse(response);
+  //       setImages(product.images);
+  //       dispatch(setLoading(false));
+  //       return { ...product };
+  //       // return { ...product, images: product.images };
+  //     } catch (error) {
+  //       console.log("error : ", error);
+  //       dispatch(setLoading(false));
+  //     }
+  //   },
+  // }
   // } = useForm<FormValue>();
   // const { errors, isSubmitSuccessful } = formState;
   // const watchImages = watch("images");
@@ -135,7 +134,7 @@ export default function Page() {
         dispatch(setLoading(false));
       }
     };
-    // fetchData();
+    fetchData();
   }, [id]);
   // useEffect(() => {
   //   console.log("images : ", images);

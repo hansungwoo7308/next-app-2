@@ -2,13 +2,14 @@ import axios from "axios";
 const baseUrl =
   process.env.NODE_ENV === "production" ? process.env.BASE_URL : process.env.NEXT_PUBLIC_ENV;
 // console.log("baseUrl : ", baseUrl);
-export const getData = async (url: string, token?: string) => {
+export const getData = async (url: string, token?: string, payload?: any) => {
   const response = await axios({
     method: "get",
     url: `${baseUrl}/api/${url}`,
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    params: payload,
   });
   return response;
 };

@@ -15,13 +15,11 @@ export default function Page() {
   const [total, setToal]: any = useState(0);
   const dispatch = useDispatch();
   const router = useRouter();
-  // set the tatal
   useEffect(() => {
     // 주문금액을 스토어에 저장한다.
     const total = cart.reduce((a: any, v: any) => a + v.price * v.quantity, 0);
     setToal(total);
-  }, [cart]);
-  // get the up-to-date cart
+  }, [cart]); // set the tatal
   useEffect(() => {
     // Up-To-Date Product Data (inStock, ...)
     // const stringfiedCart: any = localStorage.getItem("cart");
@@ -38,7 +36,7 @@ export default function Page() {
       dispatch(reloadCart(newCart));
     };
     setCart();
-  }, []);
+  }, []); // get the up-to-date cart
   const handleOrder = (e: any) => {
     e.preventDefault();
     if (!auth.accessToken) {

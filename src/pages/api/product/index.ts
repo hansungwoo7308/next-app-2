@@ -20,13 +20,13 @@ const getProducts = async (req: any, res: any) => {
   try {
     // get
     console.log("req.query : ", req.query);
-    const instance = new APIfeatures(Product.find(), req.query).paginating();
+    const instance = new APIfeatures(Product.find(), req.query).filtering().sorting().paginating();
     const data = await instance.products;
     // console.log(
     //   "data : ",
     //   data.map((item: any) => item.title)
     // );
-    console.log("length : ", data.length);
+    // console.log(data);
     return res.status(200).json({ products: data });
     // if (req.query) {
     //   const { productPage, productCount, sort } = req.query;
@@ -117,38 +117,30 @@ class APIfeatures {
     this.queryString = queryString;
   }
   filtering() {
-    // 인덱싱을 위해서 객체로...
-    const queryObject = { ...this.queryString };
-    // 키로 객체의 프로퍼티에 접근하기 위한...
-    const excludeFields = ["page", "sort", "limit"];
-    excludeFields.forEach((el) => delete queryObject[el]);
-    // 카테고리, 제목이 지정되었으면,
-    if (this.queryString.category) this.products.find({ category: this.queryString.category });
-    if (this.queryString.title) this.products.find({ title: { $regex: this.queryString.title } });
-    // if (queryObject.category !== "all") this.products.find({ category: queryObject.category });
-    // if (queryObject.title !== "all") this.products.find({ title: { $regex: queryObject.title } });
-    this.products.find();
+    // get
+    const { category, search } = this.queryString;
+    // filter
+    if (category && category !== "all") this.products.find({ category: category });
+    if (search) this.products.find({ title: { $regex: search } });
+    // out
     return this;
   }
   sorting() {
-    // 정렬이 지정됐으면,
-    if (this.queryString.sort) {
-      const sortBy = this.queryString.sort.split(",").join("");
-      this.products = this.products.sort(sortBy);
-    } else {
-      this.products = this.products.sort("-createdAt");
-    }
+    if (this.queryString.sort === "newest") this.products = this.products.sort({ createdAt: 1 });
+    if (this.queryString.sort === "oldest") this.products = this.products.sort({ createdAt: -1 });
     return this;
   }
   paginating() {
+    // set
     const page: number = Number(this.queryString.page) || 1;
-    const limit: number = Number(this.queryString.limit) || 3;
-    const skip: number = (page - 1) * limit;
+    const limit: number = page * 3 || 3;
+    const skip: number = 0;
+    // const limit: number = Number(this.queryString.limit) || 3;
+    // const skip: number = (page - 1) * limit;
     console.log({ page, limit, skip });
+    // paginate
     this.products = this.products.skip(skip).limit(limit);
-    return this;
-  }
-  get() {
+    // out
     return this;
   }
 }

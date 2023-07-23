@@ -13,7 +13,8 @@ export default function Modal() {
   const { auth, modal }: any = useSelector((store) => store);
   const { type, id, ids } = modal;
   const dispatch = useDispatch();
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     try {
       dispatch(setLoading(true));
       switch (type) {
@@ -34,7 +35,10 @@ export default function Modal() {
       }
       dispatch(closeModal());
       dispatch(setLoading(false));
-      dispatch(setNotify({ status: "success", message: "Successfully deleted" }));
+      // dispatch(setNotify({ status: "success", message: "Successfully deleted" }));
+      // router.push({ pathname: router.pathname });
+      // router.reload();
+      router.push(router.asPath);
     } catch (error) {
       logError(error);
       dispatch(setLoading(false));

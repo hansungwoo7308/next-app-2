@@ -1,22 +1,19 @@
+import Filter from "@/components/Filter";
 import ProductItem from "@/components/product/ProductItem";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import logError from "lib/client/log/logError";
 import { openModal } from "lib/client/store/modalSlice";
+import { setLoading } from "lib/client/store/notifySlice";
 import { getData } from "lib/client/utils/fetchData";
+import { searchWithFilter } from "lib/client/utils/searchWithFilter";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export async function getServerSideProps({ query }: any) {
-  // critical point
-  // const page = query.page || 1;
-  // const payload = { page, limit: page * 3 }; // 한 페이지 당 3개의 프러덕트를 가져온다.
-  //
-  console.log("query : ", query);
   const response = await getData("product", undefined, query);
-  const data = response.data;
-  const products = data.products;
+  const { products } = response.data;
   return { props: { data: products } };
 }
 export default function Page({ data }: any) {
@@ -28,19 +25,14 @@ export default function Page({ data }: any) {
   const [isCheckAll, setIsCheckAll]: any = useState(false);
   const [page, setPage]: any = useState(1);
   useEffect(() => {
-    console.log(Object.keys(router.query));
-    if (Object.keys(router.query).length === 0) {
-      setPage(1);
-      setProducts([]);
-    }
+    if (Object.keys(router.query).length === 0) setPage(1);
   }, [router.query]);
   useEffect(() => {
     console.log("data : ", data);
-    setProducts((state: any) => [...state, ...data]);
+    setProducts(data);
   }, [data]);
-  useEffect(() => {}, [router.query]);
   useEffect(() => {
-    if (notify.status === "success") router.reload();
+    if (notify.status === "success") router.push({ query: null });
   }, [notify.status]);
   const handleCheckAll = () => {
     if (!isCheckAll) {
@@ -55,12 +47,11 @@ export default function Page({ data }: any) {
     // setIsCheckAll((state: boolean) => !state);
   };
   const handleOpenModal = () => {
-    const ids = checkedProducts;
     dispatch(
       openModal({
         type: "DELETE_PRODUCTS",
         message: "Do you want to delete the selected products?",
-        ids,
+        ids: checkedProducts,
       })
     );
   };
@@ -68,10 +59,10 @@ export default function Page({ data }: any) {
     <Main>
       <section>
         {
-          <div>
+          <div className="products">
+            <Filter />
             <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
             <button onClick={handleOpenModal}>Delete</button>
-            <h1>Product Page</h1>
             <ul>
               {products?.map((product: any) => (
                 <ProductItem
@@ -93,13 +84,8 @@ export default function Page({ data }: any) {
                   //   ...state,
                   //   productPage: state.productPage + 1,
                   // }));
-                  // filterSearch();
-                  // test();
                   router.query.page = page + 1;
-                  router.push({
-                    pathname: router.pathname,
-                    query: router.query,
-                  });
+                  router.push({ pathname: router.pathname, query: router.query });
                 }}
               >
                 Load More

@@ -1,6 +1,6 @@
 import { addToCart } from "lib/client/store/cartSlice";
 import { openModal } from "lib/client/store/modalSlice";
-import { setTimeoutId, setNotify, setVisible } from "lib/client/store/notifySlice";
+import { setTimeoutId, setNotify, setVisible, setLoading } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -85,9 +85,10 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
   useEffect(() => {
     if (isCheckAll) {
       checkRef.current.checked = true;
-    } else {
-      checkRef.current.checked = false;
     }
+    // else {
+    //   checkRef.current.checked = false;
+    // }
   }, [isCheckAll]);
   const handleCheck = (e: any) => {
     if (e.target.checked) {
@@ -102,7 +103,9 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
   return (
     <Item>
       <div className="image">
-        <input ref={checkRef} className="check" type="checkbox" onChange={handleCheck} />
+        {auth.role === "admin" && (
+          <input ref={checkRef} className="check" type="checkbox" onChange={handleCheck} />
+        )}
         <Image
           src={images[0].url || images[0].secure_url}
           alt={images[0].url}

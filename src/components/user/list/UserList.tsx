@@ -17,7 +17,7 @@ export default function UserList() {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Admin</th>
+            <th>Role</th>
             <th>Action</th>
           </tr>
         </thead>

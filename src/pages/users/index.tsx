@@ -4,7 +4,7 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import UserList from "@/components/user/list/UserList";
 export default function Page() {
-  const { users }: any = useSelector((store) => store);
+  const { auth, users }: any = useSelector((store) => store);
   const dispatch = useDispatch();
   // const list = users.map((user: any) => (
   //   <li key={user.id}>
@@ -19,6 +19,7 @@ export default function Page() {
       {/* <Link href={`/users/${user.id}`}>{user.name}</Link> */}
     </li>
   ));
+  if (auth.role !== "admin") return null;
   return (
     <>
       <Main>

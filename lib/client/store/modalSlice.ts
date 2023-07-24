@@ -5,6 +5,7 @@ type Modal = {
   message?: string;
   id?: string;
   ids?: string[];
+  title?: string;
   // data?: [];
 };
 // const initialState: Modal[] = [];
@@ -14,12 +15,13 @@ export const modalSlice = createSlice({
   initialState,
   reducers: {
     openModal: (state, action) => {
-      const { type, message, id, ids } = action.payload;
+      const { type, message, id, ids, title } = action.payload;
       state.visible = true;
       state.type = type;
       state.message = message;
       state.id = id;
       state.ids = ids;
+      state.title = title;
     },
     closeModal: (state) => {
       //   const modal: any = state.find((v: any) => v.name === action.payload.name);
@@ -30,6 +32,7 @@ export const modalSlice = createSlice({
       state.message = "";
       state.id = "";
       state.ids = [];
+      state.title = "";
     },
   },
   extraReducers(builder) {

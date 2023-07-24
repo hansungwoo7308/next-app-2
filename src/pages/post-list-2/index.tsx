@@ -3,55 +3,54 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Modal from "../../components/Modal";
 import PostList from "@/components/post/list/PostList";
-import getMarkdown from "lib/server/getMarkdown";
 import { Main as PublicMain } from "@/styles/public/main.styled";
-import { GetStaticPropsContext } from "next";
 import styled from "styled-components";
+import { getData } from "lib/client/utils/fetchData";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { openModal } from "lib/client/store/modalSlice";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";
 // import { PostMetaData } from "../../../types/PostMetaData";
-export function getStaticProps(context: GetStaticPropsContext) {
-  console.log("\x1b[32m\n[Server:getStaticProps]/pages/post-list-2");
-  const list = getMarkdown("data/posts");
-  return { props: { list } };
+export async function getServerSideProps() {
+  const response = await getData("posts");
+  const { posts } = response.data;
+  return { props: { posts } };
 }
-export default function Page({ list }: any) {
-  const [posts, setPosts]: any = useState([]);
-  // console.log("posts : ", posts);
-  const getPosts = async () => {
-    try {
-      const response = await axios.get("/api/posts");
-      const data = await response.data;
-      setPosts(data);
-    } catch (error) {
-      console.log("getPosts error : ", error);
-    }
+export default function Page({ posts }: any) {
+  // const [posts, setPosts]: any = useState([]);
+  // const getPosts = async () => {
+  //   try {
+  //     const response = await getData("posts");
+  //     const { posts } = response.data;
+  //     setPosts(posts);
+  //   } catch (error) {
+  //     console.log("getPosts error : ", error);
+  //   }
+  // };
+  // const deleteItem = async (title: any) => {
+  //   // console.log("title : ", title);
+  //   try {
+  //     const result = await axios.delete("/api/posts", { data: { title } });
+  //     console.log("delete result : ", result);
+  //   } catch (error) {
+  //     console.log("delete error : ", error);
+  //   }
+  //   getPosts();
+  // };
+  // useEffect(() => {
+  //   getPosts();
+  //   // console.log("posts : ", posts);
+  // }, []);
+  const dispatch = useDispatch();
+  const handleCreatePost = () => {
+    dispatch(openModal({ type: "CREATE_POST" }));
   };
-  const deleteItem = async (title: any) => {
-    // console.log("title : ", title);
-    try {
-      const result = await axios.delete("/api/posts", { data: { title } });
-      console.log("delete result : ", result);
-    } catch (error) {
-      console.log("delete error : ", error);
-    }
-    getPosts();
+  const handleDeletePost = (id: any) => {
+    dispatch(openModal({ type: "DELETE_POST", message: "Do you want to delete?", id }));
   };
-  useEffect(() => {
-    getPosts();
-  }, []);
-  const [modal, setModal] = useState(false);
-  const openModal = () => setModal(true);
-  const closeModal = () => setModal(false);
-  const createItem = async ({ title, content }: any) => {
-    try {
-      await axios.post("/api/posts", { title, content });
-    } catch (error) {
-      console.log("createItem error : ", error);
-    }
-    getPosts();
-  };
+  if (!posts) return null;
   return (
     <>
       <Head>
@@ -60,12 +59,10 @@ export default function Page({ list }: any) {
       <Main>
         <section>
           <PostList
-            list={posts}
-            // path={"post-list-2"}
-            openModal={openModal}
-            deleteItem={deleteItem}
+            posts={posts}
+            handleCreatePost={handleCreatePost}
+            handleDeletePost={handleDeletePost}
           />
-          {modal && <Modal action={createItem} close={closeModal} />}
         </section>
       </Main>
     </>

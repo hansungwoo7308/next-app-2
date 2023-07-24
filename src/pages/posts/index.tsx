@@ -4,8 +4,6 @@ import PostListWithMarkdown from "@/components/post/list/PostListWithMarkdown";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { GetStaticPropsContext } from "next";
 import styled from "styled-components";
-// import { useEffect, useRef, useState } from "react";
-// import { useRouter } from "next/router";
 // import getFormattedDate from "@/lib/getFormattedDate"
 // import { getSortedPostsData, getPostData } from "@/lib/posts"
 // // import { PostMetaData } from "types/postMetaData";
@@ -24,7 +22,6 @@ import styled from "styled-components";
 //   //   console.log("\x1b[32mslugs : %s\x1b[0m", slugs);
 //   // console.log("\x1b[32mslugsWithDir : %s\x1b[0m", slugsWithFullPath);
 //   // console.log("\x1b[32mslugsWithParams : %s\x1b[0m", slugsWithParams);
-//   console.log("");
 //   return {
 //     // paths: [{ params: { slug: "data1" } }],
 //     //   paths: slugsWithParams,
@@ -40,13 +37,12 @@ import styled from "styled-components";
 // };
 export const getStaticProps = (context: GetStaticPropsContext) => {
   const list = getMarkdown("data");
+  // const list = getMarkdown("data/posts");
   console.log("\x1b[32m\n[/posts]");
   console.log("Markdown list : ", list);
   return { props: { list } };
 };
-let renderCount = 0;
 export default function Page({ list }: any) {
-  renderCount++;
   return (
     <>
       <Head>
@@ -54,14 +50,12 @@ export default function Page({ list }: any) {
       </Head>
       <Main>
         <section>
-          <h1>renderCount : {renderCount}</h1>
           <PostListWithMarkdown list={list} path={"posts"} />
         </section>
       </Main>
     </>
   );
 }
-// 사이즈만 오버라이딩
 const Main = styled(PublicMain)`
   > section {
     > div {

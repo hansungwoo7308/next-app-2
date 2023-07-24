@@ -4,16 +4,17 @@ import { deleteItem } from "lib/client/store/cartSlice";
 import { closeModal } from "lib/client/store/modalSlice";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { deleteUser } from "lib/client/store/usersSlice";
-import { deleteData } from "lib/client/utils/fetchData";
+import { deleteData, getData, postData } from "lib/client/utils/fetchData";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
-  const router = useRouter();
   const { auth, modal }: any = useSelector((store) => store);
-  const { type, id, ids } = modal;
+  const { type, id, ids, title } = modal;
+  const router = useRouter();
   const dispatch = useDispatch();
-  const handleSubmit = async (e: any) => {
+  const handleConfirm = async (e: any) => {
     e.preventDefault();
     try {
       dispatch(setLoading(true));
@@ -29,6 +30,9 @@ export default function Modal() {
           break;
         case "DELETE_CART_ITEM":
           handleDeleteCartItem();
+          break;
+        case "DELETE_POST":
+          handleDeletePost();
           break;
         default:
           break;
@@ -72,15 +76,67 @@ export default function Modal() {
   const handleDeleteCartItem = async () => {
     dispatch(deleteItem({ _id: id }));
   };
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const handleCreatePost = async ({ title, content }: any) => {
+    try {
+      dispatch(setLoading(true));
+      const response = await postData("posts", { title, content }, auth.accessToken);
+      logResponse(response);
+      dispatch(closeModal());
+      dispatch(setLoading(false));
+    } catch (error) {
+      logError(error);
+      dispatch(setLoading(false));
+    }
+  };
+  const handleDeletePost = async () => {
+    const response = await deleteData("posts", auth.accessToken, { _id: id });
+    logResponse(response);
+  };
+  const form = (
+    <form
+      onSubmit={handleSubmit((data) => {
+        const { title, content } = data;
+        handleCreatePost({ title, content });
+        dispatch(closeModal());
+        // router.reload();
+        router.push(router.asPath);
+      })}
+    >
+      <div>
+        <input {...register("title", { required: true })} type="text" placeholder="Title" />
+        <textarea
+          {...register("content", { required: true })}
+          cols={30}
+          rows={10}
+          placeholder="Content"
+        ></textarea>
+      </div>
+      <div>
+        <button>Submit</button>
+        <button onClick={() => dispatch(closeModal())}>Close</button>
+      </div>
+    </form>
+  );
   if (!modal.visible) return null;
   return (
     <Background onClick={() => dispatch(closeModal())}>
       <Box onClick={(e) => e.stopPropagation()}>
-        <h1>{modal.message}</h1>
-        <div>
-          <button onClick={handleSubmit}>Confirm</button>
-          <button onClick={() => dispatch(closeModal())}>Close</button>
-        </div>
+        {type === "CREATE_POST" && form}
+        {type !== "CREATE_POST" && (
+          <>
+            <h1>{modal.message}</h1>
+            <div>
+              <button onClick={handleConfirm}>Confirm</button>
+              <button onClick={() => dispatch(closeModal())}>Close</button>
+            </div>
+          </>
+        )}
       </Box>
     </Background>
   );

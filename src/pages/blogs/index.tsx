@@ -30,7 +30,6 @@ export default function Page({ list }: any) {
     blogRef.current.focus();
   }, []);
   useEffect(() => {
-    // console.log("list : ", list);
     const event: any = function (e: any) {
       if (e.key === "ArrowDown") {
         // console.log("e : ", e);

@@ -5,19 +5,16 @@ import { Main } from "@/styles/public/main.styled";
 import { GetStaticPathsContext, GetStaticPropsContext } from "next";
 export const getStaticPaths = (context: GetStaticPathsContext) => {
   const filenames: Array<string> = fs.readdirSync("data/");
-  const filenamesWithMarkdown: Array<string> = filenames.filter((file) =>
-    file.endsWith(".md")
+  const filenamesWithMarkdown: Array<string> = filenames.filter((file) => file.endsWith(".md"));
+  const filenamesWithMarkdownModified: Array<string> = filenamesWithMarkdown.map((file) =>
+    file.replace(".md", "")
   );
-  const filenamesWithMarkdownModified: Array<string> =
-    filenamesWithMarkdown.map((file) => file.replace(".md", ""));
   // const slugsWithFullPath = filenamesWithMarkdownModified.map((id) => "/posts/" + id);
-  const paths: Array<object> = filenamesWithMarkdownModified.map(
-    (filename) => ({ params: { id: filename } })
-  );
-  console.log("\x1b[32m");
-  console.log("[Server:getStaticPaths]/pages/posts");
+  const paths: Array<object> = filenamesWithMarkdownModified.map((filename) => ({
+    params: { id: filename },
+  }));
+  console.log("\x1b[32m\n[Server:getStaticPaths]/pages/posts");
   console.log("paths : ", paths);
-  console.log("");
   // console.log(
   //   "filenamesWithMarkdownModified : ",
   //   filenamesWithMarkdownModified
@@ -25,13 +22,7 @@ export const getStaticPaths = (context: GetStaticPathsContext) => {
   return {
     paths: paths,
     fallback: false,
-    // paths: [
-    //   "/posts/data1",
-    //   "/posts/data2",
-    //   "/posts/data3",
-    //   "/posts/data4",
-    //   "/posts/data5",
-    // ],
+    // paths: string[]
   };
 };
 export const getStaticProps = (context: GetStaticPropsContext) => {
@@ -43,10 +34,8 @@ export const getStaticProps = (context: GetStaticPropsContext) => {
     title: matterResult.data.title,
     date: matterResult.data.date,
   };
-  console.log("\x1b[32m");
-  console.log("[Server:getStaticProps]/pages/posts");
-  console.log("context.params.id : %s\x1b[0m", id);
-  console.log("");
+  console.log("\x1b[32m\n[Server:getStaticProps]/pages/posts");
+  console.log("context.params.id : ", id);
   return { props: { item } };
 };
 export default function Page({ item }: any) {

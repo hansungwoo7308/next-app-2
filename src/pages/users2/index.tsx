@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Head from "next/head";
-import getAllUsers from "lib/utils/getAllUsers";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
+import logError from "lib/client/log/logError";
 export async function getServerSideProps(context: any) {
-  const users: Promise<User[]> = await getAllUsers();
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const users = await response.json();
+  return { props: { users } };
   //   if (!) {
   //   return {
   //     redirect: {
@@ -13,10 +15,8 @@ export async function getServerSideProps(context: any) {
   //     },
   //   };
   // }
-  return { props: { users } };
 }
 export default function Page({ users }: any) {
-  console.log("users : ", users);
   return (
     <>
       <Head>
@@ -25,7 +25,7 @@ export default function Page({ users }: any) {
       <Main>
         <section>
           <div>
-            <h1>users2 (static : CDN)</h1>
+            <h1>User List Page (static : CDN)</h1>
             <ul>
               {users.map((user: any) => (
                 <li key={user.id}>

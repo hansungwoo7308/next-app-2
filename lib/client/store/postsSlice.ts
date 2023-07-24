@@ -148,7 +148,6 @@ export const postsSlice: any = createSlice({
 export const fetchPosts: any = createAsyncThunk(
   // string action type value: 이 값에 따라 pending, fulfilled, rejected가 붙은 액션 타입이 생성된다.
   "posts/fetchPosts",
-
   // payloadCreator callback: 비동기 로직의 결과를 포함하고 있는 프로미스를 반환하는 비동기 함수
   async () => {
     const response = await axios.get(POSTS_URL);
@@ -190,7 +189,7 @@ export const deletePost: any = createAsyncThunk("posts/deletePost", async (initi
   }
 });
 // selectors
-// getSelectors creates these selectors and we rename them with aliases using destructuring
+// adaptor를 통해서 selectors를 얻는다.
 export const {
   selectAll: selectAllPosts,
   selectById: selectPostById,
@@ -200,9 +199,6 @@ export const {
 export const getPostsStatus = (state: any) => state.posts.status;
 export const getPostsError = (state: any) => state.posts.error;
 export const getCount = (state: any) => state.posts.count;
-// Optimization(최적화)
-// useSelector의 argument에서 사용될 store를 선택하는(참조하는) 값을
-// 이곳에서 구현한다. (원래는 페이지, 컴포넌트에서 구현했지만)
 export const selectPostsByUser = createSelector(
   // 선택하려는 함수(기능)을 배열에 넣는다.
   // 스토어의 상태값을 가져오는 함수를 배열안에 넣는다.
@@ -210,5 +206,4 @@ export const selectPostsByUser = createSelector(
   // 이전의 값을 캐시, 변경됐을때만 변경된값을 리턴한다.
   (posts, userId) => posts.filter((post: any) => post.userId === userId)
 );
-// actions
 export const { increaseCount, reactionAdded } = postsSlice.actions;

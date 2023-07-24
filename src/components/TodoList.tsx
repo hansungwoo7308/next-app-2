@@ -7,6 +7,7 @@ import {
 } from "lib/utils/todosApiSlice";
 import { Box } from "@/styles/components/TodoList.styled";
 export default function TodoList() {
+  // 비정상으로 동작한다. 수정이 필요하다.
   const [newTodo, setNewTodo] = useState("");
   const [content, setContent]: any = useState();
   const { data: todos, isLoading, isSuccess, isError, error }: any = useGetTodosQuery();

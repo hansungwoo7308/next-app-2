@@ -1,12 +1,11 @@
-// import { Box } from "@/styles/components/post/PostListWithMarkdown.styled";
 import Link from "next/link";
 import styled from "styled-components";
-export default function PostList({ list, openModal, deleteItem }: any) {
+export default function PostList({ posts, handleCreatePost, handleDeletePost }: any) {
   return (
     <Box>
-      <h1>post-list-2 (Dynamic : Database)</h1>
+      <h1>PostList Component (Dynamic : Database)</h1>
       <ul>
-        {list.map((item: any, index: any) => (
+        {posts.map((item: any, index: any) => (
           <li key={index}>
             <Link href={`post-list-2/${item.title}`}>
               <h3>{item.title}</h3>
@@ -15,7 +14,7 @@ export default function PostList({ list, openModal, deleteItem }: any) {
             <button
               onClick={(e: any) => {
                 e.preventDefault();
-                deleteItem(item.title);
+                handleDeletePost(item._id);
               }}
             >
               Delete
@@ -23,7 +22,14 @@ export default function PostList({ list, openModal, deleteItem }: any) {
           </li>
         ))}
       </ul>
-      <button onClick={openModal}>Create a Post Item</button>
+      <button
+        onClick={(e: any) => {
+          e.preventDefault();
+          handleCreatePost();
+        }}
+      >
+        Create a Post
+      </button>
     </Box>
   );
 }

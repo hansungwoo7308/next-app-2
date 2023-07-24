@@ -7,6 +7,10 @@ export default function PostListByRTKquery() {
   const orderedPostIds = useSelector(selectPostIds);
   const postStatus = useSelector(getPostsStatus);
   const error = useSelector(getPostsError);
+  console.log({
+    orderedPostIds,
+    postStatus,
+  });
   return (
     <Box>
       <h2>post-list (Static : CDN)</h2>

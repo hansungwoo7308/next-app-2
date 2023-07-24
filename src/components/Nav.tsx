@@ -2,15 +2,14 @@ import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { increaseCount, getCount } from "lib/client/store/postsSlice";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Nav() {
   const router = useRouter();
+  // under-bar focus
   const focusRef: any = useRef();
+  // menu
   const homeRef: any = useRef();
   const listRef: any = useRef();
-  // list
   const blogsRef: any = useRef();
   const usersRef: any = useRef();
   const users2Ref: any = useRef();
@@ -19,17 +18,18 @@ export default function Nav() {
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
   const todoListRef: any = useRef();
-  // auth
+
   const loginRef: any = useRef();
   const jwtRef: any = useRef();
-  // search
+
   const searchRef: any = useRef();
-  // Private Page (Protected, Restricted)
+
   const restrictedRef: any = useRef();
   const aboutRef: any = useRef();
   const worksRef: any = useRef();
   const commerceRef: any = useRef();
   const productRef: any = useRef();
+
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -67,9 +67,6 @@ export default function Nav() {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/users2") {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/user-list") {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname === "/authentication/login") {
@@ -142,19 +139,16 @@ export default function Nav() {
               <Link href={"/users"}>users (CDN)</Link>
             </li> */}
             <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users2"}>users2 (CDN)</Link>
+              <Link href={"/users2"}>User List (CDN)</Link>
             </li>
             {/* Database List */}
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list-2"}>post-list-2 (DB)</Link>
+              <Link href={"/post-list-2"}>Post List 2 (DB)</Link>
             </li>
             <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/todo-list"}>todo-list (DB)</Link>
+              <Link href={"/todo-list"}>Todo List (DB - RTK query)</Link>
             </li>
             {/* Undefined List */}
-            <li ref={userListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/user-list"}>user-list (Undefined)</Link>
-            </li>
           </ul>
         </li>
         <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
@@ -165,14 +159,14 @@ export default function Nav() {
             </li>
           </ul>
         </li>
+        <li ref={userListRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/test"}>TEST</Link>
+        </li>
         {/* <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/about"}>About</Link>
         </li> */}
         {/* <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"}>Works</Link>
-        </li> */}
-        {/* <li ref={restrictedRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/restricted"}>Restricted</Link>
         </li> */}
         {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
@@ -180,7 +174,6 @@ export default function Nav() {
         {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/jwt"}>JWT</Link>
         </li> */}
-        {/* <a onClick={() => dispatch(increaseCount())}>{count}</a> */}
       </ul>
     </NavStyle>
   );

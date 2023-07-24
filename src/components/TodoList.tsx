@@ -47,7 +47,7 @@ export default function TodoList() {
   return (
     <Box>
       <div className="todo-list-header">
-        <h1>todo-list (Dynamic : Database)</h1>
+        <h1>Todo List Component (Client - RTK Query - DB)</h1>
         <p>server : http://localhost:3000/api/todos</p>
       </div>
       <div className="todo-list-create-form">

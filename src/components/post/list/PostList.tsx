@@ -3,7 +3,9 @@ import styled from "styled-components";
 export default function PostList({ posts, handleCreatePost, handleDeletePost }: any) {
   return (
     <Box>
-      <h1>PostList Component (Dynamic : Database)</h1>
+      <h1>Post List Component (Server - Query - DB)</h1>
+      <p>Server : http://localhost:3000/api/posts</p>
+
       <ul>
         {posts.map((item: any, index: any) => (
           <li key={index}>

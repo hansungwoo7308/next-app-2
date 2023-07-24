@@ -140,10 +140,10 @@ export default function Nav() {
             </li> */}
             {/* Database List */}
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list-2"}>Post List 2 (DB)</Link>
+              <Link href={"/post-list-2"}>Post List 2 (Server - Query - DB)</Link>
             </li>
             <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/todo-list"}>Todo List (DB - RTK query)</Link>
+              <Link href={"/todo-list"}>Todo List (Client - RTK query - DB)</Link>
             </li>
           </ul>
         </li>

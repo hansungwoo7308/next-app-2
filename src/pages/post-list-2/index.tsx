@@ -1,12 +1,8 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Modal from "../../components/Modal";
 import PostList from "@/components/post/list/PostList";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { getData } from "lib/client/utils/fetchData";
-import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { openModal } from "lib/client/store/modalSlice";
 // import getFormattedDate from "@/lib/getFormattedDate"
@@ -19,30 +15,6 @@ export async function getServerSideProps() {
   return { props: { posts } };
 }
 export default function Page({ posts }: any) {
-  // const [posts, setPosts]: any = useState([]);
-  // const getPosts = async () => {
-  //   try {
-  //     const response = await getData("posts");
-  //     const { posts } = response.data;
-  //     setPosts(posts);
-  //   } catch (error) {
-  //     console.log("getPosts error : ", error);
-  //   }
-  // };
-  // const deleteItem = async (title: any) => {
-  //   // console.log("title : ", title);
-  //   try {
-  //     const result = await axios.delete("/api/posts", { data: { title } });
-  //     console.log("delete result : ", result);
-  //   } catch (error) {
-  //     console.log("delete error : ", error);
-  //   }
-  //   getPosts();
-  // };
-  // useEffect(() => {
-  //   getPosts();
-  //   // console.log("posts : ", posts);
-  // }, []);
   const dispatch = useDispatch();
   const handleCreatePost = () => {
     dispatch(openModal({ type: "CREATE_POST" }));

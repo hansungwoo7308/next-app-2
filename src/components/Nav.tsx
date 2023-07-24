@@ -125,22 +125,19 @@ export default function Nav() {
           <Link href={"/list"}>List</Link>
           <ul>
             {/* Markdown List */}
-            <li ref={postsRef} onClick={(e) => handleFocus(e)}>
+            {/* <li ref={postsRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/posts"}>posts (Markdown)</Link>
             </li>
             <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/blogs"}>blogs (Markdown)</Link>
-            </li>
+            </li> */}
             {/* CDN List */}
-            <li ref={postListRef} onClick={(e) => handleFocus(e)}>
+            {/* <li ref={postListRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list"}>post-list (CDN)</Link>
             </li>
-            {/* <li ref={usersRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users"}>users (CDN)</Link>
-            </li> */}
             <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/users2"}>User List (CDN)</Link>
-            </li>
+            </li> */}
             {/* Database List */}
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list-2"}>Post List 2 (DB)</Link>
@@ -148,7 +145,6 @@ export default function Nav() {
             <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/todo-list"}>Todo List (DB - RTK query)</Link>
             </li>
-            {/* Undefined List */}
           </ul>
         </li>
         <li ref={commerceRef} onClick={(e) => handleFocus(e)}>

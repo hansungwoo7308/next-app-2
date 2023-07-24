@@ -1,12 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut } from "lib/client/store/authSlice";
-
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/",
-
   // for accessToken
   credentials: "include",
-
   // set the header
   prepareHeaders: (headers, { getState }: any) => {
     const accessToken = getState().auth.accessToken;
@@ -17,7 +14,6 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
-
 const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
   // args : 조회(query)를 위한 기본 url, method, body,...
   // api : ?
@@ -47,10 +43,8 @@ const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
       api.dispatch(logOut());
     }
   }
-
   return result;
 };
-
 export const usersApiSlice = createApi({
   reducerPath: "usersApi", // optional
   baseQuery: baseQueryWithReauth,
@@ -70,5 +64,4 @@ export const usersApiSlice = createApi({
     }),
   }),
 });
-
 export const { useGetUsersQuery } = usersApiSlice;

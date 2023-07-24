@@ -14,6 +14,7 @@ export default function Modal() {
   const { type, id, ids, title, callback } = modal;
   const router = useRouter();
   const dispatch = useDispatch();
+  // processor
   const handleConfirm = async (e: any) => {
     e.preventDefault();
     try {
@@ -34,8 +35,8 @@ export default function Modal() {
         case "DELETE_POST":
           handleDeletePost();
           break;
-        case "test":
-          callback();
+        case "DELETE_TODO_LIST_ITEM":
+          callback(); // sync callback function
           break;
         default:
           break;

@@ -28,7 +28,7 @@ const getTodos = async (req: any, res: any) => {
 };
 const createTodo = async (req: any, res: any) => {
   const { title, completed } = req.body;
-  console.log({ title });
+  console.log({ title, completed });
   const duplicatedData = await Todo.findOne({ title });
   if (duplicatedData) {
     console.log({ duplicatedData });

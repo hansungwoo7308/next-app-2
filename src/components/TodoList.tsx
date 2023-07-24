@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
@@ -8,32 +8,42 @@ import {
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { openModal } from "lib/client/store/modalSlice";
+import { useForm } from "react-hook-form";
 export default function TodoList() {
-  const inputRef: any = useRef();
-  const [newTodo, setNewTodo]: any = useState("");
-  // get the todos from query
+  const dispatch = useDispatch();
+  // get the data
   const { data: todos, isLoading, isSuccess, isError, error }: any = useGetTodosQuery();
+  // get the actions from redux-toolkit-query
   const [addTodo] = useAddTodoMutation();
   const [updateTodo] = useUpdateTodoMutation();
   const [deleteTodo] = useDeleteTodoMutation();
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    const payload = { title: newTodo, completed: false };
-    addTodo(payload);
-    setNewTodo("");
-    inputRef.current.focus();
-    // addTodo({ userId: 1, id: 100, title: newTodo, completed: false }); // 페이로드
+  // get the methods react-hook-form
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+    setFocus,
+  } = useForm();
+  // set the processors
+  const handleCreate = (data: any) => {
+    // console.log({ data });
+    const { todo } = data;
+    addTodo({ title: todo, completed: false });
+    reset();
   };
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-  // test
-  const dispatch = useDispatch();
-  const handleTest = ({ _id }: any) => {
-    const callback = () => console.log("good job");
-    // const callback = () => deleteTodo({ _id });
-    dispatch(openModal({ type: "test", message: "Do you want to delete?", callback }));
+  const handleDelete = (_id: string) => {
+    // console.log({ _id });
+    const callback = () => deleteTodo({ _id });
+    const payload = {
+      type: "DELETE_TODO_LIST_ITEM",
+      message: "Do you want to delete?",
+      callback,
+    };
+    dispatch(openModal(payload));
   };
+  useEffect(() => setFocus("todo"), []);
   return (
     <Box>
       <div className="todo-list-header">
@@ -41,18 +51,13 @@ export default function TodoList() {
         <p>server : http://localhost:3000/api/todos</p>
       </div>
       <div className="todo-list-create-form">
-        <form onSubmit={handleSubmit}>
-          <label>Enter a new todo item</label>
-          <div>
-            <input
-              ref={inputRef}
-              type="text"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-              placeholder="Enter new todo"
-            />
-            <button className="submit">Create</button>
-          </div>
+        <form onSubmit={handleSubmit(handleCreate)}>
+          <input
+            {...register("todo", { required: true })}
+            type="text"
+            placeholder="Enter a new todo"
+          />
+          <button className="submit">Create</button>
         </form>
       </div>
       <div className="todo-list">
@@ -70,17 +75,14 @@ export default function TodoList() {
                 />
                 <label htmlFor={todo._id}>{todo.title}</label>
               </div>
-              <button className="trash" onClick={() => deleteTodo({ _id: todo._id })}>
-                <h1>Delete</h1>
-              </button>
               <button
                 className="test"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleTest({ _id: todo._id });
+                  handleDelete(todo._id);
                 }}
               >
-                <h1>Test</h1>
+                <h1>Delete with callback</h1>
               </button>
             </article>
           ))}

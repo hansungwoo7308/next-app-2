@@ -38,6 +38,14 @@ export const todosApiSlice = createApi({
       invalidatesTags: ["Todos"],
     }),
     deleteTodo: builder.mutation({
+      // query: (todo) => {
+      //   console.log({ todo });
+      //   return {
+      //     url: `/todos/${todo._id}`,
+      //     method: "DELETE",
+      //     body: todo,
+      //   };
+      // },
       query: (todo) => ({
         url: `/todos/${todo._id}`,
         method: "DELETE",

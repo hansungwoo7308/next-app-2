@@ -6,8 +6,9 @@ import {
   useAddTodoMutation,
 } from "lib/utils/todosApiSlice";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { openModal } from "lib/client/store/modalSlice";
 export default function TodoList() {
-  // 비정상으로 동작한다. 수정이 필요하다.
   const inputRef: any = useRef();
   const [newTodo, setNewTodo]: any = useState("");
   // get the todos from query
@@ -26,6 +27,13 @@ export default function TodoList() {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+  // test
+  const dispatch = useDispatch();
+  const handleTest = ({ _id }: any) => {
+    const callback = () => console.log("good job");
+    // const callback = () => deleteTodo({ _id });
+    dispatch(openModal({ type: "test", message: "Do you want to delete?", callback }));
+  };
   return (
     <Box>
       <div className="todo-list-header">
@@ -64,6 +72,15 @@ export default function TodoList() {
               </div>
               <button className="trash" onClick={() => deleteTodo({ _id: todo._id })}>
                 <h1>Delete</h1>
+              </button>
+              <button
+                className="test"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTest({ _id: todo._id });
+                }}
+              >
+                <h1>Test</h1>
               </button>
             </article>
           ))}

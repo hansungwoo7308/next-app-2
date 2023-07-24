@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
   const { auth, modal }: any = useSelector((store) => store);
-  const { type, id, ids, title } = modal;
+  const { type, id, ids, title, callback } = modal;
   const router = useRouter();
   const dispatch = useDispatch();
   const handleConfirm = async (e: any) => {
@@ -33,6 +33,9 @@ export default function Modal() {
           break;
         case "DELETE_POST":
           handleDeletePost();
+          break;
+        case "test":
+          callback();
           break;
         default:
           break;

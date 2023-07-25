@@ -19,7 +19,7 @@ export default function Page({ posts }: any) {
   const handleCreatePost = () => {
     dispatch(openModal({ type: "CREATE_POST" }));
   };
-  const handleDeletePost = (id: any) => {
+  const handleDeletePost = (id: string) => {
     dispatch(openModal({ type: "DELETE_POST", message: "Do you want to delete?", id }));
   };
   if (!posts) return null;

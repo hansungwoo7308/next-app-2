@@ -55,7 +55,7 @@ export const todosApiSlice = createApi({
     }),
   }),
 });
-// api actions
+// api hooks
 export const {
   useGetTodosQuery,
   useAddTodoMutation,

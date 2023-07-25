@@ -1,18 +1,18 @@
 import connectDB from "lib/server/config/connectDB";
 import User from "lib/server/model/User";
 import verifyJWT from "lib/server/utils/verifyJWT";
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 connectDB();
 export default async function (req: any, res: any) {
-  console.log("\x1b[32m[api/user]");
+  console.log("\n\x1b[32m[api/user]");
   switch (req.method) {
-    case "PATCH":
-      console.log("PATCH");
-      await updateUser(req, res);
-      break;
     case "GET":
       console.log("GET");
       await getUsers(req, res);
+      break;
+    case "PATCH":
+      console.log("PATCH");
+      await updateUser(req, res);
       break;
     default:
       break;
@@ -28,9 +28,10 @@ const getUsers = async (req: any, res: any) => {
     // const hashedPassword = await bcrypt.hash(password, 12);
     const foundUsers = await User.find().select("-password").exec();
     if (!foundUsers) return res.status(404).json({ message: "Not found" });
-    console.log("foundUsers.length : ", foundUsers.length);
     // output
-    return res.status(200).json({ foundUsers });
+    // console.log("foundUsers.length : ", foundUsers.length);
+    console.log({ foundUsers: foundUsers.map((user: any) => user.username) });
+    return res.status(200).json({ users: foundUsers });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }

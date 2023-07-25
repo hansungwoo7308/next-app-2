@@ -16,7 +16,6 @@ export default async function (req: any, res: any) {
       break;
   }
 }
-
 const updateRole = async (req: any, res: any) => {
   try {
     // verify

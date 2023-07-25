@@ -1,35 +1,32 @@
-import Link from "next/link";
-import { useGetUsersQuery } from "lib/utils/usersApiSlice";
+import { useGetUsersQuery, usersApiSlice } from "lib/utils/usersApiSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Main } from "../../styles/public/main.styled";
-let renderCount = 0;
 export default function Page() {
-  const {
-    data: users,
-    isLoading,
-    isSuccess,
-    isError,
-    error,
-  } = useGetUsersQuery({});
-  renderCount++;
+  const dispatch = useDispatch();
+  const { auth, usersApi }: any = useSelector((store) => store);
+  const { data, isLoading, isSuccess, isError, error, refetch } = useGetUsersQuery({});
+  // useEffect(() => {
+  //   if (data) console.log({ data });
+  // }, [data]);
+  useEffect(() => {
+    if (auth.accessToken) refetch();
+  }, [auth.accessToken]);
   return (
     <>
       <Main>
         <section>
-          <h1>renderCount : {renderCount}</h1>
           <div>
-            {isLoading ? (
-              <h1>Loading...</h1>
-            ) : isSuccess ? (
+            {isLoading && <h1>Loading...</h1>}
+            {isSuccess && (
               <>
-                <h1>Undefined User List</h1>
+                <h1>User List</h1>
                 <div>
-                  {users.map((user: any, index: number) => (
-                    <h5 key={index}>{user}</h5>
+                  {data.users.map((user: any, index: number) => (
+                    <h5 key={index}>{user.username}</h5>
                   ))}
                 </div>
               </>
-            ) : (
-              <h1>{JSON.stringify(error)}</h1>
             )}
           </div>
         </section>

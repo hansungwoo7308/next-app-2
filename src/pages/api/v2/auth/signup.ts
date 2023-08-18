@@ -1,28 +1,11 @@
-import connectDB from "../../../../lib/server/config/connectDB";
-import User from "../../../../lib/server/model/User";
+import connectDB from "lib/server/config/connectDB";
+import User from "lib/server/model/User";
 connectDB();
-export default async function handler(req, res) {
-  console.log("\x1b[32m\n[api/auth/signup]\x1b[0m");
+export default async function (req: any, res: any) {
+  console.log("\x1b[32m\n[api/v2/auth/signup]\x1b[0m");
   // console.log("req.method : ", req.method);
   // get the payload
   const { name, email, password, passwordConfirm } = req.body;
-  // connect to database
-  // try {
-  //   await connectDB();
-  //   // await mongoose.connection.close();
-  //   // await clientPromise.then(() => {
-  //   //   console.log(`\x1b[33mConnected to bananaDB with clientPromise\x1b[0m`);
-  //   // });
-  //   // await mongoose
-  //   //   .connect(process.env.MONGODB_URI, {
-  //   //     dbName: "bananaDB",
-  //   //     useUnifiedTopology: true,
-  //   //     useNewUrlParser: true,
-  //   //   })
-  //   //   .then(() => console.log(`\x1b[33mConnected to bananaDB\x1b[0m`));
-  // } catch (error) {
-  //   console.error(`\x1b[31mConnection Error : \x1b[0m`, error);
-  // }
   // check the method
   if (req.method !== "POST")
     return res.status(400).json({ message: "Your request is not POST method." });
@@ -41,7 +24,7 @@ export default async function handler(req, res) {
     console.log("");
     // set the response
     res.status(201).json({ message: "New user created.", newUser: newUser, success: true });
-  } catch (error) {
+  } catch (error: any) {
     console.error(`\x1b[31mCreation Error : \x1b[0m`, error);
     console.log("");
     // set the response

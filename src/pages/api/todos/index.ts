@@ -1,5 +1,5 @@
-import Todo from "lib/server/model/Todo";
 import connectDB from "lib/server/config/connectDB";
+import Todo from "lib/server/model/Todo";
 connectDB();
 export default async function (req: any, res: any) {
   // const URI: any = process.env.MONGODB_URI;

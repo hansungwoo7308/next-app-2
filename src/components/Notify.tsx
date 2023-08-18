@@ -1,92 +1,65 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { setNotify } from "lib/client/store/notifySlice";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import Loading from "./Loading";
-import { setTimeoutId, setVisible } from "lib/client/store/notifySlice";
+// import { setTimeoutId, setVisible } from "lib/client/store/notifySlice";
 export default function Notify() {
-  const { notify }: any = useSelector((store) => store);
+  const notify = useSelector((store: any) => store.notify);
+  const { active, status, message } = notify;
   const dispatch = useDispatch();
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      dispatch(setVisible(false));
-    }, 3000);
-    dispatch(setTimeoutId(timeoutId));
-  }, [notify.count]);
+  // useEffect(() => {
+  //   if (notify.active) {
+  //     const timeoutId = setTimeout(() => {
+  //       dispatch(setNotify({ active: false }));
+  //     }, 3000);
+  //   }
+  //   // dispatch(setTimeoutId(timeoutId));
+  // }, [notify.active]);
+  if (!notify.active) return;
   return (
     <>
-      {notify.loading && <Loading />}
-      <Box visible={notify.visible} status={notify.status}>
-        <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
-          <h3>Notification</h3>
-          <p>{notify.message}...</p>
-        </div>
-        {notify.visible && <button onClick={() => dispatch(setVisible(false))}>{">"}</button>}
-        {!notify.visible && <button onClick={() => dispatch(setVisible(true))}>{"<"}</button>}
+      <Box status={status}>
+        {/* <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
+        </div> */}
+        <p>{message || "empty"}</p>
+        <button onClick={() => dispatch(setNotify({ active: false }))}>close</button>
       </Box>
-      {/* <Box status={status}>
-        {notify.success && (
-          <>
-            <h1>success</h1>
-            {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
-            {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
-          </>
-        )}
-        {notify.error && (
-          <>
-            <h1>error</h1>
-            {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
-            {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
-          </>
-        )}
-      </Box> */}
     </>
   );
-  // return (
-  //   <Box status={status} isMessage={message}>
-  //     <h1>Notification</h1>
-  //     <h3>{message}</h3>
-  // {status === "hidden" && <button onClick={() => setStatus("visible")}>{"<"}</button>}
-  // {status === "visible" && <button onClick={() => setStatus("hidden")}>{">"}</button>}
-  //   </Box>
-  // );
 }
 type Props = {
-  visible?: boolean;
-  status?: "success" | "error" | null;
+  // active: boolean;
+  status: "success" | "error" | null;
 };
 const Box = styled.div<Props>`
   width: 15rem;
   height: 8rem;
-  /* border: 2px solid green; */
-  border-radius: 0 0.5rem 0.5rem 0;
   position: fixed;
   top: 50px;
-  right: ${({ visible }) => (visible ? "0" : "-15rem")};
-  margin-top: 2rem;
-  /* padding: 0.5rem 0.8rem; */
-  background-color: ${({ status }) =>
-    status === "success" ? "darkgreen" : status === "error" ? "darkred" : "black"};
-  transition: all 0.5s;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
+  margin-top: 1rem;
+  background-color: #000;
+  right: 1rem;
+  border-radius: 10px;
+  transition: all 1s;
+  padding: 1rem;
+  color: ${({ status }) => {
+    if (status === "success") return "green";
+    if (status === "error") return "red";
+  }};
+  border: 2px solid
+    ${({ status }) => {
+      if (status === "success") return "green";
+      if (status === "error") return "red";
+    }};
   > button {
-    height: 100%;
     position: absolute;
-    top: 0;
-    right: 100%;
-    display: flex;
-    align-items: center;
-    border: 2px solid cyan;
-    border-radius: 0.5rem 0 0 0.5rem;
-    /* outline: 2px solid cyan; */
-    padding: 0.5rem;
-    background-color: darkcyan;
-    cursor: pointer;
-  }
-  > div {
-    height: 100%;
-    padding: 1rem;
-    /* border: 2px solid red; */
+    top: 1rem;
+    right: 1rem;
+    background-color: inherit;
+    color: white;
+    &:hover {
+      background-color: inherit;
+      color: green;
+    }
   }
 `;

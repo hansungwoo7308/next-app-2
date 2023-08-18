@@ -1,7 +1,7 @@
 import connectDB from "lib/server/config/connectDB";
 import User from "lib/server/model/User";
 import verifyJWT from "lib/server/utils/verifyJWT";
-// const bcrypt = require("bcrypt");
+// import bcrypt from 'bcrypt'
 connectDB();
 export default async function (req: any, res: any) {
   console.log("\n\x1b[32m[api/user]");

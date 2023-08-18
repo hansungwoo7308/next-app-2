@@ -4,11 +4,11 @@ import connectDB from "lib/server/config/connectDB";
 import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
 connectDB();
 export default async function (req: any, res: any) {
-  console.log("\x1b[32m\n[api/authentication/refresh]");
+  // console.log("\x1b[32m\n[api/authentication/refresh]");
   // [input]
   // get the refreshToken
   const { refreshToken } = req.cookies;
-  console.log("refreshToken : ", refreshToken?.slice(-5));
+  // console.log("refreshToken : ", refreshToken?.slice(-5));
   // console.log({ refreshToken: refreshToken?.slice(-5) });
   if (!refreshToken) {
     console.log(`\x1b[31mNo refreshToken.\x1b[0m`);
@@ -51,8 +51,8 @@ export default async function (req: any, res: any) {
   await foundUser.save();
   // set the response
   // console.log("decodedUser : ", decoded);
-  console.log("\x1b[33mnewAccessToken : ", newAccessToken?.slice(-5));
-  console.log("\x1b[33mnewRefreshToken : ", newRefreshToken?.slice(-5));
+  // console.log("\x1b[33mnewAccessToken : ", newAccessToken?.slice(-5));
+  // console.log("\x1b[33mnewRefreshToken : ", newRefreshToken?.slice(-5));
   res.setHeader("Set-Cookie", [`refreshToken=${newRefreshToken};path=/`]);
   res.status(200).json({
     username: foundUser.username,

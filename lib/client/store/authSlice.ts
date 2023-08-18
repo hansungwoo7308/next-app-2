@@ -1,10 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = {
+import { toast } from "react-toastify";
+// type Auth = {
+//   status:boolean,
+//   user:{
+//     username:string,
+//     email:string,
+//     role:string,
+//     image:string
+//   }|null,
+//   accessToken:string|null
+// }
+const test = async () => {
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const posts = await response.json();
+  console.log({ posts });
+};
+const initialState: any = {
   status: false,
-  mode: null,
-  username: null,
-  role: null,
-  image: null,
+  user: null,
   accessToken: null,
 };
 export const authSlice = createSlice({
@@ -12,26 +25,25 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { mode, username, role, accessToken, image } = action.payload;
+      const { user, accessToken } = action.payload;
+      if (!accessToken) return toast.error("No accessToken");
       state.status = true;
-      state.mode = mode;
-      state.username = username;
-      state.role = role;
-      state.image = image;
+      state.user = user;
       state.accessToken = accessToken;
     },
     logOut: (state, action) => {
       state.status = false;
-      state.mode = null;
-      state.username = null;
-      state.role = null;
-      state.image = null;
+      state.user = null;
       state.accessToken = null;
     },
-    setAuthImage: (state, action) => {
-      const { image } = action.payload;
-      state.image = image;
+    updateUser: (state, action) => {
+      const { user } = action.payload;
+      const { username, email, role, image } = user;
+      if (username) state.user.username = username;
+      if (email) state.user.email = email;
+      if (role) state.user.role = role;
+      if (image) state.user.image = image;
     },
   },
 });
-export const { setCredentials, logOut, setAuthImage }: any = authSlice.actions;
+export const { setCredentials, logOut, updateUser }: any = authSlice.actions;

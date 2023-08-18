@@ -1,21 +1,21 @@
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import { SessionProvider, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import store from "lib/client/store/store";
 import { fetchPosts } from "lib/client/store/postsSlice";
 import { fetchUsers, setUsers } from "lib/client/store/usersSlice";
-import { useEffect, useState } from "react";
 import { getData } from "lib/client/utils/fetchData";
 import { setCredentials } from "lib/client/store/authSlice";
-import { SessionProvider, useSession } from "next-auth/react";
 import { reloadCart } from "lib/client/store/cartSlice";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import axios from "axios";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
-import { useRouter } from "next/router";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { addOrder, setOrders } from "lib/client/store/ordersSlice";
+import { setLoading } from "lib/client/store/loadingSlice";
 // store.dispatch(fetchUsers());
-store.dispatch(fetchPosts());
+// store.dispatch(fetchPosts());
 export default function Providers({ children, session }: any) {
   // console.log("session : ", session);
   return (
@@ -38,45 +38,38 @@ export default function Providers({ children, session }: any) {
   );
 }
 export function GlobalState({ children }: any) {
-  // console.log("children : ", children);
   const dispatch = useDispatch();
   const router = useRouter();
   const session = useSession();
-  const store = useSelector((store) => store);
-  const { auth, cart }: any = store;
+  const auth = useSelector((store: any) => store.auth);
+  const cart = useSelector((store: any) => store.cart);
   const refreshAuth = async () => {
     try {
       dispatch(setLoading(true));
       const response = await getData("authentication/refresh");
       const { username, role, image, accessToken } = response.data;
       logResponse(response);
-      dispatch(
-        setCredentials({ status: true, mode: "general", username, role, image, accessToken })
-      );
+      const credentials = { user: { username, image, role }, accessToken };
+      dispatch(setCredentials(credentials));
       dispatch(setLoading(false));
     } catch (error) {
       logError(error);
       dispatch(setLoading(false));
-      // router.push("/");
     }
   };
-  const checkAuth = async () => {
-    console.log("asdkfhsl");
-    try {
-      dispatch(setLoading(true));
-      const response = await getData("authentication/check", auth.accessToken);
-      const { username, role, image, accessToken } = response.data.verified;
-      logResponse(response);
-      dispatch(
-        setCredentials({ status: true, mode: "general", username, role, image, accessToken })
-      );
-      dispatch(setLoading(false));
-    } catch (error) {
-      logError(error);
-      refreshAuth();
-      dispatch(setLoading(false));
-    }
+  const getOrder = async () => {
+    const response = await getData("order", auth.accessToken);
+    const { orders } = response.data;
+    logResponse(response);
+    dispatch(setOrders(orders));
   };
+  const getUsers = async () => {
+    const response = await getData("user", auth.accessToken);
+    const { users } = response.data;
+    logResponse(response);
+    dispatch(setUsers(users));
+  };
+
   /* Auth */
   // if router.pathname exchanged, check the auth
   // useEffect(() => {
@@ -91,71 +84,50 @@ export function GlobalState({ children }: any) {
   //   };
   // }, [router.pathname]);
   useEffect(() => {
-    const { accessToken } = auth;
-    if (!accessToken) {
-      refreshAuth();
-    }
-  }, []); // if first loaded, 엑세스 토큰이 없으면 리프레시 요청 (store)
+    // if (session.status === "authenticated" || !localStorage.getItem("refreshToken")) return;
+    if (!auth.accessToken) refreshAuth();
+  }, []); // 엑세스 토큰이 없으면 리프레시 요청 (store)
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     refreshAuth();
   //   }, 1000 * 10);
   // }, []);
   useEffect(() => {
-    // if refreshed by nextauth session status,
-    // load the auth status in redux store
     if (session.status === "authenticated") {
-      // console.log(session);
-      dispatch(
-        setCredentials({
-          mode: "nextauth",
-          status: true,
-          username: "nextauth",
-          accessToken: "1234",
-        })
-      );
+      if (!session.data.user) return;
+      const credentials = { user: session.data.user, accessToken: "next-auth" };
+      dispatch(setCredentials(credentials));
     }
-  }, []); // 로드 시 : next-auth.session (store)
+  }, [session.status]);
+
+  /* Data */
+  useEffect(() => {
+    if (!auth.accessToken) return;
+    try {
+      auth.role === "user" && getOrder();
+      auth.role === "admin" && getUsers();
+    } catch (error: any) {
+      logError(error);
+      toast.error(error.message);
+    }
+  }, [auth.accessToken]); // 로그인 시, 주문정보와 사용자정보를 가져온다.
+
   /* Cart */
   useEffect(() => {
-    // if refreshed and cart exist, load the items in store
     const serializedCart: any = localStorage.getItem("cart");
     if (!serializedCart) return;
     const parseCart = JSON.parse(serializedCart);
     // console.log("parseCart : ", parseCart);
     dispatch(reloadCart(parseCart));
-    //
-    // sdhfslfhlishf
     // parseCart.map((v: any) => {
     //   dispatch(addToCart(v));
     // });
-  }, []); // if first loaded, 캐싱 (store)
+  }, []); // 로드 시, 카트정보를 로컬스토리지에 캐싱한다. // if loaded, cache the cart data
   useEffect(() => {
     if (!cart.length) return;
     const stringfiedCart = JSON.stringify(cart);
     localStorage.setItem("cart", stringfiedCart);
-  }, [cart]); // if cart is changed, load the cart // if cart changed, : 캐싱 (storage)
-  useEffect(() => {
-    if (!auth.accessToken) return;
-    const getOrder = async () => {
-      const response = await getData("order", auth.accessToken);
-      const { orders } = response.data;
-      logResponse(response);
-      dispatch(setOrders(orders));
-    };
-    const getUsers = async () => {
-      const response = await getData("user", auth.accessToken);
-      const { foundUsers } = response.data;
-      logResponse(response);
-      dispatch(setUsers(foundUsers));
-    };
-    try {
-      auth.role === "user" && getOrder();
-      auth.role === "admin" && getUsers();
-    } catch (error: any) {
-      dispatch(setNotify({ status: "error", message: error.message, visible: true }));
-      logError(error);
-    }
-  }, [auth.accessToken]);
+  }, [cart]); // 카트정보 변경 시, 카트정보를 로컬스토리지에 캐싱한다. // if cart is changed, cache the cart data
+
   return <>{children}</>;
 }

@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// (with Frontend)
+
 // import { counterSlice } from "./counterSlice";
 import { authSlice } from "./authSlice";
 import { notifySlice } from "./notifySlice";
@@ -10,17 +10,18 @@ import { cartSlice } from "./cartSlice";
 import { orderSlice } from "./orderSlice";
 import { ordersSlice } from "./ordersSlice";
 import { modalSlice } from "./modalSlice";
-// (with Backend)
+
 // import { apiSlice as usersApi } from "lib/utility/usersApiSlice";
 import { authApiSlice } from "lib/utils/authApiSlice";
 import { usersApiSlice } from "lib/utils/usersApiSlice";
 import { todosApiSlice } from "lib/utils/todosApiSlice";
+import { loadingSlice } from "lib/client/store/loadingSlice";
 // const combineReducer = combineReducers({ counter: counterSlice });
 const store: any = configureStore({
   reducer: {
-    // with frontend
     // counter: counterSlice.reducer,
     // users: usersReducer,
+    loading: loadingSlice.reducer,
     auth: authSlice.reducer, // authentication
     notify: notifySlice.reducer,
     modal: modalSlice.reducer,

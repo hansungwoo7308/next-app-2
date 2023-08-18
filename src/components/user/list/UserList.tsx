@@ -4,7 +4,7 @@ import { openModal } from "lib/client/store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function UserList() {
-  const { users }: any = useSelector((store) => store);
+  const users = useSelector((store: any) => store.users);
   const dispatch = useDispatch();
   return (
     <Box>
@@ -22,7 +22,7 @@ export default function UserList() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user: any, index: number) => (
+          {users?.map((user: any, index: number) => (
             <tr key={user._id}>
               <td>{index + 1}</td>
               <td className="image">

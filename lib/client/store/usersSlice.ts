@@ -4,9 +4,9 @@ const USERS_URL = "https://jsonplaceholder.typicode.com/users?_limit=10";
 const initialState: any = [];
 // thunk
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  console.log("users/fetchUsers");
+  console.log("[users/fetchUsers]");
   const response = await axios.get(USERS_URL);
-  console.log("response : ", response);
+  // console.log("response : ", response);
   return response.data;
 });
 // slice

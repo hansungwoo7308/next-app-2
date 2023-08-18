@@ -3,7 +3,7 @@ import connectDB from "lib/server/config/connectDB";
 import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
 connectDB();
 export default async function (req: any, res: any) {
-  console.log("\x1b[32m\n[api/authentication/login]");
+  console.log("\x1b[32m\n[api/v2/auth/signin]");
   // [input]
   // get the data (추출)
   const { email, password } = req.body;

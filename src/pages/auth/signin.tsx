@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import styled from "styled-components";
-import { Main as PublicMain } from "@/styles/public/main.styled";
-import axios from "axios";
+import { setCredentials } from "lib/client/store/authSlice"; // lib
+import { postData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
-import { setCredentials } from "lib/client/store/authSlice";
-import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
-import { postData } from "lib/client/utils/fetchData";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
+import { useForm } from "react-hook-form"; // modules
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import { useEffect } from "react";
+import { Main as PublicMain } from "@/styles/public/main.styled"; // style
+import styled from "styled-components";
+import { setLoading } from "lib/client/store/loadingSlice";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
-  // const [loading, setLoading]: any = useState(false);
+  const auth = useSelector((store: any) => store.auth);
+  const session = useSession();
   const {
     register,
     handleSubmit,
@@ -24,45 +26,43 @@ export default function Page() {
     formState: { errors },
   } = useForm();
   const handleSigninWithNextauth = async (data: any) => {
-    console.log("data: ", data);
-    // await signIn("credentials", {
-    //   email: emailRef.current.value,
-    //   password: passwordRef.current.value,
-    //   callbackUrl: "/auth/admin",
-    //   // redirect: false,
-    // });
     try {
-      // setLoading(true);
-      const response = await signIn("credentials", { ...data, callbackUrl: "/auth/admin" });
-      // logResponse(response);
-      console.log(response);
-      dispatch(setCredentials({ mode: "nextauth", username: "nextauth", accessToken: "nextauth" }));
-      // setLoading(false);
-    } catch (error) {
-      // logError(error);
-      // setLoading(false);
+      setLoading(true);
+      const { email, password } = data;
+      const { callbackUrl }: any = router.query;
+      const response: any = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        // callbackUrl: callbackUrl || "/",
+      });
+      console.log({ response });
+      setLoading(false);
+      toast.success("Signed In");
+      if (callbackUrl) router.push(callbackUrl);
+      router.push("/auth/profile");
+    } catch (error: any) {
+      console.log({ error });
+      setLoading(false);
+      toast.error(error.message);
     }
   };
-  const handleSigninGenerally = async (data: any) => {
+  const handleSignin = async (data: any) => {
     try {
       dispatch(setLoading(true));
-      const response = await postData("authentication/login", data);
+      const response = await postData("v2/auth/signin", data);
       const { username, role, image, accessToken } = response.data;
+      const credentials = { user: { username, image, role }, accessToken };
       logResponse(response);
-      dispatch(
-        setCredentials({ mode: "general", status: true, username, role, image, accessToken })
-      );
+      dispatch(setCredentials(credentials));
       dispatch(setLoading(false));
-      dispatch(setNotify({ status: "success", message: "Login Success", visible: true }));
+      toast.success("Login Success");
       router.push("/auth/profile");
-    } catch (error) {
+    } catch (error: any) {
       logError(error);
       dispatch(setLoading(false));
-      dispatch(setNotify({ status: "error", message: "Login Error", visible: true }));
+      toast.error(error.status);
     }
-  };
-  const setHeader = (accessToken: any) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
   };
   useEffect(() => {
     setFocus("email");
@@ -82,17 +82,8 @@ export default function Page() {
               type="password"
               placeholder="password"
             />
-            <button onClick={handleSubmit(handleSigninGenerally)}>Sign in genernally</button>
+            <button onClick={handleSubmit(handleSignin)}>Sign in </button>
             <button onClick={handleSubmit(handleSigninWithNextauth)}>Sign in with next-auth</button>
-            {/* <button onClick={handleSigninWithNextauth}>Sign in with next-auth</button> */}
-            {/* <button
-              onClick={(e) => {
-                e.preventDefault();
-                router.push("/auth/signup");
-              }}
-            >
-              Sign Up
-            </button> */}
           </form>
         </section>
       </Main>

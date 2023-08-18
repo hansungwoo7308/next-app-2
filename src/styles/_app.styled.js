@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
-  // initialization
   :root {
     --color-main: #00704a;
     --color-focus: coral;
@@ -41,7 +40,6 @@ export const GlobalStyle = createGlobalStyle`
   }
   textarea{
     padding: 10px;
-
   }
   // components
   .slider {

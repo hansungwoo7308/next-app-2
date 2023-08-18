@@ -11,6 +11,8 @@ const nextConfig = {
     CLOUD_UPDATE_PRESET: "nextjs_store",
     CLOUD_NAME: "dzktdrw7o",
     CLOUD_API_BASE_URL: "https://api.cloudinary.com/v1_1/dzktdrw7o/upload",
+    // next-auth
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
   images: {
     remotePatterns: [

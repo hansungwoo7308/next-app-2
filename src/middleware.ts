@@ -1,5 +1,4 @@
 // backend modules을 사용할 수 없다. (예: jwt.verify())
-// server에서 response를 최종적으로 보내기 전에 사전작업(전처리)을 하기 위한 곳
 // // middleware.ts
 // export function middleware(request: NextRequest) {
 //   // // Clone the request headers and set a new header `x-version`
@@ -16,67 +15,36 @@
 //   // response.headers.set("x-version", "13");
 //   // return response;
 // }
-import verifyJWT from "lib/server/utils/verifyJWT";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-const cookie = require("cookie");
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  // console.log(`\x1b[33m\n[${pathname}]:middleware`);
-  const accessToken: any = req.headers.get("authorization");
-  // console.log("accessToken : ", accessToken);
+import { withAuth } from "next-auth/middleware";
+export default async function middleware(req: NextRequest) {
+  // console.log("\x1b[33m\n[middleware]\x1b[32m");
+  console.log(`\x1b[32m\n[${req.nextUrl.pathname}]:middleware`);
+  // get the credentials
+  const refreshToken = req.cookies.get("refreshToken");
+  const session = await getToken({ req });
+  // console.log({ refreshToken, session });
+  // protect the route (접근제한)
+  if (session || refreshToken) return NextResponse.next();
+  else return NextResponse.redirect(new URL("/auth/signin", req.url));
+  // if (pathname.startsWith("/auth/profile")) {
+  // }
 
   // next-auth
   // get the next-auth jwt token
   // const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  // console.log("req.nextUrl : ", req.nextUrl);
-  // console.log("req.url : ", req.url);
-  // if (pathname === "/") {
-  //   console.log("next-auth token : ", token);
-  //   if (!token) console.log("\x1b[31mYou dont have a token.");
-  // }
 
   // get the refreshToken from cookie
   // const serializedCookie = req.headers.get("cookie");
   // const parsedCookie = cookie.parse(serializedCookie);
   // const refreshToken = parsedCookie.refreshToken;
-  // console.log("serializedCookie : ", serializedCookie);
-  // console.log("parsedCookie : ", parsedCookie);
-  // console.log("refreshToken : ", refreshToken);
 
-  // protect the routes
-  // const refreshToken = req.cookies.get("refreshToken")?.value;
-  // if (pathname === "/restricted" && !refreshToken) {
-  //   console.log("No refreshToken");
-  //   console.log("Redirecting to page [/auth/signin]...");
-  //   return NextResponse.rewrite(new URL("/auth/signin", req.nextUrl));
-  // }
+  // const body = req.body;
+  // const credentials = req.credentials;
+  // const headers = req.headers;
 
-  // if (pathname === "/api/restricted") {
-  //   // const body = req.body;
-  //   // const credentials = req.credentials;
-  //   // const headers = req.headers;
-  //   // get the accessToken
-  //   // const authorization = req.headers.get("authorization");
-  //   // const accessToken = authorization?.split(" ")[1];
-  //   // console.log("accessToken : ", accessToken);
-  //   // get the refreshToken
-  //   // const refreshToken = req.headers
-  //   // if (!accessToken) {
-  //   //   // console.log("Redirected.");
-  //   //   // return NextResponse.redirect(new URL("/auth/signin", req.nextUrl));
-  //   //   // return NextResponse.redirect(new URL("/auth/signin", req.url));
-  //   //   // console.log("Rewrited.");
-  //   //   // return NextResponse.rewrite(new URL("auth/signin", req.url));
-  //   // }
-  //   // console.log("request body : ", body);
-  //   // console.log("request credentials : ", credentials);
-  //   // console.log("request headers : ", headers);
-  //   // console.log("request authorization : ", authorization);
-  // }
   // check the request properties
-  // console.log("req.url : ", req.url);
-  // console.log("req.cookies : ", req.cookies);
   // console.log("req.cookies.getAll() : ", req.cookies.getAll());
   // const origin = request.headers.get("origin");
   // const regex = new RegExp("/post-list-2");
@@ -84,16 +52,8 @@ export async function middleware(req: NextRequest) {
   // request.headers.set("Authorization", "Bearer 3...");
   // const requestHeaders = new Headers(request.headers);
   // requestHeaders.set("Authorization", "Bearer hfsldfhskdlfhl");
-  // console.log("refreshToken : ", request.cookies.get("refreshToken"));
-  // if (!request.cookies.get("accessToken"))
-  //   console.log("accessToken does not exist");
   // console.log("request : ", Object.getOwnPropertyNames(request));
-  // console.log("request.credentials : ", request.credentials);
-  // const { authorization }: any = request.headers;
-  // console.log("request.credentials : ", typeof request.credentials);
   // set
-  // console.log("request.headers.cookie : ", request.headers.get("cookie"));
-  // console.log("asdads : ", request.headers.get("Authorization"));
   // response.headers.set("Authorization", "Bearer 2...");
   // response.cookies.set("vercel", "fast");
   // const response = NextResponse.next({
@@ -102,19 +62,12 @@ export async function middleware(req: NextRequest) {
   //   },
   // });
   // response.headers.set("test", "test");
-  return NextResponse.next();
   // return response;
-  // // if (!cookie) return NextResponse.redirect("http://localhost:3000/");
   // const { pathname } = request.nextUrl;
   // const protectedPaths = ["/auth/admin"];
   // const matchesProtectedPath = protectedPaths.some((path) =>
   //   pathname.startsWith(path)
   // );
-  // // console.log("pathname : ", pathname);
-  // // console.log("matchesProtectedPath : ", matchesProtectedPath);
-  // // const token = await getToken({ req: request });
-  // // console.log("token : ", token);
-  // console.log("request.url : ", request.url);
   // if (matchesProtectedPath) {
   //   const token = await getToken({ req: request });
   //   if (!token) {
@@ -137,13 +90,9 @@ export async function middleware(req: NextRequest) {
   // }
   // return response;
 }
+// 로그인 상태가 아니면 로그인 페이지로 이동한다.
+// export default withAuth(middleware);
 export const config = {
-  matcher: [
-    "/api/authentication/:path*",
-    // "/",
-    // "/api/restricted/:path*",
-    // "/restricted/:path*",
-  ],
+  matcher: ["/auth/profile"],
   // matcher: ["/api/users"],
-  // matcher: ["/auth/admin"],
 };

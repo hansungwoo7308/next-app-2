@@ -1,11 +1,9 @@
 import Head from "next/head";
 import { Main as PublicMain } from "@/styles/public/main.styled";
-import { useEffect, useRef, useState } from "react";
-import axios from "axios";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
-// import Counter from "../components/Counter";
 // import Slider from "../components/Slider";
 const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
 suffered alteration in some form, by injected humour, or randomised words which don't
@@ -277,10 +275,6 @@ export default function Page() {
 }
 const Main = styled(PublicMain)`
   flex-direction: column;
-  > section {
-    > div {
-    }
-  }
   > .home {
     max-width: 100%;
     width: 100%;

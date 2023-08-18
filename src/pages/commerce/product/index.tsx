@@ -19,7 +19,7 @@ export async function getServerSideProps({ query }: any) {
 export default function Page({ data }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { modal, notify }: any = useSelector((store) => store);
+  const { notify }: any = useSelector((store) => store);
   const [products, setProducts]: any = useState([]);
   const [checkedProducts, setCheckedProducts]: any = useState(data);
   const [isCheckAll, setIsCheckAll]: any = useState(false);
@@ -58,41 +58,39 @@ export default function Page({ data }: any) {
   return (
     <Main>
       <section>
-        {
-          <div className="products">
-            <Filter />
-            <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
-            <button onClick={handleOpenModal}>Delete</button>
-            <ul>
-              {products?.map((product: any) => (
-                <ProductItem
-                  key={product._id}
-                  product={product}
-                  setProducts={setProducts}
-                  setCheckedProducts={setCheckedProducts}
-                  isCheckAll={isCheckAll}
-                />
-              ))}
-            </ul>
-            <div className="load-more">
-              <button
-                onClick={() => {
-                  setPage(page + 1);
-                  // setFilter({ ...filter, productPage: filter.productPage + 1 });
-                  // console.log("filter : ", filter);
-                  // setFilter((state: any) => ({
-                  //   ...state,
-                  //   productPage: state.productPage + 1,
-                  // }));
-                  router.query.page = page + 1;
-                  router.push({ pathname: router.pathname, query: router.query });
-                }}
-              >
-                Load More
-              </button>
-            </div>
+        <div className="products">
+          <Filter />
+          <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
+          <button onClick={handleOpenModal}>Delete</button>
+          <ul>
+            {products?.map((product: any) => (
+              <ProductItem
+                key={product._id}
+                product={product}
+                setProducts={setProducts}
+                setCheckedProducts={setCheckedProducts}
+                isCheckAll={isCheckAll}
+              />
+            ))}
+          </ul>
+          <div className="load-more">
+            <button
+              onClick={() => {
+                setPage(page + 1);
+                // setFilter({ ...filter, productPage: filter.productPage + 1 });
+                // console.log("filter : ", filter);
+                // setFilter((state: any) => ({
+                //   ...state,
+                //   productPage: state.productPage + 1,
+                // }));
+                router.query.page = page + 1;
+                router.push({ pathname: router.pathname, query: router.query });
+              }}
+            >
+              Load More
+            </button>
           </div>
-        }
+        </div>
 
         {!products && (
           <div>

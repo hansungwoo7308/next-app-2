@@ -29,7 +29,6 @@ export default function Nav() {
   const worksRef: any = useRef();
   const commerceRef: any = useRef();
   const productRef: any = useRef();
-
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
     // console.log("list : ", list);
@@ -69,9 +68,6 @@ export default function Nav() {
     } else if (router.pathname === "/users2") {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/authentication/login") {
-      setColor(loginRef.current);
-      setUnderline(focusRef.current, loginRef.current);
     } else if (router.pathname === "/search") {
       setColor(searchRef.current);
       setUnderline(focusRef.current, searchRef.current);
@@ -87,9 +83,6 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/works")) {
       setColor(worksRef.current);
       setUnderline(focusRef.current, worksRef.current);
-    } else if (router.pathname.startsWith("/about")) {
-      setColor(aboutRef.current);
-      setUnderline(focusRef.current, aboutRef.current);
     } else if (router.pathname.startsWith("/commerce")) {
       setColor(commerceRef.current);
       setUnderline(focusRef.current, commerceRef.current);
@@ -155,11 +148,8 @@ export default function Nav() {
             </li>
           </ul>
         </li>
-        <li ref={userListRef} onClick={(e) => handleFocus(e)}>
+        {/* <li ref={userListRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/test"}>TEST</Link>
-        </li>
-        {/* <li ref={aboutRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/about"}>About</Link>
         </li> */}
         {/* <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"}>Works</Link>

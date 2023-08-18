@@ -90,7 +90,7 @@ export const authApiSlice = createApi({
     logout: builder.mutation({
       query: () => {
         return {
-          url: "/api/authentication/logout",
+          url: "/api/v2/auth/signout",
           method: "GET",
         };
       },
@@ -113,10 +113,6 @@ export const authApiSlice = createApi({
 //   }),
 // });
 // api actions
-export const {
-  useLoginMutation,
-  useRefreshMutation,
-  useCheckMutation,
-  useLogoutMutation,
-} = authApiSlice;
+export const { useLoginMutation, useRefreshMutation, useCheckMutation, useLogoutMutation } =
+  authApiSlice;
 // export const { useLoginMutation } = authApiSlice;

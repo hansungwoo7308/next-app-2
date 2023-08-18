@@ -3,7 +3,6 @@ import Nav from "../Nav";
 import AuthButton from "../AuthButton";
 import styled from "styled-components";
 import Cart from "../commerce/Cart";
-import Notify from "../Notify";
 export default function Header() {
   return (
     <HeaderStyle>

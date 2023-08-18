@@ -71,7 +71,7 @@ export default function Page() {
             <h1>No items</h1>
           )}
         </div>
-        <button onClick={handleOrder}>Pay to Order</button>
+        <button onClick={handleOrder}>Order</button>
       </section>
     </Main>
   );

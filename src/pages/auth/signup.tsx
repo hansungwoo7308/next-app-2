@@ -10,6 +10,7 @@ import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
 import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
+import { toast } from "react-toastify";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,20 +27,21 @@ export default function Page() {
   const password = useRef();
   password.current = watch("password");
   const handleSignup = async (data: any) => {
-    console.log("data : ", data);
+    // console.log("data : ", data);
     try {
       dispatch(setLoading(true));
-      const response: any = await postData("authentication/signup", data);
+      const response: any = await postData("auth/signup", data);
       logResponse(response);
-      dispatch(setNotify({ message: "signed up", visible: true }));
       dispatch(setLoading(false));
+      toast.success("Signed Up");
+      // reset
       reset();
       setFocus("username");
       // router.push('/auth/signin')
     } catch (error: any) {
       logError(error);
-      dispatch(setNotify({ message: "failed to sign up", visible: true }));
       dispatch(setLoading(false));
+      toast.error(error.message);
     }
   };
   useEffect(() => {

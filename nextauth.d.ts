@@ -18,6 +18,17 @@ declare module "next-auth" {
   }
 }
 
+// declare module "next-auth" {
+//   interface Session {
+//     user: {
+//       idx: number;
+//       id: string;
+//       name: string;
+//       // ...
+//     }
+//   }
+// }
+
 declare module "next-auth/jwt" {
   interface JWT {
     role?: Role;

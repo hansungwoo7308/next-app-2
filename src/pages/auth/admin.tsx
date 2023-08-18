@@ -4,7 +4,6 @@ import axios from "axios";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { logOut, setCredentials } from "lib/client/store/authSlice";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { useRouter } from "next/router";
@@ -40,7 +39,7 @@ export function getServerSideProps(context: any) {
   };
 }
 export default function Page() {
-  const { auth }: any = useSelector((store) => store);
+  const auth = useSelector((store: any) => store.auth);
   const { accessToken } = auth;
   const [users, setUsers]: any = useState();
   const router = useRouter();
@@ -65,17 +64,7 @@ export default function Page() {
   // useEffect(() => {
   //   getData();
   // }, [auth]);
-  if (!auth.status) {
-    <>
-      <Main>
-        <section>
-          <div>
-            <h1>Empty...</h1>
-          </div>
-        </section>
-      </Main>
-    </>;
-  }
+  // if (!auth.accessToken) return null;
   return (
     <>
       <Head>
@@ -83,14 +72,6 @@ export default function Page() {
       </Head>
       <Main>
         <section>
-          {/* <div>
-            <h1>Users Data</h1>
-            <p>
-              {users?.map((user: any, index: any) => (
-                <h3 key={index}>{user}</h3>
-              ))}
-            </p>
-          </div> */}
           <div>
             <h1>Profile</h1>
             <h3>Username : {auth.username}</h3>

@@ -1,23 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 type notify = {
-  // spinner
-  loading?: boolean;
-  // notifiy
-  visible?: boolean;
+  active?: boolean;
   status?: "success" | "error" | null;
   message?: string | null;
   //
-  timeoutId?: number | null;
-  count?: any;
+  // timeoutId?: number | null;
+  // count?: any;
   // messages: string[];
 };
 const initialState: notify = {
-  loading: false,
-  visible: false,
+  active: false,
   status: null,
   message: "",
-  timeoutId: null,
-  count: 0,
+  // timeoutId: null,
+  // count: 0,
+
   // messages: [],
   // success: false,
   // error: false,
@@ -29,21 +26,15 @@ export const notifySlice = createSlice({
   initialState,
   reducers: {
     setNotify: (state, action) => {
-      const { status, message, visible } = action.payload;
+      const { status, message, active } = action.payload;
+      state.active = active;
       state.status = status;
       state.message = message;
-      state.visible = visible;
-      state.count++;
+      // state.count++;
     },
-    setLoading: (state, action) => {
-      state.loading = action.payload;
-    },
-    setVisible: (state, action) => {
-      state.visible = action.payload;
-    },
-    setTimeoutId: (state, action) => {
-      state.timeoutId = action.payload;
-    },
+    // setTimeoutId: (state, action) => {
+    //   state.timeoutId = action.payload;
+    // },
   },
 });
-export const { setNotify, setLoading, setVisible, setTimeoutId } = notifySlice.actions;
+export const { setNotify } = notifySlice.actions;

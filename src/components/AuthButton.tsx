@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, setCredentials } from "lib/client/store/authSlice";
-import { signIn, signOut } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
 import logError from "lib/client/log/logError";
@@ -10,60 +10,57 @@ import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
 export default function AuthButton(props: any) {
-  const { auth }: any = useSelector((store) => store);
   const router = useRouter();
+  // store
+  const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();
+  // state
   const [dropdown, setDropdown] = useState(false);
-  const logoutAuth = async (e: any) => {
+  // session
+  const session = useSession();
+  const handleSignout = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await getData("authentication/logout");
+      if (session.status === "authenticated") {
+        signOut({ callbackUrl: "/" });
+        return;
+      }
+      const response = await getData("v2/auth/signout");
       logResponse(response);
-      // localStorage.removeItem("accessToken");
       dispatch(logOut());
       router.push("/");
     } catch (error) {
       logError(error);
     }
   };
+  if (!auth.accessToken) {
+    return (
+      <Box dropdown={dropdown}>
+        <div className="sign">
+          <Link href={"/auth/signup"}>Sign up</Link>
+          <Link href={"/auth/signin"}>Sign in</Link>
+        </div>
+      </Box>
+    );
+  }
   return (
     <Box dropdown={dropdown}>
-      {auth.status ? (
-        <>
-          <div className="profile">
-            <div className="image" onClick={() => setDropdown(!dropdown)}>
-              <Image src={auth.image} alt={auth.image} width={50} height={50} />
-              {auth.username}
-            </div>
-            <div className="dropdown">
-              <Link href={"/auth/profile"}>Profile</Link>
-              {/* {auth.role === "user" && (
-                <>
-                  <Link href={"/users"}>Users</Link>
-                  <Link href={"/users"}>Users</Link>
-                  <Link href={"/users"}>Users</Link>
-                </>
-              )} */}
-              {auth.role === "admin" && (
-                <>
-                  <Link href={"/users"}>Users</Link>
-                  <Link href={"/commerce/product"}>Products</Link>
-                  <Link href={"/commerce/product/create"}>Create a product</Link>
-                </>
-              )}
-              {auth.mode === "general" && <button onClick={logoutAuth}>Sign out1</button>}
-              {auth.mode === "nextauth" && (
-                <button onClick={() => signOut({ callbackUrl: "/" })}>Sign out2</button>
-              )}
-            </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <Link href={"/auth/signin"}>Sign in</Link>
-          <Link href={"/auth/signup"}>Sign up</Link>
-        </>
-      )}
+      <div className="profile">
+        <div className="image" onClick={() => setDropdown(!dropdown)}>
+          <Image src={auth.user?.image} alt={auth.user?.image} width={100} height={100} />
+          {auth.user?.username || auth.user?.name}
+        </div>
+        <div className="dropdown">
+          <Link href={"/auth/profile"}>Profile</Link>
+          {auth.user?.role === "admin" && (
+            <>
+              <Link href={"/users"}>Users</Link>
+              <Link href={"/commerce/product/create"}>Create a product</Link>
+            </>
+          )}
+          <button onClick={handleSignout}>Sign out</button>
+        </div>
+      </div>
     </Box>
   );
 }
@@ -77,6 +74,11 @@ const Box = styled.div<Props>`
     /* width: 5rem; */
     white-space: nowrap;
   }
+  .sign {
+    display: flex;
+    gap: 1rem;
+  }
+
   .profile {
     width: 7rem;
     .image {

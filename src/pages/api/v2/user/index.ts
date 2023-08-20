@@ -15,8 +15,10 @@ router.use(isAuthenticated).get(getUsers);
 // });
 const options: any = {
   onError: (err: any, req: any, res: any) => {
-    console.error(err.stack);
-    res.status(err.statusCode || 500).end(err.message);
+    // console.error(err.stack);
+    // res.status(err.statusCode || 500).end(err.message);
+    console.log({ err });
+    res.status(400).json({ message: err.message });
   },
 };
 // out

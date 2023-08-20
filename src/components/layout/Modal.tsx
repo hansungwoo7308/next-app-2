@@ -158,6 +158,7 @@ const Background = styled.div`
   align-items: center;
   outline: 5px solid purple;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
   :focus {
     /* border: 3px solid red; */
     display: none;

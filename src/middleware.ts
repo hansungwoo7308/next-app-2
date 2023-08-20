@@ -21,6 +21,14 @@ import { withAuth } from "next-auth/middleware";
 export default async function middleware(req: NextRequest) {
   // console.log("\x1b[33m\n[middleware]\x1b[32m");
   console.log(`\x1b[32m\n[${req.nextUrl.pathname}]:middleware`);
+
+  // testing...
+  // const { pathname } = req.nextUrl;
+  // const token = await getToken({ req });
+  // if (pathname.startsWith("/users")) {
+  //   console.log({ token });
+  // }
+
   // get the credentials
   const refreshToken = req.cookies.get("refreshToken");
   const session = await getToken({ req });
@@ -28,8 +36,6 @@ export default async function middleware(req: NextRequest) {
   // protect the route (접근제한)
   if (session || refreshToken) return NextResponse.next();
   else return NextResponse.redirect(new URL("/auth/signin", req.url));
-  // if (pathname.startsWith("/auth/profile")) {
-  // }
 
   // next-auth
   // get the next-auth jwt token

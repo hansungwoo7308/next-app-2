@@ -1,5 +1,5 @@
 import connectDB from "lib/server/config/connectDB";
-import Order from "lib/server/model/Order";
+import Order from "lib/server/models/Order";
 import verifyJWT from "lib/server/utils/verifyJWT";
 connectDB();
 export default async function (req: any, res: any) {

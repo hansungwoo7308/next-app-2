@@ -7,7 +7,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import clientPromise from "../../../../lib/server/config/mongodb";
 
 import connectDB from "../../../../lib/server/config/connectDB";
-import User from "../../../../lib/server/model/User";
+import User from "../../../../lib/server/models/User";
 console.log("\x1b[32m\n[api/auth/[...nextauth]]");
 export const authOptions = {
   providers: [

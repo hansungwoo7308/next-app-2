@@ -1,5 +1,5 @@
 import connectDB from "lib/server/config/connectDB";
-import Product from "lib/server/model/Product";
+import Product from "lib/server/models/Product";
 import verifyJWT from "lib/server/utils/verifyJWT";
 connectDB();
 export default async function (req: any, res: any) {

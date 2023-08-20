@@ -1,5 +1,5 @@
 import { getSession } from "next-auth/react";
-export const handleGetAuth = async (req: any, res: any, next: any) => {
+export const isAuthenticated = async (req: any, res: any, next: any) => {
   const cookies = req.headers.cookies;
   console.log({ cookies });
   const session = await getSession({ req });

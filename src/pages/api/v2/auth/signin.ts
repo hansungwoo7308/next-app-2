@@ -1,4 +1,4 @@
-import User from "lib/server/model/User";
+import User from "lib/server/models/User";
 import connectDB from "lib/server/config/connectDB";
 import { createAccessToken, createRefreshToken } from "lib/server/utils/createJWT";
 connectDB();

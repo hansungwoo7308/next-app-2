@@ -1,7 +1,7 @@
 import connectDB from "lib/server/config/connectDB";
 import verifyJWT from "lib/server/utils/verifyJWT";
-import User from "lib/server/model/User";
-import Product from "lib/server/model/Product";
+import User from "lib/server/models/User";
+import Product from "lib/server/models/Product";
 connectDB();
 export default async function (req: any, res: any) {
   console.log(`\x1b[32m[api/user/[${req.query.userId}]]`);

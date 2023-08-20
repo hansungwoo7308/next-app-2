@@ -1,5 +1,5 @@
 import connectDB from "../../../../lib/server/config/connectDB";
-import Post from "../../../../lib/server/model/Post";
+import Post from "../../../../lib/server/models/Post";
 connectDB();
 export default async function handler(req: any, res: any) {
   console.log("\x1b[32m\n[api/posts/]");

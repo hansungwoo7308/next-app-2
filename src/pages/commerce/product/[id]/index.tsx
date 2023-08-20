@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "lib/client/store/cartSlice";
-import { setNotify, setTimeoutId, setVisible } from "lib/client/store/notifySlice";
+import { setNotify, setTimeoutId } from "lib/client/store/notifySlice";
 export async function getServerSideProps({ params: { id } }: any) {
   //   console.log("id : ", id);
   const response = await getData(`product/${id}`);
@@ -76,7 +76,7 @@ export default function Page({ product }: any) {
                 if (duplicate) {
                   dispatch(setNotify({ status: "error", message: duplicate._id, visible: true }));
                   const timeout = setTimeout(() => {
-                    dispatch(setVisible(false));
+                    dispatch(setNotify({ active: false }));
                   }, 3000);
                   dispatch(setTimeoutId(timeout));
                   return;

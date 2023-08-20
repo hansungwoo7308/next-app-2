@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Loading() {
   const loading = useSelector((store: any) => store.loading);
-  if (!loading) return;
+  if (!loading) return null;
   return (
     <Box>
       <div className="spiner"></div>

@@ -1,6 +1,3 @@
-import { setCredentials } from "lib/client/store/authSlice";
-import { getData } from "lib/client/utils/fetchData";
-import { useDispatch } from "react-redux";
 import Modal from "./Modal";
 import Notify from "../Notify";
 import Footer from "./Footer";

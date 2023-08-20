@@ -1,8 +1,8 @@
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { deleteItem } from "lib/client/store/cartSlice";
+import { setLoading } from "lib/client/store/loadingSlice";
 import { closeModal } from "lib/client/store/modalSlice";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { deleteUser } from "lib/client/store/usersSlice";
 import { deleteData, getData, postData } from "lib/client/utils/fetchData";
 import { useRouter } from "next/router";

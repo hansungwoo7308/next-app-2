@@ -9,9 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { uploadImage } from "lib/client/utils/uploadImage";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
-import { setLoading } from "lib/client/store/notifySlice";
 import { getData, postData, putData } from "lib/client/utils/fetchData";
 import { DevTool } from "@hookform/devtools";
+import { setLoading } from "lib/client/store/loadingSlice";
 type FormValue = {
   title: string;
   price: number;

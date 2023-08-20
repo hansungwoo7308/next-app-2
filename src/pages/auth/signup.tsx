@@ -8,9 +8,9 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { useDispatch } from "react-redux";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
 import { toast } from "react-toastify";
+import { setLoading } from "lib/client/store/loadingSlice";
 export default function Page() {
   const dispatch = useDispatch();
   const router = useRouter();

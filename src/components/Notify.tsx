@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { setNotify } from "lib/client/store/notifySlice";
 import styled from "styled-components";
-// import { setTimeoutId, setVisible } from "lib/client/store/notifySlice";
 export default function Notify() {
   const notify = useSelector((store: any) => store.notify);
   const { active, status, message } = notify;
@@ -15,22 +14,20 @@ export default function Notify() {
   //   }
   //   // dispatch(setTimeoutId(timeoutId));
   // }, [notify.active]);
-  if (!notify.active) return;
+  if (!notify.active) return null;
   return (
-    <>
-      <Box status={status}>
-        {/* <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
+    <Box status={status || null}>
+      {/* <div onMouseOver={() => clearTimeout(notify.timeoutId)}>
         </div> */}
-        <p>{message || "empty"}</p>
-        <button onClick={() => dispatch(setNotify({ active: false }))}>close</button>
-      </Box>
-    </>
+      <p>{message || "empty"}</p>
+      <button onClick={() => dispatch(setNotify({ active: false }))}>close</button>
+    </Box>
   );
 }
-type Props = {
+interface Props {
   // active: boolean;
   status: "success" | "error" | null;
-};
+}
 const Box = styled.div<Props>`
   width: 15rem;
   height: 8rem;

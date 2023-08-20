@@ -1,6 +1,6 @@
 import { addToCart } from "lib/client/store/cartSlice";
 import { openModal } from "lib/client/store/modalSlice";
-import { setTimeoutId, setNotify, setVisible, setLoading } from "lib/client/store/notifySlice";
+import { setNotify } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";

@@ -4,10 +4,11 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import styled from "styled-components";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
+import { setNotify } from "lib/client/store/notifySlice";
 import { patchData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
+import { setLoading } from "lib/client/store/loadingSlice";
 export default function Profile() {
   const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();

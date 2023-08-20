@@ -6,10 +6,10 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import { patchData } from "lib/client/utils/fetchData";
 import logError from "lib/client/log/logError";
-import { setLoading } from "lib/client/store/notifySlice";
 import logResponse from "lib/client/log/logResponse";
 import { useEffect, useState } from "react";
 import { updateUser } from "lib/client/store/usersSlice";
+import { setLoading } from "lib/client/store/loadingSlice";
 export default function Page() {
   const router = useRouter();
   const dispatch = useDispatch();

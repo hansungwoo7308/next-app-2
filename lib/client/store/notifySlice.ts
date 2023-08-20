@@ -3,8 +3,8 @@ type notify = {
   active?: boolean;
   status?: "success" | "error" | null;
   message?: string | null;
+  timeoutId?: number | null;
   //
-  // timeoutId?: number | null;
   // count?: any;
   // messages: string[];
 };
@@ -32,9 +32,9 @@ export const notifySlice = createSlice({
       state.message = message;
       // state.count++;
     },
-    // setTimeoutId: (state, action) => {
-    //   state.timeoutId = action.payload;
-    // },
+    setTimeoutId: (state, action) => {
+      state.timeoutId = action.payload;
+    },
   },
 });
-export const { setNotify } = notifySlice.actions;
+export const { setNotify, setTimeoutId } = notifySlice.actions;

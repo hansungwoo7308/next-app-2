@@ -7,11 +7,11 @@ import { postData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { addOrder } from "lib/client/store/ordersSlice";
-import { setLoading, setNotify } from "lib/client/store/notifySlice";
 import { clearCart } from "lib/client/store/cartSlice";
 import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import Paypal from "@/components/commerce/Paypal";
+import { setLoading } from "lib/client/store/loadingSlice";
 export default function Page() {
   const { auth, cart }: any = useSelector((store) => store);
   const [test, setTest] = useState(false);

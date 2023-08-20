@@ -3,8 +3,8 @@ import Link from "next/link";
 import { openModal } from "lib/client/store/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-export default function UserList() {
-  const users = useSelector((store: any) => store.users);
+export default function UserList({ users }: any) {
+  // const users = useSelector((store: any) => store.users);
   const dispatch = useDispatch();
   return (
     <Box>

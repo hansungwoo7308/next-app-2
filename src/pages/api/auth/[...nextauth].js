@@ -8,7 +8,7 @@ import clientPromise from "../../../../lib/server/config/mongodb";
 
 import connectDB from "../../../../lib/server/config/connectDB";
 import User from "../../../../lib/server/models/User";
-console.log("\x1b[32m\n[api/auth/[...nextauth]]");
+// console.log("\x1b[32m[api/auth/[...nextauth]]");
 export const authOptions = {
   providers: [
     CredentialsProvider({
@@ -62,7 +62,7 @@ export const authOptions = {
     // session : server에 저장되는 user data account object
     // token : jwt function으로부터 생성된 token
     async session({ session, token }) {
-      console.log("\x1b[33m\n[session]\x1b[32m");
+      // console.log("\x1b[33m\n[session]\x1b[32m");
       // console.log({ session, token });
       // if (session.user) {
       //   session.user.role = token.role;
@@ -72,8 +72,8 @@ export const authOptions = {
         session.user.email = token.user.email;
         session.user.role = token.user.role;
       }
-      console.log({ session });
-      console.log();
+      // console.log({ session });
+      // console.log();
       return session;
     },
   },

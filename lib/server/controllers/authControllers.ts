@@ -1,5 +1,6 @@
 import User from "lib/server/models/User";
 export const signupUser = async (req: any, res: any) => {
+  console.log("\x1b[32m\n[signupUser]");
   // get
   const { username, email, password } = req.body;
   // find

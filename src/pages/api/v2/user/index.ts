@@ -9,7 +9,15 @@ connectDB();
 // create the router
 const router = createRouter();
 // set the router
-router.use(isAuthenticated).post(getUsers);
-const options: any = { onError: handleErrors };
+router.use(isAuthenticated).get(getUsers);
+// router.get((req: any, res: any) => {
+//   res.status(200).json("aaa");
+// });
+const options: any = {
+  onError: (err: any, req: any, res: any) => {
+    console.error(err.stack);
+    res.status(err.statusCode || 500).end(err.message);
+  },
+};
 // out
 export default router.handler(options);

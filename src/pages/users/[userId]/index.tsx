@@ -76,22 +76,22 @@ export default function Page({ user }: any) {
     if (role === "admin") setRole("user");
     else setRole("admin");
   };
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const role = e.target.role.value;
-    try {
-      dispatch(setLoading(true));
-      const response: any = await patchData(`user/${userId}`, { role }, auth.accessToken);
-      const { savedUser } = response.data;
-      logResponse(response);
-      dispatch(updateUser({ _id: savedUser._id, role }));
-      dispatch(setLoading(false));
-    } catch (error) {
-      logError(error);
-      // console.log(error);
-      dispatch(setLoading(false));
-    }
-  };
+  // const handleSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   const role = e.target.role.value;
+  //   try {
+  //     dispatch(setLoading(true));
+  //     const response: any = await patchData(`user/${userId}`, { role }, auth.accessToken);
+  //     const { savedUser } = response.data;
+  //     logResponse(response);
+  //     dispatch(updateUser({ _id: savedUser._id, role }));
+  //     dispatch(setLoading(false));
+  //   } catch (error) {
+  //     logError(error);
+  //     // console.log(error);
+  //     dispatch(setLoading(false));
+  //   }
+  // };
   // useEffect(() => {
   //   if (user) setRole(user.role);
   // }, [user]);

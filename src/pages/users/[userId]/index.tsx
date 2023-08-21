@@ -10,24 +10,62 @@ import logResponse from "lib/client/log/logResponse";
 import { useEffect, useState } from "react";
 import { updateUser } from "lib/client/store/usersSlice";
 import { setLoading } from "lib/client/store/loadingSlice";
-export default function Page() {
+import { getSession } from "next-auth/react";
+import { getToken } from "next-auth/jwt";
+import axios from "axios";
+export async function getServerSideProps(context: any) {
+  // get the query
+  const { query } = context;
+  console.log(`\x1b[32m\n[users/${query.userId}]`);
+
+  // get the credentials
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false, // statusCode : false(307), true(308)
+      },
+    };
+  }
+  const token = await getToken({ req: context.req, raw: true });
+  // console.log({ "session.user.role": session.user?.role });
+  // console.log({ session, token });
+
+  // get the user data
+  const response = await axios({
+    method: "GET",
+    url: `http://localhost:3000/api/v2/user`,
+    headers: { Cookie: `next-auth.session-token=${token}` },
+    params: {
+      userId: query.userId,
+    },
+  });
+  const { user } = response.data;
+
+  // out
+  return { props: { user } };
+}
+export default function Page({ user }: any) {
+  console.log({ user });
   const router = useRouter();
   const dispatch = useDispatch();
   // get the user
-  const { userId } = router.query;
-  const { auth, users }: any = useSelector((store) => store);
-  const user = users.find((user: any) => user._id === userId);
+  // const { userId } = router.query;
+  // const { auth, users }: any = useSelector((store) => store);
+  // const user = users.find((user: any) => user._id === userId);
+  // console.log({ userId, auth, users, user });
   // set the user's role
   const [role, setRole]: any = useState();
   // user > posts
-  const postsForUser = useSelector((state) => selectPostsByUser(state, Number(userId)));
-  const postTitles = postsForUser.map((post: any) => (
-    <li key={post.id}>
-      <Link href={`/post-list/${post.id}`}>
-        {post.id}. {post.title}
-      </Link>
-    </li>
-  ));
+  // const postsForUser = useSelector((state) => selectPostsByUser(state, Number(userId)));
+  // const postTitles = postsForUser.map((post: any) => (
+  //   <li key={post.id}>
+  //     <Link href={`/post-list/${post.id}`}>
+  //       {post.id}. {post.title}
+  //     </Link>
+  //   </li>
+  // ));
   // const postsForUser = useSelector((state) => {
   //   // allPosts = []
   //   const allPosts = selectAllPosts(state);
@@ -54,14 +92,14 @@ export default function Page() {
       dispatch(setLoading(false));
     }
   };
-  useEffect(() => {
-    if (user) setRole(user.role);
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) setRole(user.role);
+  // }, [user]);
   return (
     <>
       <Main>
         <section>
-          {user && (
+          {/* {user && (
             <div>
               <h1>User Page (Managed by Administrator)</h1>
               <p>Username : {user.username}</p>
@@ -79,10 +117,8 @@ export default function Page() {
                 </div>
                 <button type="submit">Update</button>
               </form>
-              {/* <h3>{`${user?.name}'s post list`}</h3> */}
-              {/* <ol>{postTitles}</ol> */}
             </div>
-          )}
+          )} */}
         </section>
       </Main>
     </>

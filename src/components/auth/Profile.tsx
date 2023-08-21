@@ -65,46 +65,49 @@ export default function Profile() {
     return array;
   };
   const handleUpdateUser = async (data: any) => {
-    dispatch(setLoading(true));
-    // get
-    const { password, image } = data;
-    // upload image to cloud (and create an image url)
-    const uploaded = await uploadImageToCloudinary(image);
-    // console.log("uploaded : ", uploaded);
+    console.log({ data });
+
+    // dispatch(setLoading(true));
+
+    // // get
+    // const { password, image } = data;
+    // // upload image to cloud (and create an image url)
+    // const uploaded = await uploadImageToCloudinary(image);
+    // // console.log("uploaded : ", uploaded);
+
     // update the user
-    try {
-      const payload = { password, image: uploaded[0].secure_url };
-      const response = await patchData("user", payload, auth.accessToken);
-      const { image } = response.data.updatedUser;
-      // set
-      logResponse(response);
-      // dispatch(setAuthImage({ image }));
-      dispatch(
-        setNotify({
-          status: "success",
-          message: "The User Data has been updated.",
-          visible: true,
-        })
-      );
-      dispatch(setLoading(false));
-    } catch (error) {
-      // set
-      logError(error);
-      dispatch(
-        setNotify({
-          status: "error",
-          message: "The User Data has not been updated.",
-          visible: true,
-        })
-      );
-      dispatch(setLoading(false));
-    }
+    // try {
+    //   const payload = { password, image: uploaded[0].secure_url };
+    //   const response = await patchData("user", payload, auth.accessToken);
+    //   const { image } = response.data.updatedUser;
+    //   // set
+    //   logResponse(response);
+    //   // dispatch(setAuthImage({ image }));
+    //   dispatch(
+    //     setNotify({
+    //       status: "success",
+    //       message: "The User Data has been updated.",
+    //       visible: true,
+    //     })
+    //   );
+    //   dispatch(setLoading(false));
+    // } catch (error) {
+    //   // set
+    //   logError(error);
+    //   dispatch(
+    //     setNotify({
+    //       status: "error",
+    //       message: "The User Data has not been updated.",
+    //       visible: true,
+    //     })
+    //   );
+    //   dispatch(setLoading(false));
+    // }
   };
   if (!auth.accessToken) return null;
-  // console.log({ image });
   return (
     <Box>
-      <form onSubmit={handleSubmit(handleUpdateUser)}>
+      <form>
         <div className="image">
           <Image
             // src={URL.createObjectURL(image) || auth.user.image}
@@ -127,42 +130,34 @@ export default function Profile() {
           </div>
         </div>
         <div className="description">
-          <div>
-            <h1>Profile</h1>
-            <div>
-              <label htmlFor="role">Role</label>
-              <input type="text" id="role" value={auth.role} disabled />
-            </div>
-            <div>
-              <label htmlFor="username">Name</label>
-              <input
-                {...register("username", { required: true })}
-                type="text"
-                defaultValue={auth.username}
-              />
-            </div>
-            <div>
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" value={auth.email} disabled />
-            </div>
-            <div>
-              <label htmlFor="password">New Password</label>
-              <input {...register("password", { required: true })} type="password" />
-            </div>
-            <div>
-              <label htmlFor="passwordConfirm">New Password Confirm</label>
-              <input
-                {...register("passwordConfirm", {
-                  required: true,
-                  validate: (passwordConfirm) => passwordConfirm === passwordRef.current,
-                })}
-                type="password"
-              />
-            </div>
-          </div>
-          <div>
-            <button type="submit">Update</button>
-          </div>
+          <h1>Profile</h1>
+          <label className="username">
+            <span>Username</span>
+            <input {...register("username")} type="text" defaultValue={auth.user.username} />
+          </label>
+          <label className="email">
+            <span>Email</span>
+            <input type="email" id="email" value={auth.email} />
+          </label>
+          <label className="role">
+            <span>Role</span>
+            <input {...register("role")} type="text" value={auth.user.role} />
+          </label>
+          <label className="password">
+            <span>New Password</span>
+            <input {...register("password", { required: true })} type="password" />
+          </label>
+          <label className="passwordConfirm">
+            <span>New Password Confirm</span>
+            <input
+              {...register("passwordConfirm", {
+                required: true,
+                validate: (passwordConfirm) => passwordConfirm === passwordRef.current,
+              })}
+              type="password"
+            />
+          </label>
+          <button onClick={handleSubmit(handleUpdateUser)}>Update</button>
         </div>
       </form>
     </Box>
@@ -176,10 +171,11 @@ const Box = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    justify-content: space-between;
     border: 2px solid;
     .image {
-      width: 15rem;
-      height: fit-content;
+      /* width: 4rem; */
+      /* height: fit-content; */
       position: relative;
       overflow: hidden;
       img {
@@ -203,18 +199,12 @@ const Box = styled.div`
       }
     }
     .description {
-      width: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
       padding: 1rem;
-
-      > div > div {
+      label {
         display: flex;
-        flex-direction: column;
-      }
-      > div:last-of-type {
-        align-self: flex-end;
+        justify-content: space-between;
       }
     }
   }

@@ -14,9 +14,10 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { addOrder, setOrders } from "lib/client/store/ordersSlice";
 import { setLoading } from "lib/client/store/loadingSlice";
+import axios from "axios";
 // store.dispatch(fetchUsers());
 // store.dispatch(fetchPosts());
-export default function Providers({ children, session }: any) {
+export default function Providers({ children, session, token }: any) {
   // console.log("session : ", session);
   return (
     <Provider store={store}>
@@ -31,13 +32,13 @@ export default function Providers({ children, session }: any) {
             currency: "USD",
           }}
         >
-          <GlobalState>{children}</GlobalState>
+          <GlobalState token={token}>{children}</GlobalState>
         </PayPalScriptProvider>
       </SessionProvider>
     </Provider>
   );
 }
-export function GlobalState({ children }: any) {
+export function GlobalState({ children, token }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const session = useSession();
@@ -64,9 +65,18 @@ export function GlobalState({ children }: any) {
     dispatch(setOrders(orders));
   };
   const getUsers = async () => {
-    const response = await getData("user", auth.accessToken);
+    // const response = await getData("user", auth.accessToken);
+    const response = await axios({
+      method: "GET",
+      url: "http://localhost:3000/api/v2/user",
+      // client에서 server로 인증정보를 담아 요청을 할때는,
+      // credentials를 설정해준다.
+      // header에 담아 보내면, 안전하지 않은 요청이 된다. (보안문제발생가능)
+      // headers: { Cookie: `next-auth.session-token=${token}` },
+      withCredentials: true,
+    });
     const { users } = response.data;
-    logResponse(response);
+    console.log({ users });
     dispatch(setUsers(users));
   };
 
@@ -102,13 +112,15 @@ export function GlobalState({ children }: any) {
 
   /* Data */
   useEffect(() => {
-    if (!auth.accessToken) return;
+    // if (!auth.accessToken) return;
+    if (!auth.user) return;
     try {
-      auth.role === "user" && getOrder();
-      auth.role === "admin" && getUsers();
+      auth.user.role === "user" && getOrder();
+      auth.user.role === "admin" && getUsers();
     } catch (error: any) {
-      logError(error);
+      console.log({ error });
       toast.error(error.message);
+      // logError(error);
     }
   }, [auth.accessToken]); // 로그인 시, 주문정보와 사용자정보를 가져온다.
 

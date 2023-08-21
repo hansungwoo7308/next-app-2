@@ -13,6 +13,8 @@ import { setLoading } from "lib/client/store/loadingSlice";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import axios from "axios";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
 export async function getServerSideProps(context: any) {
   // get the query
   const { query } = context;
@@ -36,10 +38,13 @@ export async function getServerSideProps(context: any) {
   const response = await axios({
     method: "GET",
     url: `http://localhost:3000/api/v2/user`,
+    // server에서 server로의 요청은 credentials를 필요로 하지 않는다?
+    // server computer에서 api server로 요청을 보낼 때,
+    // client로부터 받은 token을 추가하여 인증정보를 담아 요청한다.
+    // withCredentials: true,
     headers: { Cookie: `next-auth.session-token=${token}` },
-    params: {
-      userId: query.userId,
-    },
+    // query data
+    params: { userId: query.userId },
   });
   const { user } = response.data;
 
@@ -47,9 +52,19 @@ export async function getServerSideProps(context: any) {
   return { props: { user } };
 }
 export default function Page({ user }: any) {
-  console.log({ user });
+  // console.log({ user });
   const router = useRouter();
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const updateUser = async (data: any) => {
+    console.log({ data });
+  };
+
   // get the user
   // const { userId } = router.query;
   // const { auth, users }: any = useSelector((store) => store);
@@ -99,6 +114,21 @@ export default function Page({ user }: any) {
     <>
       <Main>
         <section>
+          <form className="user">
+            <Image src={user.image} alt={user.image} width={200} height={200} />
+            <input {...register("username")} type="text" defaultValue={user.username} />
+            <input {...register("email")} type="email" defaultValue={user.email} />
+            <input {...register("role")} type="text" defaultValue={user.role} />
+            <button onClick={handleSubmit(updateUser)}>update</button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                console.log(e.target);
+              }}
+            >
+              delete
+            </button>
+          </form>
           {/* {user && (
             <div>
               <h1>User Page (Managed by Administrator)</h1>
@@ -130,6 +160,15 @@ const Main = styled(PublicMain)`
       width: 70%;
       height: 70%;
       max-width: 700px;
+    }
+    .user {
+      border: 2px solid green;
+      > input {
+        display: block;
+      }
+      > img {
+        width: 100px;
+      }
     }
   }
 `;

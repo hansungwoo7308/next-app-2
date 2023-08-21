@@ -4,12 +4,13 @@ import Providers from "@/components/provider/Providers";
 import Layout from "../components/layout/Layout";
 import * as StyleComponent from "../styles/_app.styled";
 import axios from "axios";
+import { getToken } from "next-auth/jwt";
 // import { NextPage } from "next";
 interface MyAppProps extends AppProps {
-  auth?: Object;
-  pathname?: string;
+  token?: string;
 }
-export default function MyApp({ Component, pageProps, pathname }: MyAppProps) {
+export default function MyApp({ Component, pageProps, token }: MyAppProps) {
+  // console.log({ MyAppToken: token });
   // console.log("\x1b[32m\n[_app]");
   // console.log("pageProps:", pageProps);
   // console.log("Component:", Component);
@@ -21,7 +22,7 @@ export default function MyApp({ Component, pageProps, pathname }: MyAppProps) {
   };
   return (
     <>
-      <Providers session={pageProps.session}>
+      <Providers session={pageProps.session} token={token}>
         <Layout>
           <StyleComponent.GlobalStyle />
           <Component {...pageProps} auth />
@@ -57,9 +58,16 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
   // const { authorization }: any = AppContext.ctx.req?.headers;
   // console.log("authorization : ", authorization);
   // axios.defaults.headers.Authorization = `Bearer test`;
+  const options: any = {
+    req: AppContext.ctx.req,
+    raw: true,
+  };
+  let token;
+  if (AppContext.ctx) token = await getToken(options);
+  // console.log({ token });
   return {
     ...appProps,
-    // auth,
+    token,
     // pathname: AppContext.router.pathname,
   };
 };

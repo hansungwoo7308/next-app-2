@@ -36,3 +36,14 @@ export const updateUser = async (req: any, res: any) => {
   // console.log("savedUser.role : ", savedUser.role);
   return res.status(200).json({ savedUser });
 };
+export const deleteUser = async (req: any, res: any) => {
+  console.log("\x1b[32m\n<userController/deleteUser>");
+  // get
+  const { userId } = req.query;
+  // delete
+  const deletedUser = await User.deleteOne({ _id: userId }).exec();
+  if (!deletedUser) return res.status(404).json({ message: "Not found" });
+  console.log({ deleteUser });
+  // out
+  return res.status(200).json({ deletedUser });
+};

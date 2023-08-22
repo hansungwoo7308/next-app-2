@@ -41,9 +41,10 @@ export default function Providers({ children, session, token }: any) {
 export function GlobalState({ children, token }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
+
+  /* Auth */
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
-  const cart = useSelector((store: any) => store.cart);
   const refreshAuth = async () => {
     try {
       dispatch(setLoading(true));
@@ -58,29 +59,6 @@ export function GlobalState({ children, token }: any) {
       dispatch(setLoading(false));
     }
   };
-  const getOrder = async () => {
-    const response = await getData("order", auth.accessToken);
-    const { orders } = response.data;
-    logResponse(response);
-    dispatch(setOrders(orders));
-  };
-  const getUsers = async () => {
-    // const response = await getData("user", auth.accessToken);
-    const response = await axios({
-      method: "GET",
-      url: "http://localhost:3000/api/v2/user",
-      // client에서 server로 인증정보를 담아 요청을 할때는,
-      // credentials를 설정해준다.
-      // header에 담아 보내면, 안전하지 않은 요청이 된다. (보안문제발생가능)
-      // headers: { Cookie: `next-auth.session-token=${token}` },
-      withCredentials: true,
-    });
-    const { users } = response.data;
-    console.log({ users });
-    dispatch(setUsers(users));
-  };
-
-  /* Auth */
   // if router.pathname exchanged, check the auth
   // useEffect(() => {
   //   const handleRouteChange = (url: any) => {
@@ -111,8 +89,30 @@ export function GlobalState({ children, token }: any) {
   }, [session.status]);
 
   /* Data */
+  const getOrder = async () => {
+    const response = await getData("order", auth.accessToken);
+    const { orders } = response.data;
+    logResponse(response);
+    dispatch(setOrders(orders));
+  };
+  const getUsers = async () => {
+    // const response = await getData("user", auth.accessToken);
+    const response = await axios({
+      method: "GET",
+      url: "http://localhost:3000/api/v2/users",
+      // client에서 server로 인증정보를 담아 요청을 할때는,
+      // credentials를 설정해준다.
+      // header에 담아 보내면, 안전하지 않은 요청이 된다. (보안문제발생가능)
+      // headers: { Cookie: `next-auth.session-token=${token}` },
+      withCredentials: true,
+    });
+    const { users } = response.data;
+    console.log({ users });
+    dispatch(setUsers(users));
+  };
   useEffect(() => {
     // if (!auth.accessToken) return;
+    return;
     if (!auth.user) return;
     try {
       auth.user.role === "user" && getOrder();
@@ -125,6 +125,7 @@ export function GlobalState({ children, token }: any) {
   }, [auth.accessToken]); // 로그인 시, 주문정보와 사용자정보를 가져온다.
 
   /* Cart */
+  const cart = useSelector((store: any) => store.cart);
   useEffect(() => {
     const serializedCart: any = localStorage.getItem("cart");
     if (!serializedCart) return;

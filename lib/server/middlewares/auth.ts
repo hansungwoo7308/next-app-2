@@ -15,9 +15,22 @@ export const isAuthenticated = async (req: any, res: any, next: any) => {
   if (!session) throw new Error("No session");
   if (session.user?.role !== "admin") throw new Error("No admin");
   // if (!refreshToken) throw new Error("No refreshToken");
+
+  // add a property
+  req.user = session.user;
+
+  // out
   await next();
 
   // if (session) {
   //   req.user = session.user;
   // }
+};
+export const authorizeRoles = (roles: any) => {
+  return (req: any, res: any, next: any) => {
+    if (!roles.includes(req.user.role)) {
+      throw new Error(`Role (${req.user.role}) is not allowed to access this resource.`);
+    }
+    next();
+  };
 };

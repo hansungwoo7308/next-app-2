@@ -22,7 +22,7 @@ export async function getServerSideProps(context: any) {
   // console.log({ session, token });
   // get the user data
   const response = await axios({
-    url: "http://localhost:3000/api/v2/user",
+    url: "http://localhost:3000/api/v2/users",
     headers: { Cookie: `next-auth.session-token=${token}` },
   });
   const { users } = response.data;

@@ -1,7 +1,7 @@
 import connectDB from "lib/server/config/connectDB";
 import { deleteUser, getUsers, updateUser } from "lib/server/controllers/userConrollers";
 import { handleErrors } from "lib/server/middlewares/handleErrors";
-import { isAuthenticated } from "lib/server/middlewares/isAuthenticated";
+import { authorizeRoles, isAuthenticated } from "lib/server/middlewares/auth";
 import { createRouter } from "next-connect";
 // connect to db
 connectDB();
@@ -12,7 +12,7 @@ router.use(async (req, res, next) => {
   console.log("\x1b[32m\n[api/v2/user]");
   return next();
 });
-router.use(isAuthenticated).get(getUsers); // R
+router.use(isAuthenticated, authorizeRoles(["admin"])).get(getUsers); // R
 router.use(isAuthenticated).patch(updateUser); // U
 router.use(isAuthenticated).delete(deleteUser); // D
 

@@ -55,6 +55,7 @@ export default function AuthButton(props: any) {
           {auth.user?.role === "admin" && (
             <>
               <Link href={"/users"}>Users</Link>
+              <Link href={"/commerce/product"}>Products</Link>
               <Link href={"/commerce/product/create"}>Create a product</Link>
             </>
           )}

@@ -12,26 +12,32 @@ import logError from "lib/client/log/logError";
 import { getData, postData, putData } from "lib/client/utils/fetchData";
 import { DevTool } from "@hookform/devtools";
 import { setLoading } from "lib/client/store/loadingSlice";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 type FormValue = {
-  title: string;
-  price: number;
-  inStock: number;
+  title: string; //name
   description: string;
-  content: string;
+  // seller
+  price: number;
+  inStock: number; //stock
   category: string;
+
+  content: string;
   images: [];
 };
 export default function Page() {
-  // get the store
-  const { auth }: any = useSelector((store) => store);
+  // store
+  const session = useSession();
+  const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();
-  // set the state
+  // state
   const [mode, setMode] = useState("");
+  const [product, setProduct]: any = useState({});
   const [images, setImages] = useState([]);
-  // get the router query string
+  // query
   const router = useRouter();
   const { id } = router.query;
-  // get the react-hook-form
+  // form
   const { register, handleSubmit, watch, setValue, getValues, reset, formState, control } =
     useForm();
   // {
@@ -57,83 +63,90 @@ export default function Page() {
   // const { errors, isSubmitSuccessful } = formState;
   // const watchImages = watch("images");
   // const { fields, append, remove }: any = useFieldArray({ name: "images", control }); // for array field used to form
-  const onSubmit = async (data: any) => {
+  const submit = async (data: any) => {
     console.log("data : ", data);
-    if (auth.role !== "admin") return;
     if (mode === "create") {
       try {
         dispatch(setLoading(true));
+        // upload images
         const { images } = data;
         const uploadedImages = await uploadImage(images);
         console.log("uploadedImages : ", uploadedImages);
-        const response = await postData(
-          "product",
-          { ...data, images: uploadedImages },
-          auth.accessToken
-        );
+        const payload = { ...data, images: uploadedImages };
+        // create a product
+        const response = await axios({
+          method: "POST",
+          url: "http://localhost:3000/api/v2/products",
+          data: payload,
+          withCredentials: true,
+        });
+        // out
         logResponse(response);
         dispatch(setLoading(false));
+        router.push("/commerce/product");
       } catch (error) {
-        // logError(error);
-        console.log("submit error : ", error);
+        console.log({ "submit-error": error });
         dispatch(setLoading(false));
       }
     }
-    if (mode === "update") {
-      try {
-        dispatch(setLoading(true));
-        // get the images
-        const { images } = data;
-        // url를 가진 이미지와 url를 가지지 못한 이미지를 분류한다.
-        const urlImages = images.filter((image: any) => image.url || image.secure_url);
-        const pendingImages = images.filter((image: any) => !(image.url || image.secure_url));
-        console.log("pendingImages : ", pendingImages);
-        // url를 부여한 이미지를 생성한다.
-        const uploadedImages = await uploadImage(pendingImages);
-        // console.log("uploadedImages : ", uploadedImages);
-        // 통합(integration)
-        const payload = [...urlImages, ...uploadedImages];
-        // update the product
-        const response = await putData(
-          `product/${id}`,
-          { ...data, images: payload },
-          auth.accessToken
-        );
-        // output
-        logResponse(response);
-        dispatch(setLoading(false));
-      } catch (error) {
-        // logError(error);
-        console.log("submit error : ", error);
-        dispatch(setLoading(false));
+    // if (mode === "update") {
+    //   try {
+    //     dispatch(setLoading(true));
+    //     // get the images
+    //     const { images } = data;
+    //     // url를 가진 이미지와 url를 가지지 못한 이미지를 분류한다.
+    //     const urlImages = images.filter((image: any) => image.url || image.secure_url);
+    //     const pendingImages = images.filter((image: any) => !(image.url || image.secure_url));
+    //     console.log("pendingImages : ", pendingImages);
+    //     // url를 부여한 이미지를 생성한다.
+    //     const uploadedImages = await uploadImage(pendingImages);
+    //     // console.log("uploadedImages : ", uploadedImages);
+    //     // 통합(integration)
+    //     const payload = [...urlImages, ...uploadedImages];
+    //     // update the product
+    //     const response = await putData(
+    //       `product/${id}`,
+    //       { ...data, images: payload },
+    //       auth.accessToken
+    //     );
+    //     // output
+    //     logResponse(response);
+    //     dispatch(setLoading(false));
+    //   } catch (error) {
+    //     // logError(error);
+    //     console.log("submit error : ", error);
+    //     dispatch(setLoading(false));
+    //   }
+    // }
+  };
+  const fetchData = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await getData(`commerce/product/${id}`);
+      const { title, price, inStock, description, content, category, images } =
+        response.data.product;
+      const product: any = { title, price, inStock, description, content, category, images };
+      logResponse(response);
+      setProduct(product);
+      setImages(images);
+      for (let key in product) {
+        setValue(`${key}`, product[key]);
+        // console.log(`${key} : ${product[key]}`);
+        // 객체로 된 images를 어떻게 배열로 바꾸지?...
+        // else setValue(`${key}`, value);
       }
+      dispatch(setLoading(false));
+    } catch (error) {
+      // logError(error);
+      console.log("error : ", error);
+      dispatch(setLoading(false));
     }
   };
   useEffect(() => {
-    if (!id) setMode("create");
-    else setMode("update");
-    const fetchData = async () => {
-      try {
-        dispatch(setLoading(true));
-        const response = await getData(`product/${id}`);
-        const { title, price, inStock, description, content, category, images } =
-          response.data.product;
-        const product: any = { title, price, inStock, description, content, category, images };
-        logResponse(response);
-        setImages(images);
-        for (let key in product) {
-          setValue(`${key}`, product[key]);
-          // console.log(`${key} : ${product[key]}`);
-          // 객체로 된 images를 어떻게 배열로 바꾸지?...
-          // else setValue(`${key}`, value);
-        }
-        dispatch(setLoading(false));
-      } catch (error) {
-        // logError(error);
-        console.log("error : ", error);
-        dispatch(setLoading(false));
-      }
-    };
+    // id ? setMode("update") : setMode("create");
+    if (!id) return setMode("create");
+    console.log({ id });
+    setMode("update");
     fetchData();
   }, [id]);
   // useEffect(() => {
@@ -203,10 +216,10 @@ export default function Page() {
         <title>Products Manager</title>
       </Head>
       <section>
-        <div>
+        <div className="product-manager">
           <h1>Product Manager</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="upload-images">
+          <form onSubmit={handleSubmit(submit)}>
+            <label className="upload-images">
               <p>Images</p>
               <div className="images">
                 {images.map((image: any, index: any) => (
@@ -254,9 +267,9 @@ export default function Page() {
                   </div>
                 ))} */}
               </div>
-            </div>
-            <div>
-              <label htmlFor="category">Category</label>
+            </label>
+            <label className="category">
+              <span>Category</span>
               <select {...register("category", { required: true })} id="category">
                 <option value="all">All Products</option>
                 <option value="food">Food</option>
@@ -270,76 +283,84 @@ export default function Page() {
                   // ))
                 }
               </select>
-            </div>
-            <input
-              {...register("title", {
-                required: true,
-                // setValueAs: (value) => value,
-                // validate: {
-                //   emailAvailable: async (value): Promise<any> => {
-                //     const response = await getData(`product/${id}`);
-                //     const { title, price, inStock, description, content, category, images } =
-                //       response.data.product;
-                //     // return "aaa";
-                //   },
-                // },
-              })}
-              type="text"
-              placeholder="Title"
-              // defaultValue={product && product.title}
-            />
-            <input
-              {...register("price", { required: true })}
-              type="number"
-              placeholder="Price"
-              // defaultValue={product && product.price}
-            />
-            <input
-              {...register("inStock", { required: true })}
-              type="number"
-              placeholder="inStock"
-              // defaultValue={product && product.inStock}
-            />
-            <textarea
-              {...register("description", { required: true })}
-              cols={30}
-              rows={4}
-              placeholder="Description"
-              // defaultValue={product && product.description}
-            />
-            <textarea
-              {...register("content", { required: true })}
-              cols={30}
-              rows={6}
-              placeholder="Content"
-              // defaultValue={product && product.content}
-            />
-            <button type="submit">{mode}</button>
+            </label>
+            <label className="title">
+              <input
+                {...register("title", {
+                  required: true,
+                  // setValueAs: (value) => value,
+                  // validate: {
+                  //   emailAvailable: async (value): Promise<any> => {
+                  //     const response = await getData(`product/${id}`);
+                  //     const { title, price, inStock, description, content, category, images } =
+                  //       response.data.product;
+                  //     // return "aaa";
+                  //   },
+                  // },
+                })}
+                type="text"
+                placeholder="Title"
+                defaultValue={product.title}
+              />
+            </label>
+            <label className="price">
+              <input
+                {...register("price", { required: true })}
+                type="number"
+                placeholder="Price"
+                defaultValue={product.price}
+              />
+            </label>
+            <label className="inStock">
+              <input
+                {...register("inStock", { required: true })}
+                type="number"
+                placeholder="inStock"
+                defaultValue={product.inStock}
+              />
+            </label>
+            <label className="description">
+              <textarea
+                {...register("description", { required: true })}
+                cols={30}
+                rows={4}
+                placeholder="Description"
+                defaultValue={product.description}
+              />
+            </label>
+            <label className="content">
+              <textarea
+                {...register("content", { required: true })}
+                cols={30}
+                rows={6}
+                placeholder="Content"
+                defaultValue={product.content}
+              />
+            </label>
+            <button type="submit" disabled={auth.user?.role !== "admin"}>
+              {mode}
+            </button>
           </form>
         </div>
       </section>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </Main>
   );
 }
 const Main = styled(PublicMain)`
-  > section > div {
+  .product-manager {
     width: 50%;
     background-color: #000;
     form {
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      /* align-items: center; */
-      > * {
-        /* border: 2px solid green; */
-      }
       button {
         align-self: flex-end;
       }
       .upload-images {
         overflow-x: scroll;
-        border: 2px solid;
+        border: 2px solid red;
         .images {
           width: fit-content;
           display: flex;
@@ -373,6 +394,9 @@ const Main = styled(PublicMain)`
             }
           }
         }
+      }
+      .category {
+        border: 2px solid blue;
       }
     }
   }

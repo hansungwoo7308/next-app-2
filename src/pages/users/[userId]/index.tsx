@@ -37,7 +37,7 @@ export async function getServerSideProps(context: any) {
   // get the user data
   const response = await axios({
     method: "GET",
-    url: `http://localhost:3000/api/v2/user`,
+    url: `http://localhost:3000/api/v2/users`,
     // server에서 server로의 요청은 credentials를 필요로 하지 않는다?
     // server computer에서 api server로 요청을 보낼 때,
     // client로부터 받은 token을 추가하여 인증정보를 담아 요청한다.

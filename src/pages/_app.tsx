@@ -63,7 +63,9 @@ MyApp.getInitialProps = async (AppContext: AppContext) => {
     raw: true,
   };
   let token;
-  if (AppContext.ctx) token = await getToken(options);
+  if (AppContext.ctx.req) {
+    token = await getToken(options);
+  }
   // console.log({ token });
   return {
     ...appProps,

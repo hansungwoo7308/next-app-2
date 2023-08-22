@@ -10,8 +10,8 @@ import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { setLoading } from "lib/client/store/loadingSlice";
 export default function Profile() {
-  const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();
+  const auth = useSelector((store: any) => store.auth);
   const [image, setImage]: any = useState();
   const passwordRef = useRef();
   const {
@@ -64,7 +64,7 @@ export default function Profile() {
     // console.log("array : ", array);
     return array;
   };
-  const handleUpdateUser = async (data: any) => {
+  const updateUser = async (data: any) => {
     console.log({ data });
 
     // dispatch(setLoading(true));
@@ -119,7 +119,7 @@ export default function Profile() {
           ></Image>
           <div>
             <input
-              {...register("image", { required: true })}
+              {...register("image")}
               type="file"
               accept="image/*"
               onChange={handleChangeImage}
@@ -133,31 +133,34 @@ export default function Profile() {
           <h1>Profile</h1>
           <label className="username">
             <span>Username</span>
-            <input {...register("username")} type="text" defaultValue={auth.user.username} />
+            <input
+              {...register("username")}
+              type="text"
+              defaultValue={auth.user.name || auth.user.username}
+            />
           </label>
           <label className="email">
             <span>Email</span>
-            <input type="email" id="email" value={auth.email} />
+            <input {...register("username")} type="email" defaultValue={auth.user.email} />
           </label>
           <label className="role">
             <span>Role</span>
-            <input {...register("role")} type="text" value={auth.user.role} />
+            <input {...register("role")} type="text" defaultValue={auth.user.role} />
           </label>
           <label className="password">
             <span>New Password</span>
-            <input {...register("password", { required: true })} type="password" />
+            <input {...register("password")} type="password" />
           </label>
           <label className="passwordConfirm">
             <span>New Password Confirm</span>
             <input
               {...register("passwordConfirm", {
-                required: true,
                 validate: (passwordConfirm) => passwordConfirm === passwordRef.current,
               })}
               type="password"
             />
           </label>
-          <button onClick={handleSubmit(handleUpdateUser)}>Update</button>
+          <button onClick={handleSubmit(updateUser)}>Update</button>
         </div>
       </form>
     </Box>

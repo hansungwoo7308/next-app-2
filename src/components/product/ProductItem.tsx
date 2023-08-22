@@ -121,8 +121,8 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
         </div>
         <p>{description}</p>
         <div className="action-tags">
-          {auth.role === "admin" && adminLink}
-          {auth.role === "user" && userLink}
+          {auth.user.role === "admin" && adminLink}
+          {auth.user.role === "user" && userLink}
         </div>
       </div>
     </Item>

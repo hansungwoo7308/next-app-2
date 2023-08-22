@@ -1,11 +1,9 @@
 import Filter from "@/components/Filter";
 import ProductItem from "@/components/product/ProductItem";
 import { Main as PublicMain } from "@/styles/public/main.styled";
-import logError from "lib/client/log/logError";
 import { openModal } from "lib/client/store/modalSlice";
 import { getData } from "lib/client/utils/fetchData";
 import { searchWithFilter } from "lib/client/utils/searchWithFilter";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

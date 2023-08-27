@@ -4,13 +4,17 @@ const nextConfig = {
   env: {
     BASE_URL: "https://next-app-2-taupe.vercel.app",
     // BASE_URL: "https://next-app-2-zup2.vercel.app/",
+    // database
     MONGODB_URL: process.env.MONGODB_URI,
+    // jwt
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
     // cloudinary env
-    CLOUD_UPDATE_PRESET: "nextjs_store",
     CLOUD_NAME: "dzktdrw7o",
+    CLOUD_UPDATE_PRESET: "nextjs_store",
     CLOUD_API_BASE_URL: "https://api.cloudinary.com/v1_1/dzktdrw7o/upload",
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     // next-auth
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },

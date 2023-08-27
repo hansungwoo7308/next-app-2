@@ -22,6 +22,15 @@ export default function Profile() {
   } = useForm();
   passwordRef.current = watch("password");
   const handleChangeImage = (e: any) => {
+    // const reader = new FileReader();
+    // console.log({ reader });
+    // reader.onload = () => {
+    //   if (reader.readyState === 2) {
+    //     console.log({ "reader.onload": reader });
+    //     // setAvatarPreview(reader.result);
+    //   }
+    // };
+
     const file = e.target.files[0];
     console.log({ file });
     if (!file) return dispatch(setNotify({ status: "error", message: "No file", visible: true }));
@@ -33,6 +42,7 @@ export default function Profile() {
       );
     setImage(file);
   };
+
   const uploadImageToCloudinary = async (images: any) => {
     // let media;
     let array = [];

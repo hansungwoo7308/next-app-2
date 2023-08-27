@@ -1,6 +1,6 @@
 import connectDB from "lib/server/config/connectDB";
 import { signupUser } from "lib/server/controllers/authControllers";
-import { handleErrors } from "lib/server/middlewares/handleErrors";
+import { errors } from "lib/server/middlewares/errors";
 import { createRouter } from "next-connect";
 console.log("\x1b[32m\n[api/auth/signup]");
 // connect to db
@@ -9,6 +9,6 @@ connectDB();
 const router = createRouter();
 // set the router
 router.post(signupUser);
-const options: any = { onError: handleErrors };
+const options: any = { onError: errors };
 // out
 export default router.handler(options);

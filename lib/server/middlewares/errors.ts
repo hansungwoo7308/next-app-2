@@ -1,4 +1,4 @@
-export const handleErrors = (err: any, req: any, res: any, next: any) => {
+export const errors = (err: any, req: any, res: any, next: any) => {
   // console.log({ statusCode: err.statusCode });
   // console.log({ test: Object.keys(err) });
   // const something = { ...err };

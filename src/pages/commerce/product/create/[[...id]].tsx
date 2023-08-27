@@ -6,7 +6,7 @@ import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useFieldArray, useForm } from "react-hook-form";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { uploadImage } from "lib/client/utils/uploadImage";
+import { uploadImage } from "lib/public/uploadImage";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { getData, postData, putData } from "lib/client/utils/fetchData";
@@ -14,6 +14,7 @@ import { DevTool } from "@hookform/devtools";
 import { setLoading } from "lib/client/store/loadingSlice";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { toast } from "react-toastify";
 type FormValue = {
   title: string; //name
   description: string;
@@ -29,12 +30,13 @@ export default function Page() {
   // store
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
+  const loading = useSelector((store: any) => store.loading);
   const dispatch = useDispatch();
   // state
-  const [mode, setMode] = useState("");
+  const [mode, setMode] = useState(""); // button mode : create or update
   const [product, setProduct]: any = useState({});
-  const [images, setImages] = useState([]);
-  // query
+  const [images, setImages]: any = useState([]);
+  // query : product id
   const router = useRouter();
   const { id } = router.query;
   // form
@@ -63,29 +65,61 @@ export default function Page() {
   // const { errors, isSubmitSuccessful } = formState;
   // const watchImages = watch("images");
   // const { fields, append, remove }: any = useFieldArray({ name: "images", control }); // for array field used to form
+
+  const convertBase64 = (file: any) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   const submit = async (data: any) => {
-    console.log("data : ", data);
+    // console.log("data : ", data);
+    // validation
+    if (images.length === 0) return toast.error("Please fill the image field.");
+    if (data.category === "all") return toast.error("Please fill the category field.");
+    // create
     if (mode === "create") {
       try {
-        dispatch(setLoading(true));
-        // upload images
-        const { images } = data;
+        // dispatch(setLoading(true));
+
+        // // upload images (base64)
+        // const { images } = data;
+        // const imageBase64 = await convertBase64(images[0]);
+        // const result = await axios({
+        //   method: "POST",
+        //   url: "http://localhost:3000/api/v2/products",
+        //   data: { imageBase64 },
+        //   // withCredentials: true,
+        // });
+        // console.log({ result });
+
+        // direct upload
         const uploadedImages = await uploadImage(images);
-        console.log("uploadedImages : ", uploadedImages);
         const payload = { ...data, images: uploadedImages };
+        console.log({ payload });
         // create a product
         const response = await axios({
           method: "POST",
           url: "http://localhost:3000/api/v2/products",
           data: payload,
-          withCredentials: true,
+          // withCredentials: true,
         });
         // out
         logResponse(response);
         dispatch(setLoading(false));
+        toast.success("Uploading Completed");
         router.push("/commerce/product");
       } catch (error) {
-        console.log({ "submit-error": error });
+        logError(error);
         dispatch(setLoading(false));
       }
     }
@@ -122,23 +156,23 @@ export default function Page() {
   const fetchData = async () => {
     try {
       dispatch(setLoading(true));
+      // get the product by id
       const response = await getData(`commerce/product/${id}`);
       const { title, price, inStock, description, content, category, images } =
         response.data.product;
       const product: any = { title, price, inStock, description, content, category, images };
       logResponse(response);
+      // set the state
       setProduct(product);
       setImages(images);
       for (let key in product) {
         setValue(`${key}`, product[key]);
-        // console.log(`${key} : ${product[key]}`);
         // 객체로 된 images를 어떻게 배열로 바꾸지?...
         // else setValue(`${key}`, value);
       }
       dispatch(setLoading(false));
     } catch (error) {
-      // logError(error);
-      console.log("error : ", error);
+      console.log({ "fetchData/error": error });
       dispatch(setLoading(false));
     }
   };
@@ -219,43 +253,51 @@ export default function Page() {
         <div className="product-manager">
           <h1>Product Manager</h1>
           <form onSubmit={handleSubmit(submit)}>
-            <label className="upload-images">
-              <p>Images</p>
-              <div className="images">
-                {images.map((image: any, index: any) => (
-                  <div key={image.id} className={`image ${index === 0 && "thumbnail"}`}>
-                    <Image
-                      src={image.url || image.secure_url || URL.createObjectURL(image)}
-                      alt={image.url || image.secure_url || URL.createObjectURL(image)}
-                      width={100}
-                      height={100}
-                    />
-                    <button // delete button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        const filteredImages = images.filter((v: any, i: any) => i !== index);
-                        // console.log(filteredImages);
-                        setImages(filteredImages);
-                        setValue("images", filteredImages);
-                      }}
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
+            <div className="images">
+              <div className="preview-images-outer">
+                <div className="preview-images">
+                  {images.map((image: any, index: any) => (
+                    <div key={image.id} className={`image ${index === 0 && "thumbnail-image"}`}>
+                      <Image
+                        src={image.url || image.secure_url || URL.createObjectURL(image)}
+                        alt={image.url || image.secure_url || URL.createObjectURL(image)}
+                        width={100}
+                        height={100}
+                      />
+                      <button // delete button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          const filteredImages = images.filter((v: any, i: any) => i !== index);
+                          // console.log(filteredImages);
+                          setImages(filteredImages);
+                          setValue("images", filteredImages);
+                        }}
+                      >
+                        x
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e: any) => {
-                  let changedImages: any = [...images, ...e.target.files];
-                  setImages(changedImages);
-                  setValue("images", changedImages);
-                }}
-              />
-              <div>
-                {/* {images.map((img, index) => (
+              <label className="image-uploader">
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={(e: any) => {
+                    // const files = e.target.files;
+                    // const filesArray = Array.from(e.target.files);
+                    const newImages = Array.from(e.target.files);
+                    console.log({ newImages });
+                    let changedImages: any = [...images, ...newImages];
+                    console.log({ changedImages });
+                    setImages(changedImages);
+                    setValue("images", changedImages);
+                  }}
+                />
+              </label>
+            </div>
+            {/* {images.map((img, index) => (
                   <div key={index} className="file_img my-1">
                     <img
                       src={img.url ? img.url : URL.createObjectURL(img)}
@@ -266,8 +308,6 @@ export default function Page() {
                     <span onClick={() => deleteImage(index)}>X</span>
                   </div>
                 ))} */}
-              </div>
-            </label>
             <label className="category">
               <span>Category</span>
               <select {...register("category", { required: true })} id="category">
@@ -337,8 +377,8 @@ export default function Page() {
                 defaultValue={product.content}
               />
             </label>
-            <button type="submit" disabled={auth.user?.role !== "admin"}>
-              {mode}
+            <button type="submit" disabled={loading}>
+              {loading ? "Uploading" : mode}
             </button>
           </form>
         </div>
@@ -358,42 +398,43 @@ const Main = styled(PublicMain)`
       button {
         align-self: flex-end;
       }
-      .upload-images {
+      .images {
+        border: 2px solid;
+        padding: 1rem;
+      }
+      .preview-images-outer {
         overflow-x: scroll;
-        border: 2px solid red;
-        .images {
-          width: fit-content;
-          display: flex;
-          gap: 1rem;
-          padding: 1rem;
-          .thumbnail {
-            border: 5px solid coral;
-          }
-          .image {
-            position: relative;
-            width: 10rem;
-            height: 10rem;
-            img {
-              /* border: 2px solid lightpink; */
-              /* height: initial; */
-              /* height: 3rem; */
-            }
-            button {
-              width: 2rem;
-              height: 2rem;
-              position: absolute;
-              top: 0.3rem;
-              right: 0.3rem;
-              background-color: #fff;
-              color: #000;
-              border: 2px solid #000;
-              border-radius: 50%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
+      }
+      .preview-images {
+        width: fit-content;
+        display: flex;
+        gap: 1rem;
+        padding: 1rem;
+        .thumbnail-image {
+          border: 5px solid coral;
+        }
+        .image {
+          position: relative;
+          width: 10rem;
+          height: 10rem;
+          border: 2px solid;
+          button {
+            width: 2rem;
+            height: 2rem;
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            background-color: #fff;
+            color: #000;
+            border: 2px solid;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
           }
         }
+      }
+      .image-uploader {
       }
       .category {
         border: 2px solid blue;

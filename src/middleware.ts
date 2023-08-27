@@ -31,10 +31,12 @@ export default async function middleware(req: NextRequest) {
 
   // get the credentials
   const refreshToken = req.cookies.get("refreshToken");
-  const session = await getToken({ req });
+  const session: any = await getToken({ req });
+  const { role } = session.user;
+  console.log({ role });
   // console.log({ refreshToken, session });
   // protect the route (접근제한)
-  if (session || refreshToken) return NextResponse.next();
+  if (role === "admin" || refreshToken) return NextResponse.next();
   else return NextResponse.redirect(new URL("/auth/signin", req.url));
 
   // next-auth

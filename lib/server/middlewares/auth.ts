@@ -27,10 +27,11 @@ export const isAuthenticated = async (req: any, res: any, next: any) => {
   // }
 };
 export const authorizeRoles = (roles: any) => {
-  return (req: any, res: any, next: any) => {
+  return async (req: any, res: any, next: any) => {
+    console.log("\x1b[32m\n<middleware/authorizeRoles>");
     if (!roles.includes(req.user.role)) {
       throw new Error(`Role (${req.user.role}) is not allowed to access this resource.`);
     }
-    next();
+    await next();
   };
 };

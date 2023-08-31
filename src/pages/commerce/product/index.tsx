@@ -1,9 +1,9 @@
-import Filter from "@/components/Filter";
-import ProductItem from "@/components/product/ProductItem";
-import { Main as PublicMain } from "@/styles/public/main.styled";
 import { openModal } from "lib/client/store/modalSlice";
 import { getData } from "lib/client/utils/fetchData";
 import { searchWithFilter } from "lib/client/utils/searchWithFilter";
+import Filter from "@/components/Filter";
+import ProductItem from "@/components/product/ProductItem";
+import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,8 @@ export async function getServerSideProps({ query }: any) {
 export default function Page({ data }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { notify }: any = useSelector((store) => store);
+  // const { notify }: any = useSelector((store) => store);
+  const auth = useSelector((store: any) => store.auth);
   const [products, setProducts]: any = useState([]);
   const [checkedProducts, setCheckedProducts]: any = useState(data);
   const [isCheckAll, setIsCheckAll]: any = useState(false);
@@ -25,12 +26,12 @@ export default function Page({ data }: any) {
     if (Object.keys(router.query).length === 0) setPage(1);
   }, [router.query]);
   useEffect(() => {
-    console.log("data : ", data);
+    console.log({ data });
     setProducts(data);
-  }, [data]);
-  useEffect(() => {
-    if (notify.status === "success") router.push({ query: null });
-  }, [notify.status]);
+  }, [data]); // data waterfall
+  // useEffect(() => {
+  //   if (notify.status === "success") router.push({ query: null });
+  // }, [notify.status]);
   const handleCheckAll = () => {
     if (!isCheckAll) {
       const productIds = products.map((product: any) => product._id);
@@ -57,14 +58,18 @@ export default function Page({ data }: any) {
       <section>
         <div className="products">
           <Filter />
-          <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
-          <button onClick={handleOpenModal}>Delete</button>
+          {auth.user?.role === "admin" && (
+            <div>
+              <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
+              <button onClick={handleOpenModal}>Delete</button>
+            </div>
+          )}
           <ul>
             {products?.map((product: any) => (
               <ProductItem
                 key={product._id}
                 product={product}
-                setProducts={setProducts}
+                // setProducts={setProducts}
                 setCheckedProducts={setCheckedProducts}
                 isCheckAll={isCheckAll}
               />

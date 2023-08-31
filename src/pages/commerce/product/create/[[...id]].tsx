@@ -36,6 +36,7 @@ export default function Page() {
   const [mode, setMode] = useState(""); // button mode : create or update
   const [product, setProduct]: any = useState({});
   const [images, setImages]: any = useState([]);
+  // const [encodedImages, setEncodedImages]: any = useState([]);
   // query : product id
   const router = useRouter();
   const { id } = router.query;
@@ -66,21 +67,15 @@ export default function Page() {
   // const watchImages = watch("images");
   // const { fields, append, remove }: any = useFieldArray({ name: "images", control }); // for array field used to form
 
+  // const uploadImage = async (files: any) => {};
   const convertBase64 = (file: any) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
+      fileReader.onload = () => resolve(fileReader.result);
+      fileReader.onerror = (error) => reject(error);
     });
   };
-
   const submit = async (data: any) => {
     // console.log("data : ", data);
     // validation
@@ -90,18 +85,8 @@ export default function Page() {
     if (mode === "create") {
       try {
         // dispatch(setLoading(true));
-
-        // // upload images (base64)
+        // get
         // const { images } = data;
-        // const imageBase64 = await convertBase64(images[0]);
-        // const result = await axios({
-        //   method: "POST",
-        //   url: "http://localhost:3000/api/v2/products",
-        //   data: { imageBase64 },
-        //   // withCredentials: true,
-        // });
-        // console.log({ result });
-
         // direct upload
         const uploadedImages = await uploadImage(images);
         const payload = { ...data, images: uploadedImages };
@@ -152,6 +137,93 @@ export default function Page() {
     //     dispatch(setLoading(false));
     //   }
     // }
+  };
+  const submitByBase64 = async (data: any) => {
+    // console.log("data : ", data);
+    const checkValidation = () => {
+      // checkValidation
+      if (images.length === 0) return toast.error("Please fill the image field.");
+      if (data.category === "all") return toast.error("Please fill the category field.");
+    };
+    const convertBase64 = (file: any) => {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          console.log({ result: fileReader });
+          resolve(fileReader.result);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    };
+    const createSingleImage = async () => {
+      if (images.length === 1) {
+        // convert to base64 string
+        const imageBase64 = await convertBase64(images[0]);
+        // create
+        const response = await axios({
+          method: "POST",
+          url: "http://localhost:3001/api/v2/products",
+          data: { imageBase64 },
+          // withCredentials: true,
+        });
+        console.log({ response });
+        // out
+        logResponse(response);
+        dispatch(setLoading(false));
+        toast.success("Uploading Completed");
+        // router.push("/commerce/product");
+      }
+    };
+    const createMultipleImages = async () => {
+      // convert to base64 string
+      // const imagesBase64: any = [];
+      // for (let image of images) {
+      //   const imageBase64 = await convertBase64(image);
+      //   imagesBase64.push(imageBase64);
+      // }
+      // encodedImages.map((encodedImage: any) => {
+      //   formData.append("images", encodedImage);
+      // });
+
+      const formData: any = new FormData();
+      images.map((image: any) => formData.append("images", image));
+      // images.forEach((image: any) => formData.append("images", image));
+
+      // create
+      try {
+        const response = await axios({
+          method: "POST",
+          url: "http://localhost:3001/api/v2/products",
+          headers: { "Content-Type": "multipart/form-data" },
+          data: formData,
+          // data: { ...data, images: encodedImages },
+        });
+        // out
+        logResponse(response);
+        dispatch(setLoading(false));
+        toast.success("Uploading Completed");
+        // router.push("/commerce/product");
+      } catch (error: any) {
+        console.log({ eeeeeeerrrrr: error });
+        console.log({ test: error.config.data.getAll() });
+      }
+    };
+
+    checkValidation();
+    // dispatch(setLoading(true));
+    if (mode === "create") {
+      try {
+        if (images.length === 1) return await createSingleImage();
+        await createMultipleImages();
+      } catch (error) {
+        // logError(error);
+        console.log({ error });
+        dispatch(setLoading(false));
+      }
+    }
   };
   const fetchData = async () => {
     try {
@@ -244,6 +316,9 @@ export default function Page() {
   //   // }
   //   // return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
   // };
+  useEffect(() => {
+    console.log({ images });
+  }, [images]);
   return (
     <Main>
       <Head>
@@ -252,7 +327,12 @@ export default function Page() {
       <section>
         <div className="product-manager">
           <h1>Product Manager</h1>
-          <form onSubmit={handleSubmit(submit)}>
+          <form
+            onSubmit={
+              handleSubmit(submitByBase64)
+              // handleSubmit(submit)
+            }
+          >
             <div className="images">
               <div className="preview-images-outer">
                 <div className="preview-images">
@@ -285,14 +365,22 @@ export default function Page() {
                   multiple
                   accept="image/*"
                   onChange={(e: any) => {
+                    // const files = Array.from(e.target.files);
+                    // files.map(async (file: any) => {
+                    //   const encodedFile = await convertBase64(file);
+                    //   setImages((state: any) => [...state, file]);
+                    //   setEncodedImages((state: any) => [...state, encodedFile]);
+                    // });
                     // const files = e.target.files;
-                    // const filesArray = Array.from(e.target.files);
+                    // const newImages = e.target.files;
                     const newImages = Array.from(e.target.files);
-                    console.log({ newImages });
-                    let changedImages: any = [...images, ...newImages];
-                    console.log({ changedImages });
+                    const changedImages: any = [...images, ...newImages];
                     setImages(changedImages);
-                    setValue("images", changedImages);
+                    // changedImages.map(async (changedImage: any) => {
+                    //   const encodedImage = await convertBase64(changedImage);
+                    //   setEncodedImages((state: any) => [...state, encodedImage]);
+                    // });
+                    // setValue("images", changedImages);
                   }}
                 />
               </label>

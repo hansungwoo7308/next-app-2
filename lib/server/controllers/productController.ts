@@ -2,7 +2,7 @@ import Product from "lib/server/models/Product";
 export const createProduct = async (req: any, res: any) => {
   console.log("\x1b[32m\n<productController/createProduct>");
   // get
-  const { title, price, inStock, description, content, category, images } = req.body;
+  const { title, price, inStock, description, content, category, images, imagesBase64 } = req.body;
   console.log({ "req.body": req.body });
   const invalid =
     !title ||

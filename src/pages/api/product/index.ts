@@ -3,7 +3,7 @@ import Product from "lib/server/models/Product";
 import verifyJWT from "lib/server/utils/verifyJWT";
 connectDB();
 export default async function (req: any, res: any) {
-  console.log(`\x1b[32m\n[api/product]`);
+  console.log(`\x1b[32m\n[api/product]:::[${req.method}]`);
   switch (req.method) {
     case "GET":
       await getProducts(req, res);
@@ -19,7 +19,7 @@ export default async function (req: any, res: any) {
 const getProducts = async (req: any, res: any) => {
   try {
     // get
-    console.log("req.query : ", req.query);
+    console.log({ query: req.query });
     const instance = new APIfeatures(Product.find(), req.query).filtering().sorting().paginating();
     const data = await instance.products;
     // console.log(
@@ -55,7 +55,7 @@ const getProducts = async (req: any, res: any) => {
     // );
     // return res.status(200).json({ products });
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     return res.status(500).json({ error });
   }
 };

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
+import axios from "axios";
 export default function AuthButton(props: any) {
   const router = useRouter();
   // store
@@ -33,34 +34,34 @@ export default function AuthButton(props: any) {
       logError(error);
     }
   };
-  if (!auth.accessToken) {
+  if (auth.accessToken || session.data?.user) {
     return (
       <Box dropdown={dropdown}>
-        <div className="sign">
-          <Link href={"/auth/signup"}>Sign up</Link>
-          <Link href={"/auth/signin"}>Sign in</Link>
+        <div className="profile">
+          <div className="image" onClick={() => setDropdown(!dropdown)}>
+            <Image src={auth.user?.image} alt={auth.user?.image} width={100} height={100} />
+            {auth.user?.username || auth.user?.name}
+          </div>
+          <div className="dropdown">
+            <Link href={"/auth/profile"}>Profile</Link>
+            {auth.user?.role === "admin" && (
+              <>
+                <Link href={"/users"}>Users</Link>
+                <Link href={"/commerce/product"}>Products</Link>
+                <Link href={"/commerce/product/create"}>Create a product</Link>
+              </>
+            )}
+            <button onClick={handleSignout}>Sign out</button>
+          </div>
         </div>
       </Box>
     );
   }
   return (
     <Box dropdown={dropdown}>
-      <div className="profile">
-        <div className="image" onClick={() => setDropdown(!dropdown)}>
-          <Image src={auth.user?.image} alt={auth.user?.image} width={100} height={100} />
-          {auth.user?.username || auth.user?.name}
-        </div>
-        <div className="dropdown">
-          <Link href={"/auth/profile"}>Profile</Link>
-          {auth.user?.role === "admin" && (
-            <>
-              <Link href={"/users"}>Users</Link>
-              <Link href={"/commerce/product"}>Products</Link>
-              <Link href={"/commerce/product/create"}>Create a product</Link>
-            </>
-          )}
-          <button onClick={handleSignout}>Sign out</button>
-        </div>
+      <div className="sign">
+        <Link href={"/auth/signup"}>Sign up</Link>
+        <Link href={"/auth/signin"}>Sign in</Link>
       </div>
     </Box>
   );

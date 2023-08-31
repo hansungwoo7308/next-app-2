@@ -32,6 +32,11 @@ export default async function middleware(req: NextRequest) {
   // get the credentials
   const refreshToken = req.cookies.get("refreshToken");
   const session: any = await getToken({ req });
+  console.log({ session });
+  return;
+
+  // if(refreshToken || session.data.)
+
   const { role } = session.user;
   console.log({ role });
   // console.log({ refreshToken, session });
@@ -101,6 +106,6 @@ export default async function middleware(req: NextRequest) {
 // 로그인 상태가 아니면 로그인 페이지로 이동한다.
 // export default withAuth(middleware);
 export const config = {
-  matcher: ["/auth/profile"],
-  // matcher: ["/api/users"],
+  // matcher: ["/auth/profile"],
+  matcher: ["/asdhaldaldhasd"],
 };

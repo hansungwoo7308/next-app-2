@@ -72,7 +72,7 @@ export function GlobalState({ children, token }: any) {
   //   };
   // }, [router.pathname]);
   useEffect(() => {
-    if (session) return; // session 방식으로 구현했다면 리프레시를 패스한다.
+    if (session.data?.user) return; // session 방식으로 구현했다면 리프레시를 패스한다.
     if (!auth.accessToken) refreshAuth();
   }, [auth.accessToken]); // 엑세스 토큰이 없으면 리프레시 요청 (store)
   // useEffect(() => {

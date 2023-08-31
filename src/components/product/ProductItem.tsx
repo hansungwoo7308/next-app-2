@@ -103,7 +103,7 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
   return (
     <Item>
       <div className="image">
-        {auth.user.role === "admin" && (
+        {auth.user?.role === "admin" && (
           <input ref={checkRef} className="check" type="checkbox" onChange={handleCheck} />
         )}
         <Image

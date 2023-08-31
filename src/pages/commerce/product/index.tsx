@@ -58,12 +58,12 @@ export default function Page({ data }: any) {
       <section>
         <div className="products">
           <Filter />
-          {auth.user?.role === "admin" && (
+          {/* {auth.user?.role === "admin" && (
             <div>
               <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
               <button onClick={handleOpenModal}>Delete</button>
             </div>
-          )}
+          )} */}
           <ul>
             {products?.map((product: any) => (
               <ProductItem

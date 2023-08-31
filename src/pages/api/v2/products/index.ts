@@ -42,7 +42,7 @@ router
     console.log({ files: req.files, body: req.body });
     await next();
   })
-  .post(async (req: any, res: any) => {
+  .post(async (req: any, res: any, next: any) => {
     // get
     const { files } = req;
     // set
@@ -57,7 +57,11 @@ router
       overwrite: true,
       folder: "next-app-2",
     };
-
+    // 1) upload : general Promise (비동기 업로드 : 로그를 한번에 보지 못하고, 처리된 순서대로 받게 된다.)
+    // files.map(async (file: any) => {
+    //   const result = await cloudinary.v2.uploader.upload(file.path, options);
+    //   console.log({ cloudinaryUploadData: result });
+    // });
     // 2) upload : Promise.all (비동기 업로드 : 로그 결과를 한번에 일괄적으로 받게 된다.)
     let uploadPromises: any = [];
     files.map(async (file: any) => {
@@ -68,24 +72,15 @@ router
     });
     const result = await Promise.all(uploadPromises);
     console.log({ promiseAllResult: result });
-    return res.status(200).json({ message: "ccc" });
 
-    // 1) upload : general Promise (비동기 업로드 : 로그를 한번에 보지 못하고, 처리된 순서대로 받게 된다.)
-    // files.map(async (file: any) => {
-    //   const result = await cloudinary.v2.uploader.upload(file.path, options);
-    //   console.log({ cloudinaryUploadData: result });
-    // });
+    console.log({ body: req.body });
+    req.body.images = result.map((item: any) => ({ url: item.url, secure_url: item.secure_url }));
+    console.log({ body: req.body });
+    // return res.status(200).json({ message: "ccc" });
+    await next();
+  }) // R
+  .post(createProduct); // R
 
-    // const result = await axios({
-    //   method: "POST",
-    //   url: process.env.CLOUD_API_BASE_URL,
-    //   data: formData,
-    // });
-
-    // req.body.image=image
-
-    res.status(200).json({ message: "aaa" });
-  }); // R
 // router
 //   // .use(upload.array("images"))
 //   .use(async (req: any, res: any, next: any) => {
@@ -111,7 +106,6 @@ router
 // })
 // .use(isAuthenticated, authorizeRoles(["admin"]))
 // .use(uploadImage)
-// .post(createProduct); // R
 // .post((req: any, res: any) => {
 //   console.log({ "req.body.image": req.body.image });
 //   res.status(200).json({ message: "testing..." });

@@ -36,6 +36,7 @@ export const uploadImage = async (req: any, res: any, next: any) => {
   }
 };
 
+// upload middleware (cloudinary)
 export const uploadImagesToCloudinary = async (req: any, res: any, next: any) => {
   console.log(`\x1b[32m\n<uploadImagesToCloudinary>`);
   // get
@@ -74,7 +75,7 @@ export const uploadImagesToCloudinary = async (req: any, res: any, next: any) =>
   await next();
 };
 
-// set the multer middleware
+// upload middleware (server)
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "public/uploads");

@@ -1,13 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
+// type Modal = {
+//   visible?: boolean;
+//   type?: string;
+//   message?: string;
+//   id?: string;
+//   ids?: string[];
+//   title?: string;
+//   callback?: Function | null;
+//   // data?: [];
+// };
 type Modal = {
-  visible?: boolean;
-  type?: string;
-  message?: string;
-  id?: string;
-  ids?: string[];
-  title?: string;
-  callback?: Function | null;
-  // data?: [];
+  active?: boolean | null; // 모달 활성화, 비활성화
+  type?: string | null; // 액션타입
+  message?: string | null; // 모달 메세지
+  id?: string | null; // 식별할 아이디
+  ids?: string[] | null; // 식별할 아디디 어레이
+  action1?: Function | null; // 액션
+  action1Label?: string | null;
+  action2?: Function | null; // 액션
+  action2Label?: string | null;
+  disabled?: boolean | null;
+  // callback?: Function | null; // 액션
+  // onClose?:()=>void;
+  // onSubmit?:()=>void;
+  // body?:React.ReactElement;
+  // footer?:React.ReactElement;
 };
 // const initialState: Modal[] = [];
 const initialState: Modal = {};
@@ -15,28 +32,55 @@ export const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openModal: (state, action) => {
-      const { type, message, id, ids, title, callback } = action.payload;
-      state.visible = true;
+    setModal: (state, action) => {
+      const {
+        active,
+        type,
+        message,
+        id,
+        ids,
+        callback,
+        action1,
+        action1Label,
+        action2,
+        action2Label,
+        disabled,
+      } = action.payload;
+      if (!active) return {};
+      state.active = true;
       state.type = type;
       state.message = message;
       state.id = id;
       state.ids = ids;
-      state.title = title;
-      state.callback = callback;
+      state.action1 = action1;
+      state.action1Label = action1Label;
+      state.action2 = action2;
+      state.action2Label = action2Label;
+      state.disabled = disabled;
+      // state.callback = callback;
     },
-    closeModal: (state) => {
-      //   const modal: any = state.find((v: any) => v.name === action.payload.name);
-      //   modal.visible = false;
-      //   return [];
-      state.visible = false;
-      state.type = "";
-      state.message = "";
-      state.id = "";
-      state.ids = [];
-      state.title = "";
-      state.callback = null;
-    },
+    // openModal: (state, action) => {
+    //   const { type, message, id, ids, title, callback } = action.payload;
+    //   state.visible = true;
+    //   state.type = type;
+    //   state.message = message;
+    //   state.id = id;
+    //   state.ids = ids;
+    //   state.title = title;
+    //   state.callback = callback;
+    // },
+    // closeModal: (state) => {
+    //   //   const modal: any = state.find((v: any) => v.name === action.payload.name);
+    //   //   modal.visible = false;
+    //   //   return [];
+    //   state.visible = false;
+    //   state.type = "";
+    //   state.message = "";
+    //   state.id = "";
+    //   state.ids = [];
+    //   state.title = "";
+    //   state.callback = null;
+    // },
   },
   extraReducers(builder) {
     // builder.addCase(fetchTest.fulfilled, (state, action) => {
@@ -46,4 +90,5 @@ export const modalSlice = createSlice({
     // });
   },
 });
-export const { openModal, closeModal } = modalSlice.actions;
+export const { setModal } = modalSlice.actions;
+// export const { openModal, closeModal } = modalSlice.actions;

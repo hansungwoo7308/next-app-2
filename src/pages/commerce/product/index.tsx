@@ -1,4 +1,3 @@
-import { openModal } from "lib/client/store/modalSlice";
 import { getData } from "lib/client/utils/fetchData";
 import { searchWithFilter } from "lib/client/utils/searchWithFilter";
 import Filter from "@/components/Filter";
@@ -16,7 +15,6 @@ export async function getServerSideProps({ query }: any) {
 export default function Page({ data }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const { notify }: any = useSelector((store) => store);
   const auth = useSelector((store: any) => store.auth);
   const [products, setProducts]: any = useState([]);
   const [checkedProducts, setCheckedProducts]: any = useState(data);
@@ -45,31 +43,30 @@ export default function Page({ data }: any) {
     // setIsCheckAll((state: boolean) => !state);
   };
   const handleOpenModal = () => {
-    dispatch(
-      openModal({
-        type: "DELETE_PRODUCTS",
-        message: "Do you want to delete the selected products?",
-        ids: checkedProducts,
-      })
-    );
+    // dispatch(
+    //   openModal({
+    //     type: "DELETE_PRODUCTS",
+    //     message: "Do you want to delete the selected products?",
+    //     ids: checkedProducts,
+    //   })
+    // );
   };
   return (
     <Main>
       <section>
         <div className="products">
           <Filter />
-          {/* {auth.user?.role === "admin" && (
+          {auth.user?.role === "admin" && (
             <div>
               <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
               <button onClick={handleOpenModal}>Delete</button>
             </div>
-          )} */}
+          )}
           <ul>
             {products?.map((product: any) => (
               <ProductItem
                 key={product._id}
                 product={product}
-                // setProducts={setProducts}
                 setCheckedProducts={setCheckedProducts}
                 isCheckAll={isCheckAll}
               />

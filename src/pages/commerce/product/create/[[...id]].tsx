@@ -27,16 +27,15 @@ type FormValue = {
   images: [];
 };
 export default function Page() {
-  // store
+  // store (external)
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
   const loading = useSelector((store: any) => store.loading);
   const dispatch = useDispatch();
-  // state
+  // state (internal)
   const [mode, setMode] = useState(""); // button mode : create or update
   const [product, setProduct]: any = useState({});
   const [images, setImages]: any = useState([]);
-  // const [encodedImages, setEncodedImages]: any = useState([]);
   // query : product id
   const router = useRouter();
   const { id } = router.query;

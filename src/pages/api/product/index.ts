@@ -20,14 +20,14 @@ const getProducts = async (req: any, res: any) => {
   try {
     // get
     console.log({ query: req.query });
-    const instance = new APIfeatures(Product.find(), req.query).filtering().sorting().paginating();
-    const data = await instance.products;
-    // console.log(
-    //   "data : ",
-    //   data.map((item: any) => item.title)
-    // );
-    // console.log(data);
-    return res.status(200).json({ products: data });
+    const queryInstance = new APIfeatures(Product.find(), req.query)
+      //
+      .filtering()
+      .sorting();
+    // .paginating()
+    const queriedProducts = await queryInstance.products;
+    return res.status(200).json({ products: queriedProducts });
+    // return res.status(200).json({ productsTitles: data.map((item: any) => item.title) });
     // if (req.query) {
     //   const { productPage, productCount, sort } = req.query;
     //   const page = Number(productPage) || 1;
@@ -140,7 +140,6 @@ class APIfeatures {
     console.log({ page, limit, skip });
     // paginate
     this.products = this.products.skip(skip).limit(limit);
-    // out
     return this;
   }
 }

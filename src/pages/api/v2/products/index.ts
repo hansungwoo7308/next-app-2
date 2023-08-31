@@ -8,6 +8,7 @@ import { PageConfig } from "next";
 // set the database and router
 connectDB();
 const router = createRouter();
+router.get((req: any, res: any) => res.status(200).json({ message: "getProducts" }));
 router
   .use(async (req: any, res: any, next: any) => {
     console.log(`\x1b[32m\n[api/v2/products]:::[${req.method}]`);

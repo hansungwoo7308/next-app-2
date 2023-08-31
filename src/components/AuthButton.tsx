@@ -10,6 +10,7 @@ import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
+import { setModal } from "lib/client/store/modalSlice";
 export default function AuthButton(props: any) {
   const router = useRouter();
   // store
@@ -48,7 +49,10 @@ export default function AuthButton(props: any) {
               <>
                 <Link href={"/users"}>Users</Link>
                 <Link href={"/commerce/product"}>Products</Link>
-                <Link href={"/commerce/product/create"}>Create a product</Link>
+                {/* <Link href={"/commerce/product/create"}>Create a product</Link> */}
+                <button onClick={() => dispatch(setModal({ active: true, type: "CREATE" }))}>
+                  Create a product
+                </button>
               </>
             )}
             <button onClick={handleSignout}>Sign out</button>

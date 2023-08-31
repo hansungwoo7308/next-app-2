@@ -139,7 +139,12 @@ export default function Page() {
     // }
   };
   const submitByBase64 = async (data: any) => {
-    // console.log("data : ", data);
+    dispatch(setLoading(true));
+
+    // const { category, content, description, inStock, price, title } = data;
+    console.log("data : ", data);
+    // console.log({ category: data.category });
+    // return;
     const checkValidation = () => {
       // checkValidation
       if (images.length === 0) return toast.error("Please fill the image field.");
@@ -191,6 +196,10 @@ export default function Page() {
       const formData: any = new FormData();
       images.map((image: any) => formData.append("images", image));
       // images.forEach((image: any) => formData.append("images", image));
+      for (let key in data) {
+        // console.log({ key, value: data[key] });
+        formData.append(key, data[key]);
+      }
 
       // create
       try {
@@ -199,7 +208,7 @@ export default function Page() {
           url: "http://localhost:3001/api/v2/products",
           headers: { "Content-Type": "multipart/form-data" },
           data: formData,
-          // data: { ...data, images: encodedImages },
+          // data: { ...data, formData },
         });
         // out
         logResponse(response);

@@ -76,7 +76,9 @@ export default function Page() {
       fileReader.onerror = (error) => reject(error);
     });
   };
+
   const submit = async (data: any) => {
+    // 클라우디너리에 무조건 업로드하고 프러덕트를 생성한다.
     // console.log("data : ", data);
     // validation
     if (images.length === 0) return toast.error("Please fill the image field.");
@@ -139,12 +141,7 @@ export default function Page() {
     // }
   };
   const submitByBase64 = async (data: any) => {
-    dispatch(setLoading(true));
-
-    // const { category, content, description, inStock, price, title } = data;
     console.log("data : ", data);
-    // console.log({ category: data.category });
-    // return;
     const checkValidation = () => {
       // checkValidation
       if (images.length === 0) return toast.error("Please fill the image field.");
@@ -193,16 +190,16 @@ export default function Page() {
       //   formData.append("images", encodedImage);
       // });
 
+      // set the formData
       const formData: any = new FormData();
-      images.map((image: any) => formData.append("images", image));
-      // images.forEach((image: any) => formData.append("images", image));
-      for (let key in data) {
-        // console.log({ key, value: data[key] });
-        formData.append(key, data[key]);
-      }
+      for (let image of images) formData.append("images", image);
+      for (let key in data) formData.append(key, data[key]);
+      // for (let image of images) console.log({ image });
+      // images.map((image: any) => formData.append("images", image));
 
       // create
       try {
+        dispatch(setLoading(true));
         const response = await axios({
           method: "POST",
           url: "http://localhost:3001/api/v2/products",

@@ -39,7 +39,6 @@ export const modalSlice = createSlice({
         message,
         id,
         ids,
-        callback,
         action1,
         action1Label,
         action2,
@@ -47,17 +46,16 @@ export const modalSlice = createSlice({
         disabled,
       } = action.payload;
       if (!active) return {};
-      state.active = true;
-      state.type = type;
-      state.message = message;
-      state.id = id;
-      state.ids = ids;
-      state.action1 = action1;
-      state.action1Label = action1Label;
-      state.action2 = action2;
-      state.action2Label = action2Label;
-      state.disabled = disabled;
-      // state.callback = callback;
+      if (active) state.active = active;
+      if (type) state.type = type;
+      if (message) state.message = message;
+      if (id) state.id = id;
+      if (ids) state.ids = ids;
+      if (action1) state.action1 = action1;
+      if (action1Label) state.action1Label = action1Label;
+      if (action2) state.action2 = action2;
+      if (action2Label) state.action2Label = action2Label;
+      if (disabled) state.disabled = disabled;
     },
     // openModal: (state, action) => {
     //   const { type, message, id, ids, title, callback } = action.payload;

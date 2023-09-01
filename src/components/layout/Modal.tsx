@@ -1,4 +1,4 @@
-import ProductManager from "@/components/product/ProductManager";
+import ProductCreateForm from "@/components/product/ProductCreateForm";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { deleteItem } from "lib/client/store/cartSlice";
@@ -11,12 +11,12 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 export default function Modal() {
+  const loading = useSelector((store: any) => store.loading);
   const auth = useSelector((store: any) => store.auth);
   const modal = useSelector((store: any) => store.modal);
   const { active, type, message, id, ids, action, actionLabel, disabled } = modal;
-  // const { type, id, ids, title, callback } = modal;
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
   // const handleConfirm = async (e: any) => {
   //   e.preventDefault();
   //   try {
@@ -82,12 +82,6 @@ export default function Modal() {
   // const handleDeleteCartItem = async () => {
   //   dispatch(deleteItem({ _id: id }));
   // };
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
   // const handleCreatePost = async ({ title, content }: any) => {
   //   try {
   //     dispatch(setLoading(true));
@@ -104,7 +98,6 @@ export default function Modal() {
   //   const response = await deleteData("posts", auth.accessToken, { _id: id });
   //   logResponse(response);
   // };
-  // handlers
   const handleAction = async (e: any) => {
     e.preventDefault();
     switch (type) {
@@ -120,69 +113,16 @@ export default function Modal() {
     }
   };
   const handleClose = () => dispatch(setModal({ active: false }));
-  // const form = (
-  //   <form
-  //     onSubmit={handleSubmit((data) => {
-  //       const { title, content } = data;
-  //       handleCreatePost({ title, content });
-  //       dispatch(closeModal());
-  //       // router.reload();
-  //       router.push(router.asPath);
-  //     })}
-  //   >
-  //     <div>
-  //       <input {...register("title", { required: true })} type="text" placeholder="Title" />
-  //       <textarea
-  //         {...register("content", { required: true })}
-  //         cols={30}
-  //         rows={10}
-  //         placeholder="Content"
-  //       ></textarea>
-  //     </div>
-  //     <div>
-  //       <button>Submit</button>
-  //       <button onClick={() => dispatch(closeModal())}>Close</button>
-  //     </div>
-  //   </form>
-  // );
   if (!modal.active) return null;
   if (modal.type === "CREATE") {
     return (
       <Background onClick={handleClose}>
         <Box onClick={(e) => e.stopPropagation()}>
-          <div className="header">
-            <h3>{type}</h3>
-          </div>
-          <hr />
-          <div className="main">
-            {/* <p>{message}</p> */}
-            <ProductManager />
-          </div>
-          <div className="footer">
-            <button
-              onClick={handleAction}
-              // disabled={loading}
-            >
-              {actionLabel || "Create"}
-            </button>
-            <button onClick={handleClose}>Close</button>
-          </div>
+          <ProductCreateForm />
         </Box>
       </Background>
     );
   }
-  // return (
-  //   <Background onClick={handleClose}>
-  //     <Box onClick={(e) => e.stopPropagation()}>
-  //       {/* {type === "CREATE_POST" && form} */}
-  //       <h1>{modal.message}</h1>
-  //       <div>
-  //         <button onClick={handleAction}>Confirm</button>
-  //         <button onClick={handleClose}>Close</button>
-  //       </div>
-  //     </Box>
-  //   </Background>
-  // );
   return (
     <Background onClick={handleClose}>
       <Box onClick={(e) => e.stopPropagation()}>
@@ -250,15 +190,4 @@ const Box = styled.div`
       cursor: not-allowed;
     } */
   }
-
-  /* > div {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  button {
-    padding: 1rem;
-    cursor: pointer;
-  } */
 `;

@@ -1,15 +1,15 @@
 import ProductCreateForm from "@/components/product/ProductCreateForm";
+import { setLoading } from "lib/client/store/loadingSlice";
+import { setModal } from "lib/client/store/modalSlice";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import logError from "lib/client/log/logError";
 import logResponse from "lib/client/log/logResponse";
 import { deleteItem } from "lib/client/store/cartSlice";
-import { setLoading } from "lib/client/store/loadingSlice";
-import { setModal } from "lib/client/store/modalSlice";
 import { deleteUser } from "lib/client/store/usersSlice";
 import { deleteData, getData, postData } from "lib/client/utils/fetchData";
-import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
 export default function Modal() {
   const loading = useSelector((store: any) => store.loading);
   const auth = useSelector((store: any) => store.auth);
@@ -152,18 +152,12 @@ const Background = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  /* width: 100%;
-  height: 100%; */
   display: flex;
   justify-content: center;
   align-items: center;
   outline: 5px solid purple;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 10000;
-  :focus {
-    /* border: 3px solid red; */
-    display: none;
-  }
+  z-index: 100;
 `;
 const Box = styled.div`
   background-color: #eee;

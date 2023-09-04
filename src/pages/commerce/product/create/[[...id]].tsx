@@ -15,17 +15,6 @@ import { setLoading } from "lib/client/store/loadingSlice";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 import { toast } from "react-toastify";
-type FormValue = {
-  title: string; //name
-  description: string;
-  // seller
-  price: number;
-  inStock: number; //stock
-  category: string;
-
-  content: string;
-  images: [];
-};
 export default function Page() {
   // store (external)
   const session = useSession();

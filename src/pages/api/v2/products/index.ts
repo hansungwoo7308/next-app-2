@@ -5,7 +5,6 @@ import { uploadImagesToServer, uploadImagesToCloudinary } from "lib/server/middl
 import { createProduct } from "lib/server/controllers/productController";
 import { createRouter } from "next-connect";
 import { PageConfig } from "next";
-// set the database and router
 connectDB();
 const router = createRouter();
 router.get((req: any, res: any) => res.status(200).json({ message: "getProducts" }));
@@ -14,13 +13,14 @@ router
     console.log(`\x1b[32m\n[api/v2/products]:::[${req.method}]`);
     await next();
   })
+  .use(isAuthenticated, authorizeRoles(["admin"]))
   .use(uploadImagesToServer, async (req: any, res: any, next: any) => {
     console.log(`\n<uploadImagesToServer>`);
     console.log({ files: req.files, body: req.body });
     await next();
   })
-  .post(uploadImagesToCloudinary) // R
-  .post(createProduct); // R
+  .post(uploadImagesToCloudinary)
+  .post(createProduct);
 // const storage = multer.diskStorage({
 //   destination: function (req, file, callback) {
 //     callback(null, "public/uploads");
@@ -83,7 +83,6 @@ router
 //   await next();
 // }) // R
 
-// .use(isAuthenticated, authorizeRoles(["admin"]))
 // .use(uploadImage)
 // router.use(isAuthenticated).patch(updateUser); // U
 // router.use(isAuthenticated).delete(deleteUser); // D
@@ -100,7 +99,6 @@ export const config: PageConfig = {
   api: {
     bodyParser: false,
     externalResolver: true,
-
     // bodyParser: {
     //   // sizeLimit: "13mb", // Set desired value here
     // },

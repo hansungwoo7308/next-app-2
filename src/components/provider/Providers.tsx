@@ -50,7 +50,7 @@ export function GlobalState({ children, token }: any) {
       dispatch(setLoading(true));
       const response = await getData("authentication/refresh");
       const { username, role, image, accessToken } = response.data;
-      logResponse(response);
+      // logResponse(response);
       const credentials = { user: { username, image, role }, accessToken };
       dispatch(setCredentials(credentials));
       dispatch(setLoading(false));

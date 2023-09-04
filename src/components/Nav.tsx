@@ -1,11 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
 import styled from "styled-components";
 export default function Nav() {
   const router = useRouter();
-  // under-bar focus
+  // focus-under-bar
   const focusRef: any = useRef();
   // menu
   const homeRef: any = useRef();
@@ -18,12 +17,8 @@ export default function Nav() {
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
   const todoListRef: any = useRef();
-
-  const loginRef: any = useRef();
   const jwtRef: any = useRef();
-
   const searchRef: any = useRef();
-
   const restrictedRef: any = useRef();
   const aboutRef: any = useRef();
   const worksRef: any = useRef();
@@ -114,24 +109,24 @@ export default function Nav() {
         <li ref={homeRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/"}>Home</Link>
         </li>
-        <li ref={listRef} onClick={(e) => handleFocus(e)}>
+        {/* <li ref={listRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/list"}>List</Link>
           <ul>
-            {/* Markdown List */}
-            {/* <li ref={postsRef} onClick={(e) => handleFocus(e)}>
+            Markdown List
+            <li ref={postsRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/posts"}>posts (Markdown)</Link>
             </li>
             <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/blogs"}>blogs (Markdown)</Link>
-            </li> */}
-            {/* CDN List */}
-            {/* <li ref={postListRef} onClick={(e) => handleFocus(e)}>
+            </li>
+            CDN List
+            <li ref={postListRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list"}>post-list (CDN)</Link>
             </li>
             <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/users2"}>User List (CDN)</Link>
-            </li> */}
-            {/* Database List */}
+            </li>
+            Database List
             <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
               <Link href={"/post-list-2"}>Post List 2 (Server - Query - DB)</Link>
             </li>
@@ -139,27 +134,24 @@ export default function Nav() {
               <Link href={"/todo-list"}>Todo List (Client - RTK query - DB)</Link>
             </li>
           </ul>
-        </li>
-        <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
+        </li> */}
+        {/* <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/commerce"}>Commerce</Link>
           <ul>
             <li ref={productRef} onClick={(e) => handleFocus(e)}>
               <Link href={"/commerce/product"}>Product</Link>
             </li>
           </ul>
-        </li>
-        {/* <li ref={userListRef} onClick={(e) => handleFocus(e)}>
+        </li> */}
+        <li ref={userListRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/test"}>TEST</Link>
-        </li> */}
-        {/* <li ref={worksRef} onClick={(e) => handleFocus(e)}>
+        </li>
+        <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"}>Works</Link>
-        </li> */}
-        {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
+        </li>
+        <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"}>Search</Link>
-        </li> */}
-        {/* <li ref={jwtRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/jwt"}>JWT</Link>
-        </li> */}
+        </li>
       </ul>
     </NavStyle>
   );

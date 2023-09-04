@@ -15,21 +15,16 @@ Latin words, combined with a handful of model sentence structures, to generate L
 Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from
 repetition, injected humour, or non-characteristic words etc.`;
 export function getServerSideProps(context: any) {
-  // const serverCookies = context.req.cookies;
-  // console.log("serverCookies : ", serverCookies);
-  // const requestProps = Object.getOwnPropertyNames(context.req);
-  // let authorization =
-  //   context.req.headers.authorization || context.req.headers.Authorization;
-
-  // console.log("\x1b[32m\n[/]");
-  // console.log("refreshToken : ", context.req.cookies.refreshToken);
   return {
-    props: {
-      // serverCookies,
-    },
+    props: {},
   };
 }
 export default function Page() {
+  // console.log({
+  //   NODE_ENV: process.env.NODE_ENV,
+  //   BASE_URL: process.env.BASE_URL,
+  //   NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+  // });
   const sectionRef: any = useRef();
   const anchorRef: any = useRef();
   const indicatorRef: any = useRef();

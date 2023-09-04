@@ -10,7 +10,7 @@ export default function Header() {
         <Link href={"/"}>LOGO</Link>
         <Nav />
         <div>
-          <Cart />
+          {/* <Cart /> */}
           <AuthButton />
         </div>
       </section>

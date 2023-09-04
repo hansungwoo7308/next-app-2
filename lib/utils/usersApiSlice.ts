@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+const baseUrl =
+  process.env.NODE_ENV === "production" ? process.env.BASE_URL : process.env.NEXT_PUBLIC_ENV;
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3001",
-  // baseUrl: "http://localhost:3000",
+  baseUrl,
   credentials: "include",
   prepareHeaders: (headers, { getState }: any) => {
+    // getState : redux store
     // console.log({ state: getState() });
     const accessToken = getState().auth.accessToken;
     if (accessToken) headers.set("authorization", `Bearer ${accessToken}`);

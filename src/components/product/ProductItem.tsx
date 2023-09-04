@@ -1,5 +1,5 @@
 import { addToCart } from "lib/client/store/cartSlice";
-import { openModal } from "lib/client/store/modalSlice";
+import { setModal } from "lib/client/store/modalSlice";
 import { setNotify } from "lib/client/store/notifySlice";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -70,8 +70,8 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
         className="delete-button"
         onClick={() => {
           dispatch(
-            openModal({
-              type: "DELETE_PRODUCT",
+            setModal({
+              active: true,
               message: "Do you want to delete",
               id: _id,
             })
@@ -149,7 +149,6 @@ const Item = styled.li`
   }
   > .description {
     padding: 1rem;
-
     .price {
       color: #d25d5d;
     }

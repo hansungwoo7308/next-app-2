@@ -18,6 +18,27 @@ export const GlobalStyle = createGlobalStyle`
     /* background-color: gray; */
     /* overflow-x: hidden; */
   }
+  main{
+    background-color:#333;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    /* justify-content:center; */
+    >section{
+      width:80%;
+      max-width:1000px;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      padding-top:70px;  
+      >div{
+        border:2px solid green;
+      }
+    }
+  }
   a {
     width: 100%;
     height: 100%;

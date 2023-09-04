@@ -41,16 +41,18 @@ export default function ProductCreateForm() {
     // create
     try {
       dispatch(setLoading(true));
+      const baseUrl =
+        process.env.NODE_ENV === "production" ? process.env.BASE_URL : process.env.NEXT_PUBLIC_ENV;
       const response = await axios({
         method: "POST",
-        url: "http://localhost:3001/api/v2/products",
+        url: `${baseUrl}/api/v2/products`,
         headers: { "Content-Type": "multipart/form-data" },
         data: formData,
       });
       logResponse(response);
       dispatch(setLoading(false));
       toast.success("Uploading Completed");
-      // router.push("/commerce/product");
+      router.push("/commerce/product");
     } catch (error: any) {
       console.log({ error });
       toast.error(error.message);
@@ -65,6 +67,11 @@ export default function ProductCreateForm() {
   };
   const handleChangeUploadInput = (e: any) => {
     const newImages = e.target.files;
+    for (let newImage of newImages) {
+      for (let image of images) {
+        if (newImage.name === image.name) return console.log({ images });
+      }
+    }
     const changedImages: any = [...images, ...newImages];
     setImages(changedImages);
     // const newImages = Array.from(e.target.files);
@@ -175,11 +182,13 @@ export default function ProductCreateForm() {
 }
 const Box = styled.div`
   form {
+    width: 400px;
     .main {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
       .images {
+        width: 100%;
         border: 2px solid;
         padding: 1rem;
       }
@@ -223,6 +232,15 @@ const Box = styled.div`
       justify-content: end;
       gap: 1rem;
       margin-top: 1rem;
+      button {
+        cursor: pointer;
+        background-color: #333;
+        color: #eee;
+        &:hover {
+          background-color: green;
+          color: #fff;
+        }
+      }
     }
   }
 `;

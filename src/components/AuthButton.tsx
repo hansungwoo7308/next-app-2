@@ -9,17 +9,15 @@ import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useState } from "react";
-import axios from "axios";
 import { setModal } from "lib/client/store/modalSlice";
 export default function AuthButton(props: any) {
-  const router = useRouter();
-  // store
+  // external
+  const session = useSession();
   const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();
-  // state
+  // internal
+  const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
-  // session
-  const session = useSession();
   const handleSignout = async (e: any) => {
     e.preventDefault();
     try {

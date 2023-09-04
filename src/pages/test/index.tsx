@@ -68,9 +68,11 @@ export default function Page() {
     const pops: any = document.querySelectorAll(".test");
     document.addEventListener("scroll", () => {
       for (let pop of pops) {
-        // const popBoundingTop = pop.getBoundingClientRect().top;
-        // 뷰포트 높이 > 바디 상단에서 엘리먼트 상단까지의 거리 === 뷰포트 하단에 출현할 때
-        if (window.innerHeight > pop.getBoundingClientRect().top) {
+        const heightOfViewport = window.innerHeight; // 고정값이다.
+        const lengthBetweenBodyTopAndElementTop = pop.getBoundingClientRect().top; // 스크롤다운 시에 줄어든다.
+        const gap = 100;
+        // [뷰포트] 높이 > [바디 상단에서 엘리먼트 상단까지의] 거리 === 뷰포트 하단에 출현할 때 (갭을 주어서 하단에서 100px에 출현)
+        if (heightOfViewport - gap > lengthBetweenBodyTopAndElementTop) {
           pop.classList.add("active");
         } else {
           pop.classList.remove("active");
@@ -83,7 +85,7 @@ export default function Page() {
       //   test.classList.remove("active");
       // }
     });
-  }, []);
+  }, []); // 스크롤 시 뷰포트 하단에서부터 엘리먼츠가 팝업되는 것처럼 나타나도록 스타일을 준다.
 
   useEffect(() => {
     const faders: any = document.querySelectorAll(".fade-in");

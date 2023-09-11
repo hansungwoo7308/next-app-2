@@ -38,7 +38,7 @@ const children: Variants = {
 };
 const imageTransition = { duration: 0.6, ease: [0.6, 0.01, -0.05, 0.9] };
 const variants: any = {
-  initial: { width: "100%" },
+  // initial: { width: "100%" },
   animate: { width: "300px", height: "300px" },
 };
 export default function Loader() {
@@ -46,11 +46,16 @@ export default function Loader() {
     <Box>
       <motion.div
         className="something-outer"
-        variants={variants}
-        initial="initial"
-        animate="animate"
-        transition={{ duration: 3 }}
+        // transition={{ duration: 300 }}
+        // animate={{ transformOrigin: "center", width: "300px", height: "300px" }}
+        animate={{ originX: "0px", originY: "0px" }}
         layoutId="123"
+        // variants={variants}
+        // initial="initial"
+        // animate="animate"
+
+        // transition={{origin}}
+        // animate={{ originX: "center", originY: "center" }}
         // initial="initial"
         // 시간차를 다르게 하기 위한, 패런트의 커스텀 트랜지션 설정 (항상 패런트에서 설정)
         // 커스텀 변수명으로 설정
@@ -84,6 +89,8 @@ export default function Loader() {
             alt="alt"
             whileHover={{ scale: 1.1 }}
             className="something"
+            // animate={{ objectFit: "cover" }}
+            // initial={{ objectFit: "cover" }}
             // variants={children}
             transition={imageTransition}
             // layoutId="something"

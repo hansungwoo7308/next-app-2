@@ -5,8 +5,10 @@ import Header from "./Header";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "@/components/Loading";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { useRouter } from "next/router";
 export default function Layout({ children }: any) {
-  // const router = useRouter();
+  const router = useRouter();
   // useEffect(() => {
   //   console.log("pathname : ", router.pathname);
   // }, [router.pathname]);
@@ -28,7 +30,26 @@ export default function Layout({ children }: any) {
         pauseOnHover
         theme="colored"
       />
-      {children}
+      <LayoutGroup>
+        <AnimatePresence
+          initial={false}
+          // mode="wait"
+          // exitBeforeEnter
+          // mode="popLayout"
+          // onExitComplete={() => window.scrollTo(0, 0)}
+        >
+          {/* <motion.div
+          key={router.asPath}
+          initial={{ x: "100%" }}
+          animate={{ x: "0%" }}
+          exit={{ x: "-100%" }}
+          transition={{ duration: 200, ease: "linear" }}
+        >
+        </motion.div> */}
+          {children}
+        </AnimatePresence>
+      </LayoutGroup>
+
       {/* <Footer /> */}
     </>
   );

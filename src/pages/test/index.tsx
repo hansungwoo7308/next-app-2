@@ -3,11 +3,40 @@ import { ElementType, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { start } from "repl";
 import styled from "styled-components";
-export default function Page() {
+import { animate, motion } from "framer-motion";
+import { useRouter } from "next/router";
+import ForwardedMotionDiv from "@/components/ForwardedMotionDiv";
+import { duration } from "moment";
+import Stagger from "@/components/Stagger";
+import Loader from "@/components/Loader";
+const parent = {
+  animate: {
+    transition: {
+      // 페런트 변수에 칠드런의 지연과 시차를 설정한다
+      // 칠드런의 각각의 애니메이션이 실행되는 시간을 다르게 설정하기 위해서 패런트에서 설정해준다
+      delayChildren: 0.4,
+      staggerChildren: 0.1,
+    },
+  },
+};
+const children = {
+  initial: { y: 400 },
+  animate: {
+    y: 0,
+    transition: {
+      // 칠드런 변수에 타이밍펑션과 듀레이션을 설정한다
+      ease: [0.6, 0.01, -0.05, 0.95],
+      duration: 1,
+    },
+  },
+};
+export default function Page(props: any, ref: any) {
+  console.log({ props });
   // rtk query
   const dispatch = useDispatch();
   const { auth, usersApi }: any = useSelector((store) => store);
   const { data, isLoading, isSuccess, isError, error, refetch } = useGetUsersQuery({});
+
   useEffect(() => {
     if (auth.accessToken) refetch();
   }, [auth.accessToken]);
@@ -26,46 +55,9 @@ export default function Page() {
   //     }
   //   });
   // }, []);
-
-  // useEffect(() => {
-  //   const intersectionObserver = new IntersectionObserver(
-  //     (entries: IntersectionObserverEntry[], observser: IntersectionObserver) => {
-  //       for (let entry of entries) {
-  //         console.log(entry);
-  //         // if (entry.isIntersecting) {
-  //         //   // entry.target.style.opacity = "1";
-  //         //   // entry.target.style.transform = "translateY(0)";
-  //         //   // entry.target.style.transition = "all 10s";
-  //         //   // observser.unobserve(entry.target);
-  //         //   entry.target.classList.add("active");
-  //         // } else {
-  //         //   console.log("0");
-  //         //   // entry.target.style.opacity = "0";
-  //         //   // entry.target.style.transform = "translateY(100px)";
-  //         //   // entry.target.style.transition = "all 10s";
-  //         // }
-  //       }
-  //       // entries.forEach((entry) => {
-  //       //   if (entry.isIntersecting) {
-  //       //   } else {
-  //       //   }
-  //       //   console.log(entry);
-  //       // });
-  //       // console.log(entries);
-  //       // if (entries.intersectionRect) {
-  //       //   const bottom = entries.intersectionRect.bottom;
-  //       //   console.log({ bottom });
-  //       // }
-  //     },
-  //     { threshold: 0.5 }
-  //   );
-  //   // console.log(intersectionObserver);
-  //   const element: any = document.querySelector(".test");
-  //   intersectionObserver.observe(element);
-  // }, []);
   useEffect(() => {
     // 팝업될 요소들
-    const pops: any = document.querySelectorAll(".test");
+    const pops: any = document.querySelectorAll(".fade-in");
     document.addEventListener("scroll", () => {
       for (let pop of pops) {
         const heightOfViewport = window.innerHeight; // 고정값이다.
@@ -78,27 +70,26 @@ export default function Page() {
           pop.classList.remove("active");
         }
       }
-      // const pop = test?.getBoundingClientRect();
+      // const pop = fade-in?.getBoundingClientRect();
       // if (window.innerHeight > pop.top) {
-      //   test.classList.add("active");
+      //   fade-in.classList.add("active");
       // } else {
-      //   test.classList.remove("active");
+      //   fade-in.classList.remove("active");
       // }
     });
   }, []); // 스크롤 시 뷰포트 하단에서부터 엘리먼츠가 팝업되는 것처럼 나타나도록 스타일을 준다.
-
   useEffect(() => {
-    const faders: any = document.querySelectorAll(".fade-in");
+    const faders: any = document.querySelectorAll(".fader");
     const observer = new IntersectionObserver((entries) => {
       for (let entry of entries) {
         if (entry.isIntersecting) {
-          console.log("intersecting...");
           entry.target.classList.add("active");
+          // console.log("intersecting...");
           // observer.unobserve(entry.target);
         } else {
-          // entry.target.classList.remove("active");
+          entry.target.classList.remove("active");
           // entry.target.style.transition='';
-          console.log("Not intersecting...");
+          // console.log("Not intersecting...");
 
           // observer.observe(entry.target);
         }
@@ -107,80 +98,65 @@ export default function Page() {
     for (let fader of faders) {
       observer.observe(fader);
     }
-    console.log({ faders });
+    // console.log({ faders });
   }, []);
   return (
     <>
       <Main>
-        {/* <div>
-            {isLoading && <h1>Loading...</h1>}
-            {isSuccess && (
-              <>
-                <h1>User List</h1>
-                <div>
-                  {data.users.map((user: any, index: number) => (
-                    <h5 key={index}>{user.username}</h5>
-                  ))}
-                </div>
-              </>
-            )}
-          </div> */}
-        {/* <div className="content">
-            <h1 className="first">testsdfasd</h1>
-            <h1 className="second">testsdfasd</h1>
-            <h1 className="third">testsdfasd</h1>
-          </div> */}
-        {/* <section>
-        </section> */}
-        {/* <img src="/images/planet_earth.jpeg" alt="alt" /> */}
-        {/* <div className="container">
-          <div className="item">
-            <div className="image-outer"></div>
-          </div>
-          <div className="item">
-            <div className="image-outer"></div>
-          </div>
-          <div className="item">
-            <div className="image-outer"></div>
-          </div>
-        </div> */}
-        {/* <div className="container"></div>
-        <div className="container"></div> */}
-        {/* <section className="test-section">
-          <div className="image-outer">
-            <img src="/images/test_0.jpeg" alt="alt" />
-          </div>
-        </section> */}
-        <section></section>
-        <section></section>
         <section>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="test">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">ashdaldhad1</div>
-          <div className="fade-in">ashdaldhad2</div>
-          <div className="fade-in">ashdaldhad3</div>
-          <div className="fade-in">ashdaldhad4</div>
+          {/* <motion.div
+            // 시간차를 다르게 하기 위한, 패런트의 커스텀 트랜지션 설정 (항상 패런트에서 설정)
+            variants={parent}
+            // 커스텀 변수명으로 설정
+            initial="initial"
+            animate="animate"
+            // transition={{  ease: "easeIn", staggerChildren: 1 }}
+            style={{
+              display: "flex",
+              gap: "1rem",
+              border: "none",
+            }}
+          >
+            {["aaa", "bbb", "ccc"].map((item: any) => (
+              <motion.div
+                // 칠드런의 커스텀 트렌지션 설정
+                variants={children}
+              >
+                {item}
+              </motion.div>
+            ))}
+          </motion.div> */}
+          {/* <Stagger /> */}
+          <Loader />
         </section>
         <section></section>
+        {/* <section>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fade-in">
+            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
+          </div>
+          <div className="fader">ashdaldhad1</div>
+          <div className="fader">ashdaldhad2</div>
+          <div className="fader">ashdaldhad3</div>
+          <div className="fader">ashdaldhad4</div>
+        </section> */}
       </Main>
     </>
   );
@@ -188,18 +164,18 @@ export default function Page() {
 const Main = styled.main`
   > section {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
     padding: 0;
-    .fade-in {
+    border: 2px dashed;
+    .fade-in,
+    .fader {
       padding: 1rem;
       opacity: 0;
       transform: translateY(50px);
       transition: all 0.5s ease-out;
       /* transform: scale(0.8); */
-    }
-    .test {
       display: flex;
       flex-direction: column;
       border: none;
@@ -209,7 +185,8 @@ const Main = styled.main`
       justify-content: center;
       align-items: center;
       opacity: 0;
-      transform: translateY(50px);
+      transform: translateY(10vh);
+      /* transform: translateY(50px); */
       transition: all 0.5s ease-out;
       /* transform: scale(0.8); */
     }
@@ -217,23 +194,6 @@ const Main = styled.main`
       opacity: 1;
       transform: translateY(0);
       /* transform: scale(1); */
-    }
-  }
-  > .test-section {
-    height: 300vh;
-    /* justify-content: */
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    .image-outer {
-      width: 500px;
-      position: sticky;
-      top: 50px;
-      transform: scale(2);
-      will-change: transform;
-    }
-    img {
-      /* top: 100px; */
     }
   }
   .container {
@@ -264,20 +224,6 @@ const Main = styled.main`
         background-repeat: no-repeat;
         background-size: cover;
         will-change: transform;
-      }
-    }
-  }
-  > .sdfsfd-section {
-    position: absolute;
-    top: 0;
-    border: 2px solid;
-    .content {
-      max-width: 80%;
-      h1 {
-        position: relative;
-        transform-origin: left;
-        transform: scale(1);
-        transition: all 0.5s;
       }
     }
   }
@@ -338,8 +284,8 @@ const Main = styled.main`
 //   function setupAnimation() {
 //     setWindowWidth(window.innerWidth);
 //     setContainerHeight(container.getBoundingClientRect().height);
-//     const test: any = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
-//     setImageHeight(test);
+//     const fade-in: any = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
+//     setImageHeight(fade-in);
 //     // windowWidth = window.innerWidth;
 //     // containerHeight = container.getBoundingClientRect().height;
 //     // imageHeight = containerHeight / (windowWidth > 760 ? images.length / 2 : images.length);
@@ -348,9 +294,9 @@ const Main = styled.main`
 //     // console.log({ windowWidth, containerHeight, imageHeight });
 //   }
 //   function smoothScroll() {
-//     let test = lerp(current, target, ease);
-//     test = parseFloat(current.toFixed(2));
-//     setCurrent(test);
+//     let fade-in = lerp(current, target, ease);
+//     fade-in = parseFloat(current.toFixed(2));
+//     setCurrent(fade-in);
 //     setTarget(window.scrollY);
 //     // current = lerp(current, target, ease);
 //     // current = parseFloat(current.toFixed(2));

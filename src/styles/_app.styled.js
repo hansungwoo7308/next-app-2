@@ -11,14 +11,17 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
   html, body {
+    width:100%;
     max-width: 100vw;
+    background-color:#333;
     /* min-width: 100vw; */
     /* height: 100%; */
     /* overflow: hidden; */
     /* background-color: gray; */
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
   }
   main{
+    width:100%;
     background-color:#333;
     color:#fff;
     display:flex;
@@ -162,4 +165,22 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
+  /* .slide-in{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background-color:black;
+    transform-origin:bottom;
+  }
+  .slide-out{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background-color:black;
+    transform-origin:top;
+  } */
 `;

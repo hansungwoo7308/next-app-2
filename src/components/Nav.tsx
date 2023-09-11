@@ -12,7 +12,7 @@ export default function Nav() {
   const blogsRef: any = useRef();
   const usersRef: any = useRef();
   const users2Ref: any = useRef();
-  const userListRef: any = useRef();
+  const testRef: any = useRef();
   const postsRef: any = useRef();
   const postListRef: any = useRef();
   const postList2Ref: any = useRef();
@@ -81,6 +81,9 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/commerce")) {
       setColor(commerceRef.current);
       setUnderline(focusRef.current, commerceRef.current);
+    } else if (router.pathname.startsWith("/test")) {
+      setColor(testRef.current);
+      setUnderline(focusRef.current, testRef.current);
     } else {
       homeRef.current.parentNode.childNodes.forEach((child: any) => {
         if (child.className === "focus") return;
@@ -106,9 +109,11 @@ export default function Nav() {
     <NavStyle>
       <ul>
         <li ref={focusRef} className="focus"></li>
-        <li ref={homeRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/"}>Home</Link>
-        </li>
+        {/* <li ref={homeRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/"} scroll={false}>
+            Home
+          </Link>
+        </li> */}
         {/* <li ref={listRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/list"}>List</Link>
           <ul>
@@ -143,15 +148,21 @@ export default function Nav() {
             </li>
           </ul>
         </li> */}
-        <li ref={userListRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/test"}>TEST</Link>
+        <li ref={testRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/test"} scroll={false}>
+            TEST
+          </Link>
         </li>
         <li ref={worksRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/works"}>Works</Link>
+          <Link href={"/works"} scroll={false}>
+            Works
+          </Link>
         </li>
-        <li ref={searchRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/search"}>Search</Link>
-        </li>
+        {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
+          <Link href={"/search"} scroll={false}>
+            Search
+          </Link>
+        </li> */}
       </ul>
     </NavStyle>
   );

@@ -46,13 +46,14 @@ export default function Loader() {
     <Box>
       <motion.div
         className="something-outer"
-        // transition={{ duration: 300 }}
         // animate={{ transformOrigin: "center", width: "300px", height: "300px" }}
-        animate={{ originX: "0px", originY: "0px" }}
+        // animate={{ originX: "0px", originY: "0px" }}
+        initial={{ originX: "0px", originY: "0px" }}
         layoutId="123"
         // variants={variants}
         // initial="initial"
         // animate="animate"
+        // layout="position"
 
         // transition={{origin}}
         // animate={{ originX: "center", originY: "center" }}

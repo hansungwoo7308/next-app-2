@@ -6,7 +6,8 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "upload": "git add . && git commit -m 'update' && git push"
   },
   "dependencies": {
     "@hookform/devtools": "^4.3.1",

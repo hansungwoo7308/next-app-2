@@ -85,10 +85,10 @@ export default function Nav() {
       setColor(testRef.current);
       setUnderline(focusRef.current, testRef.current);
     } else {
-      homeRef.current.parentNode.childNodes.forEach((child: any) => {
-        if (child.className === "focus") return;
-        return (child.className = "unselectedMenu");
-      });
+      // homeRef.current.parentNode.childNodes.forEach((child: any) => {
+      //   if (child.className === "focus") return;
+      //   return (child.className = "unselectedMenu");
+      // });
       focusRef.current.style = null;
       // focusRef.current.style.width = null;
       // focusRef.current.style.left = null;
@@ -109,11 +109,11 @@ export default function Nav() {
     <NavStyle>
       <ul>
         <li ref={focusRef} className="focus"></li>
-        {/* <li ref={homeRef} onClick={(e) => handleFocus(e)}>
+        <li ref={homeRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/"} scroll={false}>
             Home
           </Link>
-        </li> */}
+        </li>
         {/* <li ref={listRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/list"}>List</Link>
           <ul>

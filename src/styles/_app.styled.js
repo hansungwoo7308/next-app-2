@@ -13,21 +13,20 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     width:100%;
     max-width: 100vw;
-    background-color:#333;
+    background: rgba(0,0,0,0.3);
     /* min-width: 100vw; */
     /* height: 100%; */
     /* overflow: hidden; */
     /* background-color: gray; */
-    overflow-x: hidden;
+
+    /* overflow-x: hidden; */
+    /* overflow를 사용하면 scroll event가 동작하지 않는다. 어떻게 해결해야하나? */
   }
   main{
+    /* overflow-x:hidden; */
     width:100%;
     background-color:#333;
     color:#fff;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    /* justify-content:center; */
     >section{
       width:80%;
       max-width:1000px;
@@ -37,6 +36,8 @@ export const GlobalStyle = createGlobalStyle`
       justify-content:center;
       align-items:center;
       padding-top:70px;  
+
+      margin:auto;
       >div{
         border:2px solid green;
       }

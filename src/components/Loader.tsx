@@ -109,6 +109,7 @@ const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
   .something-outer {
     border: 2px solid coral;
     width: 300px;

@@ -3,7 +3,7 @@ import { ElementType, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { start } from "repl";
 import styled from "styled-components";
-import { animate, motion } from "framer-motion";
+import { animate, motion, useScroll, useTransform } from "framer-motion";
 import { useRouter } from "next/router";
 import ForwardedMotionDiv from "@/components/ForwardedMotionDiv";
 import { duration } from "moment";
@@ -31,7 +31,24 @@ const children = {
   },
 };
 export default function Page(props: any, ref: any) {
-  console.log({ props });
+  // method
+  const targetRef = useRef(null);
+  // const { scrollYProgress } = useScroll({ target: targetRef });
+  const { scrollY } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollY, [0, 1000], ["0%", "50%"]);
+
+  // method
+  // const { scrollY } = useScroll();
+  // const y = useTransform(scrollY, [0, 500], ["0%", "50%"]);
+
+  // method
+  // const { scrollYProgress } = useScroll();
+  // const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  // console.log({ props });
   // rtk query
   const dispatch = useDispatch();
   const { auth, usersApi }: any = useSelector((store) => store);
@@ -103,7 +120,7 @@ export default function Page(props: any, ref: any) {
   return (
     <>
       <Main>
-        <section>
+        <section ref={targetRef} className="section1">
           {/* <motion.div
             // 시간차를 다르게 하기 위한, 패런트의 커스텀 트랜지션 설정 (항상 패런트에서 설정)
             variants={parent}
@@ -127,8 +144,12 @@ export default function Page(props: any, ref: any) {
             ))}
           </motion.div> */}
           {/* <Stagger /> */}
+          <motion.div style={{ y }} className="part1"></motion.div>
           <Loader />
+          <h1>asdasdadasdasd</h1>
         </section>
+        <section></section>
+        <section></section>
         <section></section>
         {/* <section>
           <div className="fade-in">
@@ -169,6 +190,8 @@ const Main = styled.main`
     gap: 1rem;
     padding: 0;
     border: 2px dashed;
+    position: relative;
+
     .fade-in,
     .fader {
       padding: 1rem;
@@ -226,6 +249,39 @@ const Main = styled.main`
         will-change: transform;
       }
     }
+  }
+  .section1 {
+    width: 100%;
+    max-width: initial;
+    overflow: hidden;
+    /* background: transparent; */
+  }
+  .part1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+      url("/images/planet_jupiter.jpeg");
+    background-position: center;
+    /* background-image: url("/images/planet_jupiter.jpeg"); */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    /* opacity: 0.2; */
+    /* filter: brightness(80%); */
+
+    /* background-attachment: fixed; */
+  }
+  .part2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("/images/planet_moon.jpeg");
+    background-position: center;
+    /* background-attachment: fixed; */
   }
 `;
 // useEffect(() => {

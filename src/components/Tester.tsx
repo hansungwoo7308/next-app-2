@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Transition, Variants, motion } from "framer-motion";
+import { Transition, Variants, motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 // const imageVariants: Variants = { animate: { width: "100%" } };
@@ -24,18 +24,55 @@ import { useEffect, useRef, useState } from "react";
 //   },
 // };
 export default function Tester() {
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  // const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
+  // console.log({ scale });
+  // useEffect(() => {
+  //   console.log({ scrollYProgress });
+  // }, [scrollYProgress]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", () => {
+  //     console.log("scroll");
+  //     // console.log({ scale });
+  //     const image: HTMLElement | any = document.querySelector(".image");
+  //     image.style.scale = scale;
+  //   });
+  // }, []);
+
+  const [canScroll, setCanScroll] = useState(false);
+  useEffect(() => {
+    if (canScroll === false) {
+      document.querySelector("body")?.classList.add("no-scroll");
+    } else {
+      document.querySelector("body")?.classList.remove("no-scroll");
+    }
+  }, [canScroll]);
   return (
     <Box>
       {/* image animation */}
       <motion.div
+        onAnimationComplete={() => setCanScroll(true)}
         className="something-outer"
         variants={{ animate: { width: "100%" } }}
         animate="animate"
-        transition={{ duration: 2, ease: [0.6, 0.01, -0.05, 0.9] }}
+        // layout간의 animation transition, motion.div의 animation transition에 모두 적용한다.
         layoutId="123"
+        transition={{ duration: 2, ease: [0.6, 0.01, -0.05, 0.9] }}
       >
         <Link href={"/test"}>
-          <motion.img initial={{ scale: 1.1 }} src="/images/test_0.jpeg" alt="alt" />
+          <motion.img
+            className="image"
+            initial={{ scale: 1.1 }}
+            src="/images/test_0.jpeg"
+            alt="alt"
+            // style={{ opacity }}
+
+            // style={{ scale }}
+            // animate={{
+            //   transition: { delay: 1, duration: 1 },
+            // }}
+          />
         </Link>
       </motion.div>
       {/* message animation */}

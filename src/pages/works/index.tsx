@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Tester from "@/components/Tester";
+import { useEffect } from "react";
 export default function Page() {
   return (
     <Main>
@@ -28,17 +29,9 @@ export default function Page() {
 const Main = styled.main`
   height: 100vh;
   > section {
-    display: block;
-    /* display: flex;
-    justify-content: end; */
-    /* align-items: center; */
-    /* justify-content: start; */
-    /* gap: 1rem; */
+    height: 100%;
     padding: 0;
     border: 2px dashed;
     position: relative;
-    > div {
-      /* border: 2px solid pink; */
-    }
   }
 `;

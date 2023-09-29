@@ -73,7 +73,6 @@ export const deleteProduct = async (req: any, res: any) => {
 export const deleteProducts = async (req: any, res: any) => {
   // delete
   const { ids } = req.body;
-  // console.log({ "req.body": req.body });
   let deletedProducts: any = [];
   for (let id of ids) {
     const deletedProduct = await Product.findByIdAndDelete(id);

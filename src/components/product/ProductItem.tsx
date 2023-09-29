@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-export default function ProductItem({ product, setCheckedProducts, isCheckAll }: any) {
+export default function ProductItem({ product, selectedProductIds, setSelectedProductIds }: any) {
   const { _id, images, title, price, inStock, description } = product;
   const { auth, cart }: any = useSelector((store) => store);
   const checkRef: any = useRef();
@@ -83,24 +83,34 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
       </button>
     </>
   );
-  useEffect(() => {
-    if (isCheckAll) {
-      checkRef.current.checked = true;
-    }
-    // else {
-    //   checkRef.current.checked = false;
-    // }
-  }, [isCheckAll]);
+
   const handleCheck = (e: any) => {
     if (e.target.checked) {
-      setCheckedProducts((state: any) => [...state, _id]);
+      setSelectedProductIds((state: any) => [...state, _id]);
     } else {
-      setCheckedProducts((state: any) => {
-        const filteredProducts = state.filter((productId: any) => productId !== _id);
-        return filteredProducts;
+      setSelectedProductIds((state: any) => {
+        const filteredProductIds = state.filter(
+          (selectedProductId: any) => selectedProductId !== _id
+        );
+        return filteredProductIds;
       });
     }
   };
+
+  useEffect(() => {
+    if (!selectedProductIds.length && checkRef.current) checkRef.current.checked = false;
+    selectedProductIds.map((selectedProductId: any) => {
+      if (selectedProductId === _id) checkRef.current.checked = true;
+    });
+
+    // const result = selectedProductIds.filter((selectedProductId: any) => {
+    //   if (selectedProductId === _id) {
+    //     checkRef.current.checked = true;
+    //     return true;
+    //   }
+    // });
+  }, [selectedProductIds]);
+
   return (
     <Item>
       <div className="image">

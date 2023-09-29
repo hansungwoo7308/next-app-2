@@ -104,9 +104,7 @@ export default function Modal() {
           handleDeleteProducts();
           dispatch(setLoading(false));
           dispatch(setModal({ active: false }));
-
         default:
-          // dispatch(setModal({ active: false }));
           break;
       }
       router.push({ pathname: router.route });

@@ -17,46 +17,36 @@ export default function Page({ data }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
   const auth = useSelector((store: any) => store.auth);
-  const [products, setProducts]: any = useState([]);
-  const [checkedProducts, setCheckedProducts]: any = useState([]);
-  const [isCheckAll, setIsCheckAll]: any = useState(false);
+  const [selectedProductIds, setSelectedProductIds]: any = useState([]);
   const [page, setPage]: any = useState(1);
+
   useEffect(() => {
     if (Object.keys(router.query).length === 0) setPage(1);
   }, [router.query]);
-  useEffect(() => {
-    console.log({ data });
-    setProducts(data);
-  }, [data]); // data waterfall
+
   // useEffect(() => {
   //   if (notify.status === "success") router.push({ query: null });
   // }, [notify.status]);
-  const handleCheckAll = () => {
-    if (!isCheckAll) {
-      const productIds = products.map((product: any) => product._id);
-      setCheckedProducts(productIds);
-      setIsCheckAll(true);
-    }
-    if (isCheckAll) {
-      setCheckedProducts([]);
-      setIsCheckAll(false);
-    }
-    // setIsCheckAll((state: boolean) => !state);
-  };
+
+  // product manager
+  const handleClickSelectAll = () => setSelectedProductIds(data.map((product: any) => product._id));
+  const handleClickUnselectAll = () => setSelectedProductIds([]);
   const handleClickDeleteSelectedProducts = () => {
     dispatch(
       setModal({
         active: true,
         type: "DELETE_PRODUCTS",
         message: "Do you want to delete this selected products?",
-        ids: checkedProducts,
+        ids: selectedProductIds,
       })
     );
-    setCheckedProducts([]);
+    setSelectedProductIds([]);
   };
-  // useEffect(() => {
-  //   console.log({ checkedProducts });
-  // }, [checkedProducts]);
+
+  useEffect(() => {
+    console.log({ selectedProductIds });
+  }, [selectedProductIds]);
+
   return (
     <Main>
       <section>
@@ -64,21 +54,22 @@ export default function Page({ data }: any) {
           <Filter />
           {auth.user?.role === "admin" && (
             <div>
-              <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
+              <button onClick={handleClickSelectAll}>Select All</button>
+              <button onClick={handleClickUnselectAll}>Unselect All</button>
               <button onClick={handleClickDeleteSelectedProducts}>Delete</button>
             </div>
           )}
           <ul>
-            {products?.map((product: any) => (
+            {data?.map((product: any) => (
               <ProductItem
                 key={product._id}
                 product={product}
-                setCheckedProducts={setCheckedProducts}
-                isCheckAll={isCheckAll}
+                selectedProductIds={selectedProductIds}
+                setSelectedProductIds={setSelectedProductIds}
               />
             ))}
           </ul>
-          <div className="load-more">
+          {/* <div className="load-more">
             <button
               onClick={() => {
                 setPage(page + 1);
@@ -94,10 +85,9 @@ export default function Page({ data }: any) {
             >
               Load More
             </button>
-          </div>
+          </div> */}
         </div>
-
-        {!products && (
+        {!data && (
           <div>
             <h1>Product Page</h1>
             <p>No products</p>

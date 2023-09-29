@@ -52,6 +52,7 @@ export default function Page({ data }: any) {
         ids: checkedProducts,
       })
     );
+    setCheckedProducts([]);
   };
   // useEffect(() => {
   //   console.log({ checkedProducts });

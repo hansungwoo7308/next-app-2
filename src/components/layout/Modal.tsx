@@ -106,10 +106,10 @@ export default function Modal() {
           dispatch(setModal({ active: false }));
 
         default:
-          dispatch(setModal({ active: false }));
+          // dispatch(setModal({ active: false }));
           break;
       }
-      router.push({ pathname: router.pathname });
+      router.push({ pathname: router.route });
     } catch (error) {
       logError(error);
     }

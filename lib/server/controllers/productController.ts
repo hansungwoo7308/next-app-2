@@ -63,12 +63,23 @@ export const updateProduct = async (req: any, res: any) => {
   res.status(200).json({ updatedProduct });
 };
 export const deleteProduct = async (req: any, res: any) => {
-  return;
-
   // delete
   const { id } = req.query;
-  const deletedProduct = await Product.findByIdAndDelete(id, { new: true });
+  const deletedProduct = await Product.findByIdAndDelete(id);
   // out
   console.log({ deletedProduct });
   res.status(200).json({ deleteProduct });
+};
+export const deleteProducts = async (req: any, res: any) => {
+  // delete
+  const { ids } = req.body;
+  // console.log({ "req.body": req.body });
+  let deletedProducts: any = [];
+  for (let id of ids) {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    deletedProducts.push(deletedProduct);
+  }
+  // out
+  console.log({ deletedProducts });
+  res.status(200).json({ deletedProducts });
 };

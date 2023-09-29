@@ -72,6 +72,7 @@ export default function ProductItem({ product, setCheckedProducts, isCheckAll }:
           dispatch(
             setModal({
               active: true,
+              type: "DELETE_PRODUCT",
               message: "Do you want to delete",
               id: _id,
             })

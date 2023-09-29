@@ -1,6 +1,7 @@
 import axios from "axios";
 const baseUrl =
   process.env.NODE_ENV === "production" ? process.env.BASE_URL : process.env.NEXT_PUBLIC_ENV;
+// console.log({ baseUrl });
 export const getData = async (url: string, token?: string, payload?: any) => {
   const response = await axios({
     method: "get",
@@ -48,7 +49,7 @@ export const patchData = async (url: string, payload: any, token: string) => {
   });
   return response;
 };
-export const deleteData = async (url: string, token: string, payload?: any) => {
+export const deleteData = async (url: string, payload: any, token: string) => {
   const response = await axios({
     method: "delete",
     url: `${baseUrl}/api/${url}`,
@@ -58,5 +59,19 @@ export const deleteData = async (url: string, token: string, payload?: any) => {
     },
     data: payload,
   });
+  // const response = await axios.delete(
+  //   `${baseUrl}/api/${url}`,
+  //   // {
+  //   //   data: { test: "test" },
+  //   // }
+  //   {
+  //     headers: {
+  //       "Content-Type": "application/json; charset=utf-8",
+  //       // Authorization: `Bearer ${token}`,
+  //     },
+
+  //     data: { foo: "bar" },
+  //   }
+  // );
   return response;
 };

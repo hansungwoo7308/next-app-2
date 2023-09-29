@@ -1,8 +1,8 @@
 import connectDB from "lib/server/config/connectDB";
 import { errors } from "lib/server/middlewares/errors";
-import { isAuthenticated, authorizeRoles } from "lib/server/middlewares/auth";
+import { isAuthenticated, authorizeRoles } from "lib/server/middlewares/authMiddlewares";
 import { uploadImagesToServer, uploadImagesToCloudinary } from "lib/server/middlewares/uploadImage";
-import { createProduct } from "lib/server/controllers/productController";
+import { createProduct, deleteProducts } from "lib/server/controllers/productController";
 import { createRouter } from "next-connect";
 import { PageConfig } from "next";
 connectDB();
@@ -10,17 +10,18 @@ const router = createRouter();
 router.get((req: any, res: any) => res.status(200).json({ message: "getProducts" }));
 router
   .use(async (req: any, res: any, next: any) => {
-    console.log(`\x1b[32m\n[api/v2/products]:::[${req.method}]`);
+    console.log(`\x1b[33m\n[api/v2/products]:::[${req.method}]`);
     await next();
   })
-  .use(isAuthenticated, authorizeRoles(["admin"]))
-  .use(uploadImagesToServer, async (req: any, res: any, next: any) => {
+  // .use(isAuthenticated, authorizeRoles(["admin"]))
+  .post(uploadImagesToServer, async (req: any, res: any, next: any) => {
     console.log(`\n<uploadImagesToServer>`);
     console.log({ files: req.files, body: req.body });
     await next();
   })
   .post(uploadImagesToCloudinary)
-  .post(createProduct);
+  .post(createProduct)
+  .delete(deleteProducts);
 // const storage = multer.diskStorage({
 //   destination: function (req, file, callback) {
 //     callback(null, "public/uploads");
@@ -97,8 +98,8 @@ const options: any = {
 // out
 export const config: PageConfig = {
   api: {
-    bodyParser: false,
-    externalResolver: true,
+    // bodyParser: false,
+    // externalResolver: true,
     // bodyParser: {
     //   // sizeLimit: "13mb", // Set desired value here
     // },

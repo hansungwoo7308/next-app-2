@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { setModal } from "lib/client/store/modalSlice";
 export async function getServerSideProps({ query }: any) {
   const response = await getData("product", undefined, query);
   const { products } = response.data;
@@ -17,7 +18,7 @@ export default function Page({ data }: any) {
   const dispatch = useDispatch();
   const auth = useSelector((store: any) => store.auth);
   const [products, setProducts]: any = useState([]);
-  const [checkedProducts, setCheckedProducts]: any = useState(data);
+  const [checkedProducts, setCheckedProducts]: any = useState([]);
   const [isCheckAll, setIsCheckAll]: any = useState(false);
   const [page, setPage]: any = useState(1);
   useEffect(() => {
@@ -42,15 +43,19 @@ export default function Page({ data }: any) {
     }
     // setIsCheckAll((state: boolean) => !state);
   };
-  const handleOpenModal = () => {
-    // dispatch(
-    //   openModal({
-    //     type: "DELETE_PRODUCTS",
-    //     message: "Do you want to delete the selected products?",
-    //     ids: checkedProducts,
-    //   })
-    // );
+  const handleClickDeleteSelectedProducts = () => {
+    dispatch(
+      setModal({
+        active: true,
+        type: "DELETE_PRODUCTS",
+        message: "Do you want to delete this selected products?",
+        ids: checkedProducts,
+      })
+    );
   };
+  // useEffect(() => {
+  //   console.log({ checkedProducts });
+  // }, [checkedProducts]);
   return (
     <Main>
       <section>
@@ -59,7 +64,7 @@ export default function Page({ data }: any) {
           {auth.user?.role === "admin" && (
             <div>
               <button onClick={handleCheckAll}>{isCheckAll ? "Unselect All" : "Select All"}</button>
-              <button onClick={handleOpenModal}>Delete</button>
+              <button onClick={handleClickDeleteSelectedProducts}>Delete</button>
             </div>
           )}
           <ul>

@@ -48,9 +48,9 @@ export default function AuthButton(props: any) {
                 <Link href={"/users"}>Users</Link>
                 <Link href={"/commerce/product"}>Products</Link>
                 {/* <Link href={"/commerce/product/create"}>Create a product</Link> */}
-                <button onClick={() => dispatch(setModal({ active: true, type: "CREATE" }))}>
+                <a onClick={() => dispatch(setModal({ active: true, type: "CREATE" }))}>
                   Create a product
-                </button>
+                </a>
               </>
             )}
             <button onClick={handleSignout}>Sign out</button>

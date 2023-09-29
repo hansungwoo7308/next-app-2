@@ -1,7 +1,7 @@
 import connectDB from "lib/server/config/connectDB";
 import { deleteUser, getUsers, updateUser } from "lib/server/controllers/userConrollers";
 import { errors } from "lib/server/middlewares/errors";
-import { authorizeRoles, isAuthenticated } from "lib/server/middlewares/auth";
+import { authorizeRoles, isAuthenticated } from "lib/server/middlewares/authMiddlewares";
 import { createRouter } from "next-connect";
 // connect to db
 connectDB();

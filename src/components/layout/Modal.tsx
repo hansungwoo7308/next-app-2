@@ -10,6 +10,7 @@ import { deleteItem } from "lib/client/store/cartSlice";
 import { deleteUser } from "lib/client/store/usersSlice";
 import { deleteData, getData, postData } from "lib/client/utils/fetchData";
 import { useForm } from "react-hook-form";
+
 export default function Modal() {
   const loading = useSelector((store: any) => store.loading);
   const auth = useSelector((store: any) => store.auth);
@@ -62,23 +63,7 @@ export default function Modal() {
   //   logResponse(response);
   //   dispatch(deleteUser({ _id }));
   // };
-  // const handleDeleteProduct = async () => {
-  //   // delete
-  //   const response = await deleteData(`product/${id}`, auth.accessToken);
-  //   // const { _id } = response.data.deletedProduct;
-  //   // out
-  //   logResponse(response);
-  //   // dispatch(deleteUser({ _id }));
-  // };
-  // const handleDeleteProducts = async () => {
-  //   try {
-  //     const response = await deleteData("product", auth.accessToken, { ids });
-  //     const { deletedProducts } = response.data;
-  //     logResponse(response);
-  //   } catch (error) {
-  //     logError(error);
-  //   }
-  // };
+
   // const handleDeleteCartItem = async () => {
   //   dispatch(deleteItem({ _id: id }));
   // };
@@ -98,21 +83,48 @@ export default function Modal() {
   //   const response = await deleteData("posts", auth.accessToken, { _id: id });
   //   logResponse(response);
   // };
+
   const handleAction = async (e: any) => {
     e.preventDefault();
-    switch (type) {
-      case "DEFAULT":
-        dispatch(setLoading(true));
-        action();
-        dispatch(setLoading(false));
-        dispatch(setModal({ active: false }));
-        break;
-      default:
-        dispatch(setModal({ active: false }));
-        break;
+    try {
+      switch (type) {
+        case "DEFAULT":
+          dispatch(setLoading(true));
+          action();
+          dispatch(setLoading(false));
+          dispatch(setModal({ active: false }));
+          break;
+        case "DELETE_PRODUCT":
+          dispatch(setLoading(true));
+          handleDeleteProduct();
+          dispatch(setLoading(false));
+          dispatch(setModal({ active: false }));
+        case "DELETE_PRODUCTS":
+          dispatch(setLoading(true));
+          handleDeleteProducts();
+          dispatch(setLoading(false));
+          dispatch(setModal({ active: false }));
+
+        default:
+          dispatch(setModal({ active: false }));
+          break;
+      }
+      router.push({ pathname: router.pathname });
+    } catch (error) {
+      logError(error);
     }
   };
+  const handleDeleteProduct = async () => {
+    const response = await deleteData(`v2/products/${id}`, null, auth.accessToken);
+    logResponse(response);
+  };
+  const handleDeleteProducts = async () => {
+    const response = await deleteData("v2/products", { ids }, auth.accessToken);
+    const { deletedProducts } = response.data;
+    logResponse(response);
+  };
   const handleClose = () => dispatch(setModal({ active: false }));
+
   if (!modal.active) return null;
   if (modal.type === "CREATE") {
     return (

@@ -34,11 +34,12 @@ export default function Page(props: any, ref: any) {
   // method
   const targetRef = useRef(null);
   // const { scrollYProgress } = useScroll({ target: targetRef });
-  const { scrollY } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end start"],
   });
-  const y = useTransform(scrollY, [0, 1000], ["0%", "50%"]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   // method
   // const { scrollY } = useScroll();
@@ -144,7 +145,7 @@ export default function Page(props: any, ref: any) {
             ))}
           </motion.div> */}
           {/* <Stagger /> */}
-          <motion.div style={{ y }} className="part1"></motion.div>
+          <motion.div style={{ y, opacity }} className="part1"></motion.div>
           <Loader />
           <h1>asdasdadasdasd</h1>
         </section>

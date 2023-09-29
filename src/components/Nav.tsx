@@ -78,10 +78,12 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/works")) {
       setColor(worksRef.current);
       setUnderline(focusRef.current, worksRef.current);
-    } else if (router.pathname.startsWith("/commerce")) {
-      setColor(commerceRef.current);
-      setUnderline(focusRef.current, commerceRef.current);
-    } else if (router.pathname.startsWith("/test")) {
+    }
+    // else if (router.pathname.startsWith("/commerce")) {
+    //   setColor(commerceRef.current);
+    //   setUnderline(focusRef.current, commerceRef.current);
+    // }
+    else if (router.pathname.startsWith("/test")) {
       setColor(testRef.current);
       setUnderline(focusRef.current, testRef.current);
     } else {
@@ -148,7 +150,8 @@ export default function Nav() {
             </li>
           </ul>
         </li> */}
-        <li ref={testRef} onClick={(e) => handleFocus(e)}>
+
+        {/* <li ref={testRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/test"} scroll={false}>
             TEST
           </Link>
@@ -157,7 +160,8 @@ export default function Nav() {
           <Link href={"/works"} scroll={false}>
             Works
           </Link>
-        </li>
+        </li> */}
+
         {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/search"} scroll={false}>
             Search

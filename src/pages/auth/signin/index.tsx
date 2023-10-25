@@ -13,11 +13,15 @@ import { useEffect } from "react";
 import { Main as PublicMain } from "@/styles/public/main.styled"; // style
 import styled from "styled-components";
 import { setLoading } from "lib/client/store/loadingSlice";
+
 export default function Page() {
+  // exteranl
   const dispatch = useDispatch();
-  const router = useRouter();
   const auth = useSelector((store: any) => store.auth);
   const session = useSession();
+
+  // internal
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -25,11 +29,13 @@ export default function Page() {
     setFocus,
     formState: { errors },
   } = useForm();
-  const handleSigninWithNextauth = async (data: any) => {
+
+  const handleSigninWithCredentials = async (data: any) => {
     try {
       setLoading(true);
       const { email, password } = data;
       const { callbackUrl }: any = router.query;
+      console.log({ email, password, callbackUrl });
       const response: any = await signIn("credentials", {
         email,
         password,
@@ -39,34 +45,38 @@ export default function Page() {
       console.log({ response });
       setLoading(false);
       toast.success("Signed In");
-      if (callbackUrl) router.push(callbackUrl);
-      router.push("/auth/profile");
+      // if (callbackUrl) router.push(callbackUrl);
+      // router.push("/auth/profile");
     } catch (error: any) {
       console.log({ error });
       setLoading(false);
       toast.error(error.message);
     }
   };
-  const handleSignin = async (data: any) => {
-    try {
-      dispatch(setLoading(true));
-      const response = await postData("v2/auth/signin", data);
-      const { username, role, image, accessToken } = response.data;
-      const credentials = { user: { username, image, role }, accessToken };
-      logResponse(response);
-      dispatch(setCredentials(credentials));
-      dispatch(setLoading(false));
-      toast.success("Login Success");
-      router.push("/auth/profile");
-    } catch (error: any) {
-      logError(error);
-      dispatch(setLoading(false));
-      toast.error(error.status);
-    }
+  const handleSigninWithNaver = async (e: any) => {
+    e.preventDefault();
+    const result = await signIn("naver", { redirect: true, callbackUrl: "/" });
+    console.log({ result });
   };
-  useEffect(() => {
-    setFocus("email");
-  }, []);
+  // const handleSignin = async (data: any) => {
+  //   try {
+  //     dispatch(setLoading(true));
+  //     const response = await postData("v2/auth/signin", data);
+  //     const { username, role, image, accessToken } = response.data;
+  //     const credentials = { user: { username, image, role }, accessToken };
+  //     logResponse(response);
+  //     dispatch(setCredentials(credentials));
+  //     dispatch(setLoading(false));
+  //     toast.success("Login Success");
+  //     router.push("/auth/profile");
+  //   } catch (error: any) {
+  //     logError(error);
+  //     dispatch(setLoading(false));
+  //     toast.error(error.status);
+  //   }
+  // };
+  useEffect(() => setFocus("email"), []);
+
   return (
     <>
       <Head>
@@ -82,14 +92,17 @@ export default function Page() {
               type="password"
               placeholder="password"
             />
-            <button onClick={handleSubmit(handleSignin)}>Sign in </button>
-            <button onClick={handleSubmit(handleSigninWithNextauth)}>Sign in with next-auth</button>
+            <button onClick={handleSubmit(handleSigninWithCredentials)}>
+              Sign in with Credentials
+            </button>
+            <button onClick={handleSigninWithNaver}>Sign in with Naver</button>
           </form>
         </section>
       </Main>
     </>
   );
 }
+
 const Main = styled(PublicMain)`
   > section {
     display: flex;

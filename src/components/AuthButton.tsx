@@ -8,37 +8,50 @@ import logResponse from "lib/client/log/logResponse";
 import { useRouter } from "next/router";
 import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { setModal } from "lib/client/store/modalSlice";
+
 export default function AuthButton(props: any) {
   // external
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
   const dispatch = useDispatch();
+
   // internal
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
   const handleSignout = async (e: any) => {
     e.preventDefault();
-    try {
-      if (session.status === "authenticated") {
-        signOut({ callbackUrl: "/" });
-        return;
-      }
-      const response = await getData("v2/auth/signout");
-      logResponse(response);
-      dispatch(logOut());
-      router.push("/");
-    } catch (error) {
-      logError(error);
-    }
+    signOut({ callbackUrl: "/auth/signin" });
+    // try {
+    //   if (session.status === "authenticated") {
+    //     return;
+    //   }
+    //   // const response = await getData("v2/auth/signout");
+    //   // logResponse(response);
+    //   // dispatch(logOut());
+    //   // router.push("/");
+    // } catch (error) {
+    //   logError(error);
+    // }
   };
-  if (auth.accessToken || session.data?.user) {
+
+  useEffect(() => console.log({ "session.data": session.data }), []);
+
+  if (session.data?.user) {
     return (
       <Box dropdown={dropdown}>
         <div className="profile">
           <div className="image" onClick={() => setDropdown(!dropdown)}>
-            <Image src={auth.user?.image} alt={auth.user?.image} width={100} height={100} />
+            <Image
+              src={
+                session.data.user.image ||
+                "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
+              }
+              alt={"alt"}
+              width={100}
+              height={100}
+            />
             {auth.user?.username || auth.user?.name}
           </div>
           <div className="dropdown">
@@ -68,6 +81,7 @@ export default function AuthButton(props: any) {
     </Box>
   );
 }
+
 type Props = {
   dropdown: boolean;
 };

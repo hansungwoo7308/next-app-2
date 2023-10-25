@@ -3,20 +3,20 @@ import Nav from "../Nav";
 import AuthButton from "../AuthButton";
 import styled from "styled-components";
 import Cart from "../commerce/Cart";
+
 export default function Header() {
   return (
     <HeaderStyle>
       <section>
-        <Link href={"/"}>LOGO</Link>
         <Nav />
-        <div>
-          <Cart />
-          <AuthButton />
-        </div>
+        <AuthButton />
+        {/* <Link href={"/"}>LOGO</Link> */}
+        {/* <Cart /> */}
       </section>
     </HeaderStyle>
   );
 }
+
 const HeaderStyle = styled.header`
   width: 100%;
   height: 50px;

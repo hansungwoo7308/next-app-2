@@ -11,7 +11,7 @@ interface MyAppProps extends AppProps {
   token?: string;
   testSomething22?: string;
 }
-export default function MyApp({ Component, pageProps, token, testSomething22 }: MyAppProps) {
+export default function MyApp({ Component, pageProps, token }: MyAppProps) {
   // console.log({ testSomething22, token });
   // console.log("\x1b[32m\n[_app]");
   // console.log({ router: router.route });
@@ -19,12 +19,6 @@ export default function MyApp({ Component, pageProps, token, testSomething22 }: 
   // console.log("pageProps:", pageProps);
   // console.log("Component:", Component);
   const router = useRouter();
-  const setHeader = (accessToken: any) => {
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    // setTimeout(() => {
-    //   refreshAuth();
-    // }, 1000 * 60);
-  };
   const entryStyles = {
     width: 524,
     height: 650,

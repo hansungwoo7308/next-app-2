@@ -2,11 +2,10 @@ import Head from "next/head";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import ForwardedMotionDiv from "@/components/ForwardedMotionDiv";
-// import Slider from "../components/Slider";
+
 const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
 suffered alteration in some form, by injected humour, or randomised words which don't
 look even slightly believable. If you are going to use a passage of Lorem Ipsum, you
@@ -16,23 +15,21 @@ making this the first true generator on the Internet. It uses a dictionary of ov
 Latin words, combined with a handful of model sentence structures, to generate Lorem
 Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from
 repetition, injected humour, or non-characteristic words etc.`;
-export function getServerSideProps(context: any) {
-  return {
-    props: {},
-  };
-}
-export default function Page(props: any, ref: any) {
-  // console.log({ ref, props });
-  // console.log({
-  //   NODE_ENV: process.env.NODE_ENV,
-  //   BASE_URL: process.env.BASE_URL,
-  //   NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
-  // });
+
+// console.log({
+//   NODE_ENV: process.env.NODE_ENV,
+//   BASE_URL: process.env.BASE_URL,
+//   NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+// });
+
+export default function Page(props: any) {
+  // console.log({ props });
   const sectionRef: any = useRef();
   const anchorRef: any = useRef();
   const indicatorRef: any = useRef();
   const navRef: any = useRef();
   // handle the anchor[click,mouseover,mouseout], indicator (element event)
+
   const setAnchor = (e: any) => {
     const currentAnchor = e.target;
     anchorRef.current = currentAnchor;
@@ -136,6 +133,7 @@ export default function Page(props: any, ref: any) {
     // console.log(router.asPath.split("/#")[1]);
     // router.replace("/");
   }, []);
+
   return (
     <>
       <Head>
@@ -145,6 +143,11 @@ export default function Page(props: any, ref: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Main>
+        <section>
+          <div>
+            <h1>Home</h1>
+          </div>
+        </section>
         {/* <section className="home" id="home" ref={sectionRef}>
           <div className="description">
             <h1>Front-End Developer</h1>
@@ -271,6 +274,7 @@ export default function Page(props: any, ref: any) {
     </>
   );
 }
+
 const Main = styled(PublicMain)`
   flex-direction: column;
   > .home {

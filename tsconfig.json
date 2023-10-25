@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/pages/api/auth/[...nextauth].js",
+    "src/pages/api/auth/[...nextauth].ts",
     "lib/server/config/*.ts",
     "lib/server/config/connectDB.ts",
     "lib/server/config/mongodb.ts", // "src/middleware.ts"

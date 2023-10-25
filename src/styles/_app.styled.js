@@ -13,12 +13,12 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     width:100%;
     max-width: 100vw;
-    background: rgba(0,0,0,0.3);
+    /* background: rgba(0,0,0,0.3); */
     /* min-width: 100vw; */
     /* height: 100%; */
     /* overflow: hidden; */
     /* background-color: gray; */
-
+    
     /* overflow-x: hidden; */
     /* overflow를 사용하면 scroll event가 동작하지 않는다. 어떻게 해결해야하나? */
   }
@@ -166,22 +166,5 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
-  /* .slide-in{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100vh;
-    background-color:black;
-    transform-origin:bottom;
-  }
-  .slide-out{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100vh;
-    background-color:black;
-    transform-origin:top;
-  } */
+  
 `;

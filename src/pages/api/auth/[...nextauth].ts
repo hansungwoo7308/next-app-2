@@ -75,9 +75,9 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // pages: {
-  //   signIn: "/auth/signin",
-  // },
+  pages: {
+    signIn: "/auth/signin",
+  },
   // debug: process.env.NODE_ENV === "development",
   // adapter: MongoDBAdapter(clientPromise),
 

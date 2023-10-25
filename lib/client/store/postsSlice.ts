@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 import axios from "axios";
+
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts?_limit=10";
 const POSTS_URL2 = "https://jsonplaceholder.typicode.com/posts";
 interface Post {
@@ -19,6 +20,7 @@ interface State {
   error: null | string;
   count: number;
 }
+
 // set the adapter (tool) that manages the state of the object
 // 상태관리 최적화를 위한 도구
 // CRUD 작업을 최적화
@@ -28,15 +30,16 @@ const postsAdapter = createEntityAdapter({
   // b.date가 a.date보다 이전이라면 return -1
   // b.date가 a.date와 같다면 return 0
 });
+
 const initialState: any = postsAdapter.getInitialState({
   status: "idle", //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null,
   count: 0,
 });
+
 export const postsSlice: any = createSlice({
   name: "posts",
   initialState,
-  // sync process
   reducers: {
     reactionAdded(state, action) {
       const { postId, reaction } = action.payload;
@@ -47,19 +50,16 @@ export const postsSlice: any = createSlice({
       //   existingPost.reactions[reaction]++;
       // }
       const existingPost = state.entities[postId];
-      if (existingPost) {
-        existingPost.reactions[reaction]++;
-      }
+      if (existingPost) existingPost.reactions[reaction]++;
     },
     increaseCount(state, action) {
-      state.count = state.count + 1;
+      state.count += 1;
     },
   },
   // async process
   extraReducers(builder) {
     // console.log("builder : ", builder);
     builder
-      // it is like a switch case statement
       .addCase(fetchPosts.pending, (state, action) => {
         state.status = "loading";
       })
@@ -142,6 +142,7 @@ export const postsSlice: any = createSlice({
       });
   },
 });
+
 // thunks
 // create a thunk(it's like a nock)
 // 비동기 포스트 관련 액션들을 만든다. (백엔드와 통신하여 처리할)
@@ -154,6 +155,7 @@ export const fetchPosts: any = createAsyncThunk(
     return response.data;
   }
 );
+
 export const addNewPost: any = createAsyncThunk("posts/addNewPost", async (initialPost) => {
   // initialPost : 스토어의 포스트 어레이에 추가할 새로운 포스트, 초기화할 데이터
   // console.log("initialPost : ", initialPost);
@@ -163,6 +165,7 @@ export const addNewPost: any = createAsyncThunk("posts/addNewPost", async (initi
   // console.log("response.data : ", response.data);
   return response.data;
 });
+
 export const updatePost: any = createAsyncThunk("posts/updatePost", async (initialPost) => {
   console.log("initialPost : ", initialPost);
   const { id }: any = initialPost;
@@ -174,6 +177,7 @@ export const updatePost: any = createAsyncThunk("posts/updatePost", async (initi
     return initialPost; // only for testing Redux!
   }
 });
+
 export const deletePost: any = createAsyncThunk("posts/deletePost", async (initialPost) => {
   console.log("initialPost : ", initialPost);
   const { id }: any = initialPost;
@@ -188,6 +192,7 @@ export const deletePost: any = createAsyncThunk("posts/deletePost", async (initi
     return err.message;
   }
 });
+
 // selectors
 // adaptor를 통해서 selectors를 얻는다.
 export const {
@@ -206,4 +211,6 @@ export const selectPostsByUser = createSelector(
   // 이전의 값을 캐시, 변경됐을때만 변경된값을 리턴한다.
   (posts, userId) => posts.filter((post: any) => post.userId === userId)
 );
+
+// actions
 export const { increaseCount, reactionAdded } = postsSlice.actions;

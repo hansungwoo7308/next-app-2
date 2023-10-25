@@ -7,11 +7,16 @@ import styled from "styled-components";
 import { setNotify } from "lib/client/store/notifySlice";
 import { patchData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
-import logError from "lib/client/log/logError";
 import { setLoading } from "lib/client/store/loadingSlice";
+import { toast } from "react-toastify";
+import { setCredentials, updateUser } from "lib/client/store/authSlice";
+
 export default function Profile() {
+  // external
   const dispatch = useDispatch();
   const auth = useSelector((store: any) => store.auth);
+
+  // internal
   const [image, setImage]: any = useState();
   const passwordRef = useRef();
   const {
@@ -21,6 +26,7 @@ export default function Profile() {
     formState: { errors },
   } = useForm();
   passwordRef.current = watch("password");
+
   const handleChangeImage = (e: any) => {
     // const reader = new FileReader();
     // console.log({ reader });
@@ -42,7 +48,6 @@ export default function Profile() {
       );
     setImage(file);
   };
-
   const uploadImageToCloudinary = async (images: any) => {
     // let media;
     let array = [];
@@ -74,46 +79,37 @@ export default function Profile() {
     // console.log("array : ", array);
     return array;
   };
-  const updateUser = async (data: any) => {
-    console.log({ data });
+  const handleUpdateUser = async (data: any) => {
+    // console.log({ data });
+    try {
+      dispatch(setLoading(true));
 
-    // dispatch(setLoading(true));
+      // upload image to cloud (and create an image url)
+      const uploaded = await uploadImageToCloudinary(data.image);
 
-    // // get
-    // const { password, image } = data;
-    // // upload image to cloud (and create an image url)
-    // const uploaded = await uploadImageToCloudinary(image);
-    // // console.log("uploaded : ", uploaded);
+      // update
+      const payload = { password: data.password, image: uploaded[0].secure_url };
+      const response: any = await patchData("user", payload, auth.accessToken);
 
-    // update the user
-    // try {
-    //   const payload = { password, image: uploaded[0].secure_url };
-    //   const response = await patchData("user", payload, auth.accessToken);
-    //   const { image } = response.data.updatedUser;
-    //   // set
-    //   logResponse(response);
-    //   // dispatch(setAuthImage({ image }));
-    //   dispatch(
-    //     setNotify({
-    //       status: "success",
-    //       message: "The User Data has been updated.",
-    //       visible: true,
-    //     })
-    //   );
-    //   dispatch(setLoading(false));
-    // } catch (error) {
-    //   // set
-    //   logError(error);
-    //   dispatch(
-    //     setNotify({
-    //       status: "error",
-    //       message: "The User Data has not been updated.",
-    //       visible: true,
-    //     })
-    //   );
-    //   dispatch(setLoading(false));
-    // }
+      // out
+      const { user, accessToken } = response.data;
+      const { _id, username, email, role, image } = user;
+      logResponse(response);
+      dispatch(
+        setCredentials({
+          user: { ...user, _id, username, email, role, image },
+          accessToken,
+        })
+      );
+      dispatch(setLoading(false));
+      toast.success("Updated.");
+    } catch (error) {
+      console.log({ error });
+      dispatch(setLoading(false));
+      toast.error("Not updated.");
+    }
   };
+
   if (!auth.accessToken) return null;
   return (
     <Box>
@@ -170,12 +166,13 @@ export default function Profile() {
               type="password"
             />
           </label>
-          <button onClick={handleSubmit(updateUser)}>Update</button>
+          <button onClick={handleSubmit(handleUpdateUser)}>Update</button>
         </div>
       </form>
     </Box>
   );
 }
+
 const Box = styled.div`
   height: 70vh;
   padding: 1rem;
@@ -189,6 +186,7 @@ const Box = styled.div`
     .image {
       /* width: 4rem; */
       /* height: fit-content; */
+      border: 2px solid red;
       position: relative;
       overflow: hidden;
       img {

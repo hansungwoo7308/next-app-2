@@ -1,5 +1,4 @@
 import { setCredentials } from "lib/client/store/authSlice"; // lib
-import { postData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import logError from "lib/client/log/logError";
 import { useForm } from "react-hook-form"; // modules
@@ -13,6 +12,7 @@ import { useEffect } from "react";
 import { Main as PublicMain } from "@/styles/public/main.styled"; // style
 import styled from "styled-components";
 import { setLoading } from "lib/client/store/loadingSlice";
+import { postData } from "lib/client/utils/fetchData";
 
 export default function Page() {
   // exteranl
@@ -30,23 +30,38 @@ export default function Page() {
     formState: { errors },
   } = useForm();
 
+  const handleSigninWithGeneral = async (data: any) => {
+    try {
+      dispatch(setLoading(true));
+      const response = await postData("v2/auth/signin", data);
+      const { username, role, image, accessToken } = response.data;
+      const credentials = { user: { username, image, role }, accessToken };
+      logResponse(response);
+      dispatch(setCredentials(credentials));
+      dispatch(setLoading(false));
+      toast.success("Login Success");
+      router.push("/auth/profile");
+    } catch (error: any) {
+      logError(error);
+      dispatch(setLoading(false));
+      toast.error(error.status);
+    }
+  };
   const handleSigninWithCredentials = async (data: any) => {
     try {
       setLoading(true);
       const { email, password } = data;
       const { callbackUrl }: any = router.query;
-      console.log({ email, password, callbackUrl });
+      // console.log({ email, password, callbackUrl });
       const response: any = await signIn("credentials", {
         email,
         password,
-        redirect: false,
-        // callbackUrl: callbackUrl || "/",
+        redirect: true,
+        callbackUrl: callbackUrl || "/",
       });
       console.log({ response });
       setLoading(false);
       toast.success("Signed In");
-      // if (callbackUrl) router.push(callbackUrl);
-      // router.push("/auth/profile");
     } catch (error: any) {
       console.log({ error });
       setLoading(false);
@@ -58,24 +73,9 @@ export default function Page() {
     const result = await signIn("naver", { redirect: true, callbackUrl: "/" });
     console.log({ result });
   };
-  // const handleSignin = async (data: any) => {
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await postData("v2/auth/signin", data);
-  //     const { username, role, image, accessToken } = response.data;
-  //     const credentials = { user: { username, image, role }, accessToken };
-  //     logResponse(response);
-  //     dispatch(setCredentials(credentials));
-  //     dispatch(setLoading(false));
-  //     toast.success("Login Success");
-  //     router.push("/auth/profile");
-  //   } catch (error: any) {
-  //     logError(error);
-  //     dispatch(setLoading(false));
-  //     toast.error(error.status);
-  //   }
-  // };
+
   useEffect(() => setFocus("email"), []);
+  useEffect(() => console.log({ session }), [session]);
 
   return (
     <>
@@ -92,6 +92,9 @@ export default function Page() {
               type="password"
               placeholder="password"
             />
+            <button onClick={handleSubmit(handleSigninWithGeneral)}>
+              Sign in with General(jwt)
+            </button>
             <button onClick={handleSubmit(handleSigninWithCredentials)}>
               Sign in with Credentials
             </button>

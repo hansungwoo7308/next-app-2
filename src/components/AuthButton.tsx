@@ -72,6 +72,40 @@ export default function AuthButton(props: any) {
       </Box>
     );
   }
+  if (auth.accessToken) {
+    return (
+      <Box dropdown={dropdown}>
+        <div className="profile">
+          <div className="image" onClick={() => setDropdown(!dropdown)}>
+            <Image
+              src={
+                auth.user.image ||
+                "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
+              }
+              alt={"alt"}
+              width={100}
+              height={100}
+            />
+            {auth.user?.username || auth.user?.name}
+          </div>
+          <div className="dropdown">
+            <Link href={"/auth/profile"}>Profile</Link>
+            {auth.user?.role === "admin" && (
+              <>
+                <Link href={"/users"}>Users</Link>
+                <Link href={"/commerce/product"}>Products</Link>
+                {/* <Link href={"/commerce/product/create"}>Create a product</Link> */}
+                <a onClick={() => dispatch(setModal({ active: true, type: "CREATE" }))}>
+                  Create a product
+                </a>
+              </>
+            )}
+            <button onClick={handleSignout}>Sign out</button>
+          </div>
+        </div>
+      </Box>
+    );
+  }
   return (
     <Box dropdown={dropdown}>
       <div className="sign">

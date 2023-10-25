@@ -47,24 +47,21 @@ export function GlobalState({ children, token }: any) {
   /* Auth */
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
-  // const refreshAuth = async () => {
-  //   try {
-  //     dispatch(setLoading(true));
-  //     const response = await getData("authentication/refresh");
-  //     const { username, role, image, accessToken } = response.data;
-  //     // logResponse(response);
-  //     const credentials = { user: { username, image, role }, accessToken };
-  //     dispatch(setCredentials(credentials));
-  //     dispatch(setLoading(false));
-  //   } catch (error) {
-  //     logError(error);
-  //     dispatch(setLoading(false));
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (session.data?.user) return; // session 방식으로 구현했다면 리프레시를 패스한다.
-  //   if (!auth.accessToken) refreshAuth();
-  // }, [auth.accessToken]); // 엑세스 토큰이 없으면 리프레시 요청 (store)
+  const refreshAuth = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await getData("authentication/refresh");
+      dispatch(setCredentials(response.data));
+      dispatch(setLoading(false));
+    } catch (error) {
+      logError(error);
+      dispatch(setLoading(false));
+    }
+  };
+  useEffect(() => {
+    if (session.data?.user) return; // session 방식으로 구현했다면 리프레시를 패스한다.
+    if (!auth.accessToken) refreshAuth();
+  }, [auth.accessToken]); // 엑세스 토큰이 없으면 리프레시 요청 (store)
   // useEffect(() => {
   //   const interval = setInterval(() => {
   //     refreshAuth();

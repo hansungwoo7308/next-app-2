@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, setCredentials } from "lib/client/store/authSlice";
+import { clearCredentials, setCredentials } from "lib/client/store/authSlice";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import { getData } from "lib/client/utils/fetchData";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { setModal } from "lib/client/store/modalSlice";
+import axios from "axios";
 
 export default function AuthButton(props: any) {
   // external
@@ -20,32 +21,44 @@ export default function AuthButton(props: any) {
   // internal
   const router = useRouter();
   const [dropdown, setDropdown] = useState(false);
+
   const handleSignout = async (e: any) => {
     e.preventDefault();
     signOut({ callbackUrl: "/auth/signin" });
+    // if (session.status === "authenticated") {
+    // }
     // try {
-    //   if (session.status === "authenticated") {
-    //     return;
-    //   }
-    //   // const response = await getData("v2/auth/signout");
-    //   // logResponse(response);
-    //   // dispatch(logOut());
-    //   // router.push("/");
+    //   const response = await getData("v2/auth/signout");
+    //   logResponse(response);
+    //   dispatch(clearCredentials());
+    //   router.push("/");
     // } catch (error) {
     //   logError(error);
     // }
   };
+  const handleSignoutAbsolutely = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await getData("v2/signout");
+      logResponse(response);
+      // dispatch(clearCredentials());
+      router.push("/auth/signin");
+    } catch (error) {
+      logError(error);
+    }
+  };
 
-  useEffect(() => console.log({ "session.data": session.data }), []);
+  // useEffect(() => console.log({ "session.data": session.data }), []);
 
-  if (session.data?.user) {
+  if (session.status === "authenticated" || auth.accessToken) {
     return (
       <Box dropdown={dropdown}>
         <div className="profile">
           <div className="image" onClick={() => setDropdown(!dropdown)}>
             <Image
               src={
-                session.data.user.image ||
+                // session.data?.user?.image||
+                auth.user?.image ||
                 "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
               }
               alt={"alt"}
@@ -66,41 +79,9 @@ export default function AuthButton(props: any) {
                 </a>
               </>
             )}
+            <hr />
             <button onClick={handleSignout}>Sign out</button>
-          </div>
-        </div>
-      </Box>
-    );
-  }
-  if (auth.accessToken) {
-    return (
-      <Box dropdown={dropdown}>
-        <div className="profile">
-          <div className="image" onClick={() => setDropdown(!dropdown)}>
-            <Image
-              src={
-                auth.user.image ||
-                "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
-              }
-              alt={"alt"}
-              width={100}
-              height={100}
-            />
-            {auth.user?.username || auth.user?.name}
-          </div>
-          <div className="dropdown">
-            <Link href={"/auth/profile"}>Profile</Link>
-            {auth.user?.role === "admin" && (
-              <>
-                <Link href={"/users"}>Users</Link>
-                <Link href={"/commerce/product"}>Products</Link>
-                {/* <Link href={"/commerce/product/create"}>Create a product</Link> */}
-                <a onClick={() => dispatch(setModal({ active: true, type: "CREATE" }))}>
-                  Create a product
-                </a>
-              </>
-            )}
-            <button onClick={handleSignout}>Sign out</button>
+            <button onClick={handleSignoutAbsolutely}>Sign out (Absolutely)</button>
           </div>
         </div>
       </Box>
@@ -108,10 +89,8 @@ export default function AuthButton(props: any) {
   }
   return (
     <Box dropdown={dropdown}>
-      <div className="sign">
-        <Link href={"/auth/signup"}>Sign up</Link>
-        <Link href={"/auth/signin"}>Sign in</Link>
-      </div>
+      <Link href={"/auth/signup"}>Sign up</Link>
+      <Link href={"/auth/signin"}>Sign in</Link>
     </Box>
   );
 }
@@ -122,17 +101,9 @@ type Props = {
 const Box = styled.div<Props>`
   display: flex;
   gap: 1rem;
-  > * {
-    /* width: 5rem; */
-    white-space: nowrap;
-  }
-  .sign {
-    display: flex;
-    gap: 1rem;
-  }
-
+  white-space: nowrap;
   .profile {
-    width: 7rem;
+    /* width: 7rem; */
     .image {
       width: 100%;
       height: 100%;
@@ -155,14 +126,12 @@ const Box = styled.div<Props>`
     .dropdown {
       display: ${({ dropdown }: any) => (dropdown ? "block" : "none")};
       background-color: #111;
-      > * {
-        padding: 1rem 2rem;
-        /* text-align: center; */
-      }
-      button {
-        width: 100%;
-        border: 2px solid red;
-        padding: 1rem 0;
+      padding: 1rem;
+      font-size: 14px;
+      > button,
+      a {
+        padding: 1rem;
+        display: block;
       }
     }
   }
@@ -171,7 +140,6 @@ const Box = styled.div<Props>`
     color: #ccc;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
     /* word-break: break-all; */
     /* overflow-wrap: break-word; */
   }

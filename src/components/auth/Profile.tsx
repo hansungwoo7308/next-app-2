@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import styled from "styled-components";
@@ -39,14 +39,15 @@ export default function Profile() {
 
     const file = e.target.files[0];
     console.log({ file });
-    if (!file) return dispatch(setNotify({ status: "error", message: "No file", visible: true }));
-    if (file.size > 1024 * 1024)
-      return dispatch(setNotify({ status: "error", message: "Oversize", visible: true }));
-    if (file.type !== "image/jpeg" && file.type !== "image/png")
-      return dispatch(
-        setNotify({ status: "error", message: "incorrected image file", visible: true })
-      );
     setImage(file);
+
+    // if (!file) return dispatch(setNotify({ status: "error", message: "No file", visible: true }));
+    // if (file.size > 1024 * 1024)
+    //   return dispatch(setNotify({ status: "error", message: "Oversize", visible: true }));
+    // if (file.type !== "image/jpeg" && file.type !== "image/png")
+    //   return dispatch(
+    //     setNotify({ status: "error", message: "incorrected image file", visible: true })
+    //   );
   };
   const uploadImageToCloudinary = async (images: any) => {
     // let media;
@@ -110,15 +111,17 @@ export default function Profile() {
     }
   };
 
+  // useEffect(() => console.log({ image }), []);
+
   if (!auth.accessToken) return null;
   return (
     <Box>
       <form>
         <div className="image">
           <Image
+            src={image ? URL.createObjectURL(image) : auth.user?.image}
             // src={URL.createObjectURL(image) || auth.user.image}
-            // src={image ? URL.createObjectURL(image) : auth.user?.image}
-            src={auth.user?.image || URL.createObjectURL(image)}
+            // src={auth.user?.image || URL.createObjectURL(image)}
             alt={"auth.image"}
             width={200}
             height={200}
@@ -129,9 +132,6 @@ export default function Profile() {
               type="file"
               accept="image/*"
               onChange={handleChangeImage}
-              // name="file"
-              // id="file_up"
-              // multiple
             />
           </div>
         </div>

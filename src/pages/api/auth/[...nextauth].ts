@@ -50,33 +50,38 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    // jwt에 user data를 저장하고 토큰을 생성하는 함수
-    // token : 로그인 상태라면 기존의 토큰을 리턴한다.
-    // user : 로그인할 새로운 유저객체
+    // jwt token 에 user 데이터를 저장한다.
+    // user : returned value from authorize function
     // client cookie에 token에는 user data를 포함하지 않도록 되어있다.
-    async jwt({ token, user }: any) {
+    signIn({ user, account, profile }) {
+      console.log("\x1b[33m\n[signIn]\x1b[32m");
+      console.log({ account });
+      if (account?.provider === "naver") {
+        return true;
+      }
+      return false;
+    },
+    async jwt({ token, user, account }: any) {
       // console.log("\x1b[33m\n[jwt]\x1b[32m");
       if (user) token.user = user;
+      if (account) token.account = account;
       // console.log({ token });
       return token;
     },
-
-    // session에 user data를 저장하는 함수
-    // session : server에 저장되는 user data account object
-    // token : jwt function으로부터 생성된 token
+    // session에 user 데이터를 저장한다.
+    // token : returned value from jwt function
     async session({ session, token }: any) {
       console.log("\x1b[33m\n[session]\x1b[32m");
       if (token.user) session.user = token.user;
-      console.log({ session });
+      if (token.account) session.account = token.account;
+      // console.log({ session });
+      console.log({ account: session.account });
       return session;
-      // session.user.name = token.user.username
-      // session.user.email = token.user.email;
-      // session.user.role = token.user.role;
     },
   },
-
   pages: {
     signIn: "/auth/signin",
+    // signOut: '/auth/signout'
   },
   // debug: process.env.NODE_ENV === "development",
   // adapter: MongoDBAdapter(clientPromise),

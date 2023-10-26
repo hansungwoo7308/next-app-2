@@ -6,14 +6,15 @@ import { createAccessToken, createRefreshToken } from "lib/server/utils/createJW
 connectDB();
 
 export default async function (req: any, res: any) {
-  console.log("\x1b[33m\n[api/authentication/refresh]\x1b[0m");
+  // console.log("\x1b[33m\n[api/authentication/refresh]\x1b[0m");
 
   // get the refreshToken
   const { refreshToken } = req.cookies;
   if (!refreshToken) {
-    console.log(`\x1b[31mNo refreshToken.\x1b[0m`);
+    // console.log(`\x1b[31mNo refreshToken.\x1b[0m`);
     return res.status(401).json({ message: "Unauthorized" });
   }
+  // console.log({ refreshToken });
 
   // find the User
   const foundUser = await User.findOne({ refreshToken }).exec();

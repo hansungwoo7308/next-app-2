@@ -61,16 +61,11 @@ export function GlobalState({ children, token }: any) {
   useEffect(() => {
     if (session.data?.user) return; // session 방식으로 구현했다면 리프레시를 패스한다.
     if (!auth.accessToken) refreshAuth();
-  }, [auth.accessToken]); // 엑세스 토큰이 없으면 리프레시 요청 (store)
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     refreshAuth();
-  //   }, 1000 * 10);
-  // }, []);
+  }, [auth.accessToken]);
   useEffect(() => {
     if (session.status === "authenticated") {
       if (!session.data.user) return;
-      const credentials = { user: session.data.user, accessToken: "next-auth" };
+      const credentials = { user: session.data.user };
       dispatch(setCredentials(credentials));
     }
   }, [session.status]);

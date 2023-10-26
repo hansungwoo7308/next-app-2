@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import ForwardedMotionDiv from "@/components/ForwardedMotionDiv";
+import { useSession } from "next-auth/react";
 
 const sentence = `There are many variations of passages of Lorem Ipsum available, but the majority have
 suffered alteration in some form, by injected humour, or randomised words which don't

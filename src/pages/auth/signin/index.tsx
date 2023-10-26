@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"; // modules
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { signIn, useSession } from "next-auth/react";
+import { getProviders, getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -14,7 +14,18 @@ import styled from "styled-components";
 import { setLoading } from "lib/client/store/loadingSlice";
 import { postData } from "lib/client/utils/fetchData";
 
-export default function Page() {
+export async function getServerSideProps({ req, res }: any) {
+  console.log(`\x1b[33m\n[ServerSideProps/${req.url}]:::[${req.method}]\x1b[30m`);
+  const session = await getSession({ req });
+  console.log({ session });
+  const providers = await getProviders();
+
+  return { props: { session, providers } };
+}
+
+export default function Page(props: any) {
+  // console.log({ props });
+
   // exteranl
   const dispatch = useDispatch();
   const auth = useSelector((store: any) => store.auth);
@@ -70,17 +81,28 @@ export default function Page() {
   };
   const handleSigninWithNaver = async (e: any) => {
     e.preventDefault();
-    const result = await signIn("naver", { redirect: true, callbackUrl: "/" });
+    const result = await signIn(
+      "naver",
+      { redirect: false }
+      // { redirect: true, callbackUrl: "/" }
+    );
     console.log({ result });
   };
 
   useEffect(() => setFocus("email"), []);
-  useEffect(() => console.log({ session }), [session]);
+  // useEffect(() => console.log({ session }), [session]);
 
   return (
     <>
       <Head>
         <title>signin</title>
+        {/* <meta charSet="utf-8"></meta>
+        <script
+          type="text/javascript"
+          src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+          charSet="utf-8"
+        ></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script> */}
       </Head>
       <Main>
         <section>
@@ -99,6 +121,7 @@ export default function Page() {
               Sign in with Credentials
             </button>
             <button onClick={handleSigninWithNaver}>Sign in with Naver</button>
+            <div id="naver_id_login"></div>
           </form>
         </section>
       </Main>

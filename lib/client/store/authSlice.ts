@@ -17,11 +17,6 @@ export const authSlice = createSlice({
       state.user = user;
       state.accessToken = accessToken;
     },
-    signout: (state, action) => {
-      state.status = false;
-      state.user = null;
-      state.accessToken = null;
-    },
     updateUser: (state, action) => {
       const { user } = action.payload;
       const { username, email, role, image } = user;
@@ -30,10 +25,11 @@ export const authSlice = createSlice({
       if (role) state.user.role = role;
       if (image) state.user.image = image;
     },
-    clearCredentials: (state, action) => (state.accessToken = null),
+    clearCredentials: (state, action) => ({ status: false, user: null, accessToken: null }),
   },
 });
-export const { setCredentials, signout, updateUser, clearCredentials }: any = authSlice.actions;
+
+export const { setCredentials, updateUser, clearCredentials }: any = authSlice.actions;
 
 // export const authSlice = createSlice({
 //   name: "auth",

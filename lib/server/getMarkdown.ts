@@ -1,6 +1,7 @@
 import fs from "fs";
 import matter from "gray-matter";
 import { PostMetaData } from "types/PostMetaData";
+
 export default function getMarkdown(path: string) {
   // get the filenames
   const filenames: Array<string> = fs.readdirSync(`${path}/`);

@@ -1,4 +1,4 @@
-// import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { SessionProvider, useSession } from "next-auth/react";
 import { toast } from "react-toastify";
@@ -23,8 +23,8 @@ export default function Providers({ children, session, token }: any) {
   return (
     <Provider store={store}>
       <SessionProvider session={session}>
-        <GlobalState token={token}>{children}</GlobalState>
-        {/* <PayPalScriptProvider
+        {/* <GlobalState token={token}>{children}</GlobalState> */}
+        <PayPalScriptProvider
           options={{
             clientId:
               // "Ab2uPl_Wo2-UDJ569Byt3xFloItf-fgdla5iQwfryndLbQFASTbwSr23GUJXj7B9lyybjL44iKADN1ZH",
@@ -35,30 +35,28 @@ export default function Providers({ children, session, token }: any) {
           }}
         >
           <GlobalState token={token}>{children}</GlobalState>
-        </PayPalScriptProvider> */}
+        </PayPalScriptProvider>
       </SessionProvider>
     </Provider>
   );
 }
+
 export function GlobalState({ children, token }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
-
-  /* Auth */
   const session = useSession();
   const auth = useSelector((store: any) => store.auth);
-  const refreshAuth = async () => {
-    try {
-      dispatch(setLoading(true));
-      const response = await getData("authentication/refresh");
-      dispatch(setCredentials(response.data));
-      dispatch(setLoading(false));
-    } catch (error) {
-      logError(error);
-      dispatch(setLoading(false));
-    }
-  };
+
+  // auth
   useEffect(() => {
+    const refreshAuth = async () => {
+      try {
+        const response = await getData("authentication/refresh");
+        dispatch(setCredentials(response.data));
+      } catch (error) {
+        logError(error);
+      }
+    };
     if (session.data?.user) return; // session 방식으로 구현했다면 리프레시를 패스한다.
     if (!auth.accessToken) refreshAuth();
   }, [auth.accessToken]);
@@ -107,22 +105,20 @@ export function GlobalState({ children, token }: any) {
   // }, [auth.accessToken]); // 로그인 시, 주문정보와 사용자정보를 가져온다.
 
   /* Cart */
-  // const cart = useSelector((store: any) => store.cart);
-  // useEffect(() => {
-  //   const serializedCart: any = localStorage.getItem("cart");
-  //   if (!serializedCart) return;
-  //   const parseCart = JSON.parse(serializedCart);
-  //   // console.log("parseCart : ", parseCart);
-  //   dispatch(reloadCart(parseCart));
-  //   // parseCart.map((v: any) => {
-  //   //   dispatch(addToCart(v));
-  //   // });
-  // }, []); // 로드 시, 카트정보를 로컬스토리지에 캐싱한다. // if loaded, cache the cart data
-  // useEffect(() => {
-  //   if (!cart.length) return;
-  //   const stringfiedCart = JSON.stringify(cart);
-  //   localStorage.setItem("cart", stringfiedCart);
-  // }, [cart]); // 카트정보 변경 시, 카트정보를 로컬스토리지에 캐싱한다. // if cart is changed, cache the cart data
+  const cart = useSelector((store: any) => store.cart);
+  useEffect(() => {
+    // storage > store
+    const serializedCart: any = localStorage.getItem("cart");
+    const parseCart = JSON.parse(serializedCart);
+    if (!serializedCart || !parseCart) return;
+    dispatch(reloadCart(parseCart));
+  }, []);
+  useEffect(() => {
+    // store > storage
+    if (!cart.length) return;
+    const stringfiedCart = JSON.stringify(cart);
+    localStorage.setItem("cart", stringfiedCart);
+  }, [cart]);
 
   return <>{children}</>;
 }

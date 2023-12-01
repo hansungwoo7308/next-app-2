@@ -3,7 +3,9 @@ import Order from "lib/server/models/Order";
 import Product from "lib/server/models/Product";
 import User from "lib/server/models/User";
 import verifyJWT from "lib/server/utils/verifyJWT";
+
 connectDB();
+
 export default async function (req: any, res: any) {
   console.log("\x1b[32m\n[api/order]");
   switch (req.method) {
@@ -19,6 +21,7 @@ export default async function (req: any, res: any) {
       break;
   }
 }
+
 const createOrder = async (req: any, res: any) => {
   try {
     // verify

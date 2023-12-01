@@ -1,12 +1,10 @@
-/** 
-Source : 
-https://github.com/vercel/next.js/blob/canary/examples/with-mongodb-mongoose/utils/dbConnect.js 
-**/
 import mongoose from "mongoose";
+
 // check the env
 if (!process.env.MONGODB_URI) {
   throw new Error("Please add your MONGODB_URI to .env.local");
 }
+
 // get the database uri and option
 const MONGODB_URI: string = process.env.MONGODB_URI;
 const OPTION = {

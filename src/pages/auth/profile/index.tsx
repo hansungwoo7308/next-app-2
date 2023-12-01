@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Main as PublicMain } from "@/styles/public/main.styled";
 import styled from "styled-components";
 import Profile from "@/components/auth/Profile";
+
 export default function Page() {
   return (
     <>
@@ -16,6 +17,7 @@ export default function Page() {
     </>
   );
 }
+
 const Main = styled(PublicMain)`
   > section {
   }

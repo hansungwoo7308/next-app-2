@@ -4,12 +4,14 @@ export const GlobalStyle = createGlobalStyle`
     --color-main: #00704a;
     --color-focus: coral;
   }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     scroll-behavior: smooth;
   }
+
   html, body {
     width:100%;
     max-width: 100vw;
@@ -22,15 +24,18 @@ export const GlobalStyle = createGlobalStyle`
     /* overflow-x: hidden; */
     /* overflow를 사용하면 scroll event가 동작하지 않는다. 어떻게 해결해야하나? */
   }
+
   main{
     /* overflow-x:hidden; */
     width:100%;
+    height:100vh;
     background-color:#333;
     color:#fff;
     >section{
       width:80%;
       max-width:1000px;
       min-height:100vh;
+      
       display:flex;
       flex-direction:column;
       justify-content:center;
@@ -43,29 +48,36 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
   }
+
   a {
     width: 100%;
     height: 100%;
     color: inherit;
     text-decoration: none;
   }
+
   textarea {
     resize: none;
   }
+
   li {
     list-style: none;
   }
+
   img {
     width: 100%;
     height: 100%;
     object-fit:cover;
   }
+
   input, select {
     padding: 5px;
   }
+
   textarea{
     padding: 10px;
   }
+
   // components
   .slider {
     width: 300px;

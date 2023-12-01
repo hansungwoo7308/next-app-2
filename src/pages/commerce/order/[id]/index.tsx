@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+
 export default function Page() {
   const { auth, orders }: any = useSelector((store) => store);
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function Page() {
   // find the order
   const order = orders.find((order: any) => order._id === id);
   console.log("order : ", order);
+
   if (!auth.accessToken) return null;
   return (
     <Main>

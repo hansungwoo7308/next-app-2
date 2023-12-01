@@ -10,11 +10,13 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+
 export default function Page() {
   const { cart, auth }: any = useSelector((store) => store);
   const [total, setToal]: any = useState(0);
   const dispatch = useDispatch();
   const router = useRouter();
+
   useEffect(() => {
     // 주문금액을 스토어에 저장한다.
     const total = cart.reduce((a: any, v: any) => a + v.price * v.quantity, 0);
@@ -77,6 +79,7 @@ export default function Page() {
     </Main>
   );
 }
+
 const Main = styled(PublicMain)`
   > section {
     flex-direction: column;

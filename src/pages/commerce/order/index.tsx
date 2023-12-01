@@ -12,8 +12,15 @@ import { useForm } from "react-hook-form";
 import { useEffect, useRef, useState } from "react";
 import Paypal from "@/components/commerce/Paypal";
 import { setLoading } from "lib/client/store/loadingSlice";
+
 export default function Page() {
-  const { auth, cart }: any = useSelector((store) => store);
+  // external
+  const auth = useSelector((store: any) => store.auth);
+  const cart = useSelector((store: any) => store.cart);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // internal
   const [test, setTest] = useState(false);
   const [payload, setPayload]: any = useState({
     address: "",
@@ -21,8 +28,8 @@ export default function Page() {
     cart: cart,
     total: cart.reduce((a: any, v: any) => a + v.price * v.quantity, 0),
   });
-  const dispatch = useDispatch();
-  const router = useRouter();
+
+  // handle
   const handlePayment = async () => {
     try {
       dispatch(setLoading(true));
@@ -38,6 +45,7 @@ export default function Page() {
       dispatch(setLoading(false));
     }
   };
+
   return (
     <Main>
       <section>
@@ -68,22 +76,15 @@ export default function Page() {
           <div className="payment">
             <h1>Payment</h1>
             <h3>Total : ${payload.total}</h3>
-            <button onClick={handlePayment}>Pay for Order</button>
-            {/* {test ? (
-              <>
-                <Paypal order={order} />
-              </>
-            ) : (
-              <>
-                <button onClick={() => setTest(true)}>Pay</button>
-              </>
-            )} */}
+            {/* <button onClick={handlePayment}>Pay for Order</button> */}
+            <Paypal order={payload} />
           </div>
         </div>
       </section>
     </Main>
   );
 }
+
 const Main = styled(PublicMain)`
   > section {
     > div {

@@ -9,24 +9,11 @@ export default function Nav() {
   // menu
   const homeRef: any = useRef();
   const listRef: any = useRef();
-  const blogsRef: any = useRef();
-  const usersRef: any = useRef();
-  const users2Ref: any = useRef();
   const testRef: any = useRef();
-  const postsRef: any = useRef();
-  const postListRef: any = useRef();
-  const postList2Ref: any = useRef();
-  const todoListRef: any = useRef();
-  const jwtRef: any = useRef();
-  const searchRef: any = useRef();
-  const restrictedRef: any = useRef();
-  const aboutRef: any = useRef();
   const worksRef: any = useRef();
-  const commerceRef: any = useRef();
-  const productRef: any = useRef();
+
   const setColor = (target: any) => {
     const list = Array.from(target.parentNode.childNodes);
-    // console.log("list : ", list);
     list.map((child: any) => {
       if (child.className === "focus") return;
       child.className = "unsetColor";
@@ -45,45 +32,16 @@ export default function Nav() {
     } else if (router.pathname.startsWith("/list")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname.startsWith("/blogs")) {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
     } else if (router.pathname.startsWith("/posts")) {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname.startsWith("/post-list")) {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/post-list-2") {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/users") {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/users2") {
-      setColor(listRef.current);
-      setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/search") {
-      setColor(searchRef.current);
-      setUnderline(focusRef.current, searchRef.current);
-    } else if (router.pathname === "/jwt") {
-      setColor(jwtRef.current);
-      setUnderline(focusRef.current, jwtRef.current);
     } else if (router.pathname === "/todo-list") {
       setColor(listRef.current);
       setUnderline(focusRef.current, listRef.current);
-    } else if (router.pathname === "/restricted") {
-      setColor(restrictedRef.current);
-      setUnderline(focusRef.current, restrictedRef.current);
     } else if (router.pathname.startsWith("/works")) {
       setColor(worksRef.current);
       setUnderline(focusRef.current, worksRef.current);
-    }
-    // else if (router.pathname.startsWith("/commerce")) {
-    //   setColor(commerceRef.current);
-    //   setUnderline(focusRef.current, commerceRef.current);
-    // }
-    else if (router.pathname.startsWith("/test")) {
+    } else if (router.pathname.startsWith("/test")) {
       setColor(testRef.current);
       setUnderline(focusRef.current, testRef.current);
     } else {
@@ -104,9 +62,10 @@ export default function Nav() {
     // console.log("newLeft : ", newLeft);
     // console.log("newWidth : ", newWidth);
   };
-  useEffect(() => {
-    handleChange();
-  });
+  // useEffect(() => {
+  //   handleChange();
+  // });
+
   return (
     <NavStyle>
       <ul>
@@ -116,41 +75,9 @@ export default function Nav() {
             Home
           </Link>
         </li>
-        {/* <li ref={listRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/list"}>List</Link>
-          <ul>
-            Markdown List
-            <li ref={postsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/posts"}>posts (Markdown)</Link>
-            </li>
-            <li ref={blogsRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/blogs"}>blogs (Markdown)</Link>
-            </li>
-            CDN List
-            <li ref={postListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list"}>post-list (CDN)</Link>
-            </li>
-            <li ref={users2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/users2"}>User List (CDN)</Link>
-            </li>
-            Database List
-            <li ref={postList2Ref} onClick={(e) => handleFocus(e)}>
-              <Link href={"/post-list-2"}>Post List 2 (Server - Query - DB)</Link>
-            </li>
-            <li ref={todoListRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/todo-list"}>Todo List (Client - RTK query - DB)</Link>
-            </li>
-          </ul>
-        </li> */}
-        {/* <li ref={commerceRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/commerce"}>Commerce</Link>
-          <ul>
-            <li ref={productRef} onClick={(e) => handleFocus(e)}>
-              <Link href={"/commerce/product"}>Product</Link>
-            </li>
-          </ul>
-        </li> */}
-
+        <Link href={"/commerce/product"} scroll={false}>
+          Products
+        </Link>
         {/* <li ref={testRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/test"} scroll={false}>
             TEST
@@ -159,12 +86,6 @@ export default function Nav() {
         <li ref={worksRef} onClick={(e) => handleFocus(e)}>
           <Link href={"/works"} scroll={false}>
             Works
-          </Link>
-        </li> */}
-
-        {/* <li ref={searchRef} onClick={(e) => handleFocus(e)}>
-          <Link href={"/search"} scroll={false}>
-            Search
           </Link>
         </li> */}
       </ul>

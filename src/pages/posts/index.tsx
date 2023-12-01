@@ -42,6 +42,7 @@ export const getStaticProps = (context: GetStaticPropsContext) => {
   console.log("Markdown list : ", list);
   return { props: { list } };
 };
+
 export default function Page({ list }: any) {
   return (
     <>
@@ -56,6 +57,7 @@ export default function Page({ list }: any) {
     </>
   );
 }
+
 const Main = styled(PublicMain)`
   > section {
     > div {

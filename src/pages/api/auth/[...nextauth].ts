@@ -50,9 +50,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    // jwt token 에 user 데이터를 저장한다.
-    // user : returned value from authorize function
-    // client cookie에 token에는 user data를 포함하지 않도록 되어있다.
     signIn({ user, account, profile }) {
       console.log("\x1b[33m\n[signIn]\x1b[32m");
       console.log({ account });
@@ -62,15 +59,18 @@ export const authOptions: NextAuthOptions = {
       return false;
     },
     async jwt({ token, user, account }: any) {
+      // jwt token 에 user 데이터를 저장한다.
+      // user : returned value from authorize function
+      // client cookie에 token에는 user data를 포함하지 않도록 되어있다.
       // console.log("\x1b[33m\n[jwt]\x1b[32m");
       if (user) token.user = user;
       if (account) token.account = account;
       // console.log({ token });
       return token;
     },
-    // session에 user 데이터를 저장한다.
-    // token : returned value from jwt function
     async session({ session, token }: any) {
+      // session에 user 데이터를 저장한다.
+      // token : returned value from jwt function
       console.log("\x1b[33m\n[session]\x1b[32m");
       if (token.user) session.user = token.user;
       if (token.account) session.account = token.account;
@@ -81,7 +81,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/auth/signin",
-    // signOut: '/auth/signout'
   },
   // debug: process.env.NODE_ENV === "development",
   // adapter: MongoDBAdapter(clientPromise),

@@ -9,9 +9,8 @@ export default function Header() {
     <HeaderStyle>
       <section>
         <Nav />
+        <Cart />
         <AuthButton />
-        {/* <Link href={"/"}>LOGO</Link> */}
-        {/* <Cart /> */}
       </section>
     </HeaderStyle>
   );

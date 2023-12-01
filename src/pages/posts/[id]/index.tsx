@@ -3,6 +3,7 @@ import matter from "gray-matter";
 import Markdown from "markdown-to-jsx";
 import { Main } from "@/styles/public/main.styled";
 import { GetStaticPathsContext, GetStaticPropsContext } from "next";
+
 export const getStaticPaths = (context: GetStaticPathsContext) => {
   const filenames: Array<string> = fs.readdirSync("data/");
   const filenamesWithMarkdown: Array<string> = filenames.filter((file) => file.endsWith(".md"));
@@ -15,16 +16,13 @@ export const getStaticPaths = (context: GetStaticPathsContext) => {
   }));
   console.log("\x1b[32m\n[Server:getStaticPaths]/pages/posts");
   console.log("paths : ", paths);
-  // console.log(
-  //   "filenamesWithMarkdownModified : ",
-  //   filenamesWithMarkdownModified
-  // );
+
   return {
     paths: paths,
     fallback: false,
-    // paths: string[]
   };
 };
+
 export const getStaticProps = (context: GetStaticPropsContext) => {
   const { id }: any = context.params;
   const content = fs.readFileSync(`data/${id}.md`, "utf8");
@@ -38,6 +36,7 @@ export const getStaticProps = (context: GetStaticPropsContext) => {
   console.log("context.params.id : ", id);
   return { props: { item } };
 };
+
 export default function Page({ item }: any) {
   return (
     <>

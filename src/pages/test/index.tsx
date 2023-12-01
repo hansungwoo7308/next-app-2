@@ -1,4 +1,4 @@
-import { useGetUsersQuery, usersApiSlice } from "lib/utils/usersApiSlice";
+import { useGetUsersQuery } from "lib/utils/usersApiSlice";
 import { ElementType, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { start } from "repl";
@@ -9,6 +9,7 @@ import ForwardedMotionDiv from "@/components/ForwardedMotionDiv";
 import { duration } from "moment";
 import Stagger from "@/components/Stagger";
 import Loader from "@/components/Loader";
+
 const parent = {
   animate: {
     transition: {
@@ -30,10 +31,9 @@ const children = {
     },
   },
 };
+
 export default function Page(props: any, ref: any) {
-  // method
   const targetRef = useRef(null);
-  // const { scrollYProgress } = useScroll({ target: targetRef });
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end start"],
@@ -41,23 +41,12 @@ export default function Page(props: any, ref: any) {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
-  // method
-  // const { scrollY } = useScroll();
-  // const y = useTransform(scrollY, [0, 500], ["0%", "50%"]);
-
-  // method
-  // const { scrollYProgress } = useScroll();
-  // const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
-  // console.log({ props });
   // rtk query
-  const dispatch = useDispatch();
-  const { auth, usersApi }: any = useSelector((store) => store);
-  const { data, isLoading, isSuccess, isError, error, refetch } = useGetUsersQuery({});
+  // const { data, isLoading, isSuccess, isError, error, refetch } = useGetUsersQuery({});
 
-  useEffect(() => {
-    if (auth.accessToken) refetch();
-  }, [auth.accessToken]);
+  // useEffect(() => {
+  //   if (auth.accessToken) refetch();
+  // }, [auth.accessToken]);
   // useEffect(() => {
   //   const start = 700;
   //   const stop = 3000;
@@ -73,6 +62,7 @@ export default function Page(props: any, ref: any) {
   //     }
   //   });
   // }, []);
+
   useEffect(() => {
     // 팝업될 요소들
     const pops: any = document.querySelectorAll(".fade-in");
@@ -118,11 +108,15 @@ export default function Page(props: any, ref: any) {
     }
     // console.log({ faders });
   }, []);
+
   return (
     <>
       <Main>
         <section ref={targetRef} className="section1">
-          {/* <motion.div
+          {/* <motion.div style={{ y, opacity }} className="part1"></motion.div> */}
+          <Loader />
+        </section>
+        {/* <motion.div
             // 시간차를 다르게 하기 위한, 패런트의 커스텀 트랜지션 설정 (항상 패런트에서 설정)
             variants={parent}
             // 커스텀 변수명으로 설정
@@ -144,45 +138,12 @@ export default function Page(props: any, ref: any) {
               </motion.div>
             ))}
           </motion.div> */}
-          {/* <Stagger /> */}
-          <motion.div style={{ y, opacity }} className="part1"></motion.div>
-          <Loader />
-          <h1>asdasdadasdasd</h1>
-        </section>
-        <section></section>
-        <section></section>
-        <section></section>
-        {/* <section>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fade-in">
-            <h1>tessdfsdfsdfsasdasdasdasdst</h1>
-          </div>
-          <div className="fader">ashdaldhad1</div>
-          <div className="fader">ashdaldhad2</div>
-          <div className="fader">ashdaldhad3</div>
-          <div className="fader">ashdaldhad4</div>
-        </section> */}
+        {/* <Stagger /> */}
       </Main>
     </>
   );
 }
+
 const Main = styled.main`
   > section {
     display: flex;
@@ -220,6 +181,7 @@ const Main = styled.main`
       /* transform: scale(1); */
     }
   }
+
   .container {
     width: 80%;
     height: 2500px;

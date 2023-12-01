@@ -1,19 +1,20 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import styled from "styled-components";
-import { setNotify } from "lib/client/store/notifySlice";
 import { patchData } from "lib/client/utils/fetchData";
 import logResponse from "lib/client/log/logResponse";
 import { setLoading } from "lib/client/store/loadingSlice";
 import { toast } from "react-toastify";
 import { setCredentials, updateUser } from "lib/client/store/authSlice";
+import { useSession } from "next-auth/react";
 
 export default function Profile() {
   // external
   const dispatch = useDispatch();
+  const session = useSession();
   const auth = useSelector((store: any) => store.auth);
 
   // internal
@@ -113,7 +114,8 @@ export default function Profile() {
 
   // useEffect(() => console.log({ image }), []);
 
-  if (!auth.accessToken) return null;
+  if (session.status !== "authenticated" && !auth.accessToken) return null;
+  if (!auth.user) return null;
   return (
     <Box>
       <form>

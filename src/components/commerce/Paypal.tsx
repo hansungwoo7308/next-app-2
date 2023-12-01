@@ -5,13 +5,17 @@ import { clearCart } from "lib/client/store/cartSlice";
 import { setNotify } from "lib/client/store/notifySlice";
 import { postData } from "lib/client/utils/fetchData";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+
 export default function Paypal({ order }: any) {
   const { auth }: any = useSelector((store) => store);
   const dispatch = useDispatch();
   const router = useRouter();
-  console.log("order : ", order);
+
+  useEffect(() => console.log({ order }), [order]);
+
   return (
     <Box>
       <PayPalButtons
@@ -21,40 +25,23 @@ export default function Paypal({ order }: any) {
           });
         }}
         onApprove={(data, actions: any) => {
-          // console.log("onApprove data : ", data);
-          // console.log("createOrder order : ", order);
           return actions.order.capture().then((details: any) => {
+            console.log({ details });
+
             const createOrder = async () => {
               try {
-                const payload = {
-                  _id: order._id,
-                  paymentId: details.payer.payer_id,
-                };
+                const payload = { _id: order._id, paymentId: details.payer.payer_id };
                 const response = await postData("order", payload, auth.accessToken);
                 // const { order } = response.data;
                 // const {savedOrder}=response.data
-                logResponse(response);
-                dispatch(
-                  setNotify({
-                    status: "success",
-                    message: "The Order was created.",
-                    visible: "true",
-                  })
-                );
-                router.push("/auth/profile");
+                // logResponse(response);
+                console.log({ data: response.data });
               } catch (error) {
                 logError(error);
-                dispatch(
-                  setNotify({
-                    status: "error",
-                    message: "The Order was failed.",
-                    visible: "true",
-                  })
-                );
-                router.push("/commerce/cart");
               }
             };
-            createOrder();
+            // createOrder();
+
             // console.log("onApprove action.order.capture:resolved.details : ", details);
             // alert(`Transaction completed by ${name}`);
             // const name = details.payer.name.given_name;
@@ -65,4 +52,5 @@ export default function Paypal({ order }: any) {
     </Box>
   );
 }
+
 const Box = styled.div``;

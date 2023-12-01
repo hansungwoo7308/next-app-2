@@ -15,16 +15,16 @@ import { setLoading } from "lib/client/store/loadingSlice";
 import { postData } from "lib/client/utils/fetchData";
 
 export async function getServerSideProps({ req, res }: any) {
-  console.log(`\x1b[33m\n[ServerSideProps/${req.url}]:::[${req.method}]\x1b[30m`);
+  console.log(`\x1b[33m\n[${req.url}]:::[${req.method}]\x1b[30m`);
   const session = await getSession({ req });
-  console.log({ session });
+  // console.log({ session });
   const providers = await getProviders();
 
   return { props: { session, providers } };
 }
 
 export default function Page(props: any) {
-  // console.log({ props });
+  console.log({ props });
 
   // exteranl
   const dispatch = useDispatch();
@@ -81,28 +81,16 @@ export default function Page(props: any) {
   };
   const handleSigninWithNaver = async (e: any) => {
     e.preventDefault();
-    const result = await signIn(
-      "naver",
-      { redirect: false }
-      // { redirect: true, callbackUrl: "/" }
-    );
+    const result = await signIn("naver", { redirect: true, callbackUrl: "/auth/profile" });
     console.log({ result });
   };
 
   useEffect(() => setFocus("email"), []);
-  // useEffect(() => console.log({ session }), [session]);
 
   return (
     <>
       <Head>
         <title>signin</title>
-        {/* <meta charSet="utf-8"></meta>
-        <script
-          type="text/javascript"
-          src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
-          charSet="utf-8"
-        ></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script> */}
       </Head>
       <Main>
         <section>
@@ -114,14 +102,11 @@ export default function Page(props: any) {
               type="password"
               placeholder="password"
             />
-            <button onClick={handleSubmit(handleSigninWithGeneral)}>
-              Sign in with General(jwt)
-            </button>
+            <button onClick={handleSubmit(handleSigninWithGeneral)}>Sign in without Library</button>
             <button onClick={handleSubmit(handleSigninWithCredentials)}>
               Sign in with Credentials
             </button>
             <button onClick={handleSigninWithNaver}>Sign in with Naver</button>
-            <div id="naver_id_login"></div>
           </form>
         </section>
       </Main>

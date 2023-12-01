@@ -17,33 +17,33 @@ import { usersApiSlice } from "lib/utils/usersApiSlice";
 import { todosApiSlice } from "lib/utils/todosApiSlice";
 import { loadingSlice } from "lib/client/store/loadingSlice";
 // const combineReducer = combineReducers({ counter: counterSlice });
+
 const store: any = configureStore({
   reducer: {
     // counter: counterSlice.reducer,
     // users: usersReducer,
-    loading: loadingSlice.reducer,
-    auth: authSlice.reducer, // authentication
-    notify: notifySlice.reducer,
+    auth: authSlice.reducer,
+    cart: cartSlice.reducer,
+    order: orderSlice.reducer,
+    orders: ordersSlice.reducer,
+    // notify: notifySlice.reducer,
+    // loading: loadingSlice.reducer,
     modal: modalSlice.reducer,
-    users: usersSlice.reducer, // for Admin
-    cart: cartSlice.reducer, // commerce
-    order: orderSlice.reducer, // commerce
-    orders: ordersSlice.reducer, // commerce
+    // users: usersSlice.reducer,
+    // posts: postsSlice.reducer,
+    // posts2: posts2Slice.reducer,
 
-    posts: postsSlice.reducer,
-    posts2: posts2Slice.reducer,
-
-    // with backend
-    [authApiSlice.reducerPath]: authApiSlice.reducer,
-    [usersApiSlice.reducerPath]: usersApiSlice.reducer,
-    [todosApiSlice.reducerPath]: todosApiSlice.reducer, // for using rtk query
+    // [authApiSlice.reducerPath]: authApiSlice.reducer,
+    // [usersApiSlice.reducerPath]: usersApiSlice.reducer,
+    // [todosApiSlice.reducerPath]: todosApiSlice.reducer, // for using rtk query
     // [usersApi.reducerPath]: usersApi.reducer, // for using rtk query
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(authApiSlice.middleware)
-      .concat(usersApiSlice.middleware)
-      .concat(todosApiSlice.middleware),
+  // middleware: (getDefaultMiddleware) =>
+  //   getDefaultMiddleware()
+  //     .concat(authApiSlice.middleware)
+  //     .concat(usersApiSlice.middleware)
+  //     .concat(todosApiSlice.middleware),
+
   // getDefaultMiddleware().concat([
   //   authApiSlice.middleware,
   //   usersApiSlice.middleware,
@@ -52,4 +52,5 @@ const store: any = configureStore({
   // getDefaultMiddleware().concat(usersApi.middleware), // for using rtk query
   devTools: true,
 });
+
 export default store;

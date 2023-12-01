@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 const baseUrl =
   process.env.NODE_ENV === "production" ? process.env.BASE_URL : process.env.NEXT_PUBLIC_ENV;
+
 const baseQuery = fetchBaseQuery({
   baseUrl,
   credentials: "include",
@@ -12,6 +14,7 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
 const baseQueryWithReauth = async (endpoint: any, api: any, extraOptions: any) => {
   let result: any = await baseQuery(endpoint, api, extraOptions);
   // console.log({ endpoint, api, extraOptions, result });
@@ -35,6 +38,7 @@ const baseQueryWithReauth = async (endpoint: any, api: any, extraOptions: any) =
   // }
   return result;
 };
+
 export const usersApiSlice = createApi({
   reducerPath: "usersApi",
   baseQuery: baseQueryWithReauth,
@@ -56,5 +60,6 @@ export const usersApiSlice = createApi({
     }),
   }),
 });
+
 // api hook
 export const { useGetUsersQuery } = usersApiSlice;
